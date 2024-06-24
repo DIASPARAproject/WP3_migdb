@@ -47,3 +47,18 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+
+.Rhistory
+.RData
+.Ruserdata
+/.project
+/data
+*.Rproj
+/.dbeaver/
+.settings
+*.log
+*.out
+*.gz
+*.aux
+
