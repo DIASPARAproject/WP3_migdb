@@ -8,7 +8,7 @@ reference-location: document
 bibliography: diaspara.bib
 ---
 
-# Description of the salmoglob database
+
 
 [@ices_second_2024]
 
@@ -26,10 +26,25 @@ library(flextable)
 library(tidyverse)
 library(yaml)
 library(DBI)
+library(knitr)
+library(kableExtra)
 cred=read_yaml("../credentials.yml")
 con = dbConnect(Postgres(), dbname=cred$dbname,host=cred$host,port=cred$port,user=cred$user, password=cred$password)
 ```
 
+# Main database structure
+
+```{r databasedescription}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+#| tbl-cap: 'Structure of the main database'
+
+database <- DBI::dbGetQuery(con, 'SELECT * FROM public.database limit 20')
+knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
+```
 
 # Location
 
@@ -38,6 +53,16 @@ con = dbConnect(Postgres(), dbname=cred$dbname,host=cred$host,port=cred$port,use
 
 
 ```{r area}
-area <- DBI::dbGetQuery(con, 'SELECT DISTINCT area FROM public.database_archive')
-kable(area)
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+area <- DBI::dbGetQuery(con, 'SELECT DISTINCT area FROM public.database')
+knitr::kable(area[grep("fishery",area$area),], caption = "Area corresponding to fisheries")
+knitr::kable(area[grep("coun",area$area),], caption = "Area corresponding to countries")
+knitr::kable(area[!grepl("coun",area$area) & !grepl("fishery",area$area),], caption = "Area corresponding to source area")
 ```
+
+The latter table is by default, so Atlantic, NEC and NAC are included. Having a label in a reference table and a geom to associate to those labels would be I guess very usefull.
+
+# The locations are entered 
