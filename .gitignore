@@ -63,3 +63,6 @@ rsconnect/
 *.aux
 
 credentials.yml
+
+
+/R/Salmoglob_description_files/*

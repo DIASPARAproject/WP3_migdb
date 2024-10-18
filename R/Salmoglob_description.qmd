@@ -17,6 +17,7 @@ bibliography: diaspara.bib
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
 library(RPostgres)
 library(sf)
 library(getPass)
