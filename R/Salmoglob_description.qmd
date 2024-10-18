@@ -39,14 +39,13 @@ con = dbConnect(Postgres(), dbname=cred$dbname,host=cred$host,port=cred$port,use
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| results: 'hide'
 #| tbl-cap: 'Structure of the main database'
 
 database <- DBI::dbGetQuery(con, 'SELECT * FROM public.database limit 20')
 knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
 ```
 
-# Location
+# Area
 
 
 ![hylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation](phylogeographic_structuring_salmon.png)
@@ -54,15 +53,80 @@ knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover"
 
 ```{r area}
 #| echo: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| results: 'hide'
 area <- DBI::dbGetQuery(con, 'SELECT DISTINCT area FROM public.database')
-knitr::kable(area[grep("fishery",area$area),], caption = "Area corresponding to fisheries")
-knitr::kable(area[grep("coun",area$area),], caption = "Area corresponding to countries")
-knitr::kable(area[!grepl("coun",area$area) & !grepl("fishery",area$area),], caption = "Area corresponding to source area")
+knitr::kable(area[grep("fishery",area$area),,drop=FALSE], caption = "Area corresponding to fisheries", row.names=FALSE)
+knitr::kable(area[grep("coun",area$area),,drop=FALSE], caption = "Area corresponding to countries", row.names=FALSE)
+knitr::kable(area[!grepl("coun",area$area) & !grepl("fishery",area$area),,drop=FALSE], caption = "Area corresponding to source area", row.names=FALSE)
 ```
 
 The latter table is by default, so Atlantic, NEC and NAC are included. Having a label in a reference table and a geom to associate to those labels would be I guess very usefull.
 
-# The locations are entered 
+# Location
+
+
+```{r location}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+location <- DBI::dbGetQuery(con, 'SELECT DISTINCT location FROM public.database')
+knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE], caption = "Location corresponding to fisheries", row.names=FALSE)
+location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
+  area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
+knitr::kable(location_biz, caption = "These one are bizarre, can we simplify at parameter level", row.names=FALSE)  
+location_area <- data.frame("location"=intersect(location[!grepl("fishe",location$location),],
+  area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
+knitr::kable(location_area, caption = "Location corresponding exactly to what is aleardy in area", row.names=FALSE)
+```
+
+
+list of params corresponding to bizarre
+
+
+```{r param_biz}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'asis'
+
+for (i in 1 : nrow(location_biz)){
+  location_bizi <- location_biz$location[i]
+  var_biz <- DBI::dbGetQuery(con, glue::glue_sql("SELECT distinct(var_mod) FROM public.database 
+where location in ({location_bizi})", .con=con))
+colnames(var_biz) <- location_bizi
+print(kable(var_biz[,,drop=FALSE], row.names=FALSE))
+}
+```
+
+## hierarchical structure of the database
+
+The database could start with the simplest structure, with a basic table corresponding to all data.
+Then three tables could be created, one for data, one for parameters outputs, one for parameters.
+The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.
+
+
+From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).
+
+## referential tables
+
+Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g. source from ICES vocab, which corresponds to working group or accession events (datacalls)).
+
+## unicity constraints
+
+Another important point to add (at least to salmoglob database) is unicity constraint. Currently nothing 
+
+
+## Other comments.
+
+
+Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model.
+
+There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
+
+[TODO] check when locations correspond to things other than location or fishery.
+
+
