@@ -1,0 +1,42 @@
+---
+title: "salmoglob database description"
+format:
+ html:
+  theme: united
+  toc: true
+reference-location: document
+bibliography: diaspara.bib
+---
+
+# Description of the salmoglob database
+
+[@ices_second_2024]
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+library(RPostgres)
+library(sf)
+library(getPass)
+library(readxl)
+library(flextable)
+library(tidyverse)
+library(yaml)
+library(DBI)
+cred=read_yaml("../credentials.yml")
+con = dbConnect(Postgres(), dbname=cred$dbname,host=cred$host,port=cred$port,user=cred$user, password=cred$password)
+```
+
+
+# Location
+
+
+![hylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation](phylogeographic_structuring_salmon.png)
+
+
+```{r area}
+area <- DBI::dbGetQuery(con, 'SELECT DISTINCT area FROM public.database_archive')
+kable(area)
+```
