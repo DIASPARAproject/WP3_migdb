@@ -17,7 +17,7 @@ bibliography: diaspara.bib
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
 library(RPostgres)
 library(sf)
 library(getPass)
@@ -127,6 +127,39 @@ Currently stage in metadata not consistent, replicates information about maturit
 
 There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
 
+``` {r db_comparaison}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+
+database <- DBI::dbGetQuery(con, "SELECT * FROM public.database")
+database_archive <- DBI::dbGetQuery(con, "SELECT * FROM public.database_archive")
+
+# List of commun columns
+cols <- c("version", "year", "type", "age", "area", "location", "metric", "var_mod")
+
+# getting values that are not present in database anymore
+for (col in cols) {
+  diff_values <- setdiff(database_archive[[col]], database[[col]])
+  if (length(diff_values) > 0) {
+    cat("Values present in database_archive but not in database for", col, "column :\n")
+    print(diff_values)
+  }
+}
+```
+
 [TODO] check when locations correspond to things other than location or fishery.
 
+``` {r check_parameter_location}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
 
+
+result <- database %>%
+  group_by(var_mod) %>%
+  summarise(location_count = n_distinct(location))
+knitr::kable(result, caption = "Number of locations per var_mod") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
