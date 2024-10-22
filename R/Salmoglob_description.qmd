@@ -39,7 +39,7 @@ library(DBI)
 library(knitr)
 library(kableExtra)
 cred=read_yaml("../credentials.yml")
-con = dbConnect(Postgres(), dbname=cred$dbname,host=cred$host,port=cred$port,user=cred$user, password=cred$password)
+con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,port=cred$port,user=cred$usersalmo, password=cred$passwordsalmo)
 ```
 
 # Main database structure
@@ -51,7 +51,7 @@ con = dbConnect(Postgres(), dbname=cred$dbname,host=cred$host,port=cred$port,use
 #| message: FALSE
 #| tbl-cap: 'Structure of the main database'
 
-database <- DBI::dbGetQuery(con, 'SELECT * FROM public.database limit 20')
+database <- DBI::dbGetQuery(con_salmoglob, 'SELECT * FROM public.database limit 20')
 knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
 ```
 
@@ -66,7 +66,7 @@ knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover"
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-area <- DBI::dbGetQuery(con, 'SELECT DISTINCT area FROM public.database')
+area <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT area FROM public.database')
 knitr::kable(area[grep("fishery",area$area),,drop=FALSE], caption = "Area corresponding to fisheries", row.names=FALSE)
 knitr::kable(area[grep("coun",area$area),,drop=FALSE], caption = "Area corresponding to countries", row.names=FALSE)
 knitr::kable(area[!grepl("coun",area$area) & !grepl("fishery",area$area),,drop=FALSE], caption = "Area corresponding to source area", row.names=FALSE)
@@ -82,7 +82,7 @@ The latter table is by default, so Atlantic, NEC and NAC are included. Having a 
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-location <- DBI::dbGetQuery(con, 'SELECT DISTINCT location FROM public.database')
+location <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT location FROM public.database')
 knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE], caption = "Location corresponding to fisheries", row.names=FALSE)
 location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
   area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
@@ -105,8 +105,8 @@ list of params corresponding to neither fishery nor area.
 
 for (i in 1 : nrow(location_biz)){
   location_bizi <- location_biz$location[i]
-  var_biz <- DBI::dbGetQuery(con, glue::glue_sql("SELECT distinct(var_mod) FROM public.database 
-where location in ({location_bizi})", .con=con))
+  var_biz <- DBI::dbGetQuery(con_salmoglob, glue::glue_sql("SELECT distinct(var_mod) FROM public.database 
+where location in ({location_bizi})", .con=con_salmoglob))
 colnames(var_biz) <- location_bizi
 print(kable(var_biz[,,drop=FALSE], row.names=FALSE))
 }
@@ -118,8 +118,8 @@ print(kable(var_biz[,,drop=FALSE], row.names=FALSE))
 #| warning: FALSE
 #| message: FALSE
 
-database <- DBI::dbGetQuery(con, "SELECT * FROM public.database")
-database_archive <- DBI::dbGetQuery(con, "SELECT * FROM public.database_archive")
+database <- DBI::dbGetQuery(con_salmoglob, "SELECT * FROM public.database")
+database_archive <- DBI::dbGetQuery(con_salmoglob, "SELECT * FROM public.database_archive")
 
 # List of commun columns
 cols <- c("version", "year", "type", "age", "area", "location", "metric", "var_mod")
@@ -185,3 +185,53 @@ Additional values about maturity, stage, can be stored in the metadata table.
 
 There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
 
+``` {r conmigdb}
+migdb = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
+```
+
+
+
+```{sql test}
+--| connection: migdb
+--| echo: true
+
+-- CREATE REFERENTIAL TABLES
+
+/*
+This is a comment
+*/
+CREATE schema "ref";
+GRANT ALL PRIVILEGES ON SCHEMA "ref" TO diaspara_admin ;
+GRANT ALL PRIVILEGES ON SCHEMA public TO diaspara_read ;
+GRANT CONNECT ON DATABASE "diaspara" TO diaspara_read;
+ALTER DATABASE "diaspara" OWNER TO diaspara_admin;
+
+-- edit pg_hba.conf on the server
+
+
+-- TODO search countries for Salmon US
+CREATE TABLE ref.tr_country_cou (
+    cou_code character varying(2) NOT NULL,
+    cou_country text NOT NULL,
+    cou_order integer NOT NULL,
+    geom public.geometry,
+    cou_iso3code character varying(3)
+);
+-- how to inegrate with hierarchical level in salmodb ? Same for eel ?
+
+ALTER TABLE ref.tr_country_cou OWNER TO postgres;
+GRANT ALL ON SCHEMA ref diaspara_admin;
+CREATE ROLE diaspara_read
+
+CREATE TABLE "ref".tr_pararmeter_parm (
+  parm_id serial4 NOT NULL,
+  parm_name TEXT NOT NULL UNIQUE,
+  parm_species TEXT
+  parm_description text NULL,
+  parm_uni_code varchar(20) NULL,
+  CONSTRAINT parm_pkey PRIMARY KEY (typ_id),
+  CONSTRAINT c_fk_parm_uni_code FOREIGN KEY (typ_uni_code) REFERENCES "ref".tr_units_uni(uni_code) ON UPDATE CASCADE
+);
+
+
+```

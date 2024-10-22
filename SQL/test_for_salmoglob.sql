@@ -53,3 +53,7 @@ CREATE TABLE "ref".tr_pararmeter_parm (
   CONSTRAINT parm_pkey PRIMARY KEY (typ_id),
   CONSTRAINT c_fk_parm_uni_code FOREIGN KEY (typ_uni_code) REFERENCES "ref".tr_units_uni(uni_code) ON UPDATE CASCADE
 );
+
+
+
+SELECT * FROM DATABASE WHERE var_mod='p_smolt_gamma_pr'

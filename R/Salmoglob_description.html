@@ -618,7 +618,7 @@ div.csl-indent {
 </div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>These one are bizarre, can we simplify at parameter level</caption>
+<caption>These one are neither fishery nor area, can we simplify at parameter level</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">location</th>
@@ -741,7 +741,7 @@ div.csl-indent {
 
 </div>
 </div>
-<p>list of params corresponding to bizarre</p>
+<p>list of params corresponding to neither fishery nor area.</p>
 <table>
 <thead>
 <tr>
@@ -1079,23 +1079,6 @@ p_C8_2_NECNAC_gld_mu
 </tr>
 </tbody>
 </table>
-<section id="hierarchical-structure-of-the-database" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchical-structure-of-the-database">hierarchical structure of the database</h2>
-<p>The database could start with the simplest structure, with a basic table corresponding to all data. Then three tables could be created, one for data, one for parameters outputs, one for parameters. The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.</p>
-<p>From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).</p>
-</section>
-<section id="referential-tables" class="level2">
-<h2 class="anchored" data-anchor-id="referential-tables">referential tables</h2>
-<p>Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g.&nbsp;source from ICES vocab, which corresponds to working group or accession events (datacalls)).</p>
-</section>
-<section id="unicity-constraints" class="level2">
-<h2 class="anchored" data-anchor-id="unicity-constraints">unicity constraints</h2>
-<p>Another important point to add (at least to salmoglob database) is unicity constraint. Currently nothing</p>
-</section>
-<section id="other-comments." class="level2">
-<h2 class="anchored" data-anchor-id="other-comments.">Other comments.</h2>
-<p>Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model.</p>
-<p>There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Values present in database_archive but not in database for version column :
@@ -1108,7 +1091,6 @@ Values present in database_archive but not in database for location column :
 [1] "main"</code></pre>
 </div>
 </div>
-<p>[TODO] check when locations correspond to things other than location or fishery.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
@@ -1450,7 +1432,391 @@ Values present in database_archive but not in database for location column :
 
 </div>
 </div>
-<p>So in the end, only omega has 25 locations, and the location corresponds to area, so we can add a column with a foreign key to area in a daughter table (or in the parameters prior table).</p>
+<p>So in the end, only omega has 25 locations, and in this case the location corresponds to area. This means we can get rid of the location column. For omega we can keep it,; so we can add a column with a foreign key to area in the parameters table where priors will be stored.</p>
+<section id="hierarchical-structure-of-the-database" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchical-structure-of-the-database">hierarchical structure of the database</h2>
+<p>The database could start with the simplest structure, with a basic table corresponding to all data. Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors. The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.</p>
+<p>From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).</p>
+</section>
+<section id="referential-tables" class="level2">
+<h2 class="anchored" data-anchor-id="referential-tables">referential tables</h2>
+<p>Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g.&nbsp;source from ICES vocab, which corresponds to working group or accession events (datacalls)).</p>
+</section>
+<section id="unicity-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="unicity-constraints">unicity constraints</h2>
+<p>Another important point to add (at least to the salmoglob database) is unicity constraint. As some values would be null, creating unicity constraints with indexes would be necessary. These allow to have different levels of constraints for instance the unicity would be defined for : (year, age, area, parameter) (year, age, parameter) (year, area, parameter) (year, parameter)</p>
+<p>One of the table will have to contain twice the area it will have to be treated separately. (year, area, area, parameter)</p>
+</section>
+<section id="other-comments." class="level2">
+<h2 class="anchored" data-anchor-id="other-comments.">Other comments.</h2>
+<p>Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model.</p>
+<p>Additional values about maturity, stage, can be stored in the metadata table.</p>
+<p>There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<caption>
+Displaying records 1 - 10
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+version
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+age
+</th>
+<th style="text-align:left;">
+area
+</th>
+<th style="text-align:left;">
+location
+</th>
+<th style="text-align:left;">
+metric
+</th>
+<th style="text-align:right;">
+value
+</th>
+<th style="text-align:left;">
+var_mod
+</th>
+<th style="text-align:left;">
+date_time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_England_Wales
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+209010700
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Finland
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+104278220
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_France
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+55156800
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Gulf
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+248680000
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Iceland_NE
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+23889096
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Iceland_SW
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+51693269
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Ireland
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+710711690
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Labrador
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+243660000
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Newfoundland
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+267780000
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+Conservation limits
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+coun_Northern_Ireland
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+Mean
+</td>
+<td style="text-align:right;">
+93800000
+</td>
+<td style="text-align:left;">
+cons_lim
+</td>
+<td style="text-align:left;">
+2022-08-18 08:37:30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
 </section>
 </section>
