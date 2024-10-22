@@ -86,14 +86,14 @@ location <- DBI::dbGetQuery(con, 'SELECT DISTINCT location FROM public.database'
 knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE], caption = "Location corresponding to fisheries", row.names=FALSE)
 location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
   area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
-knitr::kable(location_biz, caption = "These one are bizarre, can we simplify at parameter level", row.names=FALSE)  
+knitr::kable(location_biz, caption = "These one are neither fishery nor area, can we simplify at parameter level", row.names=FALSE)  
 location_area <- data.frame("location"=intersect(location[!grepl("fishe",location$location),],
   area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
 knitr::kable(location_area, caption = "Location corresponding exactly to what is aleardy in area", row.names=FALSE)
 ```
 
 
-list of params corresponding to bizarre
+list of params corresponding to neither fishery nor area.
 
 
 ```{r param_biz}
@@ -154,8 +154,8 @@ This means we can get rid of the location column. For omega we can keep it,; so 
 
 ## hierarchical structure of the database
 
-The database could start with the simplest structure, with a basic table corresponding to all data.
-Then three tables could be created, one for data, one for parameters outputs, one for parameters.
+The database could start with the simplest structure, with a basic table corresponding to all data. 
+Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors.
 The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.
 
 
@@ -167,13 +167,21 @@ Similarly, referential tables could be created with a mother table from which sp
 
 ## unicity constraints
 
-Another important point to add (at least to salmoglob database) is unicity constraint. Currently nothing 
+Another important point to add (at least to the salmoglob database) is unicity constraint. As some values would be null, creating unicity constraints with indexes would be necessary. These allow to have different levels of constraints for instance the unicity would be defined for :
+(year, age, area, parameter)
+(year, age, parameter)
+(year, area, parameter)
+(year, parameter)
+
+One of the table will have to contain twice the area it will have to be treated separately.
+(year, area, area,  parameter)
 
 
 ## Other comments.
 
+Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model. 
 
-Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model.
+Additional values about maturity, stage, can be stored in the metadata table.
 
 There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
 
