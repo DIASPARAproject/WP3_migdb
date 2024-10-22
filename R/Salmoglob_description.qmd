@@ -186,20 +186,22 @@ Additional values about maturity, stage, can be stored in the metadata table.
 There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
 
 ``` {r conmigdb}
-migdb = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
+con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
 ```
 
 
 
-```{sql test}
---| connection: migdb
+```{sql create_referentials}
+--| connection: con_diaspara
 --| echo: true
+--| eva: false
 
 -- CREATE REFERENTIAL TABLES
 
 /*
 This is a comment
 */
+DROP schema if exists "ref";
 CREATE schema "ref";
 GRANT ALL PRIVILEGES ON SCHEMA "ref" TO diaspara_admin ;
 GRANT ALL PRIVILEGES ON SCHEMA public TO diaspara_read ;
