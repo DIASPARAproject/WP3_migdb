@@ -30,8 +30,59 @@ con_migdb = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,port=cr
 ```
 
 ``` {r icesVocab_test}
-code_type <- getCodeTypeList()
-knitr::kable(code_type, caption = "Number of locations per var_mod") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
-#code_list <- 
+findCodeType("RLIST", full = T) #WoRMS is the ICES standard identical
+getCodeList("RLIST") #ER & ERID
+getCodeDetail("RLIST","ERID")
+
+
+code_type <- getCodeTypeList()
+code_list <- getCodeList("SpecWoRMS")
+
+
+species_list <- tibble(
+  name = c("Atlantic salmon", "European eel"),
+  scientific_name = c("Salmo salar", "Anguilla anguilla")
+)
+
+df_species <- species_list %>%
+  rowwise() %>%
+  mutate(
+    code_ices = findAphia(scientific_name, latin = TRUE)
+  ) %>%
+  ungroup()
+knitr::kable(df_species, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
+
+df_salmo <- icesVocab::findCode("worms", "salmon",full=T)
+knitr::kable(df_salmo, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
+
+salmo_detail<-getCodeDetail("SpecWoRMS",127186)
+View(salmo_detail$detail)
+View(salmo_detail$parents)
+View(salmo_detail$children) #key=SAL for Atlantic salmon
+
+eel_detail<-getCodeDetail("SpecWoRMS",126281)
+View(eel_detail$detail)
+View(eel_detail$parents)
+View(eel_detail$children) #key=ELE for European eel
+
+
+findCodeType("ICES_Stock_Category", full = T)
+getCodeList("ICES_Stock_Category")
+getCodeDetail("ICES_Stock_Category",1)
+
+View(getCodeList("IC_Stock")) #eel key = ele.2737.nea Salmon has several (sal-bal & sal-nea)
+View(getCodeDetail("IC_Stock","ele.2737.nea"))
+
+View(getCodeList("Datasets"))
+
+Class
+TS_SpeciesList
+IC_Species
+IC_Stock
+
 ```
+
+Year or IC_Year
