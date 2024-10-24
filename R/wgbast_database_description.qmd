@@ -1,0 +1,99 @@
+---
+title: "wgbast database description"
+subtitle: "DIASPARA working document"
+author: "Briand Cédric, Oliviero Jules, Helminen Jani"
+date: last-modified
+date-format: "DD-MM-YYYY"
+description: "Technical analysis of the wgbast database"
+title-block-banner: "images/diaspara_bandeau.png"
+title-block-banner-color: "white"
+format:
+ html:
+  self-contained: true
+  theme: cosmo
+  smooth-scroll: true
+  fontcolor: black
+  toc: true
+  toc-location: left
+  toc-title: Summary
+  toc-depth: 3
+reference-location: document
+bibliography: diaspara.bib
+---
+
+
+
+The following working document is just a technical analysis of the WGBAST database. It uses different sources, ICES vocabulary, the stock annex [@ICES2021_wgbast_stock_annex], to analyse the structure of the wgbast database before integrating in a single database (wgnas, wgbast, wgeel) in the DIASPARA project.
+This document does not engage the WGBAST it's just a technical analysis, to take notes and make recommendations.
+
+
+# WGBAST stock annex
+
+### river stock
+
+ “river stock” correspond salmon that belongs to a particular river. In most cases, river stocks most likely correspond to biological populations which lend support for this level of division from a conservation genetic perspective. However, it should be noted that some larger rivers may harbour several salmon subpopulations that are genetically separated spatially and/or temporally (Lind et al. 2015). 
+
+### Salmon population
+According to the results of Säisä et al. (2005), there are three main groups of salmon populations in the Baltic Sea: 1) Gulf of Bothnia populations, 2) populations in southern Sweden, and 3) eastern populations (Gulf of Finland and eastern Main Basin). These groups or lineages are assumed to mirror three distinct post-glacial colonization events. About 5% of the total genetic diversity of the Baltic salmon is explained by differences between rivers within groups, whereas 6% is explained by differences between the lineages (Säisä et al., 2005).
+
+### assessment units within the Baltic Sea area
+
+Within the Baltic Sea area, currently six different assessment units (AUs) have been established (Figure A.1.1.1). The grouping of rivers within an assessment unit is based on management objectives and biological and genetic characteristics of the river stocks contained in a unit. The partition of rivers into assessment units needs to make sense from a management perspective. River stocks of a particular unit are believed to exhibit similar migration patterns at sea. It can therefore be assumed that they are subjected to the same sea fisheries, experience the same exploitation rates and are affected by management of sea fisheries in the same way. In addition, the genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units (see above). Although the rivers of assessment units 5 and 6 are relatively small in terms of their production capacity compared with rivers in the other assessment units, they are very important from a conservation perspective because of their unique genetic background.
+The six assessment units in the Baltic Sea consist of:
+1 )	Northeastern Bothnian Bay river stocks, starting at Perhonjoki up till the river Råneälven.
+2 )	Western Bothnian Bay river stocks, starting at Lögdeälven up to Luleälven.
+3 )	Bothnian Sea river stocks, from Dalälven up to Gideälven and from Paimionjoki up to Kyrönjoki.
+4 )	Western Main Basin river stocks, i.e. southeastern part of Sweden.
+5 )	Eastern Main Basin river stocks, i.e. rivers in Estonia, Latvia and Lithuania.
+6 )	Gulf of Finland river stocks.
+Wild river stocks belonging to each assessment unit are listed in the next section.
+  
+Figure A.1.1.1. Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey).
+![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg)
+
+### ICES vocab linked with catchments in the Baltic.
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+```
+``` {r icesVocab_test}
+
+types <- icesVocab::getCodeTypeList()
+types[grep('river', tolower(types$Description)),]
+RiversAndCatchments <- icesVocab::getCodeList('RiversAndCatchments')
+nrow(RiversAndCatchments)
+kable(RiversAndCatchments[1:10,], caption = "RiverAndCatchments, 10 first lines") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(RiversAndCatchments[is.na(RiversAndCatchments$key),], caption = "This one has a problem") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+Note the url in this table : 	https://opendata-download.smhi.se/svar/SVAR_Basprodukter_2016_6.pdf is no longer accessed anywhere, there is a NA without value in this table. It does not seems as if there is a hierarchy in these geographic units.
+>  [TODO] We'll have to reconcile this table with GIS,  we have to if there is a GIS map somewhere in ICES.
+
+### Category of rivers
+
+
+Classification criteria for wild, mixed, reared and potential salmon rivers in the Baltic Sea [@ICES2021_wgbast_stock_annex]
+
+|     Category of salmon river               |     Management plan for salmon stock in the   river     |     Releases                                  |     Criteria for wild smolt production    |
+|--------------------------------------------|---------------------------------------------------------|-----------------------------------------------|-------------------------------------------|
+|     Wild                                   |     Self-sustaining                                     |     No continuous releases                    |     >90% of total smolt prod.             |
+|     Mixed                                  |     Not self-sustaining at these production   levels    |     Releases occur                            |     10–90% of total smolt prod.           |
+|     Reared                                 |     Not self-sustaining                                 |     Releases occur                            |     <10% of total smolt prod.             |
+|     Potential leading to category wild     |     Lead to self-sustaining river stock                 |     Releases occur during re-establishment    |     Long-term >90% wild smolt prod.       |
+|     Potential leading to category mixed    |     Not self-sustaining river stock                     |     Releases occur                            |     Long-term 10–90% wild smolt prod.     |
+
+
