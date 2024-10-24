@@ -1,9 +1,22 @@
 ---
-title: "salmoglob database description"
+title: "WGNAS database description"
+subtitle: "DIASPARA working document"
+author: "Briand Cédric, Oliviero Jules, Helminen Jani"
+date: last-modified
+date-format: "DD-MM-YYYY"
+description: "Technical analysis of the salmoglob database"
+title-block-banner: "images/diaspara_bandeau.png"
+title-block-banner-color: "white"
 format:
  html:
-  theme: united
+  self-contained: true
+  theme: cosmo
+  smooth-scroll: true
+  fontcolor: black
   toc: true
+  toc-location: left
+  toc-title: Summary
+  toc-depth: 3
 reference-location: document
 bibliography: diaspara.bib
 ---
@@ -17,27 +30,24 @@ bibliography: diaspara.bib
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-getUsername <- function(){
-	name <- Sys.info()[["user"]]
-	return(name)
-}
 
 #if (!grepl("montepomi", getwd())) {
-if(getUsername() == 'joliviero'){
+if(Sys.info()[["user"]] == 'joliviero'){
 setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-} else if (getUsername() == 'cedric.briand'){
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
 setwd("C:/workspace/DIASPARA_WP3_migdb/R")
 }
-library(RPostgres)
-library(sf)
-library(getPass)
-library(readxl)
-library(flextable)
-library(tidyverse)
-library(yaml)
-library(DBI)
-library(knitr)
-library(kableExtra)
+source("utilities/load_library.R")
+load_library("RPostgres")
+load_library("sf")
+load_library("getPass")
+load_library("readxl")
+load_library("flextable")
+load_library("tidyverse")
+load_library("yaml")
+load_library("DBI")
+load_library("knitr")
+load_library("kableExtra")
 cred=read_yaml("../credentials.yml")
 con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,port=cred$port,user=cred$usersalmo, password=cred$passwordsalmo)
 ```
@@ -58,7 +68,7 @@ knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover"
 # Area
 
 
-![hylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation](phylogeographic_structuring_salmon.png)
+![phylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation](images/phylogeographic_structuring_salmon.png)
 
 
 ```{r area}
@@ -186,15 +196,18 @@ Additional values about maturity, stage, can be stored in the metadata table.
 There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
 
 ``` {r conmigdb}
+#| echo: FALSE
+#| eval: FALSE
+
 con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
 ```
 
-
+<!-- 
 
 ```{sql create_referentials}
 --| connection: con_diaspara
---| echo: true
---| eva: false
+--| echo: TRUE
+--| eva: FALSE
 
 -- CREATE REFERENTIAL TABLES
 
@@ -236,4 +249,4 @@ CREATE TABLE "ref".tr_pararmeter_parm (
 );
 
 
-```
+``` -->
