@@ -1,6 +1,6 @@
 ---
 title: "wgbast database description"
-subtitle: "DIASPARA working document"
+subtitle: "DIASPARA WP3.2 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
@@ -18,13 +18,15 @@ format:
   toc-title: Summary
   toc-depth: 3
 reference-location: document
-bibliography: diaspara.bib
+bibliography: ../diaspara.bib
 ---
 
 
 
 The following working document is just a technical analysis of the WGBAST database. It uses different sources, ICES vocabulary, the stock annex [@ICES2021_wgbast_stock_annex], to analyse the structure of the wgbast database before integrating in a single database (wgnas, wgbast, wgeel) in the DIASPARA project.
 This document does not engage the WGBAST it's just a technical analysis, to try to get how this works.
+This document is listed as a task there :
+https://github.com/DIASPARAproject/WP3_migdb/issues/11
 
 
 # WGBAST stock annex
@@ -40,15 +42,16 @@ According to the results of Säisä et al. (2005), there are three main groups o
 
 Within the Baltic Sea area, currently six different assessment units (AUs) have been established (Figure A.1.1.1). The grouping of rivers within an assessment unit is based on management objectives and biological and genetic characteristics of the river stocks contained in a unit. The partition of rivers into assessment units needs to make sense from a management perspective. River stocks of a particular unit are believed to exhibit similar migration patterns at sea. It can therefore be assumed that they are subjected to the same sea fisheries, experience the same exploitation rates and are affected by management of sea fisheries in the same way. In addition, the genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units (see above). Although the rivers of assessment units 5 and 6 are relatively small in terms of their production capacity compared with rivers in the other assessment units, they are very important from a conservation perspective because of their unique genetic background.
 The six assessment units in the Baltic Sea consist of:
-* 1 )	Northeastern Bothnian Bay river stocks, starting at Perhonjoki up till the river Råneälven.
-* 2 )	Western Bothnian Bay river stocks, starting at Lögdeälven up to Luleälven.
-* 3 )	Bothnian Sea river stocks, from Dalälven up to Gideälven and from Paimionjoki up to Kyrönjoki.
-* 4 )	Western Main Basin river stocks, i.e. southeastern part of Sweden.
-* 5 )	Eastern Main Basin river stocks, i.e. rivers in Estonia, Latvia and Lithuania.
-* 6 )	Gulf of Finland river stocks.
+
+ * 1 )	Northeastern Bothnian Bay river stocks, starting at Perhonjoki up till the river Råneälven.
+ * 2 )	Western Bothnian Bay river stocks, starting at Lögdeälven up to Luleälven.
+ * 3 )	Bothnian Sea river stocks, from Dalälven up to Gideälven and from Paimionjoki up to Kyrönjoki.
+ * 4 )	Western Main Basin river stocks, i.e. southeastern part of Sweden.
+ * 5 )	Eastern Main Basin river stocks, i.e. rivers in Estonia, Latvia and Lithuania.
+ * 6 )	Gulf of Finland river stocks.
 Wild river stocks belonging to each assessment unit are listed in the next section.
   
-Figure A.1.1.1. Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey).
+Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey) [@ICES2021_wgbast_stock_annex].
 ![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg)
 
 ### ICES vocab linked with catchments in the Baltic.

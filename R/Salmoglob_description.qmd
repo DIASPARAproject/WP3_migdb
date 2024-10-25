@@ -1,6 +1,6 @@
 ---
 title: "WGNAS database description"
-subtitle: "DIASPARA working document"
+subtitle: "DIASPARA WP3.2 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
@@ -18,12 +18,15 @@ format:
   toc-title: Summary
   toc-depth: 3
 reference-location: document
-bibliography: diaspara.bib
+bibliography: ../diaspara.bib
 ---
 
 
+The following working document is just a technical analysis of the WGNAS database (and further its graphical interface) [@ices_second_2024]. It uses different sources, ICES vocabulary, the stock annex [@ICES2021_wgnas_stock_annex], to analyse the structure of the wgnas database before integrating in a single database (wgnas, wgbast, wgeel) in the DIASPARA project.
+This document does not engage the WGNAS it's just a technical analysis, to try to get how this works.
+This document is listed as a task there :
+https://github.com/DIASPARAproject/WP3_migdb/issues/11
 
-[@ices_second_2024]
 
 ```{r init}
 #| echo: FALSE
@@ -55,7 +58,7 @@ con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,por
 # Main database structure
 
 ```{r databasedescription}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -72,7 +75,7 @@ knitr::kable(database) %>% kable_styling(bootstrap_options = c("striped","hover"
 
 
 ```{r area}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -88,7 +91,7 @@ The latter table is by default, so Atlantic, NEC and NAC are included. Having a 
 
 
 ```{r location}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -107,7 +110,7 @@ list of params corresponding to neither fishery nor area.
 
 
 ```{r param_biz}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -123,7 +126,7 @@ print(kable(var_biz[,,drop=FALSE], row.names=FALSE))
 ```
 
 ``` {r db_comparaison}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -147,7 +150,7 @@ for (col in cols) {
 
 
 ``` {r check_parameter_location}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -202,12 +205,12 @@ There is a discrepancy between data in the historical dataset and the current, s
 con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
 ```
 
-<!-- 
+# Referentials
+
 
 ```{sql create_referentials}
---| connection: con_diaspara
 --| echo: TRUE
---| eva: FALSE
+--| eval: FALSE
 
 -- CREATE REFERENTIAL TABLES
 
@@ -249,4 +252,4 @@ CREATE TABLE "ref".tr_pararmeter_parm (
 );
 
 
-``` -->
+``` 
