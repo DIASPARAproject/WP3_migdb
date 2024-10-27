@@ -29,14 +29,14 @@ This document is listed as a task there :
 https://github.com/DIASPARAproject/WP3_migdb/issues/11
 
 
-# WGBAST stock annex
+# Spatial units
 
-### River stock
+## River stock
 
- “river stock” correspond salmon that belongs to a particular river. In most cases, river stocks most likely correspond to biological populations which lend support for this level of division from a conservation genetic perspective. However, it should be noted that some larger rivers may harbour several salmon subpopulations that are genetically separated spatially and/or temporally (Lind et al. 2015). 
+ “river stock” correspond salmon that belongs to a particular river. In most cases, river stocks most likely correspond to biological populations which lend support for this level of division from a conservation genetic perspective. However, it should be noted that some larger rivers may harbour several salmon subpopulations that are genetically separated spatially and/or temporally (Lind et al. 2015) [@ICES2021_wgbast_stock_annex]. 
 
 ### Salmon population
-According to the results of Säisä et al. (2005), there are three main groups of salmon populations in the Baltic Sea: 1) Gulf of Bothnia populations, 2) populations in southern Sweden, and 3) eastern populations (Gulf of Finland and eastern Main Basin). These groups or lineages are assumed to mirror three distinct post-glacial colonization events. About 5% of the total genetic diversity of the Baltic salmon is explained by differences between rivers within groups, whereas 6% is explained by differences between the lineages (Säisä et al., 2005).
+According to the results of Säisä et al. (2005), there are three main groups of salmon populations in the Baltic Sea: 1) Gulf of Bothnia populations, 2) populations in southern Sweden, and 3) eastern populations (Gulf of Finland and eastern Main Basin). These groups or lineages are assumed to mirror three distinct post-glacial colonization events. About 5% of the total genetic diversity of the Baltic salmon is explained by differences between rivers within groups, whereas 6% is explained by differences between the lineages (Säisä et al., 2005) [@ICES2021_wgbast_stock_annex].
 
 ### Assessment units within the Baltic Sea area
 
@@ -49,9 +49,9 @@ The six assessment units in the Baltic Sea consist of:
  * 4 )	Western Main Basin river stocks, i.e. southeastern part of Sweden.
  * 5 )	Eastern Main Basin river stocks, i.e. rivers in Estonia, Latvia and Lithuania.
  * 6 )	Gulf of Finland river stocks.
-Wild river stocks belonging to each assessment unit are listed in the next section.
+Wild river stocks belonging to each assessment unit are listed in the next section[@ICES2021_wgbast_stock_annex].
   
-Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey) [@ICES2021_wgbast_stock_annex].
+
 ![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg)
 
 ### ICES vocab linked with catchments in the Baltic.
@@ -73,7 +73,7 @@ load_library("knitr")
 load_library("kableExtra")
 load_library("icesVocab")
 ```
-``` {r icesVocab_test}
+``` {r icesVocabrivers}
 
 types <- icesVocab::getCodeTypeList()
 types[grep('river', tolower(types$Description)),]
@@ -107,4 +107,100 @@ Classification criteria for wild, mixed, reared and potential salmon rivers in t
 
 
 > [NOTE] This is in the db (recruitment database - river category) aleady, should be stored alongside the referential as a separate table of assessement, maybe with periods as the status might change ?
+
+# Fishery
+
+## Catch  habitat
+
+Countries participating in the Baltic salmon fishery are asked to deliver catch data of salmon and sea trout. Catches are given by economic zone, ICES subdivision, as well as type of fishery separated by `offshore, coastal and river` [@ICES2021_wgbast_stock_annex]. 
+
+Catches are divided into four different fishing area categories: `River (R), Coastal (C), Open sea (O) and Sea (S)`. `Sea (S)` is only used when it is not possible to separate between coast and open sea. There is no standardized way of distributing sea catches into either of the two WGBAST fishing area categories Coast (C) or Open sea (O). For the commercial fisheries, a majority of the countries divide the commercial landings on fishing area depending on which gear that has been used, where longlines and driftnets are categorised as open sea (O) and trapnets as coastal (C) [@ICES2021_wgbast_stock_annex]. 
+
+Exceptions: 
+
+ * In Latvia, the distribution is depending on how the catches are reported into the official catch statistics. Here catches from vessels carrying EU logbook are categorised as open sea (O), whereas catches from vessels reporting in the national logbook system are categorised as coastal (C). Latvian vessels that are active 2 nautical miles (NM) or more off the coast are obliged to use EU logbook.
+
+ *	In Lithuania, catches outside territorial water, i.e. 12 NM or more from the coast, are categorised as open sea (O). Inside this border catches are categorised as coastal (C).
+
+ *	In Poland, length of the vessel defines if the catch is coastal (C) or open sea (O). Catches from vessels 10 meters or less are coastal (C) and catches from vessels longer than 10 meters are categorised as open sea (O).
+
+Latvia and Lithuania are the only two countries directly using the actual geographical position when categorising the catches as either coastal (C) or open sea (O).
+For the recreational fisheries, all countries define trolling as open sea (O) whereas catches from other gears are defined as coastal (C) [@ICES2021_wgbast_stock_annex]. 
+
+
+
+
+``` {r checkdbhabitat}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+# TODO check FISHERY when we have the db
+```
+
+The best match for fishery habitat in ICES is WLTYP.
+
+``` {r icesVocabhabitat}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+WLTYP <- icesVocab::getCodeList('WLTYP')
+kable(WLTYP, caption = "Water type (for stations)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+> [QUESTION ICES] Is that right ? Should we use this one ? There is a need to add `sea` with a definition : catches either MO or C but 
+
+> [QUESTION WGBAST] Currently the definition in ICES vocab is WFD coastal water (C) or MC (Marine water (coast)) Marine water within 4 nm from the baseline. It seems that there are country difference in the interpretation of coastal or marine 2 10 12, so what do we choose ?
+
+## Catches type
+
+Catches are further classified as `commercial, recreational, discard, and seal damage`[@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex : `commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, ALV=released alive back in water`
+
+
+> NOTE : the excel table gives more value, check this in the db.
+
+``` {r checkFTYPE}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+# TODO check F_TYPE when we have the db
+```
+
+## Source of fishery data
+
+Logbooks provide primary information on catches taken on board the vessels, where real count and weight estimates are normally difficult to obtain. The catch statistics in different countries are obtained by combination of data included in logbooks, landing declarations, first sales notes and fisheries companies catch reports. From 2005 EU type logbooks were implemented in the new member states Latvia, Estonia, Poland and Lithuania [@ICES2021_wgbast_stock_annex].
+
+In the excel table the possible values are indicated as :
+`logbook=LOG, extrapolated=EXT, estimated=EST, expert evaluation=EXP`
+
+
+The ICES vocab DataSourceOfScientificWeight seems to provide the closest match with these data, however it lacks extrapolated, estimated.
+
+> [QUESTION WGBAST] What are the definitions of extrapolated and estimated. How does that mixes with UNRP in F_TYPE ?
+
+``` {r checkWTYPE}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+# TODO check W_TYPE when we have the db, excel indicates N_TYPE is the same W_TYPE
+```
+
+``` {r icesVocabsource}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+DataSourceOfScientificWeight <- icesVocab::getCodeList('DataSourceOfScientificWeight')
+kable(DataSourceOfScientificWeight, caption = "DataSourceOfScientificWeight table") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+# The model
+
+Salmon populations in Gulf of Bothnia and southern Sweden (AUs 1–4), eastern Main Basin (AU5) and Gulf of Finland (AU6) are assessed separately [@ICES2021_wgbast_stock_annex].
+
+![Overview of the assessment methodology for Baltic salmon stocks. The results from five uppermost analyses provide informative prior probability distributions for the full life-history model. These priors become automatically updated by the information contained in the data and by the biological knowledge of the Baltic salmon life cycle used to build a full life-history model. PSPC=Potential Smolt Production Capacity. Note that smolt trapping data is available from more rivers than indicated in the figure. (source wgbast stock annex)](images/assessement_method.jpg)
+
 

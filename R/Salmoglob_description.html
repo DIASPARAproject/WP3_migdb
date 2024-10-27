@@ -3347,7 +3347,7 @@ border: 0;
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">WGNAS database description</h1>
-            <p class="subtitle lead">DIASPARA working document</p>
+            <p class="subtitle lead">DIASPARA WP3.2 working document</p>
                   <div>
         <div class="description">
           Technical analysis of the salmoglob database
@@ -3369,7 +3369,7 @@ border: 0;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">24-10-2024</p>
+        <p class="date">27-10-2024</p>
       </div>
     </div>
     
@@ -3385,13 +3385,17 @@ border: 0;
   <ul>
   <li><a href="#main-database-structure" id="toc-main-database-structure" class="nav-link active" data-scroll-target="#main-database-structure">Main database structure</a></li>
   <li><a href="#area" id="toc-area" class="nav-link" data-scroll-target="#area">Area</a></li>
-  <li><a href="#location" id="toc-location" class="nav-link" data-scroll-target="#location">Location</a>
+  <li><a href="#location" id="toc-location" class="nav-link" data-scroll-target="#location">Location</a></li>
+  <li><a href="#sea-age" id="toc-sea-age" class="nav-link" data-scroll-target="#sea-age">Sea age</a></li>
+  <li><a href="#developmental-stage" id="toc-developmental-stage" class="nav-link" data-scroll-target="#developmental-stage">Developmental stage</a></li>
+  <li><a href="#metric" id="toc-metric" class="nav-link" data-scroll-target="#metric">Metric</a></li>
+  <li><a href="#hierarchical-structure-of-the-database" id="toc-hierarchical-structure-of-the-database" class="nav-link" data-scroll-target="#hierarchical-structure-of-the-database">Hierarchical structure of the database</a>
   <ul class="collapse">
-  <li><a href="#hierarchical-structure-of-the-database" id="toc-hierarchical-structure-of-the-database" class="nav-link" data-scroll-target="#hierarchical-structure-of-the-database">hierarchical structure of the database</a></li>
   <li><a href="#referential-tables" id="toc-referential-tables" class="nav-link" data-scroll-target="#referential-tables">referential tables</a></li>
   <li><a href="#unicity-constraints" id="toc-unicity-constraints" class="nav-link" data-scroll-target="#unicity-constraints">unicity constraints</a></li>
   <li><a href="#other-comments." id="toc-other-comments." class="nav-link" data-scroll-target="#other-comments.">Other comments.</a></li>
   </ul></li>
+  <li><a href="#referentials" id="toc-referentials" class="nav-link" data-scroll-target="#referentials">Referentials</a></li>
   </ul>
 </nav>
 </div>
@@ -3403,12 +3407,12 @@ border: 0;
 
 
 
-<p><span class="citation" data-cites="ices_second_2024">(<a href="#ref-ices_second_2024" role="doc-biblioref">ICES 2024</a>)</span></p>
+<p>The following working document is just a technical analysis of the WGNAS database (and further its graphical interface) <span class="citation" data-cites="ices_second_2024">(<a href="#ref-ices_second_2024" role="doc-biblioref">ICES 2024</a>)</span>. It uses different sources, ICES vocabulary, the stock annex <span class="citation" data-cites="ICES2021_wgnas_stock_annex">(<a href="#ref-ICES2021_wgnas_stock_annex" role="doc-biblioref">ICES 2021</a>)</span>, to analyse the structure of the wgnas database before integrating in a single database (wgnas, wgbast, wgeel) in the DIASPARA project. This document does not engage the WGNAS it’s just a technical analysis, to try to get how this works. This document is listed as a task there : https://github.com/DIASPARAproject/WP3_migdb/issues/11</p>
 <section id="main-database-structure" class="level1">
 <h1>Main database structure</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>database <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, <span class="st">&#39;SELECT * FROM public.database limit 20&#39;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(database) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>,<span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>database10 <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, <span class="st">&#39;SELECT * FROM public.database limit 20&#39;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(database10) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>,<span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <caption>Structure of the main database</caption>
@@ -4643,11 +4647,1891 @@ Values present in database_archive but not in database for location column :
 </div>
 </div>
 <p>So in the end, only omega has 25 locations, and in this case the location corresponds to area. This means we can get rid of the location column. For omega we can keep it,; so we can add a column with a foreign key to area in the parameters table where priors will be stored.</p>
-<section id="hierarchical-structure-of-the-database" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchical-structure-of-the-database">hierarchical structure of the database</h2>
+</section>
+<section id="sea-age" class="level1">
+<h1>Sea age</h1>
+<p>Salmon mature at various sea ages, typically returning to freshwater to spawn after one to three years at sea, but also sometimes at older sea ages; this varies widely between populations. Those salmon that return after one year at sea are referred to as one-sea-winter (1SW) salmon, or grilse, with older fish categorised as 2SW, 3SW, etc. In practice, however, for management purposes these older sea age fish are typically aggregated and collectively referred to as multi-sea-winter (MSW) salmon. The sea age when salmon become sexually mature depends on genetics as well as growing conditions in the sea, and possibly freshwater, although the precise proximate factors initiating homeward migration are unknown (Hansen and Quinn, 1998). The sea age of Atlantic salmon is important in the context of stock definition since these different groups of fish have different migration routes, return at different times and are differentially exploited in fisheries. Thus, for example, it is only potential MSW salmon that are exploited in the distant water salmon fishery that operates off the west coast of Greenland <span class="citation" data-cites="ICES2021_wgnas_stock_annex">(<a href="#ref-ICES2021_wgnas_stock_annex" role="doc-biblioref">ICES 2021</a>)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>summary_age <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;SELECT count(*) N, age FROM public.database group by age&#39;</span>)<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(age)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_age, <span class="at">caption =</span> <span class="st">&quot;Number age data categorized by age&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Number age data categorized by age</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">0SW</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1525</td>
+<td style="text-align: left;">1FW</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">14687</td>
+<td style="text-align: left;">1SW</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">212</td>
+<td style="text-align: left;">1SW immature</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">212</td>
+<td style="text-align: left;">1SW mature</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1007</td>
+<td style="text-align: left;">1SW maturing</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1007</td>
+<td style="text-align: left;">1SW not maturing</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW post-return</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1525</td>
+<td style="text-align: left;">2FW</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">18868</td>
+<td style="text-align: left;">2SW</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW post-return</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1525</td>
+<td style="text-align: left;">3FW</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1525</td>
+<td style="text-align: left;">4FW</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1525</td>
+<td style="text-align: left;">5FW</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1525</td>
+<td style="text-align: left;">6FW</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">57</td>
+<td style="text-align: left;">Mixed</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">649</td>
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1551</td>
+<td style="text-align: left;">eggs</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>summary_age_parm <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;SELECT count(*) N, age, var_mod FROM public.database group by age, var_mod order by age, var_mod&#39;</span>) </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_age_parm <span class="sc">%&gt;%</span> <span class="fu">filter</span>(age<span class="sc">==</span><span class="st">&quot;_&quot;</span>), <span class="at">caption =</span> <span class="st">&quot;Number age data categorized by age, parameters without age, n is the number of lines in the db&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Number age data categorized by age, parameters without age, n is the number of lines in the db</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">var_mod</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">cons_lim</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">date_begin</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">date_end</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">date_end_hindcast</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">N_NAC</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">N_NEC</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">nSm</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">625</td>
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">omega</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_age_parm <span class="sc">%&gt;%</span> <span class="fu">filter</span>(age<span class="sc">!=</span><span class="st">&quot;_&quot;</span>), <span class="at">caption =</span> <span class="st">&quot;Number age data categorized by age, n is the number of lines in the db&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Number age data categorized by age, n is the number of lines in the db</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">var_mod</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">0SW</td>
+<td style="text-align: left;">mu_N1_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">0SW</td>
+<td style="text-align: left;">N_Sample_sm</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">deltat5_1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">deltat5_2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">eggs</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C5_NAC_2_lbnf_lab_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C5_NAC_2_lbnf_lab_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C5_NAC_2_lbnf_oth_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C5_NAC_2_lbnf_oth_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C6_delSp_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C6_delSp_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C6_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C6_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1250</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C6_sup_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1250</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_C6_sup_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_N6_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">log_N6_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">prop_female</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">theta6_delSp</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW immature</td>
+<td style="text-align: left;">log_C8_NAC_1_lbnf_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW immature</td>
+<td style="text-align: left;">log_C8_NAC_1_lbnf_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW immature</td>
+<td style="text-align: left;">log_C8_NEC_1_far_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW immature</td>
+<td style="text-align: left;">log_C8_NEC_1_far_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW mature</td>
+<td style="text-align: left;">log_C5_NAC_1_lbnf_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW mature</td>
+<td style="text-align: left;">log_C5_NAC_1_lbnf_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW mature</td>
+<td style="text-align: left;">log_C5_NEC_1_far_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">1SW mature</td>
+<td style="text-align: left;">log_C5_NEC_1_far_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1007</td>
+<td style="text-align: left;">1SW maturing</td>
+<td style="text-align: left;">p_C5_NEC_1_far_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1007</td>
+<td style="text-align: left;">1SW not maturing</td>
+<td style="text-align: left;">p_C8_NEC_1_far_mu</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">1SW post-return</td>
+<td style="text-align: left;">theta6_surv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">deltat8_1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">deltat8_2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">deltat8_2_1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">deltat8_2_2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">eggs</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_2_gld_tot_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_2_gld_tot_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NAC_3_lbnf_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NAC_3_lbnf_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NAC_4_lbnf_lab_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NAC_4_lbnf_lab_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NAC_4_lbnf_oth_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NAC_4_lbnf_oth_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NEC_3_far_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C8_NEC_3_far_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C9_delSp_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C9_delSp_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C9_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C9_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1250</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C9_sup_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1250</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_C9_sup_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_N9_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">log_N9_sd</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">max_log_N9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">min_log_N9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">318</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">p_C8_2_NAC_gld_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1007</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">p_C8_2_NEC_gld_mu</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">106</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">p_C8_2_NECNAC_gld_mu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1007</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">p_C8_NEC_3_far_mu</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">prop_female</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">Stocking_2SW</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">theta9_delSp</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">2SW post-return</td>
+<td style="text-align: left;">theta9_surv</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">eggs</td>
+<td style="text-align: left;">CV_N1_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">eggs</td>
+<td style="text-align: left;">CV_theta1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1325</td>
+<td style="text-align: left;">eggs</td>
+<td style="text-align: left;">E_theta1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">eggs</td>
+<td style="text-align: left;">E_theta1_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Mixed</td>
+<td style="text-align: left;">CV_dummy</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Mixed</td>
+<td style="text-align: left;">CV_hw</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Mixed</td>
+<td style="text-align: left;">CV_M</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Mixed</td>
+<td style="text-align: left;">E_M</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">Mixed</td>
+<td style="text-align: left;">N_Sample</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>distinct_age_parm <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;WITH t1 AS (</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT age, </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">  var_mod </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM public.database </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="st">  group by age, var_mod </span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="st">  order by age, var_mod ),</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">  t2 AS (</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT age as age2, </span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">  var_mod as var_mod2</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM public.database </span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="st">  group by age, var_mod </span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="st">  order by age, var_mod)</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT age, age2, var_mod from t1 JOIN t2 on t1.var_mod= t2.var_mod2 </span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="st">  where age!=age2</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(distinct_age_parm, <span class="at">caption =</span> <span class="st">&quot;Variables using more than 1 age (e.g. from which the age cannot be derived from the variable itself.)&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Variables using more than 1 age (e.g. from which the age cannot be derived from the variable itself.)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">age2</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">var_mod</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">eggs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">eggs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">1FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">2FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">3FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">4FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6FW</td>
+<td style="text-align: left;">5FW</td>
+<td style="text-align: left;">p_smolt_pr</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">prop_female</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1SW</td>
+<td style="text-align: left;">2SW</td>
+<td style="text-align: left;">prop_female</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<blockquote class="blockquote">
+<p>[NOTE] Only eggs, p_smolt, p_smolt_pr, and prop_female need an age, the other is contained in the name of the variable.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[NOTE] So the age also covers information on maturity but the only time it is really used outside from the metadata (eggs, smolt, prop_female) the maturity is not necessary.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[QUESTION wgnas] Why is omega not mixed ?</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[QUESTION wgnas] Would it not make more sense to store 2SW as MSW (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW … how many ? and then MSW ?</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>summary_lifestage_metadata <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;SELECT count(*) as  n,  life_stage FROM public.metadata group by life_stage&#39;</span>)<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(life_stage)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_lifestage_metadata,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a> <span class="at">caption =</span> <span class="st">&quot;Number of lines with lifestage in the metadata table&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable_material</span>(<span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="lightable-material lightable-striped lightable-hover caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Number of lines with lifestage in the metadata table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">life_stage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">103</td>
+<td style="text-align: left;">Adult</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Adults</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">Eggs</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Multiple</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Non mature</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">PFA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Smolts</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Spawners</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">_</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<blockquote class="blockquote">
+<p>[NOTE] get rid of <code>Adults</code> replace with <code>Adult</code>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[NOTE] get rid of <code>Multiple</code> there is only one instance.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[NOTE] Now there is the PFA, which is fine, but not really a stage.</p>
+</blockquote>
+</section>
+<section id="developmental-stage" class="level1">
+<h1>Developmental stage</h1>
+<p>We first start by looking at the possible reference tables in ICES corresponding to both maturity and stage. Currently we have to store information about the sea age (<code>0SW, 1SW, 2SW, ...,MSW</code>) , the freshwater age (<code>1FW 2FW 3FW 4FW ...</code>). The maturity could be stored in the metadata as it seems to be linked always with parameters. Currently in wgnas we have maturity : immature, mature, not maturing and post return. In the metadata we have <code>egg, smolts, spawner, adults</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>types <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeTypeList</span>()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>types[<span class="fu">grep</span>(<span class="st">&#39;stage&#39;</span>, <span class="fu">tolower</span>(types<span class="sc">$</span>Description)),]<span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 19%">
+<col style="width: 7%">
+<col style="width: 25%">
+<col style="width: 38%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">GUID</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">LongDescription</th>
+<th style="text-align: left;">Modified</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">76fab5ff-5f3e-4488-8167-17d360f47c35</td>
+<td style="text-align: left;">STAGE</td>
+<td style="text-align: left;">Developmental Stage of Specimens</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-10-22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">216</td>
+<td style="text-align: left;">dcc61865-822a-47a4-a740-a85a5702d0c5</td>
+<td style="text-align: left;">TS_DevStage</td>
+<td style="text-align: left;">Development stage or maturity</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">324</td>
+<td style="text-align: left;">eac72d6a-219e-42a7-99b3-f50ac258b607</td>
+<td style="text-align: left;">DevScale</td>
+<td style="text-align: left;">Scale applied for reporting developmental stages</td>
+<td style="text-align: left;">At present, the codetype targets the Eggs and Larvae surveys</td>
+<td style="text-align: left;">2023-09-21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">325</td>
+<td style="text-align: left;">d943050b-a4e3-4508-b0ca-10b298f308f5</td>
+<td style="text-align: left;">DevStage</td>
+<td style="text-align: left;">Developmental stage codes</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2023-09-21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">427</td>
+<td style="text-align: left;">2e045807-14b1-48b0-bb2e-43967cec51e7</td>
+<td style="text-align: left;">POFStaging</td>
+<td style="text-align: left;">Stages of POF (description to be updated)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2023-09-21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">449</td>
+<td style="text-align: left;">8b86cce6-b742-4865-986c-13932874d9df</td>
+<td style="text-align: left;">LifeStage</td>
+<td style="text-align: left;">Life stage based on plumage (birds)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2023-09-21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">466</td>
+<td style="text-align: left;">14cbcbfe-f084-40a8-80e3-052e69b06334</td>
+<td style="text-align: left;">DigestionStage</td>
+<td style="text-align: left;">Digestion stage of stomach content.</td>
+<td style="text-align: left;">Visual-based assessment of digestion stage, in relation to diet studies.</td>
+<td style="text-align: left;">2023-09-21</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>TS_MATURITY <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;TS_MATURITY&#39;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>TS_DevStage <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;TS_DevStage&#39;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Devstage is 1 to 15 =&gt; no use</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>DevScale <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;DevScale&#39;</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># At the present the codetypes target Eggs and Larvae surveys</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a description of scales types using different publications =&gt; not for use()</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(TS_MATURITY, <span class="at">caption =</span> <span class="st">&quot;TS_MATURITY&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>TS_MATURITY</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">GUID</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Key</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">LongDescription</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Modified</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Deprecated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">7c946d9d-fe30-48fa-a19d-54e72a4160da</td>
+<td style="text-align: left;">-9</td>
+<td style="text-align: left;">Missing Value</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0da7235e-9a5f-471f-8685-cdcceb3259c0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Juvenile/Immature (4-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">781f7cd8-2e68-4590-9124-f9d936e31f52</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Maturing (4-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ebb2258d-81fd-47d0-8383-7bfe88af82cd</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Spawning (4-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5e364aed-fe87-494e-81ff-195c6363f191</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Spent (4-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">02c6638c-9a7d-49d1-b06f-942ee5d95a39</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Resting/Skip of spawning (4-stage scale, additional option)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">37d204b2-f8a6-48cd-a244-728ab4010111</td>
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">Immature (5 stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">46d154b0-61f7-414a-b1d1-4275839afdfe</td>
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">Developing/Resting (5-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">54992917-0bbd-4dd6-8044-32bb70754279</td>
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">Pre-spawning ((5-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4146842c-eb45-49cd-8674-8d69ee6b81c1</td>
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">Spawning (5-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">52a5be9c-c656-496f-adba-b6af23ba88a3</td>
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">Post-spawning (5-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17e59dde-46b3-4764-80f1-01e1134c8ba0</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Abnormal (4-stage scale, additional option)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9dab155a-95e6-4dcc-adaf-c8b67febbb60</td>
+<td style="text-align: left;">61</td>
+<td style="text-align: left;">Juvenile/Immature (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">32e854ae-0e44-4523-855d-92b8bccdabbe</td>
+<td style="text-align: left;">62</td>
+<td style="text-align: left;">Maturing (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">85c79865-4505-4b6e-96bb-37e5a18b9c95</td>
+<td style="text-align: left;">63</td>
+<td style="text-align: left;">Spawning (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2637e1c0-8dba-4da8-beba-7c865acfd7b4</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">Spent (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f682c57c-f70e-4c1b-859c-ab77f865c3f6</td>
+<td style="text-align: left;">65</td>
+<td style="text-align: left;">Resting/Skip of spawning (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8165075c-ae3b-49e4-b8ed-0dad8f215e78</td>
+<td style="text-align: left;">66</td>
+<td style="text-align: left;">Abnormal (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">a25f81c6-91af-47fe-b2a1-6f76a8643ac3</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">Immature</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">62b08142-2f9d-4b8c-b53f-d9bce26b1c35</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">Developing</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4b4643bd-0255-42bc-a473-0b936492ae9f</td>
+<td style="text-align: left;">Ba</td>
+<td style="text-align: left;">Developing, but functionally immature (first-time developer)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5fb2d514-c4f0-4911-8eb4-f4e9c692041d</td>
+<td style="text-align: left;">Bb</td>
+<td style="text-align: left;">Developing and functionally mature</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1ad95503-f3e6-46a6-997f-eefcba1c9bd7</td>
+<td style="text-align: left;">Be</td>
+<td style="text-align: left;">Berried (crustaceans)</td>
+<td style="text-align: left;">Used to be &quot;B&quot;, changed to leave code for maturity scale SMSF</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">c5e12291-673e-4ad2-b7b8-6f2adf52ec21</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">Spawning</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">a9bc29b4-4ee3-4b1b-bf31-76d58170d75e</td>
+<td style="text-align: left;">Ca</td>
+<td style="text-align: left;">Actively spawning</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8d8784d6-9795-43c0-927b-f404a18f3491</td>
+<td style="text-align: left;">Cb</td>
+<td style="text-align: left;">Spawning capable</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5af75fd2-06df-4d60-a843-2a3977cd6e5c</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">Regressing / Regenerating</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">c11149a2-e084-4af0-b737-4d41d59d3943</td>
+<td style="text-align: left;">Da</td>
+<td style="text-align: left;">Regressing</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ecb4cdea-3ac1-42cd-a279-c9b20e360999</td>
+<td style="text-align: left;">Db</td>
+<td style="text-align: left;">Regenerating</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">a1cf8684-f842-4f2f-9912-aefefea6d9d3</td>
+<td style="text-align: left;">E</td>
+<td style="text-align: left;">Omitted spawning</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1dce569f-2d2d-43a9-8041-d90950ade023</td>
+<td style="text-align: left;">Eg</td>
+<td style="text-align: left;">Elasmobranch egg</td>
+<td style="text-align: left;">Used to be &quot;E&quot;, changed it to use the code for maturity scale SMSF</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1736cf72-fbca-4389-868d-e996159664e3</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">Abnormal</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">429ad685-ee68-4781-84eb-90f0cd8f0634</td>
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">Immature / National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ad5c19e1-3c59-4bd6-b001-f1cfbcab0b6d</td>
+<td style="text-align: left;">II</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2020-06-03</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">595124ad-a831-4ce0-ba88-26fb4183022c</td>
+<td style="text-align: left;">III</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2020-06-03</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">52e89979-b100-4cee-93c9-206d132a4c2a</td>
+<td style="text-align: left;">IV</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">60f82148-71f3-4f0f-98c1-a6cd59918f25</td>
+<td style="text-align: left;">IX</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9ddbe93e-b920-46fc-8f0d-b1bc94cacace</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">Mature</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4b9a6671-aae4-4731-8a20-6bfa6764cc9c</td>
+<td style="text-align: left;">R1_1</td>
+<td style="text-align: left;">Immature</td>
+<td style="text-align: left;">IMARES RIVO 4 scale code for Immature used before 2000 for cod, haddock, whiting, Norway pout and saithe</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">542d1576-cb99-42b4-a046-c5af124c7812</td>
+<td style="text-align: left;">R1_2</td>
+<td style="text-align: left;">Maturing</td>
+<td style="text-align: left;">IMARES RIVO 4 scale code for Maturing, used before 2000 for cod, haddock, whiting, Norway pout and saithe</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">e5dba8d3-daf0-49b7-9a5e-0deaeae94591</td>
+<td style="text-align: left;">R1_3</td>
+<td style="text-align: left;">Spawning</td>
+<td style="text-align: left;">IMARES RIVO 4 scale used before 2000 for Spawning, for cod, haddock, whiting, Norway pout and saithe</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">35caf0f4-b23e-4114-b004-53ceed7dc5ae</td>
+<td style="text-align: left;">R1_4</td>
+<td style="text-align: left;">Spent</td>
+<td style="text-align: left;">IMARES PIVO 4 scale code for Spent, used before 2000 for cod, haddock, whiting, Norway pout and saithe</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cc410273-2714-4253-bfa6-fadd39e83099</td>
+<td style="text-align: left;">R2_2</td>
+<td style="text-align: left;">Immature</td>
+<td style="text-align: left;">IMARES RIVO new 4 scale code for Immature, used from 2000 til 1-1-2011, for all species</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24e63a36-bbcc-422e-9b42-1938d816574c</td>
+<td style="text-align: left;">R2_4</td>
+<td style="text-align: left;">Maturing</td>
+<td style="text-align: left;">IMARES RIVO new 4 scale code for Maturing, used between 2000 and 1-1-2011, for all species</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6024da49-355d-41e0-9c35-91c92133adef</td>
+<td style="text-align: left;">R2_6</td>
+<td style="text-align: left;">Spawning</td>
+<td style="text-align: left;">IMARES RIVO new 4 scale for Spawning, used between 2001 and 1-1-2011, for all species</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8f5b8ad1-f335-487a-bb17-58936b4bae8b</td>
+<td style="text-align: left;">R2_8</td>
+<td style="text-align: left;">Spent/Recovering</td>
+<td style="text-align: left;">IMARES RIVO new 4 scale code for Spent/Recovering, used between 2001 and 1-1-2011, for all species</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">193d1307-7594-4e61-bddb-5ed722448fc1</td>
+<td style="text-align: left;">RF1</td>
+<td style="text-align: left;">Immature redfish</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2bd20b2d-41f7-4ce4-944c-c124c2ee25bc</td>
+<td style="text-align: left;">RF2</td>
+<td style="text-align: left;">Maturing_mature redfish</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34288e8c-0586-48e9-bce9-2ea62580d278</td>
+<td style="text-align: left;">RF3</td>
+<td style="text-align: left;">Mature_fertilized redfish</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8891c3b8-f440-4eca-8cb9-32c3f544cb82</td>
+<td style="text-align: left;">RF4</td>
+<td style="text-align: left;">Parturition redfish</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">94165bd1-2c96-485e-92f7-f8fdbec294d0</td>
+<td style="text-align: left;">RF5</td>
+<td style="text-align: left;">Postspawning redfish</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">b725388b-288c-4895-819e-029e9625d0a4</td>
+<td style="text-align: left;">RF6</td>
+<td style="text-align: left;">Recovery redfish</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">add7abf9-c812-4073-afd5-6168efc473da</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">Immature (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">d94cc258-cf59-41df-8e12-e917b8c8753d</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">Maturing (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ab5a79b8-c948-41d0-ba0e-2d048c9c2d65</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">Pre-spawning (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">185d00c7-b55b-4b6f-ad48-bc02494e7c3e</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">Spawning (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">d7b6f253-9fa6-41bb-96ff-4e4ee3440858</td>
+<td style="text-align: left;">S5</td>
+<td style="text-align: left;">Post-partial spawning (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2fad9d30-d07a-4ffb-b665-1bd687131d5b</td>
+<td style="text-align: left;">S6</td>
+<td style="text-align: left;">Spent/Recovery (6-stage scale)</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7d6b8aeb-1019-410c-9377-e03dd45bb06c</td>
+<td style="text-align: left;">V</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2020-06-03</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">61f27c0b-f86f-4d44-b1fc-e695a071ff76</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">94bbebde-ffe9-41e9-b0d8-d712018b81e6</td>
+<td style="text-align: left;">VII</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">304ebd7a-7749-4b94-b155-301e786d8f6a</td>
+<td style="text-align: left;">VIII</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">39a755c5-f830-49f0-8ca1-d1ea31989843</td>
+<td style="text-align: left;">X</td>
+<td style="text-align: left;">National BITS scale step</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(TS_DevStage, <span class="at">caption =</span> <span class="st">&quot;Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">GUID</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Key</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">LongDescription</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Modified</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Deprecated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">16f8c30a-b724-4636-bd78-0a9a1776039e</td>
+<td style="text-align: left;">-9</td>
+<td style="text-align: left;">No information</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">c1566f6d-c099-44c3-bd39-222fe4c033de</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">Berried</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0424ae90-03aa-4e73-8cda-e8745d0b8158</td>
+<td style="text-align: left;">E</td>
+<td style="text-align: left;">Egg</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3ea553fe-66cf-47ff-b4ff-eb83d1c28643</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">Juvenile</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2024-04-04</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<blockquote class="blockquote">
+<p>[QUESTION ICES] Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ?</p>
+</blockquote>
+<p>There seem to be a correspondence between the 4 stage scale and the maturity</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 69%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage wgnas</th>
+<th>stage (4 scale ICES)</th>
+<th>table</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>eggs</td>
+<td>Egg</td>
+<td>TS_DevStage</td>
+</tr>
+<tr class="even">
+<td>smolt</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>immature</td>
+<td>Immature (6-stage scale)</td>
+<td>TS_MATURITY</td>
+</tr>
+<tr class="even">
+<td>Non mature (metadata)</td>
+<td>Immature (6-stage scale)</td>
+<td>TS_MATURITY</td>
+</tr>
+<tr class="odd">
+<td>PFA</td>
+<td></td>
+<td>see question below</td>
+</tr>
+<tr class="even">
+<td>mature</td>
+<td>Maturing (6-stage scale) ?</td>
+<td>TS_MATURITY</td>
+</tr>
+<tr class="odd">
+<td>mature</td>
+<td>Pre-spawning (6-stage scale) ?</td>
+<td>TS_MATURITY</td>
+</tr>
+<tr class="even">
+<td>not maturing</td>
+<td>Resting/Skip of spawning (4-stage scale, additional option)</td>
+<td>TS_MATURITY</td>
+</tr>
+<tr class="odd">
+<td>spawner (metadata table)</td>
+<td>Spawning (6-stage scale)</td>
+<td>TS_MATURITY</td>
+</tr>
+<tr class="even">
+<td>post-return</td>
+<td>Post-spawning (5-stage scale)</td>
+<td>TS_MATURITY</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>[QUESTION wgnas] Is the correspondence mature / maturing correct or is it pre -spawing?</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[QUESTION wgnas] Is the correspondence OK. Do we really need PFA stage or could we just describe it in the metadata ?</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>[QUESTION ICES] Could we add smolt and pfa (pre fisheries abundance) somewhere ?</p>
+</blockquote>
+</section>
+<section id="metric" class="level1">
+<h1>Metric</h1>
+<p>The metric are linked with coefficients, they don’t need to be stored in the main db</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>summary_metric <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;SELECT count(*) as  n,  metric FROM public.database group by metric&#39;</span>)<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(metric)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_metric,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> <span class="at">caption =</span> <span class="st">&quot;Number of lines with metric in the database table&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable_material</span>(<span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="lightable-material lightable-striped lightable-hover caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Number of lines with metric in the database table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">metric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">Bound</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">Coefficient of variation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">679</td>
+<td style="text-align: left;">Hyperparameter</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Index</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">38278</td>
+<td style="text-align: left;">Mean</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11033</td>
+<td style="text-align: left;">Standard deviation</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a> summary_metric <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con_salmoglob, </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;SELECT count(*) as  n,  metric FROM public.metadata group by metric&#39;</span>)<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(metric)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_metric,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a> <span class="at">caption =</span> <span class="st">&quot;Number of lines with metric in the metadata table&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable_material</span>(<span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="lightable-material lightable-striped lightable-hover caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Number of lines with metric in the metadata table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">metric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Bound</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Coefficient of variation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">75</td>
+<td style="text-align: left;">Estimate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Hyperparameter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Index</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Mean</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Precision</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">Standard deviation</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="hierarchical-structure-of-the-database" class="level1">
+<h1>Hierarchical structure of the database</h1>
 <p>The database could start with the simplest structure, with a basic table corresponding to all data. Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors. The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.</p>
 <p>From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).</p>
-</section>
 <section id="referential-tables" class="level2">
 <h2 class="anchored" data-anchor-id="referential-tables">referential tables</h2>
 <p>Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g. source from ICES vocab, which corresponds to working group or accession events (datacalls)).</p>
@@ -4662,53 +6546,59 @@ Values present in database_archive but not in database for location column :
 <p>Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model.</p>
 <p>Additional values about maturity, stage, can be stored in the metadata table.</p>
 <p>There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.</p>
+</section>
+</section>
+<section id="referentials" class="level1">
+<h1>Referentials</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- CREATE REFERENTIAL TABLES</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">This is a comment</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">schema</span> <span class="cf">if</span> <span class="kw">exists</span> <span class="ot">&quot;ref&quot;</span>;</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">schema</span> <span class="ot">&quot;ref&quot;</span>;</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="ot">&quot;ref&quot;</span> <span class="kw">TO</span> diaspara_admin ;</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">TO</span> diaspara_read ;</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> <span class="kw">DATABASE</span> <span class="ot">&quot;diaspara&quot;</span> <span class="kw">TO</span> diaspara_read;</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">DATABASE</span> <span class="ot">&quot;diaspara&quot;</span> OWNER <span class="kw">TO</span> diaspara_admin;</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- edit pg_hba.conf on the server</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">-- </span><span class="al">TODO</span><span class="co"> search countries for Salmon US</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="fu">ref</span>.tr_country_cou (</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    cou_code <span class="dt">character</span> <span class="dt">varying</span>(<span class="dv">2</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    cou_country text <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    cou_order <span class="dt">integer</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    geom <span class="kw">public</span>.geometry,</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    cou_iso3code <span class="dt">character</span> <span class="dt">varying</span>(<span class="dv">3</span>)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>);</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">-- how to inegrate with hierarchical level in salmodb ? Same for eel ?</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> <span class="fu">ref</span>.tr_country_cou OWNER <span class="kw">TO</span> postgres;</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="fu">ref</span> diaspara_admin;</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> diaspara_read</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="ot">&quot;ref&quot;</span>.tr_pararmeter_parm (</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  parm_id serial4 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  parm_name TEXT <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  parm_species TEXT</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  parm_description text <span class="kw">NULL</span>,</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  parm_uni_code <span class="dt">varchar</span>(<span class="dv">20</span>) <span class="kw">NULL</span>,</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> parm_pkey <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (typ_id),</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> c_fk_parm_uni_code <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (typ_uni_code) <span class="kw">REFERENCES</span> <span class="ot">&quot;ref&quot;</span>.tr_units_uni(uni_code) <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- CREATE REFERENTIAL TABLES</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">This is a comment</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">schema</span> <span class="cf">if</span> <span class="kw">exists</span> <span class="ot">&quot;ref&quot;</span>;</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">schema</span> <span class="ot">&quot;ref&quot;</span>;</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="ot">&quot;ref&quot;</span> <span class="kw">TO</span> diaspara_admin ;</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">TO</span> diaspara_read ;</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> <span class="kw">DATABASE</span> <span class="ot">&quot;diaspara&quot;</span> <span class="kw">TO</span> diaspara_read;</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">DATABASE</span> <span class="ot">&quot;diaspara&quot;</span> OWNER <span class="kw">TO</span> diaspara_admin;</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- edit pg_hba.conf on the server</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">-- </span><span class="al">TODO</span><span class="co"> search countries for Salmon US</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="fu">ref</span>.tr_country_cou (</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    cou_code <span class="dt">character</span> <span class="dt">varying</span>(<span class="dv">2</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    cou_country text <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    cou_order <span class="dt">integer</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    geom <span class="kw">public</span>.geometry,</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    cou_iso3code <span class="dt">character</span> <span class="dt">varying</span>(<span class="dv">3</span>)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co">-- how to inegrate with hierarchical level in salmodb ? Same for eel ?</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> <span class="fu">ref</span>.tr_country_cou OWNER <span class="kw">TO</span> postgres;</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="fu">ref</span> diaspara_admin;</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> diaspara_read</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="ot">&quot;ref&quot;</span>.tr_pararmeter_parm (</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>  parm_id serial4 <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>  parm_name TEXT <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>  parm_species TEXT</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>  parm_description text <span class="kw">NULL</span>,</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>  parm_uni_code <span class="dt">varchar</span>(<span class="dv">20</span>) <span class="kw">NULL</span>,</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> parm_pkey <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (typ_id),</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> c_fk_parm_uni_code <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (typ_uni_code) <span class="kw">REFERENCES</span> <span class="ot">&quot;ref&quot;</span>.tr_units_uni(uni_code) <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
-</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-ICES2021_wgnas_stock_annex" class="csl-entry" role="listitem">
+ICES. 2021. <span>“Stock <span>Annex</span>: <span>Salmon</span> (<span>Salmo</span> Salar) in <span>Northeast Atlantic</span>.”</span> ICES Stock Annexes. <a href="https://doi.org/10.17895/ICES.PUB.18622037.V1">https://doi.org/10.17895/ICES.PUB.18622037.V1</a>.
+</div>
 <div id="ref-ices_second_2024" class="csl-entry" role="listitem">
-ICES. 2024. <span>“The <span>Second ICES</span>/<span>NASCO Workshop</span> on <span>Salmon Mortality</span> at <span>Sea</span> (<span>WKSalmon2</span>; Outputs from 2022 Meeting).”</span> ICES Scientific Reports. <a href="https://doi.org/10.17895/ICES.PUB.22560790">https://doi.org/10.17895/ICES.PUB.22560790</a>.
+———. 2024. <span>“The <span>Second ICES</span>/<span>NASCO Workshop</span> on <span>Salmon Mortality</span> at <span>Sea</span> (<span>WKSalmon2</span>; Outputs from 2022 Meeting).”</span> ICES Scientific Reports. <a href="https://doi.org/10.17895/ICES.PUB.22560790">https://doi.org/10.17895/ICES.PUB.22560790</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
