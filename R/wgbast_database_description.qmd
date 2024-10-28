@@ -197,10 +197,87 @@ DataSourceOfScientificWeight <- icesVocab::getCodeList('DataSourceOfScientificWe
 kable(DataSourceOfScientificWeight, caption = "DataSourceOfScientificWeight table") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
+# Electrofishing data 
+
+Electrofishing data are obtained along with smolt counts at rivers Tornionjoki, Simojoki, Åbyälven, Rickleån, Sävarån, Ume/Vindelälven, Öreälven and Lögdeälven (Assessment unit 1-3), Mörrumsån, Emån and Testeboån (AU 4) to estimate smolt production based on parr density in electrofishing.
+
+* Annual number of sampling sites electrofished
+* Estimated density of age 0+
+* 1+ 
+* \>1+ parr. 
+
+The number of sampling sites is used as a measure of precision of the parr density. 
+
+> [Question WGBAST] there must be a dataset of electrofishing somewhere. This should be part of the template db on electrofishing, can we have access ?
+
+> [Question  WGBAST] would it be usefull to start from a full db of electrofishing data ?
+
+[Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.jpg)
+
 # The model
 
 Salmon populations in Gulf of Bothnia and southern Sweden (AUs 1–4), eastern Main Basin (AU5) and Gulf of Finland (AU6) are assessed separately [@ICES2021_wgbast_stock_annex].
 
 ![Overview of the assessment methodology for Baltic salmon stocks. The results from five uppermost analyses provide informative prior probability distributions for the full life-history model. These priors become automatically updated by the information contained in the data and by the biological knowledge of the Baltic salmon life cycle used to build a full life-history model. PSPC=Potential Smolt Production Capacity. Note that smolt trapping data is available from more rivers than indicated in the figure. (source wgbast stock annex)](images/assessement_method.jpg)
+
+
+# Mark recapture
+
+Mark–recapture experiments combined with smolt trapping have been used in eleven rivers (Tornionjoki, Simojoki, Åbyälven, Rickleån, Sävarån, Ume/Vindelälven, Öreälven, Lögdeälven, Testeboån, Mörrumsån and Emån). 
+
+* number of untagged fish caught by the smolt trap
+*  the number of tagged smolts released upstream from the trap
+*  number of recaptured tagged smolts. 
+* different time intervals, like days, or annual totals
+* daily water level 
+* water temperature data
+
+Sea marking recapture
+
+
+![Schematic presentation of the mark–recapture model for Baltic salmon. The offshore driftnet and longline fisheries in the Baltic Main Basin are assumed to take place in October and December, respectively. During the migration to the spawning grounds, the salmon can be intercepted by the coastal driftnet fishery in May, the trapnet and gillnet fisheries in June and the river fishery in August (Michielsens et al., 2006a).(source wgbast stock annex)](images/marking_recapture_sea_wgbast.png)
+
+
+
+
+
+# Parameters
+
+* `K`maximum smolt production (K, i.e. the smolt production that would be obtained with an infinite number of spawners under the Beverton–Holt model). Lognormal distributions with median and coefficient of variation matching with the ones of exact distributions are used for approximation. K priors are river specific. They might change (data call specific values can be stored each year).
+* Individual expert judgement on the productivity of each rivers for :
+  * chance for successfull spawing
+  * habitat quality of parr area
+  * smoltification age
+  * mortality during migration
+  * size of production area
+* the model produces a probabilistic justification for the expert views of salmon smolt production
+  * parr density capacity (5 discrete classes from the poorest river in the Northern Baltic area to the best river in the Baltic).
+  * pre-smolt density capacity (5 classes).
+  * smolt production capacity.
+
+* Yearly smolt production for the rivers Tornionjoki, Simojoki, Åbyälven, Rickleån, Sävarån, Ume/Vindelälven, Öreälven, Lögdeälven, Testeboån and Mörrumsån.
+* Smolt abundance estimated forall other rivers in AU1-4 for which only parr density estimates are available, based on the hierarchical linear regression analysis 
+* Mark–recapture analysis : independent estimates of relative parr density and smolt abundance in a form of statistics of posterior distributions. Medians and CV.
+* Maturation rates, 
+* Natural mortality rates, 
+* Mortality  F [year, age, category, fishery] 
+  * where fishery is :
+    * offshore driftnet
+    * offshore longline
+    * coastal driftnet
+    * trapnet and gillnet 
+    * river fishery
+  * And category is :
+    * wild / hatchery raised
+* Annual yolk sack mortality,
+* Annual M74 yolk sack mortality
+* Stock recruitment posterior distribution 
+* proportion of MSW (multi-sea-winter) spawners encountered in the rivers Tornionjoki, Kalixälven, Byskeälven, Ume/Vindelälven, Öreälven and Piteälven
+* model-predicted catches are raised by the proportions of smolts produced in assessment units  5 and 6 (not yet been included in the model) compared with the total smolt production of all units.
+* the relative occurrence of wild vs. reared salmon in catches 
+* Sex ratio (annually changing) for multi-sea-winter salmon for Ume/Vindelälven 
+* Sex ratio per stock (outside from Ume/Vindelälven)
+* egg/female per stock  
+* ... might have missed a lot of things !
 
 
