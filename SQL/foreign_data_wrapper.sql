@@ -5,7 +5,10 @@ CREATE EXTENSION IF NOT EXISTS postgres_fdw;
 CREATE SERVER wgeel_data_wrapper
   FOREIGN DATA WRAPPER postgres_fdw
   OPTIONS (host 'localhost', port '5432', dbname 'wgeel');
-  
+
+CREATE SERVER wgnas_data_wrapper
+  FOREIGN DATA WRAPPER postgres_fdw
+  OPTIONS (host 'localhost', port '5432', dbname 'salmoglob');
 -- 
 CREATE USER MAPPING FOR USER
   SERVER wgeel_data_wrapper

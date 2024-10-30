@@ -3,28 +3,25 @@
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-getUsername <- function(){
-	name <- Sys.info()[["user"]]
-	return(name)
-}
 
 #if (!grepl("montepomi", getwd())) {
-if(getUsername() == 'joliviero'){
+if(Sys.info()[["user"]] == 'joliviero'){
 setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-} else if (getUsername() == 'cedric.briand'){
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
 setwd("C:/workspace/DIASPARA_WP3_migdb/R")
 }
-library(RPostgres)
-library(sf)
-library(getPass)
-library(readxl)
-library(flextable)
-library(tidyverse)
-library(yaml)
-library(DBI)
-library(knitr)
-library(kableExtra)
-library(icesVocab)
+source("utilities/load_library.R")
+load_library("RPostgres")
+load_library("sf")
+load_library("getPass")
+load_library("readxl")
+load_library("flextable")
+load_library("tidyverse")
+load_library("yaml")
+load_library("DBI")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
 cred=read_yaml("../credentials.yml")
 con_migdb = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
 con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamehydro,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)

@@ -40,6 +40,9 @@ GROUP BY  "year", "type", age,  "location", var_mod)
 SELECT * FROM n_data WHERE n>1 ORDER BY n DESC
 
 
+
+SELECT DISTINCT life_stage FROM public.metadata
+
 "ref".tr_metrictype_mty
 
 CREATEDB -U postgres migdb
