@@ -27,18 +27,126 @@ library(kableExtra)
 library(icesVocab)
 cred=read_yaml("../credentials.yml")
 con_migdb = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
+con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamehydro,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
 ```
 
-``` {r icesVocab_test}
 
-findCodeType("RLIST", full = T) #WoRMS is the ICES standard identical
-getCodeList("RLIST") #ER & ERID
-getCodeDetail("RLIST","ERID")
+```{r inspect_colnames}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
 
+table_name <- c("database","metadata")
+schema <- "public"
+con <- con_migdb
+
+get_table_columns <- function(table_name, schema) {
+  query <- paste0(
+    "SELECT column_name 
+     FROM information_schema.columns 
+     WHERE table_name = '", table_name, "' 
+     AND table_schema = '", schema, "'"
+  )
+  columns <- dbGetQuery(con, query)
+  return(data.frame(table = table_name, column = columns$column_name))
+}
+
+table_columns <- bind_rows(lapply(table_name, get_table_columns, schema))
+knitr::kable(table_columns, caption = "Column names for migdb") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
+
+# Considering that all structures are identical for the CCM data, only one schema is checked
+schema <- "w2000"
+con <- con_diaspara
+table_name_query <- paste0(
+  "SELECT table_name 
+   FROM information_schema.tables 
+   WHERE table_schema = '", schema, "'"
+)
+table_name <- dbGetQuery(con, table_name_query)$table_name
+
+table_columns <- bind_rows(lapply(table_name, get_table_columns, schema))
+knitr::kable(table_columns, caption = "Column names for ccm") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
+# Considering that all structures are identical for the HydroAtlas data, only one schema is checked
+schema <- "w2020"
+con <- con_diaspara
+table_name_query <- paste0(
+  "SELECT table_name 
+   FROM information_schema.tables 
+   WHERE table_schema = '", schema, "'"
+)
+table_name <- dbGetQuery(con, table_name_query)$table_name
+
+table_columns <- bind_rows(lapply(table_name, get_table_columns, schema))
+knitr::kable(table_columns, caption = "Column names for hydroatlas") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r check_vocab_comformity}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
 
 code_type <- getCodeTypeList()
-code_list <- getCodeList("SpecWoRMS")
+knitr::kable(code_type, caption = "All ICES code types") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
+species_list <- getCodeList("IC_Species")
+knitr::kable(species_list, caption = "All species code list") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+# Here we find ELE for Anguilla anguilla and SAL for Salmo salar
+
+# To get keys for each subdivisions
+ele_details <- getCodeDetail("IC_Species","ELE")$children$codes
+knitr::kable(ele_details, caption = "Details for Anguilla anguilla") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+sal_details <- getCodeDetail("IC_Species","SAL")$children$codes
+knitr::kable(sal_details, caption = "Details for Salmo salar") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+country_list <- getCodeList("IC_Country")
+knitr::kable(country_list, caption = "All country codes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+area_list <- getCodeList("ICES_Area")
+knitr::kable(area_list, caption = "ICES area") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+arealvl_list <- getCodeList("ICES_AreaLevel")
+knitr::kable(arealvl_list, caption = "ICES area level") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+area_type_list <- getCodeList("AreaType")
+knitr::kable(area_type_list, caption = "area type") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+areatl_list <- getCodeList("IC_AreaTopLevel")
+knitr::kable(areatl_list, caption = "ICES area Top Level") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+subarea_list <- getCodeList("IC_Sub-areas")
+knitr::kable(subarea_list, caption = "ICES subareas") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+divisions_list <- getCodeList("IC_Divisions")
+knitr::kable(divisions_list, caption = "ICES divisions") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+subdivisions_list <- getCodeList("IC_Sub-divisions")
+knitr::kable(subdivisions_list, caption = "ICES subdivisions") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+ices_stock_list <- getCodeList("ICES_Stock_Category")
+knitr::kable(ices_stock_list, caption = "ICES stock category") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+stock_list <- getCodeList("IC_Stock")
+knitr::kable(stock_list, caption = "ICES stock codes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+# same code we get with getCodeDetail
+
+year_list <- getCodeList("IC_Year")
+knitr::kable(year_list, caption = "All year codes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+geom_list <- getCodeList("GeometryType")
+knitr::kable(geom_list, caption = "Geometry Type") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+Species can only be reported if the source is published and referenced in the data. ICES standard is WoRMS.
+
+```{r species_code}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
 
 species_list <- tibble(
   name = c("Atlantic salmon", "European eel"),
@@ -51,8 +159,22 @@ df_species <- species_list %>%
     code_ices = findAphia(scientific_name, latin = TRUE)
   ) %>%
   ungroup()
-knitr::kable(df_species, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 
+knitr::kable(df_species, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+``` {r icesVocab_test}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+
+findCodeType("RLIST", full = T) #WoRMS is the ICES standard identical
+getCodeList("RLIST") #ER & ERID
+getCodeDetail("RLIST","ERID")
+
+
+code_type <- getCodeTypeList()
+code_list <- getCodeList("SpecWoRMS")
 
 df_salmo <- icesVocab::findCode("worms", "salmon",full=T)
 knitr::kable(df_salmo, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
@@ -77,6 +199,8 @@ View(getCodeList("IC_Stock")) #eel key = ele.2737.nea Salmon has several (sal-ba
 View(getCodeDetail("IC_Stock","ele.2737.nea"))
 
 View(getCodeList("Datasets"))
+View(getCodeDetail("Datasets","EEL"))
+
 
 Class
 TS_SpeciesList
@@ -86,3 +210,5 @@ IC_Stock
 ```
 
 Year or IC_Year
+
+htps://doi.org/10.17895/ices.pub.21673589
