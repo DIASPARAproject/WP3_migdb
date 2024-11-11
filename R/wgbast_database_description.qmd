@@ -54,6 +54,8 @@ Wild river stocks belonging to each assessment unit are listed in the next secti
 
 ![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg)
 
+> [QUESTION WGBAST] Could we have access to a gis of this map (river type) to create the referentials in WP3.1 habitat
+
 ### ICES vocab linked with catchments in the Baltic.
 ```{r init}
 #| echo: FALSE
@@ -72,6 +74,9 @@ load_library("tidyverse")
 load_library("knitr")
 load_library("kableExtra")
 load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
 ```
 ``` {r icesVocabrivers}
 
@@ -110,6 +115,76 @@ Classification criteria for wild, mixed, reared and potential salmon rivers in t
 
 # Fishery
 
+```{r read_catch_db}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+catchdb <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Catch_29-02-2024.xlsx"), sheet = "Catch data")
+catchdb <- janitor::clean_names(catchdb)
+# quick fix to avoid logical I put char in subdiv_IC[1]
+catchdb$subdiv_ic[1]<-NA
+catchdb %>%skim()
+```
+
+## Year 
+```{r year}
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+unique(catchdb$year)
+```
+
+
+## Other timeperiod
+
+
+```{r tp_type}
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+table(catchdb$time_period, catchdb$tp_type)
+sum(is.na(catchdb$tp_type))
+sum(is.na(catchdb$time_period))
+```
+
+> [QUESTION WGBAST] Can you confirm that `MON` and `MONTH` are the same values, same for `Year` and `YR` ? `HYR` and `QTR` are half of year and quarter OK
+
+> [NOTE] Add constraint according to tp_type. Also add a not null constraint.
+
+## Country
+
+Two letter country codes.
+```{r country}
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+unique(catchdb$country)
+```
+
+## Species
+
+```{r species}
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+table(catchdb$species)
+catchdb[catchdb$species=="NA",]%>%
+ head(2) %>%
+ kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) 
+catchdb[catchdb$species=="SAL&TRS",]%>%
+ head(2) %>%
+ kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+
+
+
+
+> [QUESTION WGBAST] Some 'NA' are character (11 rows) for EE. This is for seal damage and not reported the same way every year ? 
+
 ## Catch  habitat
 
 Countries participating in the Baltic salmon fishery are asked to deliver catch data of salmon and sea trout. Catches are given by economic zone, ICES subdivision, as well as type of fishery separated by `offshore, coastal and river` [@ICES2021_wgbast_stock_annex]. 
@@ -127,16 +202,20 @@ Exceptions:
 Latvia and Lithuania are the only two countries directly using the actual geographical position when categorising the catches as either coastal (C) or open sea (O).
 For the recreational fisheries, all countries define trolling as open sea (O) whereas catches from other gears are defined as coastal (C) [@ICES2021_wgbast_stock_annex]. 
 
-
-
-
 ``` {r checkdbhabitat}
 #| echo: TRUE
-#| eval: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-# TODO check FISHERY when we have the db
+unique(catchdb$fishery)
+sum(is.na(catchdb$fishery))
+head(catchdb[is.na(catchdb$fishery),],200)
+table(catchdb$fishery, catchdb$sub_div) %>% kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+vcd::doubledecker(fishery ~  species + sub_div, data = catchdb)
 ```
+
+Some areas do not hold a lot of catch for rivers. 
 
 The best match for fishery habitat in ICES is WLTYP.
 
@@ -158,14 +237,20 @@ kable(WLTYP, caption = "Water type (for stations)") %>% kable_styling(bootstrap_
 Catches are further classified as `commercial, recreational, discard, and seal damage`[@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex : `commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, ALV=released alive back in water`
 
 
-> NOTE : the excel table gives more value, check this in the db.
+> NOTE : There is a difference between the stock annex, the stock annex lists four types, `UNRP` does not exist and should be removed from the excel describing the column content, `ALV` is found in the table (as in the db description), `BROOD` is never described
+
+> [QUESTION WGBAST] 39 lines with `BROOD` do you know to what these correspond ?
+
 
 ``` {r checkFTYPE}
 #| echo: TRUE
-#| eval: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-# TODO check F_TYPE when we have the db
+table(catchdb$f_type, useNA="ifany",dnn = "f_type") %>%
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
 ```
 
 ## Source of fishery data
@@ -176,17 +261,49 @@ In the excel table the possible values are indicated as :
 `logbook=LOG, extrapolated=EXT, estimated=EST, expert evaluation=EXP`
 
 
+
 The ICES vocab DataSourceOfScientificWeight seems to provide the closest match with these data, however it lacks extrapolated, estimated.
 
-> [QUESTION WGBAST] What are the definitions of extrapolated and estimated. How does that mixes with UNRP in F_TYPE ?
 
-``` {r checkWTYPE}
-#| echo: TRUE
-#| eval: FALSE
+
+``` {r checknTYPE}
+#| echo: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-# TODO check W_TYPE when we have the db, excel indicates N_TYPE is the same W_TYPE
+table(catchdb$n_type, useNA="ifany",dnn = "n_type") %>%
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+table(catchdb$n_type, catchdb$f_type, useNA="ifany") %>%
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
+
+> [QUESTION WGBAST] What are the definitions of extrapolated and estimated. ? 
+
+> [QUESTION WGBAST] ARE `EXP` and `EXV` the same ? What is `GST` ?
+
+> [QUESTION WGBAST] The source of fishery data might partially correspond to the vocab dataSourceOfScientificWeight. At least there is a `Logbook`, `Expert evaluation`,  any idea if something in this vocab might correspond to extrapolated or estimated ? 
+
+> [QUESTION WGBAST] Do you want to allow NA values there  ?
+
+> [QUESTION WGBAST] Would you treat things differently if tables for Baltic TRUTTA and  SALMON were separated ?
+
+``` {r checkwTYPE}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+table(catchdb$w_type, useNA="ifany",dnn = "n_type") %>%
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+table(catchdb$n_type, catchdb$f_type, useNA="ifany") %>%
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+
+This is very similar to n_type this is 
 
 ``` {r icesVocabsource}
 #| echo: TRUE
@@ -197,7 +314,42 @@ DataSourceOfScientificWeight <- icesVocab::getCodeList('DataSourceOfScientificWe
 kable(DataSourceOfScientificWeight, caption = "DataSourceOfScientificWeight table") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-# Electrofishing data 
+# Electrofishing and river data 
+
+```{r read_young_fishdb_db}
+#| eval: FALSE
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE 
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+smolts <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "number of wild smolts")
+young_fish <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "numb of young fish")
+smolts <- janitor::clean_names(smolts)
+young_fish <- janitor::clean_names(young_fish)
+# quick fix to avoid logical I put char in subdiv_IC[1]
+
+smolts %>%skim()
+young_fish %>%skim()
+sy <- bind_rows(
+smolts %>% 
+mutate(
+  tab="smolts",
+  the_most_probable_number_of_smolts = as.numeric(the_most_probable_number_of_smolts),
+),
+young_fish %>% 
+mutate(
+  tab = "young_fish",
+  sub_div = as.character(sub_div),
+  sub_div3 = as.character(sub_div3),
+  min_numb_of_wild_smolts = as.numeric(min_numb_of_wild_smolts),
+  max_numb_of_wild_smolts = as.numeric(max_numb_of_wild_smolts),
+  n_type = as.numeric(n_type)
+))
+save(sy, file= "data/sy.Rdata")
+```
+
+> [NOTE] R1168C15 3,4 (probably two values....) probably need correction
+
 
 Electrofishing data are obtained along with smolt counts at rivers Tornionjoki, Simojoki, Åbyälven, Rickleån, Sävarån, Ume/Vindelälven, Öreälven and Lögdeälven (Assessment unit 1-3), Mörrumsån, Emån and Testeboån (AU 4) to estimate smolt production based on parr density in electrofishing.
 
@@ -212,7 +364,74 @@ The number of sampling sites is used as a measure of precision of the parr densi
 
 > [Question  WGBAST] would it be usefull to start from a full db of electrofishing data ?
 
-[Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.jpg)
+
+## species
+
+```{r young_fishdb_db_species}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+load("data/sy.Rdata")
+
+table(sy$species, sy$tab) %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+## country
+
+## time 
+```{r young_fishdb_dbtime}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+# TODO tp_type
+# TODO year
+# TODO time_period
+
+```
+## geography
+```{r young_fishdb_db_geo}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+# TODO assessment unit
+# TODO sub_div
+# TODO sub_div2
+# TODO sub_div3
+# TODO river
+
+```
+## river_category
+
+```{r young_fishdb_db_river_cat}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+# TODO river_category
+
+```
+
+
+
+## age
+```{r read_young_fish_db_age}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+
+```
+## origin
+
+```{r young_fishdb_db_origin}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+origin
+```
+
+
+![Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.png)
 
 # The model
 
