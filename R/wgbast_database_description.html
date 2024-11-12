@@ -3490,7 +3490,7 @@ Table 1: = ICES Vocab for River and Catchments (RiversAndCatchments)
 </figcaption>
 <div aria-describedby="tbl-vocab_riverandcatchment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-vocab_riverandcatchment-1" class="table table-striped table-hover table-condensed do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true" style="margin-left: auto; margin-right: auto;">
+<div id="tbl-vocab_riverandcatchment-1" class="table table-striped table-hover table-condensed do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" style="margin-left: auto; margin-right: auto;" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-vocab_riverandcatchment-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) RiverAndCatchments, 10 first lines
@@ -3597,7 +3597,7 @@ Table 1: = ICES Vocab for River and Catchments (RiversAndCatchments)
 
 </div>
 <div class="cell-output-display">
-<div id="tbl-vocab_riverandcatchment-2" class="table table-striped table-hover table-condensed do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true" style="margin-left: auto; margin-right: auto;">
+<div id="tbl-vocab_riverandcatchment-2" class="table table-striped table-hover table-condensed do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" style="margin-left: auto; margin-right: auto;" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-subfloat-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-vocab_riverandcatchment-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) This row has a problem
@@ -3644,6 +3644,9 @@ Table 1: = ICES Vocab for River and Catchments (RiversAndCatchments)
 </div>
 </div>
 <p>Note the url in this table (<a href="#tbl-vocab_riverandcatchment" class="quarto-xref">Table 1</a>): https://opendata-download.smhi.se/svar/SVAR_Basprodukter_2016_6.pdf is no longer accessed anywhere, and there is a NA without value. It does not seems as if there is a hierarchy in these geographic units.</p>
+<blockquote class="blockquote">
+<p>[NOTE ICES] Just for information there is a line with NA ?, also the link is no longer valid.</p>
+</blockquote>
 <blockquote class="blockquote">
 <p>[TODO] We’ll have to reconcile this table with GIS, we have to if there is a GIS map somewhere in ICES.</p>
 </blockquote>
@@ -4089,36 +4092,147 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 <section id="other-timeperiod" class="level2">
 <h2 class="anchored" data-anchor-id="other-timeperiod">Other timeperiod</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>time_period, catchdb<span class="sc">$</span>tp_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    
-      HYR  MON MONTH  QTR Year   YR
-  0     0    0     0    0   64 4110
-  1  1325  678     0  195    0    0
-  2  1239  682     0  243    0    1
-  3     0  854     0  231    0    0
-  4     0  921     0  301    0    0
-  5     0 1016     1    0    0    0
-  6     0  866     4    0    0    0
-  7     0  864     4    0    0    0
-  8     0  882     4    0    0    0
-  9     0  921     0    0    0    0
-  10    0  780     0    0    0    0
-  11    0  827     0    0    0    0
-  12    0  715     0    0    0    0</code></pre>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>time_period, catchdb<span class="sc">$</span>tp_type) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">HYR</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MON</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MONTH</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">QTR</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Year</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">YR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">4110</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1325</td>
+<td style="text-align: right;">678</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">195</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">1239</td>
+<td style="text-align: right;">682</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">243</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">854</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">921</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">301</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1016</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">866</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">864</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">882</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">921</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">780</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">827</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">715</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(catchdb<span class="sc">$</span>tp_type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(catchdb<span class="sc">$</span>time_period))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>[QUESTION WGBAST] Can you confirm that <code>MON</code> and <code>MONTH</code> are the same values, same for <code>Year</code> and <code>YR</code> ? <code>HYR</code> and <code>QTR</code> are half of year and quarter OK</p>
-</blockquote>
+<p>There are 0 and 0 NA values for <code>tp_type</code> and &gt; [QUESTION WGBAST] Can you confirm that <code>MON</code> and <code>MONTH</code> are the same values, same for <code>Year</code> and <code>YR</code> ? <code>HYR</code> and <code>QTR</code> are half of year and quarter OK</p>
 <blockquote class="blockquote">
 <p>[NOTE] Add constraint according to tp_type. Also add a not null constraint.</p>
 </blockquote>
@@ -4127,7 +4241,7 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 <h2 class="anchored" data-anchor-id="country">Country</h2>
 <p>Two letter country codes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(catchdb<span class="sc">$</span>country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(catchdb<span class="sc">$</span>country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;DE&quot; &quot;DK&quot; &quot;PL&quot; &quot;RU&quot; &quot;FI&quot; &quot;SE&quot; &quot;EE&quot; &quot;LT&quot; &quot;LV&quot;</code></pre>
 </div>
@@ -4136,16 +4250,16 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 <section id="species" class="level2">
 <h2 class="anchored" data-anchor-id="species">Species</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      NA     SAL SAL&amp;TRS     TRS 
      11    8915       6    8796 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>catchdb[catchdb<span class="sc">$</span>species<span class="sc">==</span><span class="st">&quot;NA&quot;</span>,]<span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>catchdb[catchdb<span class="sc">$</span>species<span class="sc">==</span><span class="st">&quot;NA&quot;</span>,]<span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
 <thead>
@@ -4231,10 +4345,10 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 
 
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>catchdb[catchdb<span class="sc">$</span>species<span class="sc">==</span><span class="st">&quot;SAL&amp;TRS&quot;</span>,]<span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>catchdb[catchdb<span class="sc">$</span>species<span class="sc">==</span><span class="st">&quot;SAL&amp;TRS&quot;</span>,]<span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <thead>
@@ -4337,36 +4451,31 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 </ul>
 <p>Latvia and Lithuania are the only two countries directly using the actual geographical position when categorising the catches as either coastal (C) or open sea (O). For the recreational fisheries, all countries define trolling as open sea (O) whereas catches from other gears are defined as coastal (C) <span class="citation" data-cites="ICES2021_wgbast_stock_annex">(<a href="#ref-ICES2021_wgbast_stock_annex" role="doc-biblioref">ICES 2021</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(catchdb<span class="sc">$</span>fishery)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(catchdb<span class="sc">$</span>fishery)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;O&quot; &quot;C&quot; &quot;R&quot; NA </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(catchdb<span class="sc">$</span>fishery))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(catchdb<span class="sc">$</span>fishery))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 170</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(catchdb[<span class="fu">is.na</span>(catchdb<span class="sc">$</span>fishery),],<span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(catchdb[<span class="fu">is.na</span>(catchdb<span class="sc">$</span>fishery),])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 170 × 23
-   species country  year time_period tp_type sub_div sub_div2 sub_div3 fishery
-   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
- 1 SAL     DK       1993           0 YR      200     22-31    200      &lt;NA&gt;   
- 2 SAL     EE       1993           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
- 3 SAL     LT       1993           0 YR      200     22-31    200      &lt;NA&gt;   
- 4 SAL     LV       1993           0 YR      200     22-31    200      &lt;NA&gt;   
- 5 SAL     PL       1993           0 YR      200     22-31    200      &lt;NA&gt;   
- 6 SAL     RU       1993           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
- 7 SAL     FI       1993           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
- 8 SAL     SE       1993           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
- 9 SAL     DK       1994           0 YR      200     22-31    200      &lt;NA&gt;   
-10 SAL     EE       1994           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
-# ℹ 160 more rows
+<pre><code># A tibble: 6 × 23
+  species country  year time_period tp_type sub_div sub_div2 sub_div3 fishery
+  &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;  
+1 SAL     DK       1993           0 YR      200     22-31    200      &lt;NA&gt;   
+2 SAL     EE       1993           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
+3 SAL     LT       1993           0 YR      200     22-31    200      &lt;NA&gt;   
+4 SAL     LV       1993           0 YR      200     22-31    200      &lt;NA&gt;   
+5 SAL     PL       1993           0 YR      200     22-31    200      &lt;NA&gt;   
+6 SAL     RU       1993           0 YR      &lt;NA&gt;    0        0        &lt;NA&gt;   
 # ℹ 14 more variables: f_type &lt;chr&gt;, gear &lt;chr&gt;, effort &lt;dbl&gt;, weight &lt;dbl&gt;,
 #   w_type &lt;chr&gt;, numb &lt;dbl&gt;, n_type &lt;chr&gt;, river &lt;chr&gt;, notes &lt;chr&gt;,
 #   w_ci &lt;chr&gt;, n_ci &lt;chr&gt;, gear2 &lt;chr&gt;, subdiv_ic &lt;chr&gt;, hyr &lt;dbl&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>fishery, catchdb<span class="sc">$</span>sub_div) <span class="sc">%&gt;%</span> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>fishery, catchdb<span class="sc">$</span>sub_div) <span class="sc">%&gt;%</span> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <thead>
@@ -4449,7 +4558,7 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 
 
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">doubledecker</span>(fishery <span class="sc">~</span>  species <span class="sc">+</span> sub_div, <span class="at">data =</span> catchdb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">doubledecker</span>(fishery <span class="sc">~</span>  species <span class="sc">+</span> sub_div, <span class="at">data =</span> catchdb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -4458,11 +4567,14 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 </div>
 </div>
 </div>
+<blockquote class="blockquote">
+<p>[QUESTION WGBAST] In the stock annex there is a mention to sea <code>S</code> but it does not seem to be present in the database ?</p>
+</blockquote>
 <p>Some areas do not hold a lot of catch for rivers.</p>
 <p>The best match for fishery habitat in ICES is WLTYP.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>WLTYP <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;WLTYP&#39;</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(WLTYP, <span class="at">caption =</span> <span class="st">&quot;Water type (for stations)&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>WLTYP <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;WLTYP&#39;</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(WLTYP, <span class="at">caption =</span> <span class="st">&quot;Water type (for stations)&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <caption>Water type (for stations)</caption>
@@ -4604,7 +4716,7 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 </div>
 </div>
 <blockquote class="blockquote">
-<p>[QUESTION ICES] Is that right ? Should we use this one ? There is a need to add <code>sea</code> with a definition : catches either MO or C but</p>
+<p>[QUESTION ICES] Is that right ? Should we use this one ? Is there really a need to add <code>sea</code> with a definition : catches either MO or C as it does not seem to be used ?</p>
 </blockquote>
 <blockquote class="blockquote">
 <p>[QUESTION WGBAST] Currently the definition in ICES vocab is WFD coastal water (C) or MC (Marine water (coast)) Marine water within 4 nm from the baseline. It seems that there are country difference in the interpretation of coastal or marine 2 10 12, so what do we choose ?</p>
@@ -4620,9 +4732,9 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 <p>[QUESTION WGBAST] 39 lines with <code>BROOD</code> do you know to what these correspond ?</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>f_type, <span class="at">useNA=</span><span class="st">&quot;ifany&quot;</span>,<span class="at">dnn =</span> <span class="st">&quot;f_type&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(catchdb<span class="sc">$</span>f_type, <span class="at">useNA=</span><span class="st">&quot;ifany&quot;</span>,<span class="at">dnn =</span> <span class="st">&quot;f_type&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <thead>
@@ -4977,8 +5089,8 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 </div>
 <p>This is very similar to n_type this is</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>DataSourceOfScientificWeight <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;DataSourceOfScientificWeight&#39;</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(DataSourceOfScientificWeight, <span class="at">caption =</span> <span class="st">&quot;DataSourceOfScientificWeight table&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>DataSourceOfScientificWeight <span class="ot">&lt;-</span> icesVocab<span class="sc">::</span><span class="fu">getCodeList</span>(<span class="st">&#39;DataSourceOfScientificWeight&#39;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(DataSourceOfScientificWeight, <span class="at">caption =</span> <span class="st">&quot;DataSourceOfScientificWeight table&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <caption>DataSourceOfScientificWeight table</caption>
@@ -5052,31 +5164,31 @@ Table 2: Classification criteria for wild, mixed, reared and potential salmon r
 <section id="electrofishing-and-river-data" class="level1">
 <h1>Electrofishing and river data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>datawd <span class="ot">&lt;-</span> <span class="st">&quot;C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast&quot;</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>smolts <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="fu">file.path</span>(datawd, <span class="st">&quot;WGBAST_2024_Young_fish_26-02-2024.xlsx&quot;</span>), <span class="at">sheet =</span> <span class="st">&quot;number of wild smolts&quot;</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>young_fish <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="fu">file.path</span>(datawd, <span class="st">&quot;WGBAST_2024_Young_fish_26-02-2024.xlsx&quot;</span>), <span class="at">sheet =</span> <span class="st">&quot;numb of young fish&quot;</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>smolts <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(smolts)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>young_fish <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(young_fish)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># quick fix to avoid logical I put char in subdiv_IC[1]</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>smolts <span class="sc">%&gt;%</span><span class="fu">skim</span>()</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>young_fish <span class="sc">%&gt;%</span><span class="fu">skim</span>()</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>sy <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>smolts <span class="sc">%&gt;%</span> </span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab=</span><span class="st">&quot;smolts&quot;</span>,</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">the_most_probable_number_of_smolts =</span> <span class="fu">as.numeric</span>(the_most_probable_number_of_smolts),</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>),</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>young_fish <span class="sc">%&gt;%</span> </span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab =</span> <span class="st">&quot;young_fish&quot;</span>,</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub_div =</span> <span class="fu">as.character</span>(sub_div),</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub_div3 =</span> <span class="fu">as.character</span>(sub_div3),</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_numb_of_wild_smolts =</span> <span class="fu">as.numeric</span>(min_numb_of_wild_smolts),</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_numb_of_wild_smolts =</span> <span class="fu">as.numeric</span>(max_numb_of_wild_smolts),</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_type =</span> <span class="fu">as.numeric</span>(n_type)</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(sy, <span class="at">file=</span> <span class="st">&quot;data/sy.Rdata&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datawd <span class="ot">&lt;-</span> <span class="st">&quot;C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast&quot;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>smolts <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="fu">file.path</span>(datawd, <span class="st">&quot;WGBAST_2024_Young_fish_26-02-2024.xlsx&quot;</span>), <span class="at">sheet =</span> <span class="st">&quot;number of wild smolts&quot;</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>young_fish <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="fu">file.path</span>(datawd, <span class="st">&quot;WGBAST_2024_Young_fish_26-02-2024.xlsx&quot;</span>), <span class="at">sheet =</span> <span class="st">&quot;numb of young fish&quot;</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>smolts <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(smolts)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>young_fish <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(young_fish)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># quick fix to avoid logical I put char in subdiv_IC[1]</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>smolts <span class="sc">%&gt;%</span><span class="fu">skim</span>()</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>young_fish <span class="sc">%&gt;%</span><span class="fu">skim</span>()</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>sy <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>smolts <span class="sc">%&gt;%</span> </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab=</span><span class="st">&quot;smolts&quot;</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">the_most_probable_number_of_smolts =</span> <span class="fu">as.numeric</span>(the_most_probable_number_of_smolts),</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>young_fish <span class="sc">%&gt;%</span> </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab =</span> <span class="st">&quot;young_fish&quot;</span>,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub_div =</span> <span class="fu">as.character</span>(sub_div),</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub_div3 =</span> <span class="fu">as.character</span>(sub_div3),</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_numb_of_wild_smolts =</span> <span class="fu">as.numeric</span>(min_numb_of_wild_smolts),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_numb_of_wild_smolts =</span> <span class="fu">as.numeric</span>(max_numb_of_wild_smolts),</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_type =</span> <span class="fu">as.numeric</span>(n_type)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(sy, <span class="at">file=</span> <span class="st">&quot;data/sy.Rdata&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p>[NOTE] R1168C15 3,4 (probably two values….) probably need correction</p>
