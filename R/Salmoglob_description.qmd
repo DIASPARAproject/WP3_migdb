@@ -58,12 +58,12 @@ con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,por
 # Main database structure
 
 ```{r databasedescription}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: 'Structure of the main database'
-#| label: fig-maindb
+#| tbl-cap: 'Structure of the WGNAS main database'
+#| label: tbl-maindb
 
 database10 <- DBI::dbGetQuery(con_salmoglob, 'SELECT * FROM public.database limit 20')
 knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
@@ -71,13 +71,15 @@ knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hove
 
 # Area
 
+::: {#fig-phylogeographicstructures}
 
-![Phylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation.](images/phylogeographic_structuring_salmon.png)
-{#fig-phylogeographicstructures}
+![](images/phylogeographic_structuring_salmon.png)
 
+Phylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation.
+:::
 
 ```{r area}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -93,13 +95,13 @@ knitr::kable(area[grep("coun",area$area),,drop=FALSE], caption = "Area correspon
 knitr::kable(area[!grepl("coun",area$area) & !grepl("fishery",area$area),,drop=FALSE], caption = "Area corresponding to source area", row.names=FALSE)
 ```
 
-The latter table is by default, so Atlantic, NEC and NAC are included. Having a label in a reference table and a geom to associate to those labels would be I guess very usefull.
+The latter table (@Tbl-areatypes-3) is by default, so Atlantic, NEC and NAC are included. Having a label in a reference table and a geom to associate to those labels would be I guess very usefull.
 
 # Location
 
 
 ```{r location}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -121,7 +123,7 @@ knitr::kable(location_area, caption = "Location corresponding exactly to what is
 
 
 ```{r param_biz}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -138,8 +140,9 @@ print(kable(var_biz[,,drop=FALSE], row.names=FALSE))
 }
 ```
 
+Some values have been deprecated and are present in the database archive but not in the main database.
 ``` {r db_comparaison}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -163,16 +166,17 @@ for (col in cols) {
 
 
 ``` {r check_parameter_location}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-
+#| tbl-cap: Number of locations per model variables
+#| label: tbl-varmodcount
 
 result <- database %>%
   group_by(var_mod) %>%
   summarise(location_count = n_distinct(location))
-knitr::kable(result, caption = "Number of locations per var_mod") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(result) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 So in the end, only omega has 25 locations, and in this case the location corresponds to area.
@@ -180,14 +184,20 @@ This means we can get rid of the location column. For omega we can keep it,; so 
 
 # Sea age
 
-
 Salmon mature at various sea ages, typically returning to freshwater to spawn after one to three years at sea, but also sometimes at older sea ages; this varies widely between populations. Those salmon that return after one year at sea are referred to as one-sea-winter (1SW) salmon, or grilse, with older fish categorised as 2SW, 3SW, etc. In practice, however, for management purposes these older sea age fish are typically aggregated and collectively referred to as multi-sea-winter (MSW) salmon. The sea age when salmon become sexually mature depends on genetics as well as growing conditions in the sea, and possibly freshwater, although the precise proximate factors initiating homeward migration are unknown (Hansen and Quinn, 1998). The sea age of Atlantic salmon is important in the context of stock definition since these different groups of fish have different migration routes, return at different times and are differentially exploited in fisheries. Thus, for example, it is only potential MSW salmon that are exploited in the distant water salmon fishery that operates off the west coast of Greenland [@ICES2021_wgnas_stock_annex].
 
 ``` {r check_age}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Age structure in the database
+#| tbl-subcap: 
+#|   - Number age data categorized by age
+#|   - Number age data categorized by age, parameters without age, n is the number of lines in the db
+#|   - Number age data categorized by age, n is the number of lines in the db
+#|   - Variables using more than 1 age (e.g. from which the age cannot be derived from the variable itself.)
+#| label: tbl-agecheck
 
 
 summary_age <- DBI::dbGetQuery(con_salmoglob, 
@@ -218,33 +228,67 @@ distinct_age_parm <- DBI::dbGetQuery(con_salmoglob,
 knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g. from which the age cannot be derived from the variable itself.)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-> [NOTE] Only eggs, p_smolt, p_smolt_pr, and prop_female need an age, the other is contained in the name of the variable.
+:::{.callout-note appearance="simple"}
+## NOTE
+  Only eggs, p_smolt, p_smolt_pr, and prop_female need an age, the other is contained in the name of the variable.
+:::
 
-> [NOTE] So the age also covers information on maturity but the only time it is really used outside from the metadata (eggs, smolt, prop_female) the maturity is not necessary.
+:::{.callout-note appearance="simple"}
+## NOTE
+ So the age also covers information on maturity but the only time it is really used outside from the metadata (eggs, smolt, prop_female) the maturity is not necessary.
+:::
 
-> [QUESTION WGNAS] Why is omega not mixed ?
+::: {.callout-warning}
+## QUESTION WGNAS
+  Why is omega not mixed ?
+:::
 
-> [QUESTION WGNAS] Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
+
+::: {.solutionbox}
+:::: {.solutionbox-header}
+::::: {.solutionbox-icon}
+:::::
+test here
+::::
+:::: {.solutionbox-body}
+blablabla
+::::
+:::
+
+:::{.callout-warning appearance="simple"}
+## QUESTION WGNAS
+  Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
+:::
 
 ``` {r check_maturity_metadata}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Number of lines with lifestage in the metadata table
+#| label: tbl-lifestagemeta
 
 
 summary_lifestage_metadata <- DBI::dbGetQuery(con_salmoglob, 
   'SELECT count(*) as  n,  life_stage FROM public.metadata group by life_stage')%>% arrange(life_stage)
-knitr::kable(summary_lifestage_metadata,
- caption = "Number of lines with lifestage in the metadata table") %>%
+knitr::kable(summary_lifestage_metadata) %>%
  kable_material(c("striped", "hover"))
 ``` 
 
-> [NOTE] get rid of `Adults` replace with `Adult`.
+:::{.callout-note appearance="simple"}
+## NOTE
+  get rid of `Adults` replace with `Adult`.
+:::
 
-> [NOTE] get rid of `Multiple` there is only one instance.
+:::{.callout-note appearance="simple"}
+## NOTE
+  get rid of `Multiple` there is only one instance.
+:::
 
-> [NOTE] Now there is the PFA, which is fine, but not really a stage.
+:::{.callout-note appearance="simple"}
+## NOTE
+  Now there is the PFA, which is fine, but not really a stage.
+:::
 
 # Developmental stage
 
@@ -253,10 +297,17 @@ The maturity could be stored in the metadata as it seems to be linked always wit
 
 
 ``` {r icesVocabrivers}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: ICES vocabularies for life stages
+#| tbl-subcap: 
+#|   - TS_MATURITY
+#|   - DevScale
+#|   - Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)
+#| label: tbl-maturityvocab
+
 types <- icesVocab::getCodeTypeList()
 types[grep('stage', tolower(types$Description)),]%>% kable()
 TS_MATURITY <- icesVocab::getCodeList('TS_MATURITY')
@@ -269,7 +320,10 @@ kable(TS_MATURITY, caption = "TS_MATURITY") %>% kable_styling(bootstrap_options 
 kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-> [QUESTION ICES] Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ? 
+:::{.callout-warning appearance="simple"}
+## QUESTION ICES
+ Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ?
+:::
 
 There seem to be a correspondence between the 4 stage scale and the maturity
 
@@ -287,21 +341,35 @@ There seem to be a correspondence between the 4 stage scale and the maturity
 | post-return |  Post-spawning (5-stage scale) |TS_MATURITY |
 : Life stages comparaison between WGNAS database and ICES vocabularies {#tbl-lifestagescomparaison}
 
-> [QUESTION wgnas] Is the correspondence mature / maturing correct or is it pre -spawing? 
+:::{.callout-warning appearance="simple"}
+## QUESTION WGNAS
+Is the correspondence mature / maturing correct or is it pre -spawing? 
+:::
 
-> [QUESTION wgnas] Is the correspondence OK. Do we really need PFA stage or could we just describe it in the metadata ?
+:::{.callout-warning appearance="simple"}
+## QUESTION WGNAS
+ Is the correspondence OK. Do we really need PFA stage or could we just describe it in the metadata ?
+:::
 
-> [QUESTION ICES] Could we add smolt and pfa (pre fisheries abundance) somewhere ?
+:::{.callout-warning appearance="simple"}
+## QUESTION ICES
+ Could we add smolt and pfa (pre fisheries abundance) somewhere ?
+:::
 
 # Metric
 
 The metric are linked with coefficients, they don't need to be stored in the main db
 
 ``` {r check_metric}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Metric overview
+#| tbl-subcap: 
+#|   - Number of lines with metric in the database table
+#|   - Number of lines with metric in the metadata table
+#| label: tbl-metricoverview
 
 
 summary_metric <- DBI::dbGetQuery(con_salmoglob, 
@@ -321,10 +389,15 @@ knitr::kable(summary_metric,
  There is a problem of correspondence between the database and metadata, detailed below :
 
 ``` {r check_metric_correspondence}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Checking correspondence between database and metadata
+#| tbl-subcap: 
+#|   - Variables with correspondence pb for metric between the metadata and the database table
+#|   - Variables with correspondence pb for metric between the metadata and the database table
+#| label: tbl-datametadatacheck
 
 # this query didn't return as expected
  pb <- DBI::dbGetQuery(con_salmoglob, 
@@ -400,7 +473,7 @@ con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,p
 
 
 ```{sql create_referentials}
---| echo: TRUE
+--| echo: FALSE
 --| eval: FALSE
 
 -- CREATE REFERENTIAL TABLES
