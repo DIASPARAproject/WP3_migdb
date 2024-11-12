@@ -238,27 +238,19 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
  So the age also covers information on maturity but the only time it is really used outside from the metadata (eggs, smolt, prop_female) the maturity is not necessary.
 :::
 
-::: {.callout-warning}
-## QUESTION WGNAS
-  Why is omega not mixed ?
-:::
-
-
-::: {.solutionbox}
-:::: {.solutionbox-header}
-::::: {.solutionbox-icon}
-:::::
-test here
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
 ::::
-:::: {.solutionbox-body}
-blablabla
+## QUESTION TO WGNAS
+::::
+::::{.questionbox-body}
+  * Why is omega not mixed ?
+  * Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
 ::::
 :::
 
-:::{.callout-warning appearance="simple"}
-## QUESTION WGNAS
-  Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
-:::
+
 
 ``` {r check_maturity_metadata}
 #| echo: FALSE
@@ -320,9 +312,15 @@ kable(TS_MATURITY, caption = "TS_MATURITY") %>% kable_styling(bootstrap_options 
 kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-:::{.callout-warning appearance="simple"}
-## QUESTION ICES
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+## QUESTION TO ICES
+::::
+::::{.questionbox-body}
  Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ?
+::::
 :::
 
 There seem to be a correspondence between the 4 stage scale and the maturity
@@ -341,20 +339,29 @@ There seem to be a correspondence between the 4 stage scale and the maturity
 | post-return |  Post-spawning (5-stage scale) |TS_MATURITY |
 : Life stages comparaison between WGNAS database and ICES vocabularies {#tbl-lifestagescomparaison}
 
-:::{.callout-warning appearance="simple"}
-## QUESTION WGNAS
-Is the correspondence mature / maturing correct or is it pre -spawing? 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+## QUESTION TO WGNAS
+::::
+::::{.questionbox-body}
+  * Is the correspondence mature / maturing correct or is it pre -spawing? 
+  * Is the correspondence OK. Do we really need PFA stage or could we just describe it in the metadata ?
+::::
 :::
 
-:::{.callout-warning appearance="simple"}
-## QUESTION WGNAS
- Is the correspondence OK. Do we really need PFA stage or could we just describe it in the metadata ?
-:::
-
-:::{.callout-warning appearance="simple"}
-## QUESTION ICES
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+## QUESTION TO ICES
+::::
+::::{.questionbox-body}
  Could we add smolt and pfa (pre fisheries abundance) somewhere ?
+::::
 :::
+
 
 # Metric
 
