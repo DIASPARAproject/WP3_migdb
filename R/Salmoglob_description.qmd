@@ -10,7 +10,7 @@ title-block-banner-color: "white"
 format:
  html:
   self-contained: true
-  theme: cosmo
+  theme: styles.scss
   smooth-scroll: true
   fontcolor: black
   toc: true
@@ -242,7 +242,7 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-## QUESTION TO WGNAS
+  QUESTION TO WGNAS
 ::::
 ::::{.questionbox-body}
   * Why is omega not mixed ?
@@ -316,7 +316,7 @@ kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (ber
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-## QUESTION TO ICES
+QUESTION TO ICES
 ::::
 ::::{.questionbox-body}
  Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ?
@@ -343,7 +343,7 @@ There seem to be a correspondence between the 4 stage scale and the maturity
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-## QUESTION TO WGNAS
+QUESTION TO WGNAS
 ::::
 ::::{.questionbox-body}
   * Is the correspondence mature / maturing correct or is it pre -spawing? 
@@ -355,7 +355,7 @@ There seem to be a correspondence between the 4 stage scale and the maturity
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-## QUESTION TO ICES
+QUESTION TO ICES
 ::::
 ::::{.questionbox-body}
  Could we add smolt and pfa (pre fisheries abundance) somewhere ?
