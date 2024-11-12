@@ -10,13 +10,15 @@ title-block-banner-color: "white"
 format:
  html:
   self-contained: true
-  theme: cosmo
+  theme: styles.scss
   smooth-scroll: true
   fontcolor: black
   toc: true
   toc-location: left
   toc-title: Summary
   toc-depth: 3
+execute: 
+ keep-md: true
 reference-location: document
 bibliography: ../diaspara.bib
 ---
@@ -54,7 +56,19 @@ Wild river stocks belonging to each assessment unit are listed in the next secti
 
 ![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg){#fig-assessmentunits}
 
-> [QUESTION WGBAST] Could we have access to a gis of this map (river type) to create the referentials in WP3.1 habitat
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST
+::::
+::::{.questionbox-body}
+Could we have access to a gis of this map (river type) to create the referentials in WP3.1 habitat
+::::
+:::
+
+
 
 ### ICES vocab linked with catchments in the Baltic.
 ```{r init}
@@ -96,17 +110,32 @@ nrow(RiversAndCatchments)
 kable(RiversAndCatchments[1:10,]) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 kable(RiversAndCatchments[is.na(RiversAndCatchments$key),]) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
+::: {.callout-note appearance="simple"}
+## ICES
+Note the url in this table (@tbl-vocab_riverandcatchment): 	https://opendata-download.smhi.se/svar/SVAR_Basprodukter_2016_6.pdf is no longer accessed anywhere
+:::
 
-Note the url in this table (@tbl-vocab_riverandcatchment): 	https://opendata-download.smhi.se/svar/SVAR_Basprodukter_2016_6.pdf is no longer accessed anywhere, and there is a NA without value. 
 It does not seems as if there is a hierarchy in these geographic units.
 
-> [NOTE ICES] Just for information there is a line with NA ?, also the link is no longer valid.
+::: {.callout-note appearance="simple"}
+## ICES
+ Just for information there is a line with NA ?
+:::
 
->  [TODO] We'll have to reconcile this table with GIS,  we have to if there is a GIS map somewhere in ICES.
+::: {.callout-tip appearance="simple"}
+## TODO
+ We'll have to reconcile this table with GIS,  we have to if there is a GIS map somewhere in ICES.
+:::
 
->  [TODO] link ICES codes in our referential (which will be a map polygon in postgis).
+::: {.callout-tip appearance="simple"}
+## TODO
+ link ICES codes in our referential (which will be a map polygon in postgis).
+:::
 
-> [NOTE] River stock, assessment units and rivers align with the envisioned db hierachical structure for spatial data.
+:::{.callout-tip appearance="simple"}
+## NOTE 
+River stock, assessment units and rivers align with the envisioned db hierachical structure for spatial data.
+:::
 
 ### Category of rivers
 
@@ -122,7 +151,17 @@ It does not seems as if there is a hierarchy in these geographic units.
 |     Potential leading to category mixed    |     Not self-sustaining river stock                     |     Releases occur                            |     Long-term 10–90% wild smolt prod.     |
 : Classification criteria for wild, mixed, reared and potential salmon rivers in the Baltic Sea [@ICES2021_wgbast_stock_annex] {#tbl-classificationrivers}
 
-> [NOTE] The rivers are stored in the db, but these details (@tbl-classificationrivers) might vary within one basin (see @fig-assessmentunits), maybe this information should be stored alongside the referential as a separate table assessing the category of river but also including a period, as the status might change over time ?
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST
+::::
+::::{.questionbox-body}
+The rivers are stored in the db, but these details (@tbl-classificationrivers) might vary within one basin (see @fig-assessmentunits), maybe this information should be stored alongside the referential as a separate table assessing the category of river but also including a period, as the status might change over time ?
+::::
+:::
 
 # Fishery
 
@@ -153,17 +192,38 @@ unique(catchdb$year)
 #| echo: TRUE
 #| warning: FALSE
 #| message: FALSE
-
+#| tbl-cap: = Table of timpe periods in the wgbast db
+#| label: tbl-catchdatatime
 
 table(catchdb$time_period, catchdb$tp_type) %>%
  kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 ```
-There are `r sum(is.na(catchdb$tp_type))` and `r sum(is.na(catchdb$time_period))` NA values for `tp_type` and 
-> [QUESTION WGBAST] Can you confirm that `MON` and `MONTH` are the same values, same for `Year` and `YR` ? `HYR` and `QTR` are half of year and quarter OK
+There are `r sum(is.na(catchdb$tp_type))` and `r sum(is.na(catchdb$time_period))` NA values for `tp_type`.
 
-> [NOTE] Add constraint according to tp_type. Also add a not null constraint.
+
+:::{.callout-note  appearance="simple"}
+## NOTE
+`HYR` and `QTR` are half of year and quarter
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST
+::::
+::::{.questionbox-body}
+Could you confirm that `MON` and `MONTH` are the same values, same for `Year` and `YR` ? 
+::::
+:::
+
+
+:::{.callout-tip appearance="simple"}
+## TODO 
+Add constraint according to tp_type. Also add a not null constraint.
+:::
 
 ## Country
 
@@ -181,7 +241,15 @@ unique(catchdb$country)
 #| echo: TRUE
 #| warning: FALSE
 #| message: FALSE
-table(catchdb$species)
+#| tbl-cap: Species in wgbast catch database
+#| tbl-subcap:
+#| - Table of Species numbers
+#| - First two entries where species = NA
+#| - First two entries where species = SAL&TRS
+#| label: tbl-catchdataspecies 
+table(catchdb$species, useNA="ifany",dnn = "species") %>%
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover"))
 catchdb[catchdb$species=="NA",]%>%
  head(2) %>%
  kable() %>%
@@ -194,9 +262,17 @@ catchdb[catchdb$species=="SAL&TRS",]%>%
 
 
 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST : species
+::::
+::::{.questionbox-body}
+ Some 'NA' are character (11 rows) (@tbl-catchdataspecies) for EE. This is for seal damage. Is there a need for this ? It's not reported the same way every year ? 
+::::
+:::
 
-
-> [QUESTION WGBAST] Some 'NA' are character (11 rows) for EE. This is for seal damage and not reported the same way every year ? 
 
 ## Catch  habitat
 
@@ -218,24 +294,54 @@ For the recreational fisheries, all countries define trolling as open sea (O) wh
 
 
 
-``` {r checkdbhabitat}
-#| echo: TRUE
+``` {r tbl-catchdatahabitat}
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-unique(catchdb$fishery)
-sum(is.na(catchdb$fishery))
-head(catchdb[is.na(catchdb$fishery),])
-table(catchdb$fishery, catchdb$sub_div) %>% kable() %>%
+#| tbl-cap: Habitat type in column `fishery` in wgbast catch database. Rows correspond to the values in sub_div, columns to habitat type
+
+table(catchdb$sub_div, catchdb$fishery, useNA="ifany") %>% kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+``` {r fig-checkdbhabitat}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| fig-cap: Double dekker plot showing the importance of habitat type per species and subdivision. Cell importance according to the number of rows
+
 vcd::doubledecker(fishery ~  species + sub_div, data = catchdb)
 ```
 
-> [QUESTION WGBAST] In the stock annex there is a mention to sea `S` but it does not seem to be present in the database ?
+The values for habitat are : `r unique(catchdb$fishery)` there are `r sum(is.na(catchdb$fishery))` NA values in the database.
 
-Some areas do not hold a lot of catch for rivers. 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST : habitat
+::::
+::::{.questionbox-body}
+In the stock annex there is a mention to sea `S` but it does not seem to be present in the database ?
+::::
+:::
 
-The best match for fishery habitat in ICES is WLTYP.
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST : habitat
+::::
+::::{.questionbox-body}
+The name of the column `fishery`is not very explicit, would the use of `habitat_type` be more in line with data ?
+::::
+:::
+
+
+The best match for fishery habitat in ICES vocabulary seems to be WLTYP.
 
 ``` {r icesVocabhabitat}
 #| echo: TRUE
@@ -243,52 +349,102 @@ The best match for fishery habitat in ICES is WLTYP.
 #| warning: FALSE
 #| message: FALSE
 WLTYP <- icesVocab::getCodeList('WLTYP')
-kable(WLTYP, caption = "Water type (for stations)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(WLTYP, caption = "Water type (for stations)") %>% 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-> [QUESTION ICES] Is that right ? Should we use this one ? Is there really a need to add `sea` with a definition : catches either MO or C as it does not seem to be used ? 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION ICES : vocabulary for habitat
+::::
+::::{.questionbox-body}
+Should we use this vocabulary for catch habitat ?
+::::
+:::
 
-> [QUESTION WGBAST] Currently the definition in ICES vocab is WFD coastal water (C) or MC (Marine water (coast)) Marine water within 4 nm from the baseline. It seems that there are country difference in the interpretation of coastal or marine 2 10 12, so what do we choose ?
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST: 4 nm from the baseline ?
+::::
+::::{.questionbox-body}
+ Currently the definition in ICES vocab is WFD coastal water (C) or MC (Marine water (coast)) Marine water within 4 nm from the baseline. It seems that there are country difference in the interpretation of coastal or marine 2 10 12, so what do we choose ?
+::::
+:::
 
 ## Catches type
 
-Catches are further classified as `commercial, recreational, discard, and seal damage`[@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex : `commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, ALV=released alive back in water`
+Catches are further classified as `commercial, recreational, discard, and seal damage`[@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex : `commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, ALV=released alive back in water`.
 
 
-> NOTE : There is a difference between the stock annex, the stock annex lists four types, `UNRP` does not exist and should be removed from the excel describing the column content, `ALV` is found in the table (as in the db description), `BROOD` is never described
-
-> [QUESTION WGBAST] 39 lines with `BROOD` do you know to what these correspond ?
-
-
-``` {r checkFTYPE}
-#| echo: TRUE
+``` {r tbl-checkftype}
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Frequency of catches classification `f_type` in the database.
 table(catchdb$f_type, useNA="ifany",dnn = "f_type") %>%
  kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-
 ```
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST: what are 'BMS' and 'BROOD' ?
+::::
+::::{.questionbox-body}
+There is a difference between the stock annex, the excel table and the database. The stock annex lists four types `COMM`, `RECR`, `DISC` and `SEAL`. The excel also describes `ALV`, `UNRP` which does not exist. The db has two additional types `BROOD` and `BMS` which are reported neither in the stock annex nor in the excel table. These correspond to very few lines. Do you want to keep those values? Do you agree that `UNRP` should not be in the excel description ?
+::::
+:::
+
+
+:::{.callout-note appearance="simple"}
+## NOTE
+There are `r sum(is.na(catchdb$f_type))` NA values for `f_type`.
+:::
+
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST
+::::
+::::{.questionbox-body}
+39 lines with `BROOD` do you know to what these correspond ?
+::::
+:::
+
+
+
 
 ## Source of fishery data
 
 Logbooks provide primary information on catches taken on board the vessels, where real count and weight estimates are normally difficult to obtain. The catch statistics in different countries are obtained by combination of data included in logbooks, landing declarations, first sales notes and fisheries companies catch reports. From 2005 EU type logbooks were implemented in the new member states Latvia, Estonia, Poland and Lithuania [@ICES2021_wgbast_stock_annex].
 
 In the excel table the possible values are indicated as :
-`logbook=LOG, extrapolated=EXT, estimated=EST, expert evaluation=EXP`
+`logbook=LOG, extrapolated=EXT, estimated=EST, expert evaluation=EXP`.
 
 
 
-The ICES vocab DataSourceOfScientificWeight seems to provide the closest match with these data, however it lacks extrapolated, estimated.
+The ICES vocab `DataSourceOfScientificWeight` seems to provide the closest match with these data, however it lacks extrapolated, estimated.
 
 
 
-``` {r checknTYPE}
+``` {r tbl-checkntype}
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Source of data `n_type` in the WGNAS fisheries database.
+#| tbl-subcap: 
+#|   - Frequency of each type in the database including NA
+#|   - Contingency table for `n_type`and `f_type`including NA
 table(catchdb$n_type, useNA="ifany",dnn = "n_type") %>%
  kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
@@ -297,15 +453,35 @@ table(catchdb$n_type, catchdb$f_type, useNA="ifany") %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-> [QUESTION WGBAST] What are the definitions of extrapolated and estimated. ? 
 
-> [QUESTION WGBAST] ARE `EXP` and `EXV` the same ? What is `GST` ?
+``` {r tbl-icesVocabsource}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: ICES vocabulary for `DataSourceOfScientificWeight`.
+DataSourceOfScientificWeight <- icesVocab::getCodeList('DataSourceOfScientificWeight')
+kable(DataSourceOfScientificWeight, caption = "DataSourceOfScientificWeight table") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
 
-> [QUESTION WGBAST] The source of fishery data might partially correspond to the vocab dataSourceOfScientificWeight. At least there is a `Logbook`, `Expert evaluation`,  any idea if something in this vocab might correspond to extrapolated or estimated ? 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGBAST
+::::
+::::{.questionbox-body}
+* Could you provide definitions of extrapolated and estimated. ? 
+* ARE `EXP` and `EXV` the same (@tbl-checkntype) ? 
+* What is `GST` (@tbl-checkntype)?
+* The source of fishery data might partially correspond to the vocab `dataSourceOfScientificWeight` (@tbl-icesVocabsource). At least there is a `Logbook`, `Expert evaluation`,  any idea if something in this vocab might correspond to extrapolated or estimated ? 
+* Do you want to allow NA values there  ?
+* Would you treat things differently if tables for Baltic TRUTTA and  SALMON were separated ?
+::::
+:::
 
-> [QUESTION WGBAST] Do you want to allow NA values there  ?
 
-> [QUESTION WGBAST] Would you treat things differently if tables for Baltic TRUTTA and  SALMON were separated ?
+
 
 ``` {r checkwTYPE}
 #| echo: FALSE
@@ -321,16 +497,8 @@ table(catchdb$n_type, catchdb$f_type, useNA="ifany") %>%
 ```
 
 
-This is very similar to n_type this is 
 
-``` {r icesVocabsource}
-#| echo: TRUE
-#| eval: TRUE
-#| warning: FALSE
-#| message: FALSE
-DataSourceOfScientificWeight <- icesVocab::getCodeList('DataSourceOfScientificWeight')
-kable(DataSourceOfScientificWeight, caption = "DataSourceOfScientificWeight table") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-```
+
 
 # Electrofishing and river data 
 
@@ -366,8 +534,10 @@ mutate(
 save(sy, file= "data/sy.Rdata")
 ```
 
-> [NOTE] R1168C15 3,4 (probably two values....) probably need correction
-
+:::{.callout-note appearance="simple"}
+## NOTE WGBAST
+ R1168C15 3,4 (probably two values....) probably need correction
+:::
 
 Electrofishing data are obtained along with smolt counts at rivers Tornionjoki, Simojoki, Åbyälven, Rickleån, Sävarån, Ume/Vindelälven, Öreälven and Lögdeälven (Assessment unit 1-3), Mörrumsån, Emån and Testeboån (AU 4) to estimate smolt production based on parr density in electrofishing.
 
