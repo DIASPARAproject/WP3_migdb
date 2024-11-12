@@ -52,7 +52,7 @@ The six assessment units in the Baltic Sea consist of:
 Wild river stocks belonging to each assessment unit are listed in the next section[@ICES2021_wgbast_stock_annex].
   
 
-![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg)
+![Grouping of salmon river stocks in six assessment units in the Baltic Sea. The genetic variability between river stocks of an assessment unit is smaller than the genetic variability between river stocks of different units. In addition, the river stocks of a particular unit exhibit similar migration patterns. Wild salmon rivers (dark blue), mixed salmon rivers (light blue), reared salmon rivers (red), river stretches not accessible for salmon (grey). (source wgbast stock annex)](images/assessment_units_wgbast.jpg){#fig-assessmentunits}
 
 > [QUESTION WGBAST] Could we have access to a gis of this map (river type) to create the referentials in WP3.1 habitat
 
@@ -79,28 +79,37 @@ load_library("janitor")
 load_library("skimr")
 ```
 ``` {r icesVocabrivers}
-
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: = ICES Vocab for River and Catchments (RiversAndCatchments)
+#| tbl-subcap:
+#|   - RiverAndCatchments, 10 first lines
+#|   - This row has a problem
+#| label: tbl-vocab_riverandcatchment
 types <- icesVocab::getCodeTypeList()
 types[grep('river', tolower(types$Description)),]
 RiversAndCatchments <- icesVocab::getCodeList('RiversAndCatchments')
 nrow(RiversAndCatchments)
-kable(RiversAndCatchments[1:10,], caption = "RiverAndCatchments, 10 first lines") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-kable(RiversAndCatchments[is.na(RiversAndCatchments$key),], caption = "This one has a problem") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(RiversAndCatchments[1:10,]) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(RiversAndCatchments[is.na(RiversAndCatchments$key),]) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-Note the url in this table : 	https://opendata-download.smhi.se/svar/SVAR_Basprodukter_2016_6.pdf is no longer accessed anywhere, and there is a NA without value. 
+Note the url in this table (@tbl-vocab_riverandcatchment): 	https://opendata-download.smhi.se/svar/SVAR_Basprodukter_2016_6.pdf is no longer accessed anywhere, and there is a NA without value. 
 It does not seems as if there is a hierarchy in these geographic units.
+
+> [NOTE ICES] Just for information there is a line with NA ?, also the link is no longer valid.
 
 >  [TODO] We'll have to reconcile this table with GIS,  we have to if there is a GIS map somewhere in ICES.
 
 >  [TODO] link ICES codes in our referential (which will be a map polygon in postgis).
 
-> [NOTE] River stock, assessment units and rivers align with the envisoned db hierachical structure for geography.
+> [NOTE] River stock, assessment units and rivers align with the envisioned db hierachical structure for spatial data.
 
 ### Category of rivers
 
 
-Classification criteria for wild, mixed, reared and potential salmon rivers in the Baltic Sea [@ICES2021_wgbast_stock_annex]
+
 
 |     Category of salmon river               |     Management plan for salmon stock in the   river     |     Releases                                  |     Criteria for wild smolt production    |
 |--------------------------------------------|---------------------------------------------------------|-----------------------------------------------|-------------------------------------------|
@@ -109,9 +118,9 @@ Classification criteria for wild, mixed, reared and potential salmon rivers in t
 |     Reared                                 |     Not self-sustaining                                 |     Releases occur                            |     <10% of total smolt prod.             |
 |     Potential leading to category wild     |     Lead to self-sustaining river stock                 |     Releases occur during re-establishment    |     Long-term >90% wild smolt prod.       |
 |     Potential leading to category mixed    |     Not self-sustaining river stock                     |     Releases occur                            |     Long-term 10–90% wild smolt prod.     |
+: Classification criteria for wild, mixed, reared and potential salmon rivers in the Baltic Sea [@ICES2021_wgbast_stock_annex] {#tbl-classificationrivers}
 
-
-> [NOTE] This is in the db (recruitment database - river category) aleady, should be stored alongside the referential as a separate table of assessement, maybe with periods as the status might change ?
+> [NOTE] The rivers are stored in the db, but these details (@tbl-classificationrivers) might vary within one basin (see @fig-assessmentunits), maybe this information should be stored alongside the referential as a separate table assessing the category of river but also including a period, as the status might change over time ?
 
 # Fishery
 
@@ -202,6 +211,9 @@ Exceptions:
 Latvia and Lithuania are the only two countries directly using the actual geographical position when categorising the catches as either coastal (C) or open sea (O).
 For the recreational fisheries, all countries define trolling as open sea (O) whereas catches from other gears are defined as coastal (C) [@ICES2021_wgbast_stock_annex]. 
 
+
+
+
 ``` {r checkdbhabitat}
 #| echo: TRUE
 #| eval: TRUE
@@ -209,11 +221,13 @@ For the recreational fisheries, all countries define trolling as open sea (O) wh
 #| message: FALSE
 unique(catchdb$fishery)
 sum(is.na(catchdb$fishery))
-head(catchdb[is.na(catchdb$fishery),],200)
+head(catchdb[is.na(catchdb$fishery),])
 table(catchdb$fishery, catchdb$sub_div) %>% kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 vcd::doubledecker(fishery ~  species + sub_div, data = catchdb)
 ```
+
+> [QUESTION WGBAST] In the stock annex there is a mention to sea `S` but it does not seem to be present in the database ?
 
 Some areas do not hold a lot of catch for rivers. 
 
@@ -228,7 +242,7 @@ WLTYP <- icesVocab::getCodeList('WLTYP')
 kable(WLTYP, caption = "Water type (for stations)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
-> [QUESTION ICES] Is that right ? Should we use this one ? There is a need to add `sea` with a definition : catches either MO or C but 
+> [QUESTION ICES] Is that right ? Should we use this one ? Is there really a need to add `sea` with a definition : catches either MO or C as it does not seem to be used ? 
 
 > [QUESTION WGBAST] Currently the definition in ICES vocab is WFD coastal water (C) or MC (Marine water (coast)) Marine water within 4 nm from the baseline. It seems that there are country difference in the interpretation of coastal or marine 2 10 12, so what do we choose ?
 
@@ -380,15 +394,17 @@ table(sy$species, sy$tab) %>%
 ```
 ## country
 
+Years distributed from 1984, nothing special (Table @tbl-yearyoungfish), this db does not use time periods lower than year.
 ## time 
 ```{r young_fishdb_dbtime}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
-# TODO tp_type
-# TODO year
-# TODO time_period
-
+#| tbl-cap: = Number of values per year and sheet in the database
+#| label: tbl-yearyoungfish
+table(sy$year,sy$tab) %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 ## geography
 ```{r young_fishdb_db_geo}
@@ -401,6 +417,9 @@ table(sy$species, sy$tab) %>%
 # TODO sub_div3
 # TODO river
 
+table(sy$species, sy$river) %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 ## river_category
 
