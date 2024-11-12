@@ -63,6 +63,7 @@ con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,por
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: 'Structure of the main database'
+#| label: fig-maindb
 
 database10 <- DBI::dbGetQuery(con_salmoglob, 'SELECT * FROM public.database limit 20')
 knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
@@ -71,7 +72,8 @@ knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hove
 # Area
 
 
-![phylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation](images/phylogeographic_structuring_salmon.png)
+![Phylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation.](images/phylogeographic_structuring_salmon.png)
+{#fig-phylogeographicstructures}
 
 
 ```{r area}
@@ -79,6 +81,12 @@ knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hove
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Area types from 
+#| tbl-subcap: 
+#|   - Fisheries
+#|   - Countries
+#|   - Source area
+#| label: tbl-areatypes
 area <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT area FROM public.database')
 knitr::kable(area[grep("fishery",area$area),,drop=FALSE], caption = "Area corresponding to fisheries", row.names=FALSE)
 knitr::kable(area[grep("coun",area$area),,drop=FALSE], caption = "Area corresponding to countries", row.names=FALSE)
@@ -95,6 +103,7 @@ The latter table is by default, so Atlantic, NEC and NAC are included. Having a 
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: =
 location <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT location FROM public.database')
 knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE], caption = "Location corresponding to fisheries", row.names=FALSE)
 location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
@@ -209,9 +218,9 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
 
 > [NOTE] So the age also covers information on maturity but the only time it is really used outside from the metadata (eggs, smolt, prop_female) the maturity is not necessary.
 
-> [QUESTION wgnas] Why is omega not mixed ?
+> [QUESTION WGNAS] Why is omega not mixed ?
 
-> [QUESTION wgnas] Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
+> [QUESTION WGNAS] Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
 
 ``` {r check_maturity_metadata}
 #| echo: TRUE
