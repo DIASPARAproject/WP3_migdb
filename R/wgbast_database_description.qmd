@@ -66,8 +66,10 @@ Wild river stocks belonging to each assessment unit are listed in the next secti
 #if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
 setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/TODO"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
 setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
 }
 source("utilities/load_library.R")
 load_library("tidyverse")
@@ -128,7 +130,6 @@ It does not seems as if there is a hierarchy in these geographic units.
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
 catchdb <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Catch_29-02-2024.xlsx"), sheet = "Catch data")
 catchdb <- janitor::clean_names(catchdb)
 # quick fix to avoid logical I put char in subdiv_IC[1]
@@ -152,11 +153,14 @@ unique(catchdb$year)
 #| echo: TRUE
 #| warning: FALSE
 #| message: FALSE
-table(catchdb$time_period, catchdb$tp_type)
-sum(is.na(catchdb$tp_type))
-sum(is.na(catchdb$time_period))
-```
 
+
+table(catchdb$time_period, catchdb$tp_type) %>%
+ kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+There are `r sum(is.na(catchdb$tp_type))` and `r sum(is.na(catchdb$time_period))` NA values for `tp_type` and 
 > [QUESTION WGBAST] Can you confirm that `MON` and `MONTH` are the same values, same for `Year` and `YR` ? `HYR` and `QTR` are half of year and quarter OK
 
 > [NOTE] Add constraint according to tp_type. Also add a not null constraint.

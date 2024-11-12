@@ -81,7 +81,7 @@ knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hove
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: Area types from 
+#| tbl-cap: Area types
 #| tbl-subcap: 
 #|   - Fisheries
 #|   - Countries
@@ -103,7 +103,12 @@ The latter table is by default, so Atlantic, NEC and NAC are included. Having a 
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: =
+#| tbl-cap: Locations
+#| tbl-subcap: 
+#|   - Fisheries
+#|   - Weird
+#|   - Areas
+#| label: tbl-locations
 location <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT location FROM public.database')
 knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE], caption = "Location corresponding to fisheries", row.names=FALSE)
 location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
@@ -115,15 +120,14 @@ knitr::kable(location_area, caption = "Location corresponding exactly to what is
 ```
 
 
-list of params corresponding to neither fishery nor area.
-
-
 ```{r param_biz}
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| results: 'asis'
+#| tbl-cap: List of parameters corresponding to neither fishery nor area.
+#| label: tbl-weirdparameters
 
 for (i in 1 : nrow(location_biz)){
   location_bizi <- location_biz$location[i]
@@ -281,6 +285,7 @@ There seem to be a correspondence between the 4 stage scale and the maturity
 | not maturing| Resting/Skip of spawning (4-stage scale, additional option)|TS_MATURITY |
 | spawner (metadata table)	| Spawning (6-stage scale) |TS_MATURITY |
 | post-return |  Post-spawning (5-stage scale) |TS_MATURITY |
+: Life stages comparaison between WGNAS database and ICES vocabularies {#tbl-lifestagescomparaison}
 
 > [QUESTION wgnas] Is the correspondence mature / maturing correct or is it pre -spawing? 
 
