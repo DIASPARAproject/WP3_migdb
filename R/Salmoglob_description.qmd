@@ -180,11 +180,11 @@ knitr::kable(result) %>% kable_styling(bootstrap_options = c("striped", "hover",
 ```
 
 So in the end, only omega has 25 locations, and in this case the location corresponds to area.
-This means we can get rid of the location column. For omega we can keep it,; so we can add a column with a foreign key to area in the parameters table where priors will be stored.
+This means we can get rid of the location column. For `omega` we can keep it,; so we can add a column with a foreign key to area in the parameters table where priors will be stored.
 
 # Sea age
 
-Salmon mature at various sea ages, typically returning to freshwater to spawn after one to three years at sea, but also sometimes at older sea ages; this varies widely between populations. Those salmon that return after one year at sea are referred to as one-sea-winter (1SW) salmon, or grilse, with older fish categorised as 2SW, 3SW, etc. In practice, however, for management purposes these older sea age fish are typically aggregated and collectively referred to as multi-sea-winter (MSW) salmon. The sea age when salmon become sexually mature depends on genetics as well as growing conditions in the sea, and possibly freshwater, although the precise proximate factors initiating homeward migration are unknown (Hansen and Quinn, 1998). The sea age of Atlantic salmon is important in the context of stock definition since these different groups of fish have different migration routes, return at different times and are differentially exploited in fisheries. Thus, for example, it is only potential MSW salmon that are exploited in the distant water salmon fishery that operates off the west coast of Greenland [@ICES2021_wgnas_stock_annex].
+Salmon mature at various sea ages, typically returning to freshwater to spawn after one to three years at sea, but also sometimes at older sea ages; this varies widely between populations. Those salmon that return after one year at sea are referred to as one-sea-winter (`1SW`) salmon, or grilse, with older fish categorised as `2SW, 3SW`, etc. In practice, however, for management purposes these older sea age fish are typically aggregated and collectively referred to as multi-sea-winter (`MSW`) salmon. The sea age when salmon become sexually mature depends on genetics as well as growing conditions in the sea, and possibly freshwater, although the precise proximate factors initiating homeward migration are unknown (Hansen and Quinn, 1998). The sea age of Atlantic salmon is important in the context of stock definition since these different groups of fish have different migration routes, return at different times and are differentially exploited in fisheries. Thus, for example, it is only potential `MSW` salmon that are exploited in the distant water salmon fishery that operates off the west coast of Greenland [@ICES2021_wgnas_stock_annex].
 
 ``` {r check_age}
 #| echo: FALSE
@@ -230,12 +230,12 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
 
 :::{.callout-note appearance="simple"}
 ## NOTE
-  Only eggs, p_smolt, p_smolt_pr, and prop_female need an age, the other is contained in the name of the variable.
+  Only `eggs, p_smolt, p_smolt_pr` and `prop_female` need an age, the other is contained in the name of the variable.
 :::
 
 :::{.callout-note appearance="simple"}
 ## NOTE
- So the age also covers information on maturity but the only time it is really used outside from the metadata (eggs, smolt, prop_female) the maturity is not necessary.
+ So the age also covers information on maturity but the only time it is really used outside from the metadata (`eggs, smolt, prop_female`) the maturity is not necessary.
 :::
 
 :::{.questionbox}
@@ -245,8 +245,8 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
   QUESTION TO WGNAS
 ::::
 ::::{.questionbox-body}
-  * Why is omega not mixed ?
-  * Would it not make more sense to store 2SW as MSW  (multi-sea-winter) ? So in the referential have 1SW 2SW 3SW ... how many ? and then MSW ?
+  * Why is `omega` not mixed ?
+  * Would it not make more sense to store `2SW` as `MSW`  (multi-sea-winter) ? So in the referential have `1SW 2SW 3SW` ... how many ? and then `MSW` ?
 ::::
 :::
 
@@ -279,7 +279,7 @@ knitr::kable(summary_lifestage_metadata) %>%
 
 :::{.callout-note appearance="simple"}
 ## NOTE
-  Now there is the PFA, which is fine, but not really a stage.
+  Now there is the `PFA`, which is fine, but not really a stage.
 :::
 
 # Developmental stage
@@ -347,7 +347,7 @@ QUESTION TO WGNAS
 ::::
 ::::{.questionbox-body}
   * Is the correspondence mature / maturing correct or is it pre -spawing? 
-  * Is the correspondence OK. Do we really need PFA stage or could we just describe it in the metadata ?
+  * Is the correspondence OK. Do we really need `PFA` stage or could we just describe it in the metadata ?
 ::::
 :::
 
@@ -358,7 +358,7 @@ QUESTION TO WGNAS
 QUESTION TO ICES
 ::::
 ::::{.questionbox-body}
- Could we add smolt and pfa (pre fisheries abundance) somewhere ?
+ Could we add smolt and PFA (pre fisheries abundance) somewhere ?
 ::::
 :::
 
@@ -402,7 +402,7 @@ knitr::kable(summary_metric,
 #| message: FALSE
 #| tbl-cap: Checking correspondence between database and metadata
 #| tbl-subcap: 
-#|   - Variables with correspondence pb for metric between the metadata and the database table
+#|   - This row has a problem
 #|   - Variables with correspondence pb for metric between the metadata and the database table
 #| label: tbl-datametadatacheck
 
@@ -445,20 +445,20 @@ The tables could have a different format, meaning maybe parameter does not have 
 
 From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).
 
-## referential tables
+## Referential tables
 
 Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g. source from ICES vocab, which corresponds to working group or accession events (datacalls)).
 
-## unicity constraints
+## Unicity constraints
 
 Another important point to add (at least to the salmoglob database) is unicity constraint. As some values would be null, creating unicity constraints with indexes would be necessary. These allow to have different levels of constraints for instance the unicity would be defined for :
-(year, age, area, parameter)
-(year, age, parameter)
-(year, area, parameter)
-(year, parameter)
+(`year, age, area, parameter`)
+(`year, age, parameter`)
+(`year, area, parameter`)
+(`year, parameter`)
 
 One of the table will have to contain twice the area it will have to be treated separately.
-(year, area, area,  parameter)
+(`year, area, area, parameter`)
 
 
 ## Other comments.
