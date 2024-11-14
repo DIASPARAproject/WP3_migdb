@@ -25,7 +25,7 @@ bibliography: ../diaspara.bib
 
 
 
-The following working document is just a technical analysis of the WGBAST database. It uses different sources, ICES vocabulary, the stock annex [@ICES2021_wgbast_stock_annex], to analyse the structure of the wgbast database before integrating in a single database (wgnas, wgbast, wgeel) in the DIASPARA project.
+The following working document is just a technical analysis of the WGBAST database. It uses different sources, ICES vocabulary, the stock annex [@ICES2021_wgbast_stock_annex], to analyse the structure of the wgbast database before assessing whether we could integrate it in a single database (wgnas, wgbast, wgeel) in the DIASPARA project.
 This document does not engage the WGBAST it's just a technical analysis, to try to get how this works.
 This document is listed as a task there :
 https://github.com/DIASPARAproject/WP3_migdb/issues/11
@@ -315,7 +315,8 @@ table(catchdb$sub_div, catchdb$fishery, useNA="ifany") %>% kable() %>%
 vcd::doubledecker(fishery ~  species + sub_div, data = catchdb)
 ```
 
-The values for habitat are : `r unique(catchdb$fishery)` there are `r sum(is.na(catchdb$fishery))` NA values in the database.
+The values for habitat are : `r unique(catchdb$fishery)` 
+there are `r sum(is.na(catchdb$fishery))` NA values in the database.
 
 :::{.questionbox}
 ::::{.questionbox-header}
@@ -324,7 +325,8 @@ The values for habitat are : `r unique(catchdb$fishery)` there are `r sum(is.na(
 QUESTION WGBAST : habitat
 ::::
 ::::{.questionbox-body}
-In the stock annex there is a mention to sea `S` but it does not seem to be present in the database ?
+In the stock annex there is a mention to sea `S` but 
+it does not seem to be present in the database ?
 ::::
 :::
 
@@ -336,21 +338,26 @@ In the stock annex there is a mention to sea `S` but it does not seem to be pres
 QUESTION WGBAST : habitat
 ::::
 ::::{.questionbox-body}
-The name of the column `fishery`is not very explicit, would the use of `habitat_type` be more in line with data ?
+The name of the column `fishery`is not very explicit, would the use of `habitat_type` 
+be more in line with data ?
 ::::
 :::
+
 
 
 The best match for fishery habitat in ICES vocabulary seems to be WLTYP.
 
-``` {r icesVocabhabitat}
+``` {r tbl-icesVocabhabitat}
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| fig-cap: ICES vocabulary for water types (stations)
+
 WLTYP <- icesVocab::getCodeList('WLTYP')
 kable(WLTYP, caption = "Water type (for stations)") %>% 
 kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
 ```
 
 :::{.questionbox}
@@ -377,7 +384,10 @@ QUESTION WGBAST: 4 nm from the baseline ?
 
 ## Catches type
 
-Catches are further classified as `commercial, recreational, discard, and seal damage`[@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex : `commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, ALV=released alive back in water`.
+Catches are further classified as `commercial, recreational, discard, and seal damage` 
+[@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex :
+ `commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, 
+ ALV=released alive back in water`.
 
 
 ``` {r tbl-checkftype}
@@ -441,7 +451,7 @@ The ICES vocab `DataSourceOfScientificWeight` seems to provide the closest match
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: Source of data `n_type` in the WGNAS fisheries database.
+#| tbl-cap: Catches according to source of capture and outcome `f_type` in the WGNAS fisheries database.
 #| tbl-subcap: 
 #|   - Frequency of each type in the database including NA
 #|   - Contingency table for `n_type`and `f_type`including NA
@@ -480,18 +490,27 @@ QUESTION WGBAST
 ::::
 :::
 
+:::{.callout-note appearance="simple"}
+## NOTE
+`w_type`and `n_type` source of data are similar and will be treated in the same column in the database 
+There are `r sum(is.na(catchdb$w_type))` NA values for `w_type`.
+:::
 
 
 
-``` {r checkwTYPE}
+``` {r tbl-checkwtype}
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-table(catchdb$w_type, useNA="ifany",dnn = "n_type") %>%
+#| tbl-cap: Catches according to data source for weight `w_type` in the WGNAS fisheries database.
+#| tbl-subcap: 
+#|   - Frequency of each type datasource for weight in the database including NA
+#|   - Contingency table for `n_type`and `w_type`including NA
+table(catchdb$w_type, useNA="ifany",dnn = "w_type") %>%
  kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-table(catchdb$n_type, catchdb$f_type, useNA="ifany") %>%
+table(catchdb$n_type, catchdb$w_type, useNA="ifany") %>%
  kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
@@ -502,7 +521,7 @@ table(catchdb$n_type, catchdb$f_type, useNA="ifany") %>%
 
 # Electrofishing and river data 
 
-```{r read_young_fishdb_db}
+```{r read_youngfishdbdb}
 #| eval: FALSE
 #| echo: TRUE
 #| warning: FALSE
@@ -512,7 +531,6 @@ smolts <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024
 young_fish <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "numb of young fish")
 smolts <- janitor::clean_names(smolts)
 young_fish <- janitor::clean_names(young_fish)
-# quick fix to avoid logical I put char in subdiv_IC[1]
 
 smolts %>%skim()
 young_fish %>%skim()
@@ -548,81 +566,237 @@ Electrofishing data are obtained along with smolt counts at rivers Tornionjoki, 
 
 The number of sampling sites is used as a measure of precision of the parr density. 
 
-> [Question WGBAST] there must be a dataset of electrofishing somewhere. This should be part of the template db on electrofishing, can we have access ?
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question WGBAST
+::::
+::::{.questionbox-body}
+* There must be a dataset of electrofishing somewhere. This should be part of the template db on electrofishing, can we have access ?
+* Would it be usefull to start from a full db of electrofishing data ?
+::::
+:::
 
-> [Question  WGBAST] would it be usefull to start from a full db of electrofishing data ?
 
+## Species
 
-## species
-
-```{r young_fishdb_db_species}
+```{r tbl-youngfishdbdbspecies}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
+#| tbl-cap: Frequencies of species type in the young fish and smolt database.
 load("data/sy.Rdata")
 
 table(sy$species, sy$tab) %>% 
   kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
 ```
+
 ## country
 
-Years distributed from 1984, nothing special (Table @tbl-yearyoungfish), this db does not use time periods lower than year.
-## time 
-```{r young_fishdb_dbtime}
+```{r tbl-youngfishdbdbcountry}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
-#| tbl-cap: = Number of values per year and sheet in the database
-#| label: tbl-yearyoungfish
+#| tbl-cap: Countries in the young fish and smolt database.
+load("data/sy.Rdata")
+
+table(sy$country, sy$tab) %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
+## time 
+```{r tbl-youngfishdbdbtime}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Number of values per year and sheet in the database
 table(sy$year,sy$tab) %>% 
   kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+:::{.callout-note appearance="simple"}
+## NOTE 
+Years distributed from 1984, nothing special (Table @tbl-yearyoungfish), this db does not use time periods lower than year.
+:::
+
+
 ## geography
-```{r young_fishdb_db_geo}
+```{r tbl-youngfishdbdbgeo}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
-# TODO assessment unit
-# TODO sub_div
-# TODO sub_div2
-# TODO sub_div3
-# TODO river
+#| tbl-cap: Geographical units in the young fish and smolt database
+#| tbl-subcap: 
+#|   - Rivers (note that some labels seem to be duplicated in the database)
+#|   - Duplicated values for name in ICES vocab
+#|   - Rivers with more than one ICES division
+#|   - Table for values corresponding to more than one ICES division
 
-table(sy$species, sy$river) %>% 
+
+table(sy$river, sy$tab) %>% 
   kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+# Joining rivers and the ICES vocab, the idea is to get rid of the 
+# accents, but then ICES vocab has duplicated values. I'm stopping there....
+# 
+# sy %>% 
+# select(river) %>% 
+# distinct(river)  %>% 
+# mutate(river0=stringi::stri_trans_general(river, "latin-ascii")) %>% 
+# filter(river != river0)
+RR <- RiversAndCatchments %>% 
+ mutate(description0 = 
+        stringi::stri_trans_general(Description, "latin-ascii"))
+## this is gona be hard, there are duplicated names in description in the ICES Vocab
+RR[RR$description0%in%RR[duplicated(RR$description0),"description0"],] %>%
+ arrange(Description) %>% kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+cc <- apply(as.data.frame.matrix(table(sy$river, sy$sub_div)),1,function(X)sum(X>0))
+dd <- data.frame("more_than_1_ICES_div"=cc[cc > 1])
+dd %>% arrange(more_than_1_ICES_div) %>% kable() 
+
+sydd <- sy %>% filter (river %in% rownames(dd))
+table(sydd$river, sydd$sub_div) %>% kable %>%
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+ 
+
+
 ```
+
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question WGBAST
+::::
+::::{.questionbox-body}
+* Would it be usefull to start from a full db of electrofishing data ?
+* Could you please confirm the duplicated values here (values with similar names)
+in @tbl-youngfishdbdbgeo. 
+* Do you have gis information corresponding to those rivers ?
+* Some values are 'at sea' what does it means ?
+* Why are some entries for some rivers corresponding to more than one area ?
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question ICES
+::::
+::::{.questionbox-body}
+* There are  duplicated names in the ICES Vocab, is it the same rivers ?
+Do you have ways to separate the rivers (gis information) ?
+::::
+:::
+
 ## river_category
 
-```{r young_fishdb_db_river_cat}
+```{r tbl-youngfishdbdbrivercat}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
-# TODO river_category
-
+#| tbl-cap: River categories in the young fish and smolt database
+table(sy$river_category, sy$tab, useNA="ifany") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
 
 ## age
-```{r read_young_fish_db_age}
+```{r tbl-readyoungfishdbage}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
+#| tbl-cap: Age in the young fish database
+#| tbl-subcap: 
+#|   - Age for smolts
+#|   - Age for young fish
+sys <- sy %>% filter(tab=="smolts") 
+table(sys$age, sys$tab) %>% kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
+syy <- sy %>% filter(tab=="young_fish") 
+table(syy$age, syy$species) %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question WGBAST
+::::
+::::{.questionbox-body}
+What is the meaning of the different age categories ?
+There are 9 smolts corresponding to 1s parr (caught in downstream traps ) ?
+::::
+:::
+
+
 ## origin
 
-```{r young_fishdb_db_origin}
+```{r tbl-youngfishdbdborigin}
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE 
-origin
+#| tbl-cap: Origin in the young fish and smolt database
+table(sy$origin, sy$tab, useNA="ifany") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question WGBAST
+::::
+::::{.questionbox-body}
+There are just 9 NA values, is this an error ?
+::::
+:::
+
+```{r read_youngfishdbdb}
+#| eval: FALSE
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE 
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+smolts <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "number of wild smolts")
+young_fish <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "numb of young fish")
+smolts <- janitor::clean_names(smolts)
+young_fish <- janitor::clean_names(young_fish)
+
+smolts %>%skim()
+young_fish %>%skim()
+sy <- bind_rows(
+smolts %>% 
+mutate(
+  tab="smolts",
+  the_most_probable_number_of_smolts = as.numeric(the_most_probable_number_of_smolts),
+),
+young_fish %>% 
+mutate(
+  tab = "young_fish",
+  sub_div = as.character(sub_div),
+  sub_div3 = as.character(sub_div3),
+  min_numb_of_wild_smolts = as.numeric(min_numb_of_wild_smolts),
+  max_numb_of_wild_smolts = as.numeric(max_numb_of_wild_smolts),
+  n_type = as.numeric(n_type)
+))
+save(sy, file= "data/sy.Rdata")
 ```
 
+WGBAST_TRS_densities2024filled.xlsx
 
 ![Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.png)
 
