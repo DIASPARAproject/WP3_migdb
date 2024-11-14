@@ -80,7 +80,7 @@ Could we have access to a gis of this map (river type) to create the referential
 #if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
 setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "D:/TODO"
+datawd <- "D:/DIASPARA/wgbast"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
 setwd("C:/workspace/DIASPARA_WP3_migdb/R")
 datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
