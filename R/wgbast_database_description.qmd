@@ -325,23 +325,14 @@ there are `r sum(is.na(catchdb$fishery))` NA values in the database.
 QUESTION WGBAST : habitat
 ::::
 ::::{.questionbox-body}
-In the stock annex there is a mention to sea `S` but 
+* In the stock annex there is a mention to sea `S` but 
 it does not seem to be present in the database ?
-::::
-:::
-
-
-:::{.questionbox}
-::::{.questionbox-header}
-::::{.questionbox-icon}
-::::
-QUESTION WGBAST : habitat
-::::
-::::{.questionbox-body}
-The name of the column `fishery`is not very explicit, would the use of `habitat_type` 
+* The name of the column `fishery`is not very explicit, would the use of `habitat_type` 
 be more in line with data ?
 ::::
 :::
+
+
 
 
 
@@ -516,17 +507,19 @@ table(catchdb$n_type, catchdb$w_type, useNA="ifany") %>%
 ```
 
 
+## gear
 
+TODO analyse gear according to ftype
 
 
 # Electrofishing and river data 
 
 ```{r read_youngfishdbdb}
-#| eval: FALSE
+#| eval: TRUE
 #| echo: TRUE
 #| warning: FALSE
 #| message: FALSE 
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+
 smolts <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "number of wild smolts")
 young_fish <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "numb of young fish")
 smolts <- janitor::clean_names(smolts)
@@ -593,7 +586,7 @@ table(sy$species, sy$tab) %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-## country
+## Country
 
 ```{r tbl-youngfishdbdbcountry}
 #| echo: FALSE
@@ -608,7 +601,7 @@ table(sy$country, sy$tab) %>%
 ```
 
 
-## time 
+## Time 
 ```{r tbl-youngfishdbdbtime}
 #| echo: FALSE
 #| warning: FALSE
@@ -620,11 +613,11 @@ table(sy$year,sy$tab) %>%
 ```
 :::{.callout-note appearance="simple"}
 ## NOTE 
-Years distributed from 1984, nothing special (Table @tbl-yearyoungfish), this db does not use time periods lower than year.
+Years distributed from 1984, nothing special (Table tbl-youngfishdbdbtime), this db does not use time periods lower than year.
 :::
 
 
-## geography
+## Geography
 ```{r tbl-youngfishdbdbgeo}
 #| echo: FALSE
 #| warning: FALSE
@@ -677,28 +670,14 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 Question WGBAST
 ::::
 ::::{.questionbox-body}
-* Would it be usefull to start from a full db of electrofishing data ?
 * Could you please confirm the duplicated values here (values with similar names)
 in @tbl-youngfishdbdbgeo. 
-* Do you have gis information corresponding to those rivers ?
-* Some values are 'at sea' what does it means ?
 * Why are some entries for some rivers corresponding to more than one area ?
 ::::
 :::
 
-:::{.questionbox}
-::::{.questionbox-header}
-::::{.questionbox-icon}
-::::
-Question ICES
-::::
-::::{.questionbox-body}
-* There are  duplicated names in the ICES Vocab, is it the same rivers ?
-Do you have ways to separate the rivers (gis information) ?
-::::
-:::
 
-## river_category
+## River_category
 
 ```{r tbl-youngfishdbdbrivercat}
 #| echo: FALSE
@@ -712,7 +691,7 @@ table(sy$river_category, sy$tab, useNA="ifany") %>%
 
 
 
-## age
+## Age
 ```{r tbl-readyoungfishdbage}
 #| echo: FALSE
 #| warning: FALSE
@@ -743,7 +722,7 @@ There are 9 smolts corresponding to 1s parr (caught in downstream traps ) ?
 :::
 
 
-## origin
+## Origin
 
 ```{r tbl-youngfishdbdborigin}
 #| echo: FALSE
@@ -765,42 +744,186 @@ There are just 9 NA values, is this an error ?
 ::::
 :::
 
-```{r read_youngfishdbdb}
-#| eval: FALSE
+
+
+## Type of smolt number estimation method
+
+
+1. Complete count of smolts.
+2. Sampling of smolts and estimate of total smolt run size.
+3. Estimate of smolt run from parr production by relation developed in the same river.
+4. Estimate of smolt run from parr production by relation developed in another river.
+5. Inference of smolt production from data derived from similar rivers in the region.
+6. Count of spawners.
+7. Estimate inferred from stocking of reared fish in the river.
+8. Salmon catch, exploitation and survival estimate.
+
+```{r ntype}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Origin in the young fish and smolt database
+summary(sy$n_type)
+```
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+WGBAST
+::::
+::::{.questionbox-body}
+* NOTE There are character values, "na", "n.e.","0,3", "0 .1"  
+* QUESTION There are missing values there ... Is that correct ?
+::::
+:::
+
+
+
+# TRUTTA electrofishing densities dataset
+
+```{r read_truttadensitiesdb}
+#| eval: TRUE
 #| echo: TRUE
 #| warning: FALSE
 #| message: FALSE 
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
-smolts <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "number of wild smolts")
-young_fish <- readxl::read_xlsx(file.path(datawd, "WGBAST_2024_Young_fish_26-02-2024.xlsx"), sheet = "numb of young fish")
-smolts <- janitor::clean_names(smolts)
-young_fish <- janitor::clean_names(young_fish)
+truttadens <- readxl::read_xlsx(file.path(datawd, "WGBAST_TRS_densities2024filled.xlsx"), sheet = "dane")[,1:9]
+ttd <- janitor::clean_names(truttadens)
+ttd <- ttd[!is.na(ttd$density_n_100m2),]
 
-smolts %>%skim()
-young_fish %>%skim()
-sy <- bind_rows(
-smolts %>% 
-mutate(
-  tab="smolts",
-  the_most_probable_number_of_smolts = as.numeric(the_most_probable_number_of_smolts),
-),
-young_fish %>% 
-mutate(
-  tab = "young_fish",
-  sub_div = as.character(sub_div),
-  sub_div3 = as.character(sub_div3),
-  min_numb_of_wild_smolts = as.numeric(min_numb_of_wild_smolts),
-  max_numb_of_wild_smolts = as.numeric(max_numb_of_wild_smolts),
-  n_type = as.numeric(n_type)
-))
-save(sy, file= "data/sy.Rdata")
+ttd %>%skim()
 ```
 
-WGBAST_TRS_densities2024filled.xlsx
+## Species
+
+```{r tbl-truttadensitiesdbspecies}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Frequencies of species type in the trutta densities dataset
+#| tbl-subcap: 
+#|   - Frequency of values
+#|   - Lines with missing value for species
+
+table(ttd$species, useNA="ifany") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+ttd[is.na(ttd$species),] %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+:::{.callout-note appearance="simple"}
+## NOTE WGBAST
+Two values without species, we can correct while integrating
+:::
+
+
+## Country
+
+```{r tbl-truttadensitiesdbcountry}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Countries in the trutta density dataset
+
+
+table(ttd$country, useNA="ifany" ,dnn = "country") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question WGBAST
+::::
+::::{.questionbox-body}
+* GER should be DE
+* What is SE-S, it's not a country how do we deal with this. Why is it needed ? Could we use some other column from the other datasets (as they will be in the joined database structure) ?
+::::
+:::
+
+## Time 
+```{r tbl-truttadensitiesdbtime}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Number of values per year and sheet in trutta density dataset
+table(ttd$year, useNA="ifany", dnn = "country") %>% 
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+:::{.callout-note appearance="simple"}
+## NOTE 
+Years distributed from 1975, nothing special (Table @tbl-truttadensitiesdbtime), this db does not use time periods lower than year.
+:::
+
+
+## Geography
+```{r tbl-truttadensitiesdbgeo}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Geographical units in the trutta densities dataset
+#| tbl-subcap: 
+#|   - Rivers (note that some labels seem to be duplicated in the database)
+#|   - Rivers with more than one ICES division
+#|   - Table for values corresponding to more than one ICES division
+#|   - Table of main rivers
+
+table(ttd$river, useNA="ifany", dnn = "river") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+cc <- apply(as.data.frame.matrix(table(ttd$river, ttd$sub_div)),1,function(X)sum(X>0))
+dd <- data.frame("more_than_1_ICES_div"=cc[cc > 1])
+dd %>% arrange(more_than_1_ICES_div) %>% kable() 
+
+ttddd <- ttd %>% filter (river %in% rownames(dd))
+table(ttddd$river, ttddd$sub_div) %>% kable %>%
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+ 
+table(ttd$main_river, useNA="ifany", dnn = "main_river") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question WGBAST
+::::
+::::{.questionbox-body}
+* Would it be usefull to start from a full db of electrofishing data ?
+* Could you please confirm the duplicated values here (values with similar names)
+in @tbl-truttadensitiesdbgeo. 
+* Do you have gis information corresponding to those rivers ?
+* Some values are 'at sea' what does it means ?
+* Why are some entries for some rivers corresponding to more than one area ?
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question ICES
+::::
+::::{.questionbox-body}
+* There are  duplicated names in the ICES Vocab, is it the same rivers ?
+Do you have ways to separate the rivers (gis information) ?
+::::
+:::
+
+
+# The model
 
 ![Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.png)
 
-# The model
 
 Salmon populations in Gulf of Bothnia and southern Sweden (AUs 1–4), eastern Main Basin (AU5) and Gulf of Finland (AU6) are assessed separately [@ICES2021_wgbast_stock_annex].
 
