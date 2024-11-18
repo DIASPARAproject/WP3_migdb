@@ -73,6 +73,9 @@ R/template_diaspara.html
 R/wgbast_database_description_files/*
 R/*.html
 R/*.md
+R/*.pdf
 R/wgbast_database_description.html_files/*
-R/_extension
+R/_extensions/*
+R/diaspara_WP3_presentation_files/*
+R/assets/*
 .vscode/global.code-snippets
