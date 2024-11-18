@@ -1,15 +1,15 @@
 ---
-title: "Workpackage 3: database"
-subtitle: "Creating an international pan-European spatial database of migratory fish habitats to support a holistic and transparent assessment"
+title: "Creating database for migratory fishes"
+subtitle: " To support a holistic and transparent assessment"
 author: "Cédric Briand, Jules Oliviero, Jani Helminen"
 filters:
   - quarto-kroki
   - speakernotes
 title-slide-attributes:
-  data-background-image: images/eel_051.jpg
+  data-background-image: images/title_slide.png
   data-background-size: stretch
   data-background-opacity: "0.5"
-logo: images/ICES_logo.png
+logo: images/diaspara_logo.png
 footer: "WGEEL 2024 work"
 format: 
   revealjs :
@@ -32,21 +32,41 @@ background-transition: fade
 editor: visual
 ---
 
-## GraphViz
+# Habitat DB
 
 
 ::: notes
-Will these notes be displayed ?
+Notes for habitat db
 :::
 
+# SAM DB
+## WGBAST
+![](images/assessment_units_wgbast.jpg){.r-stretch}
 
+## WGNAS
+gfjhgjhjf
+
+![](images\phylogeographic_structuring_salmon.png){.r-stretch}
+
+## WGEEL
+
+
+
+# Dam DB
+
+# Electrofishing DB
+
+# Time series - sampling and individual data (LHT)
 
 ## BlockDiag
 
+<!---
 ```kroki-blockdiag
+#| eval: false
 blockdiag {
   Hello -> World ;
   Hello [color = "greenyellow"];
   World [color = "orange"];
 }
 ```
+-->
