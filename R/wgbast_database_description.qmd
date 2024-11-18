@@ -299,9 +299,20 @@ For the recreational fisheries, all countries define trolling as open sea (O) wh
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: Habitat type in column `fishery` in wgbast catch database. Rows correspond to the values in sub_div, columns to habitat type
+#| tbl-cap: Habitat and fishery
+#| tbl-subcap: 
+#|   - Habitat type in column `fishery` in wgbast catch database. Rows correspond to the values in sub_div, columns to habitat type
+#|   - Contingency table for `sub_div`and `sub_div2` including NA
+#|   - Contingency table for `sub_div2`and `sub_div3` including NA
+
 
 table(catchdb$sub_div, catchdb$fishery, useNA="ifany") %>% kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
+  table(catchdb$sub_div, catchdb$sub_div2, useNA="ifany") %>% kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+
+  table(catchdb$sub_div2, catchdb$sub_div3, useNA="ifany") %>% kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
@@ -317,6 +328,13 @@ vcd::doubledecker(fishery ~  species + sub_div, data = catchdb)
 
 The values for habitat are : `r unique(catchdb$fishery)` 
 there are `r sum(is.na(catchdb$fishery))` NA values in the database.
+200=MainB(22-29); 300=GoB(30-31).
+:::{.callout-note appearance="simple"}
+## TODO
+Create geographical grouping of areas + use ICES subdiv3
+:::
+
+
 
 :::{.questionbox}
 ::::{.questionbox-header}
@@ -329,6 +347,7 @@ QUESTION WGBAST : habitat
 it does not seem to be present in the database ?
 * The name of the column `fishery`is not very explicit, would the use of `habitat_type` 
 be more in line with data ?
+* Can you confirm that 200 is 22-31 and not 22-29, and that 300 is 30-31 ?
 ::::
 :::
 
@@ -701,7 +720,7 @@ table(sy$river_category, sy$tab, useNA="ifany") %>%
 #|   - Age for smolts
 #|   - Age for young fish
 sys <- sy %>% filter(tab=="smolts") 
-table(sys$age, sys$tab) %>% kable() %>%
+table(sys$age,sys$species ) %>% kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 syy <- sy %>% filter(tab=="young_fish") 
@@ -859,6 +878,21 @@ table(ttd$year, useNA="ifany", dnn = "country") %>%
 Years distributed from 1975, nothing special (Table @tbl-truttadensitiesdbtime), this db does not use time periods lower than year.
 :::
 
+
+## Age
+
+```{r tbl-truttadensitiesage}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Age in the trutta density dataset
+
+table(ttd$age , useNA="ifany", dnn="age") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
+```
 
 ## Geography
 ```{r tbl-truttadensitiesdbgeo}

@@ -128,7 +128,7 @@ knitr::kable(location_area, caption = "Location corresponding exactly to what is
 #| warning: FALSE
 #| message: FALSE
 #| results: 'asis'
-#| tbl-cap: List of parameters corresponding to neither fishery nor area.
+#| tbl-cap: List of parameters corresponding to neither fishery nor area (corresponding to weird table...).
 #| label: tbl-weirdparameters
 
 for (i in 1 : nrow(location_biz)){
