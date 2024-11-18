@@ -1,0 +1,52 @@
+---
+title: "Workpackage 3: database"
+subtitle: "Creating an international pan-European spatial database of migratory fish habitats to support a holistic and transparent assessment"
+author: "Cédric Briand, Jules Oliviero, Jani Helminen"
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/eel_051.jpg
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/ICES_logo.png
+footer: "WGEEL 2024 work"
+format: 
+  revealjs :
+    speakernotes:
+      displayNotes: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+## GraphViz
+
+
+::: notes
+Will these notes be displayed ?
+:::
+
+
+
+## BlockDiag
+
+```kroki-blockdiag
+blockdiag {
+  Hello -> World ;
+  Hello [color = "greenyellow"];
+  World [color = "orange"];
+}
+```

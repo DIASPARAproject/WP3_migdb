@@ -74,5 +74,5 @@ R/wgbast_database_description_files/*
 R/*.html
 R/*.md
 R/wgbast_database_description.html_files/*
-
+R/_extension
 .vscode/global.code-snippets
