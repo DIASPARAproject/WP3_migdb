@@ -92,9 +92,7 @@ digraph {
     J [label="Basin", shape=box];
     K [label="EMU (Eel Managment Unit)", shape=box];
     L [label="National data (more accurate, if available)", shape=box];
-    M [label="",shape=none]
-    N [label="",shape=none]
-    O [label="",shape=none]
+
 
     {rank=same;D;E;F;}
     {rank=same;A;B;C;I;J;K}
@@ -128,6 +126,45 @@ gfjhgjhjf
 
 
 # Dam DB
+* Different resolution in different countries.
+* Dbeel
+```{dot}
+digraph {
+    compound=true;
+    newrank=true;
+
+    A [label="GIS"];
+    B [label="Time"];
+    C [label="HPP"];
+    D [label="Turbine"];
+    E [label="Name"];
+    F [label="Type"];
+    G [label="Hierarchy"];
+    H [label="Fishway"];
+    I [label="Cumulative impact"];
+    J [label="Up / Down"];
+    subgraph clusterA{
+      label="";
+      style=dashed;
+      color=black;
+      E; F; G;
+    }
+    subgraph clusterB{
+      label="";
+      style=dashed;
+      color=black;
+      J;I;
+    }
+
+    {rank=same;A;E;F;G;}
+    {rank=same;B;H;I;J;}
+    A -> B -> C -> D
+    A -> G [lhead=clusterA,minlen=3]
+    B -> H -> J [lhead=clusterB,minlen=3]
+}
+```
+
+# Geographical structure
 ```{dot}
 digraph {
     compound=true;
@@ -162,10 +199,8 @@ digraph {
         color="black";
         B
       }
-      }     
-    }
+    }     
   }
-}
 ```
 
 
