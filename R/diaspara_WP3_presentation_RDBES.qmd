@@ -1,0 +1,153 @@
+---
+title: "DIASPARA : state of the use of data in RDBES "
+subtitle: " WGNAS, WGBAST, WGEEL, WGTRUTTA"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/title_slide.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo.png
+footer: "DIASPARA -RDBES meeting"
+format: 
+  revealjs :
+    speakernotes:
+      displayNotes: true
+    slide-number: false  
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+# Crash presentation of Diadromous Working Groups
+
+## WGNAS
+
+:::::: columns
+:::: column
+::: incremental
+-   Bayesian model
+
+-   Per regional stock units
+
+-   Catches at sea
+
+-   Include American Salmon
+:::
+::::
+
+::: column
+![](images/phylogeographic_structuring_salmon.png){fig-align="center"}
+:::
+::::::
+
+::: notes
+WGNAS only collects data at the scale of regional units.
+:::
+
+::: footer
+:::
+## WGNAS database
+
+* postgres DB
+* values of parameters input and output
+
+## WGNAS interface (shiny)
+
+![](images/wgnas_shiny.png){fig-align="center"}
+
+## WGBAST
+
+:::::: columns
+:::: column
+::: incremental
+-   Bayesian model
+
+-   Per river / at sea (marking recapture)
+
+-   Catches at sea / inland / smolt counts
+
+-   Model of river productivity to extrapolate counts of parr / smolts
+:::
+::::
+
+::: column
+![](images/assessment_units_wgbast.jpg){fig-align="center"}
+:::
+::::::
+
+## WGTRUTTA
+
+
+::: incremental
+* Density per rivers
+* parameters for productivity
+* Detailed data storage started (LHT)
+:::
+
+
+
+## WGEEL 
+
+:::::: columns
+::::: column
+
+***MODEL***
+
+::: incremental
+* No model yet
+* Need to develop regional model (EDA like) => need river, dams, electrofishing
+* Envision to develop Bayesian model like Salmon
+:::
+:::::
+
+::::: column
+![](images/EMUS.png){fig-align="center"}
+:::::
+::::::
+
+## WGEEL{.scrollable} 
+
+:::::: columns
+::::: column
+
+***DATA***
+
+::: incremental
+* per EMU
+  * BIOMASS
+  * MORTALITY
+  * REC LANDINGS
+  * COM LANDINGS
+  * RELEASE
+* Time series (recruitment, yellow eel, silver eel) & DCF data (sampling)
+  * Annual counts (or indices)
+  * Group metrics
+  * Individual metrics
+:::
+:::::
+
+::::: column
+![](images/EMUS.png){fig-align="center"}
+:::::
+::::::
+
+
+
+# Potential data inclusion in RDBES
+
+![](images/data_RDBES.png){fig-align="center"} 
+
