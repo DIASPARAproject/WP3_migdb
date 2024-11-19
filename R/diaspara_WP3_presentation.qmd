@@ -51,80 +51,64 @@ Notes for habitat db
 :::
 
 ## Habitat DB
-::::{.columns}
-:::{column}
+
 ```{dot}
 digraph {
-    rankdir=TB; // Top-to-bottom orientation
+    //rankdir=TB; // Top-to-bottom orientation
     compound=true;
-    A [label="CCM & HydroAtlas", shape=box];
-    B [label="FR", shape=ellipse];
-    C [label="ES", shape=ellipse];
-    D [label="SE", shape=ellipse];
-    E [label="CCM | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-    F [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    newrank=true;
+    A [label="2001", shape=box];
+    B [label="2002", shape=box];
+    C [label="2003", shape=box];
+    D [label="FR", shape=ellipse];
+    E [label="ES", shape=ellipse];
+    F [label="SE", shape=ellipse];
+    G [label="CCM | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
 
     subgraph clusterA {
+      label = "CCM, HydroAtlas or Ecrins regions";
+      style=dashed;
+      color=black;
+      A;
+      B;
+      C;
+    }
+
+    subgraph clusterB {
+      label = "Country layer";
+      style=dashed;
+      color=black;
+      D;
+      E;
+      F;
+    }
+
+    
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
+    E -> G,H [ltail=clusterB];
+
+    I [label="Salmon River", shape=box];
+    J [label="Basin", shape=box];
+    K [label="EMU (Eel Managment Unit)", shape=box];
+    L [label="National data (more accurate, if available)", shape=box];
+
+
+    {rank=same;D;E;F;}
+    {rank=same;A;B;C;I;J;K}
+    {rank=same;G;H;L;} 
+
+    subgraph clusterC {
       label = "";
       style=dashed;
       color=black;
-      B;
-      C;
-      D;
+      I;
+      J;
+      K;
     }
-    {rank=same; E; F;}
-    
-    A -> C [lhead=clusterA];
-    C -> E,F [ltail=clusterA];
-}
-```
-:::
-:::{column}
-```{dot}
-digraph {
-    rankdir=RL; // Right-to-left
-    A [label="Salmon River", shape=box];
-    B [label="Basin", shape=box];
-    C [label="EMU (Eel Managment Unit)", shape=box];
-    D [label="National data (more accurate, if available)", shape=box];
-    E [label="",shape=none]
-    F [label="",shape=none]
-    G [label="",shape=none]
 
-    A -> E
-    B -> F
-    C -> G    
-}
-```
-:::
-::::
-
-## Habitat DB
-```kroki-blockdiag
-blockdiag {
-  orientation = portrait
-
-  // Define the blocks
-  A [label="CCM & HydroAtlas"];
-  B [label="FR"];
-  C [label="ES"];
-  D [label="SE"];
-  E [label="CCM | Topo | Habitat | Eel | Salmon | Trout"];
-  F [label="NAT | Topo | Habitat | Eel | Salmon | Trout"];
-
-
-
-  A -> B -> E,F;
-  A -> C -> E,F;
-  A -> D -> E,F;
-
-  group {
-    B; C; D; // Group them on the same level
-  }
-
-  group {
-    E; F; // Ensure E and F are at the same horizontal level
-  }
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
+    //L -> H [style=invis]
 }
 ```
 
@@ -142,6 +126,83 @@ gfjhgjhjf
 
 
 # Dam DB
+* Different resolution in different countries.
+* Dbeel
+```{dot}
+digraph {
+    compound=true;
+    newrank=true;
+
+    A [label="GIS"];
+    B [label="Time"];
+    C [label="HPP"];
+    D [label="Turbine"];
+    E [label="Name"];
+    F [label="Type"];
+    G [label="Hierarchy"];
+    H [label="Fishway"];
+    I [label="Cumulative impact"];
+    J [label="Up / Down"];
+    subgraph clusterA{
+      label="";
+      style=dashed;
+      color=black;
+      E; F; G;
+    }
+    subgraph clusterB{
+      label="";
+      style=dashed;
+      color=black;
+      J;I;
+    }
+
+    {rank=same;A;E;F;G;}
+    {rank=same;B;H;I;J;}
+    A -> B -> C -> D
+    A -> G [lhead=clusterA,minlen=3]
+    B -> H -> J [lhead=clusterB,minlen=3]
+}
+```
+
+# Geographical structure
+```{dot}
+digraph {
+    compound=true;
+    newrank=true;
+
+    A [label="Rivers bassins",shape="box"] 
+    B [style=invis]
+
+
+    subgraph clusterA {
+      label = "Complex / Area (NAC,NEC / Baltic, Med)";
+      style=full;
+      color=black;
+      center=true;
+
+      subgraph clusterB {
+        label = "Country";
+        style=full;
+        color=black;
+        center=true;
+    
+        subgraph clusterC {
+          label = "Regions within country (EMU, Ireland.N_FO...)";
+          style=full;
+          color=black;
+          A;
+        }
+      }
+      subgraph clusterD{
+        label="Fishing areas (Faroes)";
+        style="full";
+        color="black";
+        B
+      }
+    }     
+  }
+```
+
 
 # Electrofishing DB
 
