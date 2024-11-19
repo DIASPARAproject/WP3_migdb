@@ -85,7 +85,7 @@ digraph {
     }
 
     
-    B -> E [ltail=clusterA,lhead=clusterB];
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
     E -> G,H [ltail=clusterB];
 
     I [label="Salmon River", shape=box];
@@ -109,7 +109,7 @@ digraph {
       K;
     }
 
-    K -> A [ltail=clusterC,lhead=clusterA];
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
     //L -> H [style=invis]
 }
 ```
@@ -133,8 +133,8 @@ digraph {
     compound=true;
     newrank=true;
 
-    I [label="Rivers bassins",shape="box"] 
-    E [style=invis]
+    A [label="Rivers bassins",shape="box"] 
+    B [style=invis]
 
 
     subgraph clusterA {
@@ -153,14 +153,14 @@ digraph {
           label = "Regions within country (EMU, Ireland.N_FO...)";
           style=full;
           color=black;
-          I;
+          A;
         }
       }
       subgraph clusterD{
         label="Fishing areas (Faroes)";
         style="full";
         color="black";
-        E
+        B
       }
       }     
     }
