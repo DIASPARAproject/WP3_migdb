@@ -123,48 +123,20 @@ digraph {
 
 ## WGBAST
 
-:::::::: columns
-:::::: column
+::::: columns
+:::: column
 ![](images/assessment_units_wgbast.jpg){.absolute width="400" height="500"}
-::::::
-
-:::::: column
-::::: {.fragment .fade-in fragment-index="1"}
- *   Three main groups of salmon populations
 ::::
 
-:::: {.fragment .fade-in fragment-index="2"}
-::: {.fragment .fade-out fragment-index="3"}
- *   Gulf of Bothnia
- *   Southern Sweden
- *   Gulf of Finland and eastern Main Basin
+:::: column
+::: {.incremental}
+- Three main groups of salmon populations
+  - Gulf of Bothnia
+  - Southern Sweden
+  - Gulf of Finland and eastern Main Basin
 :::
 ::::
-:::: {.fragment .fade-in fragment-index="3"}
--   Three main groups of salmon populations
-::::
-::::::
-::::::::
-
-## WGBAST
-
-:::::::: columns
-::: column
-![](images/assessment_units_wgbast.jpg){.absolute width="400" height="500"}
-:::
-
-:::::: column
-::: {.fragment .semi-fade-out fragment-index="1"}
--   Three main groups of salmon populations
-:::
-
-:::: {.fragment .fade-in fragment-index="1"}
-::: {.fragment .semi-fade-out fragment-index="2"}
--   fgdfgd
-:::
-::::
-::::::
-::::::::
+:::::
 
 ## WGNAS
 
@@ -176,60 +148,36 @@ gfjhgjhjf
 
 ![](images\EMUs.png){.r-stretch}
 
-## Global
+## Global {.smaller}
+The database structure could be simplified to the following structure
+![](images\SAM_database.png){.r-stretch}
 
-```{dot}
-graph G{
-  layout=neato
-  A [label="SAM database",shape=box,style=filled,color=lightgrey]
-  B [label="Regional Units"]
-  C [label="Data type"]
-  D [label="Life stage"]
-  E [label="Year/period"]
-  F [label="Age"]
-  G [label="Data source"]
-  H [label="Origin"]
-  I [label="Habitat"]
-  J [label="ICES subdivisions"]
-  K [label="Parameters metadata"]
+## Global - Regional Units
+![](images\SAM_RU.png){.r-stretch}
 
-  A -- B [len=2]
-  A -- C [len=2]
-  A -- D [len=2]
-  A -- E [len=2]
-  A -- F [len=2]
-  A -- G [len=2]
-  A -- H [len=2]
-  A -- I [len=2]
-  A -- J [len=2]
-}
-```
+## Global - Data type
+<!-- ![](images\SAM_DT.png){.r-stretch} -->
 
-## Global
+## Global - Life stage
+![](images\SAM_LS.png){.r-stretch}
 
-```{dot}
-graph G{
-  layout=neato
-  A [label="Parameters metadata",shape=box,style=filled,color=lightgrey]
-  B [label="Type of parameters/data"]
-  C [label="Metric"]
-  D [label="Data type"]
-  E [label="Unit"]
-  F [label="Definition"]
-  G [label="Data source"]
-  H [label="Outcome"]
-  I [label="Model"]
+## Global - Year/period
+![](images\SAM_YP.png){.r-stretch}
 
-  A -- B [len=2]
-  A -- C [len=2]
-  A -- D [len=2]
-  A -- E [len=2]
-  A -- F [len=2]
-  A -- G [len=2]
-  A -- H [len=2]
-  A -- I [len=2]
-}
-```
+## Global - Age
+![](images\SAM_A.png){.r-stretch}
+
+## Global - Data source
+![](images\SAM_DS.png){.r-stretch}
+
+## Global - Origin
+![](images\SAM_O.png){.r-stretch}
+
+## Global - Habitat
+![](images\SAM_H.png){.r-stretch}
+
+## Global - ICES subdivisions
+![](images\SAM_ICESS.png){.r-stretch}
 
 # Dam DB
 
