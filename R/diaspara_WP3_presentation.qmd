@@ -34,26 +34,29 @@ editor: visual
 
 # Habitat DB {.smaller}
 
-::::: columns
-:::: column
-![](images/catchments_map.png){.absolute top=110 left=-30 width=550 height=600}
-::::
+:::::: columns
+::: column
+![](images/catchments_map.png){.absolute top="110" left="-30" width="550" height="600"}
+:::
+
 :::: column
 ::: incremental
-- Continental habitat : Rivers, Estuaries, lakes, marsh, lagoons (Mediterranean, Atlantic, Baltic)
-- CCM, hydro-Atlas (Southern mediterranean), national databases.
-- Hierachical structure in postgis.
-- WKSMEEL (2023)
+-   Continental habitat : Rivers, Estuaries, lakes, marsh, lagoons (Mediterranean, Atlantic, Baltic)
+-   CCM, hydro-Atlas (Southern mediterranean), national databases.
+-   Hierachical structure in postgis.
+-   WKSMEEL (2023)
 :::
 ::::
-:::::
+::::::
 
 ::: notes
 Notes for habitat db
 :::
 
 ## Habitat DB
+Format : Geoparquet, Postgis schema
 
+We intend to deliver several releases (ZENODO ?)
 ```{dot}
 digraph {
     //rankdir=TB; // Top-to-bottom orientation
@@ -66,10 +69,11 @@ digraph {
     E [label="ES", shape=ellipse];
     F [label="SE", shape=ellipse];
     G [label="CCM | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-    H [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="Ecrins | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    L [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
 
     subgraph clusterA {
-      label = "CCM, HydroAtlas or Ecrins regions";
+      label = "CCM, HydroAtlas, Ecrins, Regions";
       style=dashed;
       color=black;
       A;
@@ -78,7 +82,7 @@ digraph {
     }
 
     subgraph clusterB {
-      label = "Country layer";
+      label = "Country or regions layer";
       style=dashed;
       color=black;
       D;
@@ -90,10 +94,9 @@ digraph {
     B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
     E -> G,H [ltail=clusterB];
 
-    I [label="Salmon River", shape=box];
-    J [label="Basin", shape=box];
+    I [label="Salmon River / Stock units", shape=box];
+    J [label="Fishing areas", shape=box];
     K [label="EMU (Eel Managment Unit)", shape=box];
-    L [label="National data (more accurate, if available)", shape=box];
 
 
     {rank=same;D;E;F;}
@@ -114,22 +117,125 @@ digraph {
 }
 ```
 
+
+
 # SAM DB
+
 ## WGBAST
-![](images/assessment_units_wgbast.jpg){.r-stretch}
+
+:::::::: columns
+:::::: column
+![](images/assessment_units_wgbast.jpg){.absolute width="400" height="500"}
+::::::
+
+:::::: column
+::::: {.fragment .fade-in fragment-index="1"}
+ *   Three main groups of salmon populations
+::::
+
+:::: {.fragment .fade-in fragment-index="2"}
+::: {.fragment .fade-out fragment-index="3"}
+ *   Gulf of Bothnia
+ *   Southern Sweden
+ *   Gulf of Finland and eastern Main Basin
+:::
+::::
+:::: {.fragment .fade-in fragment-index="3"}
+-   Three main groups of salmon populations
+::::
+::::::
+::::::::
+
+## WGBAST
+
+:::::::: columns
+::: column
+![](images/assessment_units_wgbast.jpg){.absolute width="400" height="500"}
+:::
+
+:::::: column
+::: {.fragment .semi-fade-out fragment-index="1"}
+-   Three main groups of salmon populations
+:::
+
+:::: {.fragment .fade-in fragment-index="1"}
+::: {.fragment .semi-fade-out fragment-index="2"}
+-   fgdfgd
+:::
+::::
+::::::
+::::::::
 
 ## WGNAS
+
 gfjhgjhjf
 
 ![](images\phylogeographic_structuring_salmon.png){.r-stretch}
 
 ## WGEEL
 
+![](images\EMUs.png){.r-stretch}
 
+## Global
+
+```{dot}
+graph G{
+  layout=neato
+  A [label="SAM database",shape=box,style=filled,color=lightgrey]
+  B [label="Regional Units"]
+  C [label="Data type"]
+  D [label="Life stage"]
+  E [label="Year/period"]
+  F [label="Age"]
+  G [label="Data source"]
+  H [label="Origin"]
+  I [label="Habitat"]
+  J [label="ICES subdivisions"]
+  K [label="Parameters metadata"]
+
+  A -- B [len=2]
+  A -- C [len=2]
+  A -- D [len=2]
+  A -- E [len=2]
+  A -- F [len=2]
+  A -- G [len=2]
+  A -- H [len=2]
+  A -- I [len=2]
+  A -- J [len=2]
+}
+```
+
+## Global
+
+```{dot}
+graph G{
+  layout=neato
+  A [label="Parameters metadata",shape=box,style=filled,color=lightgrey]
+  B [label="Type of parameters/data"]
+  C [label="Metric"]
+  D [label="Data type"]
+  E [label="Unit"]
+  F [label="Definition"]
+  G [label="Data source"]
+  H [label="Outcome"]
+  I [label="Model"]
+
+  A -- B [len=2]
+  A -- C [len=2]
+  A -- D [len=2]
+  A -- E [len=2]
+  A -- F [len=2]
+  A -- G [len=2]
+  A -- H [len=2]
+  A -- I [len=2]
+}
+```
 
 # Dam DB
-* Different resolution in different countries.
-* Dbeel
+
+-   Different resolution in different countries.
+-   Dbeel
+
 ```{dot}
 digraph {
     compound=true;
@@ -167,6 +273,7 @@ digraph {
 ```
 
 # Geographical structure
+
 ```{dot}
 digraph {
     compound=true;
@@ -205,13 +312,13 @@ digraph {
   }
 ```
 
-
 # Electrofishing DB
 
 # Time series - sampling and individual data (LHT)
 
 ## BlockDiag
 
+````{=html}
 <!---
 ```kroki-blockdiag
 #| eval: false
@@ -222,3 +329,4 @@ blockdiag {
 }
 ```
 -->
+````
