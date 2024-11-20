@@ -20,6 +20,7 @@
 
 # RStudio files
 .Rproj.user/
+.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -48,15 +49,12 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-
-.Rhistory
-.RData
-.Ruserdata
+#Eclipse specifics
 /.project
-/data
-*.Rproj
 /.dbeaver/
 .settings
+
+# Latex files (eventually)
 *.log
 *.out
 *.gz
@@ -64,19 +62,42 @@ rsconnect/
 
 credentials.yml
 
+# Quarto presentations and docs
 
-/R/Salmoglob_description_files/*
-R/images/image35547.png
-R/images/image35559.png
-R/images/image35663.png
-R/template_diaspara.html
-R/wgbast_database_description_files/*
 R/*.html
 R/*.md
 R/*.pdf
-R/wgbast_database_description.html_files/*
+R/*_files/*
 R/_extensions/*
-R/diaspara_WP3_presentation_files/*
-R/diaspara_WP3_presentation_RDBES_files/*
 R/assets/*
+
+
+# some pictures I don't want to share (Jani's)
+R/images/image35547.png
+R/images/image35559.png
+R/images/image35663.png
+
+# Visual studio specifics
 .vscode/global.code-snippets
+
+# shiny
+
+
+
+
+
+
+shiny/WGNAS-ToolBox/**/Nimble_output/*.rds
+shiny/WGNAS-ToolBox/**/Nimble_output/*.png
+shiny/WGNAS-ToolBox/**/Nimble_output/*.PNG
+
+shiny/WGNAS-ToolBox/data/tab_corres_SalmoGlob.csv
+shiny/WGNAS-ToolBox/data/tab_type_object_all_variables_08_10_v4.csv
+shiny/WGNAS-ToolBox/R/connec.R
+shiny/WGNAS-ToolBox/R/functions_manage_db_from_wide_to_long.R
+shiny/WGNAS-ToolBox/R/modifying_database_object_names_and_dimension.R
+shiny/WGNAS-ToolBox/create_alternative_databases.R
+shiny/WGNAS-ToolBox/R/manage_database.R
+shiny/WGNAS-ToolBox/R/manage_database2.R
+shiny/WGNAS-ToolBox/R/create_metadata_tab_label.R
+shiny/WGNAS-ToolBox/R/create_new_db_version.R
