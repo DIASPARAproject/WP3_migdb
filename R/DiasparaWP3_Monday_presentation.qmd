@@ -2,6 +2,7 @@
 title: "Creating database for migratory fishes"
 subtitle: " To support a holistic and transparent assessment"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
 filters:
   - quarto-kroki
   - speakernotes
@@ -10,7 +11,7 @@ title-slide-attributes:
   data-background-size: stretch
   data-background-opacity: "0.5"
 logo: images/diaspara_participants_logo.png
-footer: "WGEEL 2024 work"
+footer: ""
 format: 
   revealjs :
     speakernotes:
@@ -33,17 +34,15 @@ background-transition: fade
 editor: visual
 ---
 
+::: notes
+BACKGROUND
+:::
 
-
-# WP3
-
-## What is WP3?
-
-
+# What is WP3?
 
 ![](images/clipboard-725413065.png)
 
-## And why?
+# And why?
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -59,20 +58,10 @@ editor: visual
 :::
 :::::
 
-::: notes
-BACKGROUND 
-* What is WP3? 
-* And why? 
-* Similar needs in diadromous assessment groups 
- Current status of databases
-:::
-
 # Similar needs in diadromous assessment groups
 
 -   Different levels of advancement but common “deadlocks”
-    -   +Shad, lamprey...?
-
-![](images/clipboard-3755190268.png)
+    -   +Shad, lamprey...? ![](images/clipboard-3937337997.png)
 
 # Current status of databases
 
@@ -120,7 +109,6 @@ BACKGROUND
 -   Presenting our main idea, identifying the needs of others
 -   **What we propose in this workshop, we want to discuss with the WGs**
     -   Finding common ground and differences
--   Interoperability and storage discussion with ICES and GFC;
 :::
 
 ::: {.column .incremental width="50%"}
@@ -134,16 +122,20 @@ BACKGROUND
 ::::: columns
 ::: {.column .incremental width="50%"}
 -   **Creating common dictionaries**
+
 -   Create separate tables for each working group
+
     -   Some common information for all WGs, some separate
+
 -   Common "simple" layer for international assessment needed - open data
--   All data does not have to be common nor (necessarily) open
--   **Common references**
--   Potential for updates in the future \* At some point there will be better international data available
--   Possibility to have better data for some areas / WGs \* National data will be better
+
+-   All data does not (necessarily) have to be common or open
 :::
 
 ::: {.column .incremental width="50%"}
+-   Potential for updates in the future \* At some point there will be better international data available
+-   Possibility to have better data for some areas / WGs \* National data will be better
+
 ![](images/clipboard-4103952801.png){width="321"}
 :::
 :::::
@@ -178,6 +170,21 @@ Graphs here about what we are doing
 Continue to different databases
 :::
 
+## Producing common dictionaries together with ICES
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   Will be used for both: –raw data in RDBES for catch and landings –Stock assessment database
+-   Examples: age and lifestage
+-   Referencials for habitat
+-   Hierarchical so that spatial units can be integrated separately for different WGs
+:::
+
+::: {.column width="50%"}
+![](images/clipboard-2783207033.png)
+:::
+:::::
+
 # And therefore, the Deliverables
 
 A quick look - details will be discussed on Tuesday
@@ -185,7 +192,10 @@ A quick look - details will be discussed on Tuesday
 # Design four (-\>five) international databases
 
 :::: columns
-::: {.column width="50%"}
+::: {.column width="35%"}
+![](images/clipboard-1027936040.png){width="380"}
+:::
+::: {.column width="65%"}
 -   Electrofishing
 -   Habitat
 -   Migration obstacles
@@ -232,13 +242,13 @@ A quick look - details will be discussed on Tuesday
 
 :::: columns
 ::: {.column width="50%"}
--   Commercial landings
--   Recreational landings
--   Store data that we currently store in sampling that are related to DCF sampling (raw data)
--   Once this is done, talk about storing electrofishing data
--   SAM model parameters - start with postgres and see whether it fits somewhere in ICES
--   DAM and hydro db - Maybe JRC?
--   Scripts to produce data from the RDBES will be needed, it has to be TAF
+1.  Commercial landings
+2.  Recreational landings
+3.  Store data that we currently store in sampling that are related to DCF sampling (raw data)
+4.  Once this is done, talk about storing electrofishing data
+5.  SAM model parameters - start with postgres and see whether it fits somewhere in ICES
+6.  DAM and hydro db - Maybe JRC?
+7.  Scripts to produce data from the RDBES will be needed, it has to be TAF
 :::
 ::::
 
@@ -255,19 +265,26 @@ Our work principles
 ## Everything is online
 
 :::: columns
-::: {.column width="50%"}
+::: {.column width="100%"}
 -   Progress can be followed throughout
 -   Several releases: beta versions privately in Zenodo and then publicly as soon as the data are validated
 -   Can be commented during the project
 -   Postgis and parquet formats using R.
+
+![](images/clipboard-3538707530.png)
 :::
 ::::
 
-![](images/clipboard-3538707530.png) :::
-
 ## DATSU
 
-Not our focus, but a good side-benefit
+:::: columns
+::: {.column width="100%"}
+-   DATSU is not one of project deliverables, but
+-   As common dictionaries are used, DATSU can streamline future data calls
+
+![](images/clipboard-3451821426.png)
+:::
+::::
 
 ## Principles {.scrollable}
 
@@ -283,25 +300,3 @@ Not our focus, but a good side-benefit
 -   We can then use DATSU to check for consistency / trace data. 
 -   Whenever possible, change minimal, don't add work to working group.
 :::
-
-## Producing dictionaries (JANI TO COMPLETE LATER today)
-
-:::: columns
-::: {.column width="50%"}
--   • Together with ICES
-
-    • Will be used for both:
-
-    –raw data in RDBES for catch and landings
-
-    –Stock assessment database
-
-    •Referencials for habitat, and it will hierarchical so that spatial units can be integrated separately for different WGs (Provide example from e.g. baltic and bothnian bay (eel for whole BS, salmon for BB only)
-
-    •E.g., 22 will be in the whole area 200 MAKE A GRAPH, this is important.
-
-    •Rivers will flow into 22.
-
-    •We will have otehr dictionaries that will be used for things like age and lifestages - \> and these will be used. So it makes sense to use a common vocab for all these WGs
-:::
-::::
