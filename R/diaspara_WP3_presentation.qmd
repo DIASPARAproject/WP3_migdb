@@ -153,31 +153,122 @@ The database structure could be simplified to the following structure
 ![](images\SAM_database.png){.r-stretch}
 
 ## Global - Regional Units
-![](images\SAM_RU.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_RU.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Data type
-![](images\SAM_DT.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_DT.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Life stage
-![](images\SAM_LS.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_LS.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Year/period
-![](images\SAM_YP.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_YP.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Age
-![](images\SAM_A.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_A.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Data source
-![](images\SAM_DS.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_DS.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Origin
-![](images\SAM_O.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_O.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - Habitat
-![](images\SAM_H.png){.r-stretch}
-
+::::: columns
+:::: column
+![](images\SAM_H.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 ## Global - ICES subdivisions
-![](images\SAM_ICESS.png){.r-stretch}
+::::: columns
+:::: column
+![](images\SAM_ICESS.png)
+::::
+::::column
+:::{.incremental}
+- 
+- 
+- 
+:::
+::::
+:::::
 
 # Dam DB
 
