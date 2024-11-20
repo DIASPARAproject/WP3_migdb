@@ -10,9 +10,7 @@
 <node CREATED="1729083619958" ID="ID_201393249" MODIFIED="1731923507925" TEXT="EMU is more administrative than stock but we can adapt (see WP2) recommendations"/>
 </node>
 <node CREATED="1728908816112" ID="ID_996868484" MODIFIED="1728918601156" TEXT="(WGNAS) Regional subunits of stock (area)">
-<node CREATED="1728910029604" ID="ID_640704404" MODIFIED="1731923517510" TEXT=" area label (Name, code, complex)">
-<arrowlink DESTINATION="ID_961880596" ENDARROW="Default" ENDINCLINATION="284;0;" ID="Arrow_ID_1477598234" STARTARROW="None" STARTINCLINATION="284;0;"/>
-</node>
+<node CREATED="1728910029604" ID="ID_640704404" MODIFIED="1731923517510" TEXT=" area label (Name, code, complex)"/>
 <node CREATED="1728912508884" ID="ID_73255848" MODIFIED="1731923525708" TEXT="Country code (conservation limits)"/>
 <node CREATED="1728917727675" ID="ID_1845436094" MODIFIED="1728917736546" TEXT="stock unit"/>
 <node CREATED="1728917739055" ID="ID_361442535" MODIFIED="1731923532843" TEXT="fisheries">
@@ -54,19 +52,6 @@
 <node CREATED="1729798409290" ID="ID_1317670485" MODIFIED="1729798415804" TEXT="Salmon population">
 <node CREATED="1729798269194" ID="ID_1082605808" MODIFIED="1729798430367" TEXT="MainB, GoB, GuF"/>
 </node>
-</node>
-</node>
-<node CREATED="1728916797424" ID="ID_605055856" MODIFIED="1731679909549" POSITION="right" TEXT=" Location">
-<icon BUILTIN="full-1"/>
-<icon BUILTIN="button_cancel"/>
-<node CREATED="1728918371730" ID="ID_289185859" MODIFIED="1728918377966" TEXT="fishery "/>
-<node CREATED="1728918458413" ID="ID_1630722661" MODIFIED="1728919135266" TEXT="subunit of stock">
-<node CREATED="1728918477033" ID="ID_961880596" MODIFIED="1728918525515" TEXT="Hyperparameter for dispersion">
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_961880596" ENDARROW="Default" ENDINCLINATION="284;0;" ID="Arrow_ID_1477598234" SOURCE="ID_640704404" STARTARROW="None" STARTINCLINATION="284;0;"/>
-</node>
-</node>
-<node CREATED="1729797285650" ID="ID_1009450497" MODIFIED="1732115489018" TEXT=" After an indepth analysis, this is not necessary, the information is contained within the parameters, the only time it&apos;s needed is for the wishart prior and then location means are (stock unit)">
-<icon BUILTIN="closed"/>
 </node>
 </node>
 <node CREATED="1728908933859" ID="ID_605321533" MODIFIED="1732115372610" POSITION="right" TEXT="data type">
@@ -362,16 +347,7 @@
 <node CREATED="1731679576661" ID="ID_512662294" MODIFIED="1731679585979" TEXT="check"/>
 </node>
 </node>
-<node CREATED="1731600531066" ID="ID_1232792449" MODIFIED="1731679922959" POSITION="right" TEXT="data origin">
-<icon BUILTIN="button_cancel"/>
-<node CREATED="1731600560877" ID="ID_20729338" MODIFIED="1731600565465" TEXT="WGBAST">
-<node CREATED="1729797885210" ID="ID_160813004" MODIFIED="1731603251611" TEXT="W_TYPE&#x9;logbook=LOG, extrapolated=EXT, estimated=EST, expert evaluation=EXP ">
-<cloud/>
-</node>
-<node CREATED="1731603274631" ID="ID_1477449502" MODIFIED="1731603363683" TEXT="See ICES vocab instead of this ? Could this go in the metadata for parameters ?"/>
-</node>
-</node>
 <node CREATED="1731601878392" ID="ID_456624204" MODIFIED="1731601883681" POSITION="left" TEXT="Species"/>
-<node CREATED="1732118550406" ID="ID_450615190" LINK="parm%20metadata.mm" MODIFIED="1732118550408" POSITION="right" TEXT="parm metadata"/>
+<node CREATED="1732118550406" ID="ID_450615190" LINK="parm%20metadata.mm" MODIFIED="1732119359302" POSITION="right" TEXT="parm metadata"/>
 </node>
 </map>
