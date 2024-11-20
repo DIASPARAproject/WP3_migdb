@@ -156,7 +156,7 @@ The database structure could be simplified to the following structure
 ![](images\SAM_RU.png){.r-stretch}
 
 ## Global - Data type
-<!-- ![](images\SAM_DT.png){.r-stretch} -->
+![](images\SAM_DT.png){.r-stretch}
 
 ## Global - Life stage
 ![](images\SAM_LS.png){.r-stretch}
