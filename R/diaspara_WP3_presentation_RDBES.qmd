@@ -16,6 +16,7 @@ format:
     speakernotes:
       displayNotes: true
     slide-number: false  
+    self-contained: true
   pdf:
     speakernotes:
       displayNotes: true
