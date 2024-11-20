@@ -9,7 +9,7 @@ title-slide-attributes:
   data-background-image: images/title_slide.png
   data-background-size: stretch
   data-background-opacity: "0.5"
-logo: images/diaspara_logo.png
+logo: images/diaspara_participants_logo.png
 footer: "WGEEL 2024 work"
 format: 
   revealjs :
@@ -32,19 +32,21 @@ background-transition: fade
 editor: visual
 ---
 
-# Habitat DB 
+# Habitat DB {.smaller}
 
-::::{.columns}
-:::{.column}
+::::: columns
+:::: column
 ![](images/catchments_map.png){.absolute top=110 left=-30 width=550 height=600}
-:::
-:::{.column width=50%}
-* Continental habitat : Rivers, Estuaries, lakes, marsh, lagoons (Mediterranean, Atlantic, Baltic)
-* CCM, hydro-Atlas (Southern mediterranean), national databases.
-* Hierachical structure in postgis.
-* WKSMEEL (2023)
+::::
+:::: column
+::: incremental
+- Continental habitat : Rivers, Estuaries, lakes, marsh, lagoons (Mediterranean, Atlantic, Baltic)
+- CCM, hydro-Atlas (Southern mediterranean), national databases.
+- Hierachical structure in postgis.
+- WKSMEEL (2023)
 :::
 ::::
+:::::
 
 ::: notes
 Notes for habitat db
