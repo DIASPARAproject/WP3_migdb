@@ -33,6 +33,7 @@ theme: solarized
 background-transition: fade
 editor: visual
 ---
+
 # Crash presentation of Diadromous Working Groups
 
 ## WGNAS
@@ -61,10 +62,11 @@ WGNAS only collects data at the scale of regional units.
 
 ::: footer
 :::
+
 ## WGNAS database
 
-* postgres DB
-* values of parameters input and output
+-   postgres DB
+-   values of parameters input and output
 
 ## WGNAS interface (shiny)
 
@@ -92,63 +94,56 @@ WGNAS only collects data at the scale of regional units.
 
 ## WGTRUTTA
 
-
 ::: incremental
-* Density per rivers
-* parameters for productivity
-* Detailed data storage started (LHT)
+-   Density per rivers
+-   parameters for productivity
+-   Detailed data storage started (LHT)
 :::
 
-
-
-## WGEEL 
+## WGEEL
 
 :::::: columns
-::::: column
-
+:::: column
 ***MODEL***
 
 ::: incremental
-* No model yet
-* Need to develop regional model (EDA like) => need river, dams, electrofishing
-* Envision to develop Bayesian model like Salmon
+-   No model yet
+-   Need to develop regional model (EDA like) =\> need river, dams, electrofishing
+-   Envision to develop Bayesian model like Salmon
 :::
-:::::
+::::
 
-::::: column
+::: column
 ![](images/EMUS.png){fig-align="center"}
-:::::
+:::
 ::::::
 
-## WGEEL{.scrollable} 
+## WGEEL {.scrollable}
 
 :::::: columns
-::::: column
-
+:::: column
 ***DATA***
 
 ::: incremental
-* per EMU
-  * BIOMASS
-  * MORTALITY
-  * REC LANDINGS
-  * COM LANDINGS
-  * RELEASE
-* Time series (recruitment, yellow eel, silver eel) & DCF data (sampling)
-  * Annual counts (or indices)
-  * Group metrics
-  * Individual metrics
+-   per EMU
+    -   BIOMASS
+    -   MORTALITY
+    -   REC LANDINGS
+    -   COM LANDINGS
+    -   RELEASE
+-   Time series (recruitment, yellow eel, silver eel) & DCF data (sampling)
+    -   Annual counts (or indices)
+    -   Group metrics
+    -   Individual metrics
 :::
-:::::
+::::
 
-::::: column
+::: column
 ![](images/EMUS.png){fig-align="center"}
-:::::
+:::
 ::::::
 
 
+# Potential data inclusion in RDBES{.smaller .scrollable}
 
-# Potential data inclusion in RDBES
-
-![](images/data_RDBES.png){fig-align="center"} 
-
+![](images/data_RDBES.png){fig-align="top"}

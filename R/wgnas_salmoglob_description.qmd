@@ -57,14 +57,14 @@ con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,por
 
 # Main database structure
 
-```{r databasedescription}
+When loading the first lines of the db, it really looks as following :
+
+```{r tbl-databasedescription}
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: 'Structure of the WGNAS main database'
-#| label: tbl-maindb
-
 database10 <- DBI::dbGetQuery(con_salmoglob, 'SELECT * FROM public.database limit 20')
 knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
 ```
@@ -78,7 +78,9 @@ knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hove
 Phylogeographic structuring observed across studies in Atlantic salmon resolved by screening of phylogenetically informative nuclear microsatellite and SNP variation.
 :::
 
-```{r area}
+We first analyse the types of area that are found in the database. These are the possible geographical locations.
+
+```{r tbl-areatypes}
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
@@ -88,17 +90,17 @@ Phylogeographic structuring observed across studies in Atlantic salmon resolved 
 #|   - Fisheries
 #|   - Countries
 #|   - Source area
-#| label: tbl-areatypes
 area <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT area FROM public.database')
 knitr::kable(area[grep("fishery",area$area),,drop=FALSE], caption = "Area corresponding to fisheries", row.names=FALSE)
 knitr::kable(area[grep("coun",area$area),,drop=FALSE], caption = "Area corresponding to countries", row.names=FALSE)
 knitr::kable(area[!grepl("coun",area$area) & !grepl("fishery",area$area),,drop=FALSE], caption = "Area corresponding to source area", row.names=FALSE)
 ```
 
-The latter table (@Tbl-areatypes-3) is by default, so Atlantic, NEC and NAC are included. Having a label in a reference table and a geom to associate to those labels would be I guess very usefull.
+The latter table (@Tbl-areatypes-3) is by default, so Atlantic, NEC and NAC are included. Having a label in a reference table and a geom to associate to those labels would be very usefull.
 
 # Location
 
+## Locations corresponding to fisheries
 
 ```{r location}
 #| echo: FALSE
@@ -107,20 +109,36 @@ The latter table (@Tbl-areatypes-3) is by default, so Atlantic, NEC and NAC are 
 #| message: FALSE
 #| tbl-cap: Locations
 #| tbl-subcap: 
-#|   - Fisheries
-#|   - Weird
-#|   - Areas
+#|   - Location corresponding to fisheries
+#|   - These one are neither fishery nor area
+#|   - Location corresponding to 
 #| label: tbl-locations
 location <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT location FROM public.database')
-knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE], caption = "Location corresponding to fisheries", row.names=FALSE)
+knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE],  row.names=FALSE)
 location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
   area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
-knitr::kable(location_biz, caption = "These one are neither fishery nor area, can we simplify at parameter level", row.names=FALSE)  
+knitr::kable(location_biz, caption = , row.names=FALSE)  
 location_area <- data.frame("location"=intersect(location[!grepl("fishe",location$location),],
   area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
-knitr::kable(location_area, caption = "Location corresponding exactly to what is aleardy in area", row.names=FALSE)
+knitr::kable(location_area, row.names=FALSE)
 ```
 
+Here we search for locations related to fisheries. 
+
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+  QUESTION TO WGNAS
+::::
+::::{.questionbox-body}
+ * Is there some gis reference for these fishing areas
+ * Would it possible to use ICES areas there or would this reporting correspond to different boundaries ?
+::::
+:::
+
+## Locations corresponding to fisheries
 
 ```{r param_biz}
 #| echo: FALSE

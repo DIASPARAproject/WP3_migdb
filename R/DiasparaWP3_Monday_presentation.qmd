@@ -6,7 +6,7 @@ filters:
   - quarto-kroki
   - speakernotes
 title-slide-attributes:
-  data-background-image: images/title_slide.png
+  data-background-image: images/diaspara_background.png
   data-background-size: stretch
   data-background-opacity: "0.5"
 logo: images/diaspara_participants_logo.png
@@ -14,7 +14,8 @@ footer: "WGEEL 2024 work"
 format: 
   revealjs :
     speakernotes:
-      displayNotes: true
+      displayNotes: true  
+    self-contained: true
   pdf:
     speakernotes:
       displayNotes: true
@@ -32,15 +33,17 @@ background-transition: fade
 editor: visual
 ---
 
-::: notes
-BACKGROUND \* What is WP3? \* And why? \* Similar needs in diadromous assessment groups \* Current status of databases
-:::
 
-# What is WP3?
+
+# WP3
+
+## What is WP3?
+
+
 
 ![](images/clipboard-725413065.png)
 
-# And why?
+## And why?
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -55,6 +58,14 @@ BACKGROUND \* What is WP3? \* And why? \* Similar needs in diadromous assessment
 -   Spatialised and climate-enhanced SAM
 :::
 :::::
+
+::: notes
+BACKGROUND 
+* What is WP3? 
+* And why? 
+* Similar needs in diadromous assessment groups 
+ Current status of databases
+:::
 
 # Similar needs in diadromous assessment groups
 
@@ -135,8 +146,6 @@ BACKGROUND \* What is WP3? \* And why? \* Similar needs in diadromous assessment
 ::: {.column .incremental width="50%"}
 ![](images/clipboard-4103952801.png){width="321"}
 :::
-
-
 :::::
 
 ::: notes
@@ -169,32 +178,26 @@ Graphs here about what we are doing
 Continue to different databases
 :::
 
-
 # And therefore, the Deliverables
+
 A quick look - details will be discussed on Tuesday
 
-
-
-
-# Design four (->five) international databases
+# Design four (-\>five) international databases
 
 :::: columns
 ::: {.column width="50%"}
- * Electrofishing
- * Habitat
- * Migration obstacles
- * Model parameters
- * Life history strategies, biological data
- * **Templates will be created**
-
-
+-   Electrofishing
+-   Habitat
+-   Migration obstacles
+-   Model parameters
+-   Life history strategies, biological data
+-   **Templates will be created**
 :::
 ::::
 
-# Electrofishing data
+## Electrofishing data
 
 :::: columns
-
 ::: {.column width="50%"}
 -   Currently it is just different templates for data call
 -   We produce something together with the WGs
@@ -203,7 +206,8 @@ A quick look - details will be discussed on Tuesday
 :::
 ::::
 
-# Habitat and migration obstacles
+## Habitat and migration obstacles
+
 :::: columns
 ::: {.column width="50%"}
 -   Migration obstacles
@@ -212,7 +216,8 @@ A quick look - details will be discussed on Tuesday
 :::
 ::::
 
-# Model parameters, life history parameters
+## Model parameters, life history parameters
+
 :::: columns
 ::: {.column width="50%"}
 -   Biological and model data that are not centrally stored
@@ -223,10 +228,9 @@ A quick look - details will be discussed on Tuesday
 :::
 ::::
 
-# RDBES proposal - priorities
+## RDBES proposal - priorities
 
 :::: columns
-
 ::: {.column width="50%"}
 -   Commercial landings
 -   Recreational landings
@@ -238,23 +242,17 @@ A quick look - details will be discussed on Tuesday
 :::
 ::::
 
-
-
-
-
-
 ::: notes
 Our work principles
 :::
 
 # Our feeling is that a common format can be found for salmon, trout and eel!
-(without large compromises)
 
+(without large compromises)
 
 # Finally, a bit about our principles
 
-
-# Everything is online
+## Everything is online
 
 :::: columns
 ::: {.column width="50%"}
@@ -267,12 +265,11 @@ Our work principles
 
 ![](images/clipboard-3538707530.png) :::
 
-# DATSU
+## DATSU
 
 Not our focus, but a good side-benefit
 
-
-# Principles {.scrollable}
+## Principles {.scrollable}
 
 ::: columns
 -   Follow ICES vocab, create when not existing (search for all vocab)
@@ -287,15 +284,7 @@ Not our focus, but a good side-benefit
 -   Whenever possible, change minimal, don't add work to working group.
 :::
 
-
-
-
-
-
-
-
-
-# Producing dictionaries (JANI TO COMPLETE LATER today)
+## Producing dictionaries (JANI TO COMPLETE LATER today)
 
 :::: columns
 ::: {.column width="50%"}
