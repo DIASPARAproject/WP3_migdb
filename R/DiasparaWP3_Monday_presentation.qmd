@@ -1,0 +1,265 @@
+---
+title: "Creating database for migratory fishes"
+subtitle: " To support a holistic and transparent assessment"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/title_slide.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_logo.png
+footer: "WGEEL 2024 work"
+format: 
+  revealjs :
+    speakernotes:
+      displayNotes: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+# WP3
+
+![](images/clipboard-725413065.png)
+
+# Motivation
+
+:::: columns
+::: {.column width="50%"}
+-   These species are found all over Europe.
+-   To conduct large-scale modeling, a significant amount of data is required
+-   Such data must be easily accessible
+:::
+::::
+
+# Our Aim
+
+-   WP3 aims to develop **four database templates** to facilitate more advanced and transparent assessments of migratory fish species.
+
+    These databases will be tailored for freshwater stages, incorporating a hydrographic network and migration barrier data.
+
+# Common challenges and needs
+
+-   Build FAIR data bases – Findability, Accessibility, Interoperability, Reusability
+-   Transparent Assessment Framework
+-   Develop and enhance spatialized and climate-enhanced SAM
+-   Different levels of advancement but common “deadlocks”
+-   ![](images/clipboard-3755190268.png)
+
+# Habitat DB
+
+:::: columns
+::: {.column width="50%"}
+-   They will be designed to be interoperable, capable of handling nested spatial scales, and able to address a variety of stressors.
+-   Our goal is to deliver databases that can be effectively utilized by working groups (WGBAST, WGNAS, WGEEL, WGTRUTTA) in the long term.
+-   Interoperability and storage discussion with ICES and GFC;
+-   What we propose in this workshop, we want to discuss with the WGs and see if they like it
+:::
+::::
+
+# Current status of databases
+
+:::: columns
+::: {.column width="50%"}
+-   Available databases are for marine habitats and are designed for fisheries data (e.g., ICES RDBES)
+-   Working groups have created their own databases:
+    -   Stored in different database formats
+    -   Different level of detail
+    -   Sometimes large Excel files and/or external databases
+    -   Within each group, individuals are dedicated to database work
+:::
+::::
+
+# Deliverables
+
+:::: columns
+::: {.column width="50%"}
+-   Design four international databases
+-   Electrofishing • Crucial data for monitoring migratory fish • Species distribution model (e.g., WKFEA) • Existing databases and centralised database for e.g., DCF and WFD • Based on the habitat data • Validate the structure by integrating data from project partners • Propose a template suitable for different species – Migration obstacles • Habitat availability, for models • Extend the work from e.g., AMBER and Sudoang – Model parameters, life history parameters • Biological and model data that are not centrally stored • Moving towards Transparent Assessment Framework • Link with ICES working groups • Reuse WGEEL, WGNAS structures • New parameters in DIASPARA project
+:::
+::::
+
+# Subtasks
+
+:::: columns
+::: {.column width="50%"}
+-   Identify the needs of different working groups
+-   Discuss interoperability and storage with ICES and GFCM
+-   Propose a template suitable for different species
+-   Validate the structure by testing the integration of data provided by the project partners
+:::
+::::
+
+# Everything is online
+
+:::: columns
+::: {.column width="50%"}
+-   Progress can be followed throughout
+-   Several releases: beta versions privately in Zenodo and then publicly as soon as the data are validated
+-   Can be commented during the project
+-   Postgis and parquet fromats using R.
+:::
+::::
+
+![](images/clipboard-3538707530.png)
+
+# Producing dictionaries
+
+:::: columns
+::: {.column width="50%"}
+-   •        Together with ICES
+
+    •        Will be used for both:
+
+    –        raw data in RDBES for catch and landings
+
+    –       Stock assessment database
+
+    •        Referencials for habitat, and it will hierarchical so that spatial units can be integrated separately for different WGs (Provide example from e.g. baltic and bothnian bay (eel for whole BS, salmon for BB only)
+
+    •        E.g., 22 will be in the whole area 200 MAKE A GRAPH, this is important.
+
+    •        Rivers will flow into 22.
+
+    •        We will have otehr dictionaries that will be used for things like age and lifestages - \> and these will be used. So it makes sense to use a common vocab for all these WGs
+:::
+::::
+
+# Progress so far
+
+:::: columns
+::: {.column width="50%"}
+-   Jules joined the team in August
+
+-   Compared different databases for the overall habitat..
+
+-   Discussed with several different working group members, other organisations
+
+-   Compared the databases of different workign groups
+
+    .
+:::
+::::
+
+# Principles
+
+:::: columns
+::: {.column width="50%"}
+-   •        Follow ICES vocab, create when not existing (search for all vocab)\
+    \* Separate the input of different wg in different schema but the same db. (see ICES)\
+    \* Allow for the hierarchichal spatial scale to be integrated in queries, the stucture of the db should allow for this. Hierarchic level ()\
+    \* Some common dictionnaries (countries, sea areas, habitat type, basins) inherited table for reference\
+    \* Some separate dictionnaries (stages, age, maturity) \
+    \* Separate parameters for the model and aggregated data built at the regional / national/ emu level. Two separate db for  output param observed value, same structure\
+    \* Model parameters should be described in a separate table and maybe simplified.\
+    \* Allow user rights for access to the db (read write access with group user role)\
+    \* We can then use DATSU to check for consistency / trace data. \
+    \* Whenever possible, change minimal, don't add work to working group.
+
+    •        We will have otehr dictionaries that will be used for things like age and lifestages - \> and these will be used. So it makes sense to use a common vocab for all these WGs
+
+    .
+:::
+::::
+
+# Show the work that was done by the salmon group
+
+:::: columns
+::: {.column width="50%"}
+-   ![](images/clipboard-703298941.png)AAA
+:::
+::::
+
+![](images/clipboard-3314545394.png)
+
+# What is needed?![](images/clipboard-435743568.png)
+
+# What is needed?
+
+![](images/clipboard-3512018033.png)
+
+# What is needed?
+
+![](images/clipboard-4003578754.png)
+
+# What is needed?
+
+![](images/clipboard-4003578754.png)
+
+# What is needed?
+
+![](images/clipboard-2921278741.png)
+
+# What is needed?
+
+![](images/clipboard-2447217679.png)
+
+It is great to hear that you are planning to make use of (and add to) the great work already undertaken by Andrew and Phil. It would certainly be useful if we were all making using of the same open access spatial digital river network template (with associated habitat proxies) and barriers datasets.
+
+# Electrofishing data
+
+:::: columns
+::: {.column width="50%"}
+-   ![](images/clipboard-1570497397.png)We produce somethign together with the WGs
+-   If it looks good, we will migrate to a common database
+-   It makes no sense to have a separate ef db for different species
+-   currently it is just different templates for data call 
+:::
+::::
+
+# RDBES proposal - priorities
+
+:::: columns
+::: {.column width="50%"}
+-   ![](images/clipboard-1570497397.png)We produce somethign together with the WGs
+-   If it looks good, we will migrate to a common database
+-   It makes no sense to have a separate ef db for different species
+-   currently it is just different templates for data call 
+:::
+::::
+
+# Other
+
+:::: columns
+::: {.column width="50%"}
+Scripts to produce data from the RDBES will be needed, it has to be TAF
+
+-   
+
+-   
+
+-   
+:::
+::::
+
+# Habitat db
+
+:::: columns
+::: {.column width="50%"}
+Model and electrofishign db: we think that a common format for salmon, trout, and eel can be found! (without large compromsies)
+
+Discuss storage locations
+
+-   
+
+-   
+
+-   
+:::
+::::
+
+# 
