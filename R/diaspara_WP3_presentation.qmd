@@ -241,6 +241,7 @@ graph G{
   rankdir=LR;
   splines=false;
   outputorder=nodesfirst;
+  nodesep=0.39;
 
   A [label="Observation place",shape=box];
   B [label="Observation",shape=box];
@@ -259,10 +260,9 @@ graph G{
   {rank=same;D;C}
 
 
-
   A -- B
   B -- C
-  C -- D
+  D -- C
   C -- E
   C -- F
   C -- G
@@ -273,8 +273,8 @@ graph G{
   J -- L
 }
 ```
-# Geographical structure
 
+# Geographical structure
 ```{dot}
 digraph {
     compound=true;
