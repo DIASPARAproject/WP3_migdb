@@ -61,6 +61,8 @@ BACKGROUND
 # Similar needs in diadromous assessment groups
 
 -   Different levels of advancement but common “deadlocks”
+-   Some things will require lots of work
+    -   If we start to work together now, it will be more efficient
 
 ![](images/clipboard-3937337997.png) - +Shad, lamprey...?
 
@@ -68,16 +70,21 @@ BACKGROUND
 
 ::::: columns
 ::: {.column width="30%"}
-![](images/clipboard-872471567.png)
+![](images/clipboard-2701286006.png)
 :::
 
 ::: {.column width="70%"}
 -   Available databases are for marine habitats and are designed for fisheries data (e.g., ICES RDBES)
 -   Working groups have created their own databases:
     -   Stored in different database formats
+
     -   Different level of detail
+
     -   Sometimes large Excel files and/or external databases
+
     -   Within each group, individuals are dedicated to database work
+
+        ![](images/clipboard-587608973.png)
 :::
 :::::
 
@@ -94,7 +101,7 @@ BACKGROUND
 :::
 
 ::: {.column .incremental width="50%"}
--   Subtasks
+-   **Subtasks**
     -   Identify the needs of different working groups
     -   Discuss interoperability and storage with ICES and GFCM
     -   Propose a template suitable for different species
@@ -102,14 +109,16 @@ BACKGROUND
 :::
 :::::
 
-# Identifying the WG needs and Discuss with ICES & GFCM {.scrollable}
+# Identifying WG needs, discuss with ICES & GFCM {.scrollable}
 
 ::::: columns
 ::: {.column .incremental width="50%"}
 -   Several discussions with different organisations, people, groups
 -   Presenting our main idea, identifying the needs of others
 -   **What we propose in this workshop, we want to discuss with the WGs**
+    -   Ask the needs and use of WGs
     -   Finding common ground and differences
+    -   Continuing discussions at the WGs
 :::
 
 ::: {.column .incremental width="50%"}
@@ -178,6 +187,7 @@ Continue to different databases
 
 ::::: columns
 ::: {.column .incremental width="50%"}
+
 -   Will be used for both: –raw data in RDBES for catch and landings –Stock assessment database
 -   Examples: age and lifestage
 -   Referencials for habitat
@@ -220,8 +230,9 @@ A quick look - details will be discussed on Tuesday
 ::: {.column width="50%"}
 -   Currently it is just different templates for data call
 -   We plan produce something together with the WGs
+    -   Ask all WGs what it should be - then propose a common structure
 -   If it looks good, we will migrate to a common database
--   It makes no sense to have a separate ef db for different species
+-   No need to have a separate EF database for different species(?)
 :::
 :::::
 
@@ -236,6 +247,7 @@ A quick look - details will be discussed on Tuesday
 -   Migration obstacles
 -   Habitat availability, for models
 -   Extend the work from e.g., AMBER and Sudoang
+-   Use habitat work from Philip McGinnity and Andrew French
 :::
 :::::
 
@@ -258,6 +270,20 @@ A quick look - details will be discussed on Tuesday
 # Our feeling is that a common format can be found for salmon, trout and eel!
 
 (without large compromises)
+
+![](images/clipboard-3175779107.png){width="651"}
+
+## Biological data, biometry
+
+::::: columns
+::: {.column width="50%"}
+GFCM - RDBFIS
+This information could be used in the upcoming RDBFIS database as well
+:::
+::: {.column width="50%"}
+DCF data MAKE CHANGES HERE!
+:::
+:::::
 
 ## RDBES proposal - priorities
 
@@ -307,7 +333,8 @@ Our work principles
 :::
 ::::
 
-## Principles {.scrollable}
+## Thank you for following! 
+#Principles: {.scrollable}
 
 ::: columns
 -   Follow ICES vocab, create when not existing (search for all vocab)
@@ -321,3 +348,17 @@ Our work principles
 -   We can then use DATSU to check for consistency / trace data. 
 -   Whenever possible, change minimal, don't add work to working group.
 :::
+
+
+# Things to be agreed on
+
+::: columns
+-   Electrofishing database
+      -     Get the needs from WGs and propose a common format, maybe within RDBES
+-   SAM db common to all groups, stored somewhere in ICES
+-   Development of common dictionaries for things like Age, lifestages, all GIS geopgraphical units
+-   Should all DCF data go to RDBES?
+-   GFCM - RDBFIS?
+
+:::
+
