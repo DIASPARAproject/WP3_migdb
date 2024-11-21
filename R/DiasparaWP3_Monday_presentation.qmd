@@ -273,6 +273,18 @@ A quick look - details will be discussed on Tuesday
 
 ![](images/clipboard-3175779107.png){width="651"}
 
+## Biological data, biometry
+
+::::: columns
+::: {.column width="50%"}
+GFCM - RDBFIS
+This information could be used in the upcoming RDBFIS database as well
+:::
+::: {.column width="50%"}
+DCF data 
+:::
+:::::
+
 ## RDBES proposal - priorities
 
 ::::: columns
@@ -336,3 +348,17 @@ Our work principles
 -   We can then use DATSU to check for consistency / trace data. 
 -   Whenever possible, change minimal, don't add work to working group.
 :::
+
+
+# Things to be agreed on
+
+::: columns
+-   Electrofishing database
+      -     Get the needs from WGs and propose a common format, maybe within RDBES
+-   SAM db common to all groups, stored somewhere in ICES
+-   Development of common dictionaries for things like Age, lifestages, all GIS geopgraphical units
+-   Should all DCF data go to RDBES?
+-   GFCM - RDBFIS?
+
+:::
+
