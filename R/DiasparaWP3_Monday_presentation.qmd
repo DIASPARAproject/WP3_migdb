@@ -61,6 +61,8 @@ BACKGROUND
 # Similar needs in diadromous assessment groups
 
 -   Different levels of advancement but common “deadlocks”
+-   Some things will require lots of work
+    -   If we start to work together now, it will be more efficient
 
 ![](images/clipboard-3937337997.png) - +Shad, lamprey...?
 
@@ -75,9 +77,14 @@ BACKGROUND
 -   Available databases are for marine habitats and are designed for fisheries data (e.g., ICES RDBES)
 -   Working groups have created their own databases:
     -   Stored in different database formats
+
     -   Different level of detail
+
     -   Sometimes large Excel files and/or external databases
+
     -   Within each group, individuals are dedicated to database work
+
+        ![](images/clipboard-587608973.png)
 :::
 :::::
 
@@ -109,7 +116,9 @@ BACKGROUND
 -   Several discussions with different organisations, people, groups
 -   Presenting our main idea, identifying the needs of others
 -   **What we propose in this workshop, we want to discuss with the WGs**
+    -   Ask the needs and use of WGs
     -   Finding common ground and differences
+    -   Continuing discussions at the WGs
 :::
 
 ::: {.column .incremental width="50%"}
@@ -220,6 +229,7 @@ A quick look - details will be discussed on Tuesday
 ::: {.column width="50%"}
 -   Currently it is just different templates for data call
 -   We plan produce something together with the WGs
+    -   Ask all WGs what it should be - then propose a common structure
 -   If it looks good, we will migrate to a common database
 -   It makes no sense to have a separate ef db for different species
 :::
