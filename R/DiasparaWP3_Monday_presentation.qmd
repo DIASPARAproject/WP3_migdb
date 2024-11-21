@@ -259,6 +259,8 @@ A quick look - details will be discussed on Tuesday
 
 (without large compromises)
 
+![](images/clipboard-3175779107.png){width="651"}
+
 ## RDBES proposal - priorities
 
 ::::: columns
