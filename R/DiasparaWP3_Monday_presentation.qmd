@@ -117,6 +117,36 @@ BACKGROUND
 :::
 :::::
 
+::: notes
+Graphs here about what we are doing
+:::
+
+# What is needed?![](images/Slide1.JPG)
+
+# What is needed?
+
+![](images/Slide2-01.JPG)
+
+# What is needed?
+
+![](images/Slide3.JPG)
+
+# What is needed?
+
+![](images/Slide4.JPG)
+
+# What is needed?
+
+![](images/Slide5.JPG)
+
+# What is needed?
+
+![](images/Slide6.JPG)
+
+::: notes
+Continue to different databases
+:::
+
 # Creating the base, not (necessarily) the data {.scrollable}
 
 ::::: columns
@@ -133,42 +163,14 @@ BACKGROUND
 :::
 
 ::: {.column .incremental width="50%"}
--   Potential for updates in the future \* At some point there will be better international data available
--   Possibility to have better data for some areas / WGs \* National data will be better
+-   Potential for updates in the future
+    -   At some point there will be better international data available
+-   Possibility to have better data for some areas / WGs
+    -   National data will (always) be better
 
 ![](images/clipboard-4103952801.png){width="321"}
 :::
 :::::
-
-::: notes
-Graphs here about what we are doing
-:::
-
-# What is needed?![](images/clipboard-435743568.png)
-
-# What is needed?
-
-![](images/clipboard-3512018033.png)
-
-# What is needed?
-
-![](images/clipboard-4003578754.png)
-
-# What is needed?
-
-![](images/clipboard-4003578754.png)
-
-# What is needed?
-
-![](images/clipboard-2921278741.png)
-
-# What is needed?
-
-![](images/clipboard-2447217679.png)
-
-::: notes
-Continue to different databases
-:::
 
 ## Producing common dictionaries together with ICES
 
@@ -191,10 +193,11 @@ A quick look - details will be discussed on Tuesday
 
 # Design four (-\>five) international databases
 
-:::: columns
+::::: columns
 ::: {.column width="35%"}
 ![](images/clipboard-1027936040.png){width="380"}
 :::
+
 ::: {.column width="65%"}
 -   Electrofishing
 -   Habitat
@@ -203,16 +206,18 @@ A quick look - details will be discussed on Tuesday
 -   Life history strategies, biological data
 -   **Templates will be created**
 :::
-::::
+:::::
 
 ## Electrofishing data
 
 :::: columns
 ::: {.column width="50%"}
 -   Currently it is just different templates for data call
--   We produce something together with the WGs
+-   We plan produce something together with the WGs
 -   If it looks good, we will migrate to a common database
 -   It makes no sense to have a separate ef db for different species
+
+![](images/clipboard-639830824.png)
 :::
 ::::
 
@@ -223,6 +228,8 @@ A quick look - details will be discussed on Tuesday
 -   Migration obstacles
 -   Habitat availability, for models
 -   Extend the work from e.g., AMBER and Sudoang
+
+![](images/clipboard-1683463804.png)
 :::
 ::::
 
@@ -235,6 +242,8 @@ A quick look - details will be discussed on Tuesday
 -   Link with ICES working groups
 -   Reuse WGEEL, WGNAS structures
 -   New parameters in DIASPARA project
+
+![](images/clipboard-2078010992.png)
 :::
 ::::
 
