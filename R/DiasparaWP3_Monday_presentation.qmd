@@ -70,7 +70,7 @@ BACKGROUND
 
 ::::: columns
 ::: {.column width="30%"}
-![](images/clipboard-872471567.png)
+![](images/clipboard-2701286006.png)
 :::
 
 ::: {.column width="70%"}
@@ -101,7 +101,7 @@ BACKGROUND
 :::
 
 ::: {.column .incremental width="50%"}
--   Subtasks
+-   **Subtasks**
     -   Identify the needs of different working groups
     -   Discuss interoperability and storage with ICES and GFCM
     -   Propose a template suitable for different species
@@ -109,7 +109,7 @@ BACKGROUND
 :::
 :::::
 
-# Identifying the WG needs and Discuss with ICES & GFCM {.scrollable}
+# Identifying WG needs, discuss with ICES & GFCM {.scrollable}
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -187,6 +187,7 @@ Continue to different databases
 
 ::::: columns
 ::: {.column .incremental width="50%"}
+
 -   Will be used for both: –raw data in RDBES for catch and landings –Stock assessment database
 -   Examples: age and lifestage
 -   Referencials for habitat
@@ -231,7 +232,7 @@ A quick look - details will be discussed on Tuesday
 -   We plan produce something together with the WGs
     -   Ask all WGs what it should be - then propose a common structure
 -   If it looks good, we will migrate to a common database
--   It makes no sense to have a separate ef db for different species
+-   No need to have a separate EF database for different species(?)
 :::
 :::::
 
@@ -246,6 +247,7 @@ A quick look - details will be discussed on Tuesday
 -   Migration obstacles
 -   Habitat availability, for models
 -   Extend the work from e.g., AMBER and Sudoang
+-   Use habitat work from Philip McGinnity and Andrew French
 :::
 :::::
 
@@ -319,7 +321,8 @@ Our work principles
 :::
 ::::
 
-## Principles {.scrollable}
+## Thank you for following! 
+#Principles: {.scrollable}
 
 ::: columns
 -   Follow ICES vocab, create when not existing (search for all vocab)
