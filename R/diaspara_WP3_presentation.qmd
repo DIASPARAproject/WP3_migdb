@@ -233,6 +233,46 @@ digraph {
 ```
 :::
 ::::
+
+# Dam DB
+```{dot}
+graph G{
+  newrank=true;
+  rankdir=LR;
+  splines=false;
+  outputorder=nodesfirst;
+
+  A [label="Observation place",shape=box];
+  B [label="Observation",shape=box];
+  C [label="Pressure impact",shape=box];
+  D [label="🔑 🌐 📄",shape=box];
+  E [label="Height",shape=box];
+  F [label="Passability",shape=box];
+  G [label="Downstream problem",shape=box];
+  I [label="Presence eel pass (+ date)",shape=box];
+  H [label="Fishway type",shape=box];
+  J [label="Hydropower plant",shape=box];
+  K [label="Turbine",shape=box];
+  L [label="Bypass",shape=box];
+
+  {rank=same;A;B}
+  {rank=same;D;C}
+
+
+
+  A -- B
+  B -- C
+  C -- D
+  C -- E
+  C -- F
+  C -- G
+  C -- H
+  C -- I
+  C -- J
+  J -- K
+  J -- L
+}
+```
 # Geographical structure
 
 ```{dot}
