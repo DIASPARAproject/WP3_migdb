@@ -61,13 +61,14 @@ BACKGROUND
 # Similar needs in diadromous assessment groups
 
 -   Different levels of advancement but common “deadlocks”
-    -   +Shad, lamprey...? ![](images/clipboard-3937337997.png)
+
+![](images/clipboard-3937337997.png) - +Shad, lamprey...?
 
 # Current status of databases
 
 ::::: columns
 ::: {.column width="30%"}
-![](images/clipboard-2303700149.png){width="321"}
+![](images/clipboard-872471567.png)
 :::
 
 ::: {.column width="70%"}
@@ -121,7 +122,9 @@ BACKGROUND
 Graphs here about what we are doing
 :::
 
-# What is needed?![](images/Slide1.JPG)
+# What is needed?
+
+![](images/Slide1.JPG)
 
 # What is needed?
 
@@ -149,28 +152,27 @@ Continue to different databases
 
 # Creating the base, not (necessarily) the data {.scrollable}
 
-::::: columns
-::: {.column .incremental width="50%"}
--   **Creating common dictionaries**
+:::::: columns
+::: {.column width="25%"}
+**Creating common dictionaries**
 
--   Create separate tables for each working group
-
-    -   Some common information for all WGs, some separate
-
--   Common "simple" layer for international assessment needed - open data
-
--   All data does not (necessarily) have to be common or open
+![](images/clipboard-3991683683.png)
 :::
 
-::: {.column .incremental width="50%"}
+::: {.column .incremental width="35%"}
+-   Create separate tables for each working group
+    -   Some common information for all WGs, some separate
+-   Common "simple" layer for international assessment needed - open data
+    -   All data does not (necessarily) have to be common or open
+:::
+
+::: {.column .incremental width="35%"}
 -   Potential for updates in the future
     -   At some point there will be better international data available
 -   Possibility to have better data for some areas / WGs
     -   National data will (always) be better
-
-![](images/clipboard-4103952801.png){width="321"}
 :::
-:::::
+::::::
 
 ## Producing common dictionaries together with ICES
 
@@ -191,11 +193,11 @@ Continue to different databases
 
 A quick look - details will be discussed on Tuesday
 
-# Design four (-\>five) international databases
+# Design four (now five) international databases
 
 ::::: columns
 ::: {.column width="35%"}
-![](images/clipboard-1027936040.png){width="380"}
+![](images/clipboard-4041496170.png)
 :::
 
 ::: {.column width="65%"}
@@ -210,46 +212,60 @@ A quick look - details will be discussed on Tuesday
 
 ## Electrofishing data
 
-:::: columns
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-639830824.png)
+:::
+
 ::: {.column width="50%"}
 -   Currently it is just different templates for data call
 -   We plan produce something together with the WGs
 -   If it looks good, we will migrate to a common database
 -   It makes no sense to have a separate ef db for different species
-
-![](images/clipboard-639830824.png)
 :::
-::::
+:::::
 
 ## Habitat and migration obstacles
 
-:::: columns
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-1683463804.png)
+:::
+
 ::: {.column width="50%"}
 -   Migration obstacles
 -   Habitat availability, for models
 -   Extend the work from e.g., AMBER and Sudoang
-
-![](images/clipboard-1683463804.png)
 :::
-::::
+:::::
 
 ## Model parameters, life history parameters
 
-:::: columns
+::::: columns
 ::: {.column width="50%"}
 -   Biological and model data that are not centrally stored
 -   Moving towards Transparent Assessment Framework
 -   Link with ICES working groups
 -   Reuse WGEEL, WGNAS structures
 -   New parameters in DIASPARA project
+:::
 
+::: {.column width="50%"}
 ![](images/clipboard-2078010992.png)
 :::
-::::
+:::::
+
+# Our feeling is that a common format can be found for salmon, trout and eel!
+
+(without large compromises)
 
 ## RDBES proposal - priorities
 
-:::: columns
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-15895673.png)
+:::
+
 ::: {.column width="50%"}
 1.  Commercial landings
 2.  Recreational landings
@@ -259,15 +275,11 @@ A quick look - details will be discussed on Tuesday
 6.  DAM and hydro db - Maybe JRC?
 7.  Scripts to produce data from the RDBES will be needed, it has to be TAF
 :::
-::::
+:::::
 
 ::: notes
 Our work principles
 :::
-
-# Our feeling is that a common format can be found for salmon, trout and eel!
-
-(without large compromises)
 
 # Finally, a bit about our principles
 
