@@ -153,128 +153,49 @@ The database structure could be simplified to the following structure
 ![](images\SAM_database.png){.r-stretch}
 
 ## Global - Regional Units
-::::: columns
-:::: column
+
 ![](images\SAM_RU.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Data type
-::::: columns
-:::: column
+
 ![](images\SAM_DT.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Life stage
-::::: columns
-:::: column
+
 ![](images\SAM_LS.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Year/period
-::::: columns
-:::: column
+
 ![](images\SAM_YP.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Age
-::::: columns
-:::: column
+
 ![](images\SAM_A.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Data source
-::::: columns
-:::: column
+
 ![](images\SAM_DS.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Origin
-::::: columns
-:::: column
+
 ![](images\SAM_O.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - Habitat
-::::: columns
-:::: column
+
 ![](images\SAM_H.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 ## Global - ICES subdivisions
-::::: columns
-:::: column
+
 ![](images\SAM_ICESS.png)
-::::
-::::column
-:::{.incremental}
-- 
-- 
-- 
-:::
-::::
-:::::
+
 
 # Dam DB
-
+::::columns
+:::column
 -   Different resolution in different countries.
 -   Dbeel
-
+:::
+:::column
 ```{dot}
 digraph {
     compound=true;
@@ -310,9 +231,50 @@ digraph {
     B -> H -> J [lhead=clusterB,minlen=3]
 }
 ```
+:::
+::::
+
+# Dam DB
+```{dot}
+graph G{
+  newrank=true;
+  rankdir=LR;
+  splines=false;
+  outputorder=nodesfirst;
+  nodesep=0.39;
+
+  A [label="Observation place",shape=box];
+  B [label="Observation",shape=box];
+  C [label="Pressure impact",shape=box];
+  D [label="🔑 🌐 📄",shape=box];
+  E [label="Height",shape=box];
+  F [label="Passability",shape=box];
+  G [label="Downstream problem",shape=box];
+  I [label="Presence eel pass (+ date)",shape=box];
+  H [label="Fishway type",shape=box];
+  J [label="Hydropower plant",shape=box];
+  K [label="Turbine",shape=box];
+  L [label="Bypass",shape=box];
+
+  {rank=same;A;B}
+  {rank=same;D;C}
+
+
+  A -- B
+  B -- C
+  D -- C
+  C -- E
+  C -- F
+  C -- G
+  C -- H
+  C -- I
+  C -- J
+  J -- K
+  J -- L
+}
+```
 
 # Geographical structure
-
 ```{dot}
 digraph {
     compound=true;

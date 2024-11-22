@@ -2,6 +2,7 @@
 title: "Creating database for migratory fishes"
 subtitle: " To support a holistic and transparent assessment"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
 filters:
   - quarto-kroki
   - speakernotes
@@ -10,7 +11,7 @@ title-slide-attributes:
   data-background-size: stretch
   data-background-opacity: "0.5"
 logo: images/diaspara_participants_logo.png
-footer: "WGEEL 2024 work"
+footer: ""
 format: 
   revealjs :
     speakernotes:
@@ -33,17 +34,15 @@ background-transition: fade
 editor: visual
 ---
 
+::: notes
+BACKGROUND
+:::
 
-
-# WP3
-
-## What is WP3?
-
-
+# What is WP3?
 
 ![](images/clipboard-725413065.png)
 
-## And why?
+# And why?
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -59,35 +58,33 @@ editor: visual
 :::
 :::::
 
-::: notes
-BACKGROUND 
-* What is WP3? 
-* And why? 
-* Similar needs in diadromous assessment groups 
- Current status of databases
-:::
-
 # Similar needs in diadromous assessment groups
 
 -   Different levels of advancement but common “deadlocks”
-    -   +Shad, lamprey...?
+-   Some things will require lots of work
+    -   If we start to work together now, it will be more efficient
 
-![](images/clipboard-3755190268.png)
+![](images/clipboard-3937337997.png) - +Shad, lamprey...?
 
 # Current status of databases
 
 ::::: columns
 ::: {.column width="30%"}
-![](images/clipboard-2303700149.png){width="321"}
+![](images/clipboard-2701286006.png)
 :::
 
 ::: {.column width="70%"}
 -   Available databases are for marine habitats and are designed for fisheries data (e.g., ICES RDBES)
 -   Working groups have created their own databases:
     -   Stored in different database formats
+
     -   Different level of detail
+
     -   Sometimes large Excel files and/or external databases
+
     -   Within each group, individuals are dedicated to database work
+
+        ![](images/clipboard-587608973.png)
 :::
 :::::
 
@@ -104,7 +101,7 @@ BACKGROUND
 :::
 
 ::: {.column .incremental width="50%"}
--   Subtasks
+-   **Subtasks**
     -   Identify the needs of different working groups
     -   Discuss interoperability and storage with ICES and GFCM
     -   Propose a template suitable for different species
@@ -112,15 +109,16 @@ BACKGROUND
 :::
 :::::
 
-# Identifying the WG needs and Discuss with ICES & GFCM {.scrollable}
+# Identifying WG needs, discuss with ICES & GFCM {.scrollable}
 
 ::::: columns
 ::: {.column .incremental width="50%"}
 -   Several discussions with different organisations, people, groups
 -   Presenting our main idea, identifying the needs of others
 -   **What we propose in this workshop, we want to discuss with the WGs**
+    -   Ask the needs and use of WGs
     -   Finding common ground and differences
--   Interoperability and storage discussion with ICES and GFC;
+    -   Continuing discussions at the WGs
 :::
 
 ::: {.column .incremental width="50%"}
@@ -129,63 +127,90 @@ BACKGROUND
 :::
 :::::
 
-# Creating the base, not (necessarily) the data {.scrollable}
-
-::::: columns
-::: {.column .incremental width="50%"}
--   **Creating common dictionaries**
--   Create separate tables for each working group
-    -   Some common information for all WGs, some separate
--   Common "simple" layer for international assessment needed - open data
--   All data does not have to be common nor (necessarily) open
--   **Common references**
--   Potential for updates in the future \* At some point there will be better international data available
--   Possibility to have better data for some areas / WGs \* National data will be better
-:::
-
-::: {.column .incremental width="50%"}
-![](images/clipboard-4103952801.png){width="321"}
-:::
-:::::
-
 ::: notes
 Graphs here about what we are doing
 :::
 
-# What is needed?![](images/clipboard-435743568.png)
+# What is needed?
+
+![](images/Slide1.JPG)
 
 # What is needed?
 
-![](images/clipboard-3512018033.png)
+![](images/Slide2-01.JPG)
 
 # What is needed?
 
-![](images/clipboard-4003578754.png)
+![](images/Slide3.JPG)
 
 # What is needed?
 
-![](images/clipboard-4003578754.png)
+![](images/Slide4.JPG)
 
 # What is needed?
 
-![](images/clipboard-2921278741.png)
+![](images/Slide5.JPG)
 
 # What is needed?
 
-![](images/clipboard-2447217679.png)
+![](images/Slide6.JPG)
 
 ::: notes
 Continue to different databases
 :::
 
+# Creating the base, not (necessarily) the data {.scrollable}
+
+:::::: columns
+::: {.column width="25%"}
+**Creating common dictionaries**
+
+![](images/clipboard-3991683683.png)
+:::
+
+::: {.column .incremental width="35%"}
+-   Create separate tables for each working group
+    -   Some common information for all WGs, some separate
+-   Common "simple" layer for international assessment needed - open data
+    -   All data does not (necessarily) have to be common or open
+:::
+
+::: {.column .incremental width="35%"}
+-   Potential for updates in the future
+    -   At some point there will be better international data available
+-   Possibility to have better data for some areas / WGs
+    -   National data will (always) be better
+:::
+::::::
+
+## Producing common dictionaries together with ICES
+
+::::: columns
+::: {.column .incremental width="50%"}
+
+-   Will be used for both: –raw data in RDBES for catch and landings –Stock assessment database
+-   Examples: age and lifestage
+-   Referencials for habitat
+-   Hierarchical so that spatial units can be integrated separately for different WGs
+:::
+
+::: {.column width="50%"}
+![](images/clipboard-2783207033.png)
+:::
+:::::
+
 # And therefore, the Deliverables
 
 A quick look - details will be discussed on Tuesday
 
-# Design four (-\>five) international databases
+# Design four (now five) international databases
 
-:::: columns
-::: {.column width="50%"}
+::::: columns
+::: {.column width="35%"}
+![](images/clipboard-4041496170.png)
+:::
+
+::: {.column width="65%"}
 -   Electrofishing
 -   Habitat
 -   Migration obstacles
@@ -193,32 +218,42 @@ A quick look - details will be discussed on Tuesday
 -   Life history strategies, biological data
 -   **Templates will be created**
 :::
-::::
+:::::
 
 ## Electrofishing data
 
-:::: columns
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-639830824.png)
+:::
+
 ::: {.column width="50%"}
 -   Currently it is just different templates for data call
--   We produce something together with the WGs
+-   We plan produce something together with the WGs
+    -   Ask all WGs what it should be - then propose a common structure
 -   If it looks good, we will migrate to a common database
--   It makes no sense to have a separate ef db for different species
+-   No need to have a separate EF database for different species(?)
 :::
-::::
+:::::
 
 ## Habitat and migration obstacles
 
-:::: columns
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-1683463804.png)
+:::
+
 ::: {.column width="50%"}
 -   Migration obstacles
 -   Habitat availability, for models
 -   Extend the work from e.g., AMBER and Sudoang
+-   Use habitat work from Philip McGinnity and Andrew French
 :::
-::::
+:::::
 
 ## Model parameters, life history parameters
 
-:::: columns
+::::: columns
 ::: {.column width="50%"}
 -   Biological and model data that are not centrally stored
 -   Moving towards Transparent Assessment Framework
@@ -226,50 +261,80 @@ A quick look - details will be discussed on Tuesday
 -   Reuse WGEEL, WGNAS structures
 -   New parameters in DIASPARA project
 :::
-::::
 
-## RDBES proposal - priorities
-
-:::: columns
 ::: {.column width="50%"}
--   Commercial landings
--   Recreational landings
--   Store data that we currently store in sampling that are related to DCF sampling (raw data)
--   Once this is done, talk about storing electrofishing data
--   SAM model parameters - start with postgres and see whether it fits somewhere in ICES
--   DAM and hydro db - Maybe JRC?
--   Scripts to produce data from the RDBES will be needed, it has to be TAF
+![](images/clipboard-2078010992.png)
 :::
-::::
-
-::: notes
-Our work principles
-:::
+:::::
 
 # Our feeling is that a common format can be found for salmon, trout and eel!
 
 (without large compromises)
+
+![](images/clipboard-3175779107.png){width="651"}
+
+## Biological data, biometry
+
+::::: columns
+::: {.column width="50%"}
+GFCM - RDBFIS
+This information could be used in the upcoming RDBFIS database as well
+:::
+::: {.column width="50%"}
+DCF data MAKE CHANGES HERE!
+:::
+:::::
+
+## RDBES proposal - priorities
+
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-15895673.png)
+:::
+
+::: {.column width="50%"}
+1.  Commercial landings
+2.  Recreational landings
+3.  Store data that we currently store in sampling that are related to DCF sampling (raw data)
+4.  Once this is done, talk about storing electrofishing data
+5.  SAM model parameters - start with postgres and see whether it fits somewhere in ICES
+6.  DAM and hydro db - Maybe JRC?
+7.  Scripts to produce data from the RDBES will be needed, it has to be TAF
+:::
+:::::
+
+::: notes
+Our work principles
+:::
 
 # Finally, a bit about our principles
 
 ## Everything is online
 
 :::: columns
-::: {.column width="50%"}
+::: {.column width="100%"}
 -   Progress can be followed throughout
 -   Several releases: beta versions privately in Zenodo and then publicly as soon as the data are validated
 -   Can be commented during the project
 -   Postgis and parquet formats using R.
+
+![](images/clipboard-3538707530.png)
 :::
 ::::
 
-![](images/clipboard-3538707530.png) :::
-
 ## DATSU
 
-Not our focus, but a good side-benefit
+:::: columns
+::: {.column width="100%"}
+-   DATSU is not one of project deliverables, but
+-   As common dictionaries are used, DATSU can streamline future data calls
 
-## Principles {.scrollable}
+![](images/clipboard-3451821426.png)
+:::
+::::
+
+## Thank you for following! 
+#Principles: {.scrollable}
 
 ::: columns
 -   Follow ICES vocab, create when not existing (search for all vocab)
@@ -284,24 +349,16 @@ Not our focus, but a good side-benefit
 -   Whenever possible, change minimal, don't add work to working group.
 :::
 
-## Producing dictionaries (JANI TO COMPLETE LATER today)
 
-:::: columns
-::: {.column width="50%"}
--   • Together with ICES
+# Things to be agreed on
 
-    • Will be used for both:
+::: columns
+-   Electrofishing database
+      -     Get the needs from WGs and propose a common format, maybe within RDBES
+-   SAM db common to all groups, stored somewhere in ICES
+-   Development of common dictionaries for things like Age, lifestages, all GIS geopgraphical units
+-   Should all DCF data go to RDBES?
+-   GFCM - RDBFIS?
 
-    –raw data in RDBES for catch and landings
-
-    –Stock assessment database
-
-    •Referencials for habitat, and it will hierarchical so that spatial units can be integrated separately for different WGs (Provide example from e.g. baltic and bothnian bay (eel for whole BS, salmon for BB only)
-
-    •E.g., 22 will be in the whole area 200 MAKE A GRAPH, this is important.
-
-    •Rivers will flow into 22.
-
-    •We will have otehr dictionaries that will be used for things like age and lifestages - \> and these will be used. So it makes sense to use a common vocab for all these WGs
 :::
-::::
+
