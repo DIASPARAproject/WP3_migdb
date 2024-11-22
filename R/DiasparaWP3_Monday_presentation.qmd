@@ -334,8 +334,8 @@ Our work principles
 :::
 ::::
 
-# Principles {.scrollable}
-
+# Principles {.scrollable .incremental}
+:::{.incremental}
 * Dictionaries
   * Follow ICES vocab, create when not existing (search for all vocab)
   * Allow for the hierarchichal spatial scale to be integrated in queries, the structure of the db should allow for this.
@@ -350,9 +350,9 @@ Our work principles
 *  Use ICES existing db whenever possible
 *  Use DATSU to check for consistency / trace data. 
 *  Raw data should go to RDBES (starting with landings), we'll need a timeline for WG work.
+:::
 
-# Things to be agreed on
-
+# Things to be agreed on 
 
 - Electrofishing data       
 
@@ -365,6 +365,8 @@ Our work principles
 -   Should all DCF data go to RDBES?
 
 -   [GFCM - RDBFIS?]{style=color:#91b5c1;}
+
+:::
 
 
 # {background-image=images/title_slide_thank_you.png}
