@@ -1,20 +1,19 @@
 ---
 title: "Creating database for migratory fishes"
-subtitle: " To support a holistic and transparent assessment"
+subtitle: "      To support a holistic and transparent assessment"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 filters:
   - quarto-kroki
   - speakernotes
 title-slide-attributes:
-  data-background-image: images/title_slide.png
+  data-background-image: images/diaspara_background.png
   data-background-size: stretch
   data-background-opacity: "0.5"
 logo: images/diaspara_participants_logo.png
-footer: "WGEEL 2024 work"
+footer: "DIASPARA WP3"
 format: 
   revealjs :
-    speakernotes:
-      displayNotes: true
+    self-contained: true
   pdf:
     speakernotes:
       displayNotes: true
@@ -31,8 +30,12 @@ theme: solarized
 background-transition: fade
 editor: visual
 ---
+##  {background-image=images/title_slide_habitat.png}
 
-# Habitat DB {.smaller}
+![](images/catchments_map.png){.absolute top="200" left="250" width="380" height="400"}
+
+
+## Habitat DB {.smaller}
 
 :::::: columns
 ::: column
@@ -53,10 +56,22 @@ editor: visual
 Notes for habitat db
 :::
 
+## Habitat DB 
+
+
+![](images/salmon_db_andrew.png){.absolute top="-40" left="-30" 
+ height="700"}
+
 ## Habitat DB
+
+* A dataset 
+
+## Habitat DB 
+
 Format : Geoparquet, Postgis schema
 
 We intend to deliver several releases (ZENODO ?)
+
 ```{dot}
 digraph {
     //rankdir=TB; // Top-to-bottom orientation
@@ -117,85 +132,132 @@ digraph {
 }
 ```
 
+##  {background-image=images/title_slide_sam.png}
+
+![](images/wgnas_shiny.png){.absolute top="200" left="250" width="700" height="350"} 
 
 
-# SAM DB
 
 ## WGBAST
 
-::::: columns
-:::: column
-![](images/assessment_units_wgbast.jpg){.absolute width="400" height="500"}
-::::
+:::::: columns
+::: column
+![](images/assessment_units_wgbast.jpg){.absolute width="500" height="200"}
+:::
 
 :::: column
-::: {.incremental}
-- Three main groups of salmon populations
-  - Gulf of Bothnia
-  - Southern Sweden
-  - Gulf of Finland and eastern Main Basin
+::: incremental
+-   Three main groups of salmon populations
+    -   Gulf of Bothnia
+    -   Southern Sweden
+    -   Gulf of Finland and eastern Main Basin
 :::
 ::::
-:::::
-
+::::::
+::: footer 
+COMMON SAM DB ?
+:::
 ## WGNAS
 
 gfjhgjhjf
 
 ![](images\phylogeographic_structuring_salmon.png){.r-stretch}
-
+::: footer 
+COMMON SAM DB ?
+:::
 ## WGEEL
 
 ![](images\EMUs.png){.r-stretch}
 
+::: footer 
+COMMON SAM DB ?
+:::
 ## Global {.smaller}
-The database structure could be simplified to the following structure
-![](images\SAM_database.png){.r-stretch}
 
+The database structure could be simplified to the following structure ![](images\SAM_database.png){.r-stretch}
+
+::: footer 
+COMMON SAM DB ?
+:::
 ## Global - Regional Units
 
 ![](images\SAM_RU.png)
 
+::: footer 
+COMMON SAM DB ?
+:::
 ## Global - Data type
 
 ![](images\SAM_DT.png)
 
+::: footer 
+COMMON SAM DB ?
+:::
 ## Global - Life stage
 
 ![](images\SAM_LS.png)
+
+::: footer 
+COMMON SAM DB ?
+:::
 
 ## Global - Year/period
 
 ![](images\SAM_YP.png)
 
+::: footer 
+COMMON SAM DB ?
+:::
+
 ## Global - Age
 
 ![](images\SAM_A.png)
+
+::: footer 
+COMMON SAM DB ?
+:::
 
 ## Global - Data source
 
 ![](images\SAM_DS.png)
 
+::: footer 
+COMMON SAM DB ?
+:::
+
 ## Global - Origin
 
 ![](images\SAM_O.png)
+
+::: footer 
+COMMON SAM DB ?
+:::
 
 ## Global - Habitat
 
 ![](images\SAM_H.png)
 
+::: footer 
+COMMON SAM DB ?
+:::
+
 ## Global - ICES subdivisions
 
 ![](images\SAM_ICESS.png)
 
+::: footer 
+COMMON SAM DB ?
+:::
 
 # Dam DB
-::::columns
-:::column
+
+::::: columns
+::: column
 -   Different resolution in different countries.
 -   Dbeel
 :::
-:::column
+
+::: column
 ```{dot}
 digraph {
     compound=true;
@@ -232,9 +294,10 @@ digraph {
 }
 ```
 :::
-::::
+:::::
 
 # Dam DB
+
 ```{dot}
 graph G{
   newrank=true;
@@ -275,6 +338,7 @@ graph G{
 ```
 
 # Geographical structure
+
 ```{dot}
 digraph {
     compound=true;

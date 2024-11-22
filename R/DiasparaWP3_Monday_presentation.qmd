@@ -14,8 +14,6 @@ logo: images/diaspara_participants_logo.png
 footer: ""
 format: 
   revealjs :
-    speakernotes:
-      displayNotes: true  
     self-contained: true
   pdf:
     speakernotes:
@@ -34,9 +32,8 @@ background-transition: fade
 editor: visual
 ---
 
-::: notes
-BACKGROUND
-:::
+
+# {background-image=images/title_slide.png}
 
 # What is WP3?
 
@@ -57,6 +54,10 @@ BACKGROUND
 -   Spatialised and climate-enhanced SAM
 :::
 :::::
+
+::: notes
+BACKGROUND
+:::
 
 # Similar needs in diadromous assessment groups
 
@@ -122,8 +123,9 @@ BACKGROUND
 :::
 
 ::: {.column .incremental width="50%"}
--   Databases will be designed to be interoperable, capable of handling nested spatial scales and able to address a variety of stressors.
--   Our goal is to deliver databases that can be effectively utilized by working groups (WGBAST, WGNAS, WGEEL, WGTRUTTA) in the long term.
+-   Databases should be designed to be interoperable, ***capable of handling nested spatial scales*** and able to address a variety of stressors.
+
+-   Our goal is to deliver databases / referentials that can be effectively utilized by working groups (WGBAST, WGNAS, WGEEL, WGTRUTTA) in the long term.
 :::
 :::::
 
@@ -187,7 +189,6 @@ Continue to different databases
 
 ::::: columns
 ::: {.column .incremental width="50%"}
-
 -   Will be used for both: –raw data in RDBES for catch and landings –Stock assessment database
 -   Examples: age and lifestage
 -   Referencials for habitat
@@ -277,9 +278,9 @@ A quick look - details will be discussed on Tuesday
 
 ::::: columns
 ::: {.column width="50%"}
-GFCM - RDBFIS
-This information could be used in the upcoming RDBFIS database as well
+GFCM - RDBFIS This information could be used in the upcoming RDBFIS database as well
 :::
+
 ::: {.column width="50%"}
 DCF data MAKE CHANGES HERE!
 :::
@@ -333,32 +334,37 @@ Our work principles
 :::
 ::::
 
-## Thank you for following! 
-#Principles: {.scrollable}
+# Principles {.scrollable}
 
-::: columns
--   Follow ICES vocab, create when not existing (search for all vocab)
--   Separate the input of different WGs in different schema but the same db.
--   Allow for the hierarchichal spatial scale to be integrated in queries, the stucture of the db should allow for this. Hierarchic level
--   Some common dictionaries (countries, sea areas, habitat type, basins) inherited table for reference
--   Some separate dictionaries (stages, age, maturity) 
--   Separate parameters for the model and aggregated data built at the regional / national/ emu level. Two separate db for  output param observed value, same structure
--   Model parameters should be described in a separate table and maybe simplified.
--   Allow user rights for access to the db (read write access with group user role)
--   We can then use DATSU to check for consistency / trace data. 
--   Whenever possible, change minimal, don't add work to working group.
-:::
+* Dictionaries
+  * Follow ICES vocab, create when not existing (search for all vocab)
+  * Allow for the hierarchichal spatial scale to be integrated in queries, the structure of the db should allow for this.
+     Separate the input of different WGs in different schema but the same db (postgres).
 
+  * Some common dictionaries (countries, sea areas, habitat type, basins) inherited table for reference
+  * Some separate dictionaries (stages, age, maturity) 
+* Model
+  * Separate parameters for the model and aggregated data built at the regional / national/ emu level.
+  * Model parameters should be described in a separate metadata table (Unit, definition ...) like WGNAS.
+*  Keep change minimal, don't add work to working group
+*  Use ICES existing db whenever possible
+*  Use DATSU to check for consistency / trace data. 
+*  Raw data should go to RDBES (starting with landings), we'll need a timeline for WG work.
 
 # Things to be agreed on
 
-::: columns
--   Electrofishing database
-      -     Get the needs from WGs and propose a common format, maybe within RDBES
+
+- Electrofishing data       
+
+> Get the needs from WGs and propose a common format, maybe within RDBES
+   
 -   SAM db common to all groups, stored somewhere in ICES
--   Development of common dictionaries for things like Age, lifestages, all GIS geopgraphical units
+
+-   [Development of common dictionaries for things like Age, lifestages, all GIS geographical units]{style=color:#91b5c1;}
+
 -   Should all DCF data go to RDBES?
--   GFCM - RDBFIS?
 
-:::
+-   [GFCM - RDBFIS?]{style=color:#91b5c1;}
 
+
+# {background-image=images/title_slide_thank_you.png}

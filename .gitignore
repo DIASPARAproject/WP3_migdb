@@ -76,16 +76,15 @@ R/assets/*
 R/images/image35547.png
 R/images/image35559.png
 R/images/image35663.png
+R/images/landings_wgbast_report2024.png
 
 # Visual studio specifics
 .vscode/global.code-snippets
 
-# shiny
+# shiny (for the moment ignore all)
 
 
-
-
-
+shiny/*
 
 shiny/WGNAS-ToolBox/**/Nimble_output/*.rds
 shiny/WGNAS-ToolBox/**/Nimble_output/*.png
@@ -101,4 +100,5 @@ shiny/WGNAS-ToolBox/R/manage_database.R
 shiny/WGNAS-ToolBox/R/manage_database2.R
 shiny/WGNAS-ToolBox/R/create_metadata_tab_label.R
 shiny/WGNAS-ToolBox/R/create_new_db_version.R
-R/images/landings_wgbast_report2024.png
+
+
