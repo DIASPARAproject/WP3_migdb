@@ -132,73 +132,130 @@ digraph {
 }
 ```
 
-##  {background-image=images/title_slide_sam.png}
-
-![](images/wgnas_shiny.png){.absolute top="200" left="250" width="700" height="350"} 
+## Habitat DB
 
 
 
-## WGBAST
+
+## Habitat DB
+
+Presentation from Periklis : tool to edit rivers
+
+
+
+
+
+## WGBAST{.smaller}
 
 :::::: columns
 ::: column
-![](images/assessment_units_wgbast.jpg){.absolute width="500" height="200"}
+![](images/assessment_units_wgbast.jpg){height="400"}
 :::
+
 
 :::: column
 ::: incremental
--   Three main groups of salmon populations
+- River part (Wild / Mixed / Reared)
+- River and river basins (vocabulary implemented in ICES)
+- Assessment units (6)
+- Three main groups of salmon populations
     -   Gulf of Bothnia
     -   Southern Sweden
     -   Gulf of Finland and eastern Main Basin
+- Corresponding ICES division and grouping of ICES div
+- Conceptual spatio temporal units. 
 :::
 ::::
 ::::::
 ::: footer 
-COMMON SAM DB ?
-:::
-## WGNAS
+[assessment units](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgnas_salmoglob_description.html#location)
 
-gfjhgjhjf
+[ICES subdiv](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#catch-habitat)
+
+[Rivers](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#geography-1)
+
+:::
+
+::: notes 
+The GIS information for WGBAST will comprise
+- rivers (already implemented in ICES)
+- divisions
+- grouping of divisions
+- river sections by type (classification Wild Mixed Reared)
+:::
+
+
+## WGNAS {.smaller}
+
+
+
 
 ![](images\phylogeographic_structuring_salmon.png){.r-stretch}
+
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
+
+## WGNAS
+
+From lower to upper level ...
+
+::: incremental
+* River sections
+* Rivers (not used yet)
+* Area (source) (FR, SC_WE, NI_FB ...)
+* Countries
+* Complex (NAC, NEC)
+* Conceptual spatio-temporal units (Bef. Fisheries, Bef. Gld fisheries, Aft. First fisheries)
+:::
+
+
+
+::: footer 
+see tables in [WGNAS database description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgnas_salmoglob_description.html#location)
+:::
+
+
+::: notes
+The stucture in the current WGNAS habitat DB only uses regional stock units. Discussion with
+Etienne have shown that it would be of interest to give more details following what is done in
+WGBAST
+:::
+
 ## WGEEL
 
 ![](images\EMUs.png){.r-stretch}
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 ## Global {.smaller}
 
 The database structure could be simplified to the following structure ![](images\SAM_database.png){.r-stretch}
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 ## Global - Regional Units
 
 ![](images\SAM_RU.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 ## Global - Data type
 
 ![](images\SAM_DT.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 ## Global - Life stage
 
 ![](images\SAM_LS.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 
 ## Global - Year/period
@@ -206,7 +263,7 @@ COMMON SAM DB ?
 ![](images\SAM_YP.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 
 ## Global - Age
@@ -214,7 +271,7 @@ COMMON SAM DB ?
 ![](images\SAM_A.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat DB
 :::
 
 ## Global - Data source
@@ -222,7 +279,7 @@ COMMON SAM DB ?
 ![](images\SAM_DS.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat db
 :::
 
 ## Global - Origin
@@ -230,7 +287,7 @@ COMMON SAM DB ?
 ![](images\SAM_O.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat db
 :::
 
 ## Global - Habitat
@@ -238,7 +295,7 @@ COMMON SAM DB ?
 ![](images\SAM_H.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat db
 :::
 
 ## Global - ICES subdivisions
@@ -246,8 +303,14 @@ COMMON SAM DB ?
 ![](images\SAM_ICESS.png)
 
 ::: footer 
-COMMON SAM DB ?
+Habitat db
 :::
+
+##  {background-image=images/title_slide_sam.png}
+
+![](images/wgnas_shiny.png){.absolute top="200" left="250" width="700" height="350"} 
+
+
 
 # Dam DB
 
