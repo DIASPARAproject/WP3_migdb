@@ -101,3 +101,4 @@ shiny/WGNAS-ToolBox/R/manage_database.R
 shiny/WGNAS-ToolBox/R/manage_database2.R
 shiny/WGNAS-ToolBox/R/create_metadata_tab_label.R
 shiny/WGNAS-ToolBox/R/create_new_db_version.R
+R/images/landings_wgbast_report2024.png

@@ -26,9 +26,9 @@ bibliography: ../diaspara.bib
 
 
 The following working document is just a technical analysis of the WGBAST database. It uses different sources, ICES vocabulary, the stock annex [@ICES2021_wgbast_stock_annex], to analyse the structure of the wgbast database before assessing whether we could integrate it in a single database (wgnas, wgbast, wgeel) in the DIASPARA project.
-This document does not engage the WGBAST it's just a technical analysis, to try to get how this works.
-This document is listed as a task there :
-https://github.com/DIASPARAproject/WP3_migdb/issues/11
+This document does not engage the WGBAST it's to try to get how this works.
+At this stage answers were kindly provided by Tapani.
+This document is listed as a task there [github link to diaspara](https://github.com/DIASPARAproject/WP3_migdb/issues/11)
 
 
 # Spatial units
@@ -68,7 +68,21 @@ Could we have access to a gis of this map (river type) to create the referential
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+Jānis Bajinskis has produced this map
+::::
+:::
 
+:::{.callout-note appearance="simple"}
+## TODO
+Contact Janis
+:::
 
 ### ICES vocab linked with catchments in the Baltic.
 ```{r init}
@@ -163,7 +177,10 @@ The rivers are stored in the db, but these details (@tbl-classificationrivers) m
 ::::
 :::
 
-# Fishery
+# part I - Fishery
+
+![Catches of salmon in % of TAC in 1993-2023. For years 1993–1997 (1993–1998 for Gulf of Finland) it is not possible to divide the total reported catch into commercial and recreational catches. (source [@ices_baltic_2024])](images/landings_wgbast_report2024){#fig-landings}
+
 
 ```{r read_catch_db}
 #| echo: FALSE
@@ -219,6 +236,16 @@ Could you confirm that `MON` and `MONTH` are the same values, same for `Year` an
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+-	Yup, MON=MONTH and Year=YR
+::::
+:::
 
 :::{.callout-tip appearance="simple"}
 ## TODO 
@@ -273,6 +300,16 @@ QUESTION WGBAST : species
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+-	Estonia cannot distinguish whether seal damaged catch is SAL or TRS. Split to the species could base on expert elicitation but has remained undone.
+::::
+:::
 
 ## Catch  habitat
 
@@ -351,7 +388,16 @@ be more in line with data ?
 ::::
 :::
 
-
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+In the stock annex there is an old notation. Today we use “O” (open sea) instead of “S”. 
+::::
+:::
 
 
 
@@ -381,6 +427,17 @@ Should we use this vocabulary for catch habitat ?
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+I agree, we could use ICES vocabulary for catch habitat (i.e MO, MC, C and CR/FW)
+::::
+:::
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -392,6 +449,21 @@ QUESTION WGBAST: 4 nm from the baseline ?
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+In the WGBAST thinking we have only one coastal water category independently from the distance to the baseline. All trapnet fishing is considered coastal even though fishing sites may varies from very close to shoreline out to beyond base line. At the Finnish coast baseline goes far out at sea in some places. 
+::::
+:::
+
+:::{.callout-note appearance="simple"}
+## NOTE WGBAST
+Currently subdivisions are used but for some historical data it is not possible to separate ICES subdivisions, so for these historical data these data are lumped together.
+:::
 ## Catches type
 
 Catches are further classified as `commercial, recreational, discard, and seal damage` 
@@ -422,24 +494,25 @@ There is a difference between the stock annex, the excel table and the database.
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+The Stock annex seems to miss part of catch categories. 
+* BROOD means broodstock fishery and BMS is catch of undersized salmon (below minimum landing size, landing obligation). 
+* ALV is caught fish that has been releases back to sea/river alive. UNRP is unreported catch. 
+* At some point intention was to include unreported catch estimates to the catch data but has not realised so far. Might be OK to drop from the excel description. 
+::::
+:::
+
 
 :::{.callout-note appearance="simple"}
 ## NOTE
 There are `r sum(is.na(catchdb$f_type))` NA values for `f_type`.
 :::
-
-
-:::{.questionbox}
-::::{.questionbox-header}
-::::{.questionbox-icon}
-::::
-QUESTION WGBAST
-::::
-::::{.questionbox-body}
-39 lines with `BROOD` do you know to what these correspond ?
-::::
-:::
-
 
 
 
@@ -488,17 +561,35 @@ kable(DataSourceOfScientificWeight, caption = "DataSourceOfScientificWeight tabl
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-QUESTION WGBAST
+QUESTION / ANSWERS WGBAST
 ::::
 ::::{.questionbox-body}
-* Could you provide definitions of extrapolated and estimated. ? 
+* Could you provide definitions of extrapolated and estimated. ?
+
+> Need to come back to this later on
+
 * ARE `EXP` and `EXV` the same (@tbl-checkntype) ? 
+
+> Yes, they are the same. 
+
 * What is `GST` (@tbl-checkntype)?
+
+> All GST -values should be updated as “expert evaluated”.
+
 * The source of fishery data might partially correspond to the vocab `dataSourceOfScientificWeight` (@tbl-icesVocabsource). At least there is a `Logbook`, `Expert evaluation`,  any idea if something in this vocab might correspond to extrapolated or estimated ? 
+
+> The “Combcd” might do best for these.
+
 * Do you want to allow NA values there  ?
+
+> No, I don't think so. Better to give a value from vocab here.
+
 * Would you treat things differently if tables for Baltic TRUTTA and  SALMON were separated ?
+
+> No, not to my understanding
 ::::
 :::
+
 
 :::{.callout-note appearance="simple"}
 ## NOTE
@@ -531,7 +622,10 @@ table(catchdb$n_type, catchdb$w_type, useNA="ifany") %>%
 TODO analyse gear according to ftype
 
 
-# Electrofishing and river data 
+# Part II. Electrofishing and river data 
+
+
+The data are read from the WGBAST_2024_Young_fish xlsx file. This file has two sheets. The number of young fish is the number of fish released in water (stocking), and the smolt corresponds to smolts counts.
 
 ```{r read_youngfishdbdb}
 #| eval: TRUE
@@ -590,6 +684,20 @@ Question WGBAST
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+There is an input dataset for the river model. This has been compiled from the national data set for 17 rivers (that are included in the full life history model at present). In other words that dataset is missing AU5-6 rivers, which parr densities and the corresponding smolt production estimates are presented in the WGBAST report tables only. Atso knows more about this.
+
+Yes, I think this would be good. Would it be possible to apply same data construction for SAL, TRS and EEL ?
+
+> Yes we think so and will try
+::::
+:::
 
 ## Species
 
@@ -686,12 +794,17 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-Question WGBAST
+Question / ANSWERS WGBAST
 ::::
 ::::{.questionbox-body}
 * Could you please confirm the duplicated values here (values with similar names)
 in @tbl-youngfishdbdbgeo. 
+
+> Yes, there are dublicates (with minor differences in writing). Need to check river by river.
+
 * Why are some entries for some rivers corresponding to more than one area ?
+
+> No, there should not be such as long as the key value in ICES vocab will be used. River name (“Description”) don't always specify the river because several rivers/brooks may have the same name. 
 ::::
 :::
 
@@ -735,11 +848,22 @@ table(syy$age, syy$species) %>%
 Question WGBAST
 ::::
 ::::{.questionbox-body}
-What is the meaning of the different age categories ?
-There are 9 smolts corresponding to 1s parr (caught in downstream traps ) ?
+* What is the meaning of the different age categories ?
+* There are 9 lines in the smolts database who have a stage corresponding to 1s parr Are these caught in downstream traps ?
 ::::
 :::
 
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+In this you have smolts and parr corresponding to release of aquaculture raised salmons. `2s`should be replaced by `2 s parr`. yr correspond to 1yr old smolt. 1 yr parr correspond to parr relase at 1 yr old. There are very few parr in hatcheries that will not have smoltified at 2 yr (2yr parr), most will smoltify at age 1 so that's why the number are low. Fry correspond to alevins with the yolk sack. 
+::::
+:::
 
 ## Origin
 
@@ -756,10 +880,12 @@ table(sy$origin, sy$tab, useNA="ifany") %>%
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-Question WGBAST
+Question / ANSWERS WGBAST
 ::::
 ::::{.questionbox-body}
 There are just 9 NA values, is this an error ?
+
+> NA are errors. 
 ::::
 :::
 
@@ -793,12 +919,14 @@ WGBAST
 ::::{.questionbox-body}
 * NOTE There are character values, "na", "n.e.","0,3", "0 .1"  
 * QUESTION There are missing values there ... Is that correct ?
+
+> -	Need to look closer all cases to be able to evaluate 
 ::::
 :::
 
 
 
-# TRUTTA electrofishing densities dataset
+# part III - TRUTTA electrofishing densities dataset
 
 ```{r read_truttadensitiesdb}
 #| eval: TRUE
@@ -859,7 +987,12 @@ Question WGBAST
 ::::
 ::::{.questionbox-body}
 * GER should be DE
+
+> Yes
+
 * What is SE-S, it's not a country how do we deal with this. Why is it needed ? Could we use some other column from the other datasets (as they will be in the joined database structure) ?
+
+> This is notation for the assessment unit southern Sweden. Should not be used as the country value.
 ::::
 :::
 
@@ -893,6 +1026,17 @@ table(ttd$age , useNA="ifany", dnn="age") %>%
 
 
 ```
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST
+::::
+::::{.answerbox-body}
+Yes for Trutta the ages are divided between 0+ and older than 0+ which is a grouping of several ages.
+::::
+:::
 
 ## Geography
 ```{r tbl-truttadensitiesdbgeo}
@@ -929,15 +1073,29 @@ table(ttd$main_river, useNA="ifany", dnn = "main_river") %>%
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
 ::::
-Question WGBAST
+Question / answers WGBAST
 ::::
 ::::{.questionbox-body}
 * Would it be usefull to start from a full db of electrofishing data ?
+
+> Yes, I thing would be good. Like for SAL electrofishing data too. 
+
 * Could you please confirm the duplicated values here (values with similar names)
 in @tbl-truttadensitiesdbgeo. 
-* Do you have gis information corresponding to those rivers ?
+
+> Potentially dublicates, but several rivers/brooks may have the same name.
+
+* Do you have GIS information corresponding to those rivers ?
+
+> - The gis information is available in national geographic data bases. For example the Finnish Environmental Institute host the data concerned.
+
 * Some values are 'at sea' what does it means ?
+
+> These are release to the marine water at the coast away from any river mouth (no imprinting to the river).
+
 * Why are some entries for some rivers corresponding to more than one area ?
+
+> by river names yes but not if key code is used
 ::::
 :::
 
@@ -950,11 +1108,19 @@ Question ICES
 ::::{.questionbox-body}
 * There are  duplicated names in the ICES Vocab, is it the same rivers ?
 Do you have ways to separate the rivers (gis information) ?
+
+> ANSWER WGBAST : The key code of the ICES vocab separates the rivers, not the river names (“Description”).
 ::::
 :::
 
+# part IV - Electrofishing dataset for Salmon
 
-# The model
+:::{.callout-note appearance="simple"}
+## TODO
+Get the dataset from WGBAST (Atso)
+:::
+
+# part V The model
 
 ![Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.png)
 
@@ -963,6 +1129,16 @@ Salmon populations in Gulf of Bothnia and southern Sweden (AUs 1–4), eastern M
 
 ![Overview of the assessment methodology for Baltic salmon stocks. The results from five uppermost analyses provide informative prior probability distributions for the full life-history model. These priors become automatically updated by the information contained in the data and by the biological knowledge of the Baltic salmon life cycle used to build a full life-history model. PSPC=Potential Smolt Production Capacity. Note that smolt trapping data is available from more rivers than indicated in the figure. (source wgbast stock annex)](images/assessement_method.jpg)
 
+
+
+
+
+
+
+:::{.callout-note appearance="simple"}
+## TODO
+Look at the report 
+:::
 
 # Mark recapture
 
