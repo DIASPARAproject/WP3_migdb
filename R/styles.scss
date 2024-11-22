@@ -166,4 +166,64 @@ body {
    margin-bottom: 0;
  }
 
+
+ // quarto-scss-analysis-annotation { "origin": null }
+// replicate the CSS from https://github.com/quarto-dev/quarto-cli for a callout box with a custom tilte, icon and default appearance
+
+.answerbox{
+  margin-top: 1em;
+  margin-bottom: 1em;  
+  border-radius: .25rem;
+  border-left: solid #acacac .3rem;
+  border-right: solid 0.5px silver;
+  border-top: solid 0.5px silver;
+  border-bottom: solid 0.5px silver;
+  border-left-color: #1a0788 !important;
+}
+
+.answerbox-icon{
+   margin-top: 0.5rem;
+   padding-right: .5rem;
+   height: 1rem;
+   width: 1rem;
+   display: inline-block;
+   content: "";
+   background-repeat: no-repeat;
+   background-size: 0.9rem 0.9rem;
+   background-image: url('images/comment-wgbast-solid.svg');
+}
+
+
+
+.answerbox-header {
+   //margin-top: 0.5em;
+   border-bottom: none;
+   font-weight: 600;
+   opacity: 85%;
+   font-size: 0.9rem;
+   padding-left: 0.5em;
+   padding-top: 0.2em;
+   margin-bottom: 0.5em;
+   border-bottom: none;
+   background-color: #5b5292 ;
+   display: flex;
+   height: 2em;
+   overflow: hidden;
+}
+
+.answerbox-header p {
+  padding-top: 0.2em;
+}
+
+.answerbox-body{    
+   font-size: 0.9rem;
+   font-weight: 400;
+   padding-left: 0.5em;
+   padding-right: 0.5em;
+}
+
+.answerbox-body > :last-child {
+  padding-bottom: 0.5rem;
+  margin-bottom: 0;
+}
  
