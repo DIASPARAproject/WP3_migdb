@@ -14,6 +14,8 @@ footer: "DIASPARA WP3"
 format: 
   revealjs :
     self-contained: true
+    speakernotes:
+      displayNotes: true
   pdf:
     speakernotes:
       displayNotes: true
@@ -30,10 +32,528 @@ theme: solarized
 background-transition: fade
 editor: visual
 ---
-##  {background-image=images/title_slide_habitat.png}
+
+##  {background-image="images/title_slide_habitat.png"}
 
 ![](images/catchments_map.png){.absolute top="200" left="250" width="380" height="400"}
 
+::: notes
+
+We will start by presenting the development of maps of continental habitat
+
+The main objective is to have a common vocabulary
+
+The second objective is to have a GIS system to work with
+
+:::
+
+## Habitat DB {.smaller}
+
+:::::: columns
+::: column
+![](images/catchments_map.png){.absolute top="110" left="-30" width="550" height="600"}
+:::
+
+:::: column
+::: incremental
+-   Continental habitat : Rivers, Estuaries, lakes, marsh, lagoons (Mediterranean, Atlantic, Baltic)
+-   CCM, hydro-Atlas (Southern mediterranean), national databases.
+-   Hierachical structure in postgis.
+-   WKSMEEL (2023)
+:::
+::::
+::::::
+
+::: notes
+The continental habitat should include, rivers ..... in practise this means polygons and lines. 
+
+The potential candidate db to build a db at the scale of Europe + Med + Part of Russian basins are few. 
+
+National DB will be maintained, always better, except when they are proprietary...
+
+We need to envisage a hierarchical structure
+
+
+:::
+
+## Habitat DB
+
+![](images/habitat_available.png)
+
+:::notes
+
+Wksmeel has analysed some details on data availability, layers should be available at the national level
+
+One of the problem is that if we work with river networks with different level of details models such as EDA need to provide response variables at the national level which increases their complexity
+
+:::
+
+
+## Habitat DB
+
+Format : Geoparquet, Postgis schema
+
+We intend to deliver several releases probably with Zenodo for large datasets
+
+```{dot}
+digraph {
+    //rankdir=TB; // Top-to-bottom orientation
+    compound=true;
+    newrank=true;
+    A [label="2001", shape=box];
+    B [label="2002", shape=box];
+    C [label="2003", shape=box];
+    D [label="FR", shape=ellipse];
+    E [label="ES", shape=ellipse];
+    F [label="SE", shape=ellipse];
+    G [label="CCM | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="Ecrins | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    L [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+
+    subgraph clusterA {
+      label = "CCM, HydroAtlas, Ecrins, Regions";
+      style=dashed;
+      color=black;
+      A;
+      B;
+      C;
+    }
+
+    subgraph clusterB {
+      label = "Country or regions layer";
+      style=dashed;
+      color=black;
+      D;
+      E;
+      F;
+    }
+
+    
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
+    E -> G,H [ltail=clusterB];
+
+    I [label="Salmon River / Stock units", shape=box];
+    J [label="Fishing areas", shape=box];
+    K [label="EMU (Eel Managment Unit)", shape=box];
+
+
+    {rank=same;D;E;F;}
+    {rank=same;A;B;C;I;J;K}
+    {rank=same;G;H;L;} 
+
+    subgraph clusterC {
+      label = "";
+      style=dashed;
+      color=black;
+      I;
+      J;
+      K;
+    }
+
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
+    //L -> H [style=invis]
+}
+```
+
+:::notes
+
+Our idea is to propose a structure where National correspondents will be able to add their own layers.
+
+The same applies to the different working groups
+
+We would like to integrate everything that's existing from working groups
+
+Data will be split between different tables and regions, available as parquet files or posgis schema, so that users will be able to download only part of the data.
+
+The schema following the same structure will be in paralelle, it's yet unclear if we will only use the ccm for naming basins, or just use all.
+
+Topographical attributes (altitude, distance to the sea, common to the different wg will be in one table, but the table for WG (eel, salmon NAS, salmon BAST, trout will have details (stock unit, density predicted ....) )
+
+:::
+
+
+## Habitat DB
+
+![](images/salmon_db_andrew.png){.absolute top="-40" left="-30" height="700"}
+
+:::notes
+
+* A lot of work has been done by Andrew French, Philipp Mc Ginnity, initally implemented in the Amber project, but going much beyond.
+* It comprises the developement of packages, working on structuring the network, an incredible amount of work
+* We stopped our work on the habitat development to see how / when we can use it.
+
+:::
+
+
+## Habitat DB
+
+Presentation from Periklis : tool to edit rivers
+
+## WGBAST {.smaller}
+
+:::::: columns
+::: column
+![](images/assessment_units_wgbast.jpg){height="400"}
+:::
+
+:::: column
+::: incremental
+-   River part (Wild / Mixed / Reared)
+-   River and river basins (vocabulary implemented in ICES)
+-   Assessment units (6)
+-   Three main groups of salmon populations
+    -   Gulf of Bothnia
+    -   Southern Sweden
+    -   Gulf of Finland and eastern Main Basin
+-   Corresponding ICES division and grouping of ICES div
+-   Conceptual spatio temporal units.
+:::
+::::
+::::::
+
+::: footer
+[link to assessment units](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgnas_salmoglob_description.html#location)
+
+[link to ICES subdiv](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#catch-habitat)
+
+[link to Rivers](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#geography-1)
+:::
+
+::: notes
+The GIS information for WGBAST will comprise - rivers (already implemented in ICES) - divisions - grouping of divisions - river sections by type (classification Wild Mixed Reared)
+:::
+
+## WGNAS {.smaller}
+
+![](images\phylogeographic_structuring_salmon.png){.r-stretch}
+
+::: footer
+Habitat DB
+:::
+
+## WGNAS
+
+From lower to upper level ...
+
+::: incremental
+-   River sections (not used yet but under way)
+-   Rivers (idem)
+-   Area (source) (FR, SC_WE, NI_FB ...)
+-   Countries
+-   Complex (NAC, NEC)
+-   Conceptual spatio-temporal units (Bef. Fisheries, Bef. Gld fisheries, Aft. First fisheries)
+:::
+
+::: footer
+[link to areas](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgnas_salmoglob_description.html#location)
+:::
+
+::: notes
+The stucture in the current WGNAS habitat DB only uses regional stock units. Discussion with Etienne have shown that it would be of interest to give more details following what is done in WGBAST
+:::
+
+## WGEEL
+
+:::::: columns
+:::: column
+![](images\EMUs.png)
+::::
+
+:::: column
+::: incremental
+-   River segment (extrapolation of density)
+-   Basins (using ccm `ws0` code currently)
+-   EMU (eel management units)
+-   Regions (Med, Baltic, British Isles)
+:::
+::::
+::::::
+
+::: footer
+Habitat DB
+:::
+
+## WGTRUTTA
+
+::: incremental
+-   River (Vocab in ICES)
+-   Basins
+-   \+ Rivers characteristics
+-   \+ Dams 
+-   ...
+:::
+
+::: footer
+[link to rivers](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#part-iii---trutta-electrofishing-densities-dataset)
+:::
+
+
+#  {background-image="images/title_slide_sam.png"}
+
+![stock model image](images/copilot_stock_model.png){.absolute top="20" left="150" height="600"}
+
+::: footer
+Image generated by copilot
+:::
+
+## Database structure (main columns)
+
+The database structure could be simplified to the following structure 
+
+![](images/SAM_database.png){.r-stretch}
+
+::: footer
+Stock assessment model DB
+:::
+
+::: notes
+When looking at the databases, for instance for wgeel / WGNAS sometimes you need several columns to store things, for instance, some parameters for priors or estimate of numbers are provided by age, by area.
+Some of the categories are not in this list 
+ * estimated expert values
+ * a second column for area needed for square matrixes - this one is filled in but the meaning is contained in the parm definition, this is always true except for `omega` so we will find a way to deal with this.
+ * metric is always in the parm definition.
+Now let's go in the details about those parameters and the way they are handled in the databases
+:::
+
+## Global - Regional Units
+
+![](images\SAM_RU.png)
+
+::: notes
+The regional units group 
+* stock areas (rivers part of countries)
+* assessment units 
+* fisheries
+* but also spatio temporal units.
+
+We've gone over this in the first part, so we need to create a referential table, and refer to it with foreign keys in the DB.
+:::
+
+::: footer
+Stock assessment model : the type
+Also corresponds to all parameters 
+:::
+
+## Global - Data type
+
+![](images\SAM_DT.png)
+
+::: footer
+Habitat DB
+:::
+
+## Global - Life stage
+
+![](images\SAM_LS.png)
+
+::: footer
+Habitat DB
+:::
+
+## Global - Year/period
+
+![](images\SAM_YP.png)
+
+::: footer
+Habitat DB
+:::
+
+## Global - Age
+
+![](images\SAM_A.png)
+
+::: footer
+Habitat DB
+:::
+
+## Global - Data source
+
+![](images\SAM_DS.png)
+
+::: footer
+Habitat db
+:::
+
+## Global - Origin
+
+![](images\SAM_O.png)
+
+::: footer
+Habitat db
+:::
+
+## Global - Habitat
+
+![](images\SAM_H.png)
+
+::: footer
+Habitat db
+:::
+
+## Global - ICES subdivisions
+
+![](images\SAM_ICESS.png)
+
+::: footer
+Habitat db
+:::
+
+
+
+![](images/wgnas_shiny.png){.absolute top="200" left="250" width="700" height="350"}
+
+# Dam DB
+
+::::: columns
+::: column
+-   Different resolution in different countries.
+-   Dbeel
+:::
+
+::: column
+```{dot}
+digraph {
+    compound=true;
+    newrank=true;
+
+    A [label="GIS"];
+    B [label="Time"];
+    C [label="HPP"];
+    D [label="Turbine"];
+    E [label="Name"];
+    F [label="Type"];
+    G [label="Hierarchy"];
+    H [label="Fishway"];
+    I [label="Cumulative impact"];
+    J [label="Up / Down"];
+    subgraph clusterA{
+      label="";
+      style=dashed;
+      color=black;
+      E; F; G;
+    }
+    subgraph clusterB{
+      label="";
+      style=dashed;
+      color=black;
+      J;I;
+    }
+
+    {rank=same;A;E;F;G;}
+    {rank=same;B;H;I;J;}
+    A -> B -> C -> D
+    A -> G [lhead=clusterA,minlen=3]
+    B -> H -> J [lhead=clusterB,minlen=3]
+}
+```
+:::
+:::::
+
+# Dam DB
+
+```{dot}
+graph G{
+  newrank=true;
+  rankdir=LR;
+  splines=false;
+  outputorder=nodesfirst;
+  nodesep=0.39;
+
+  A [label="Observation place",shape=box];
+  B [label="Observation",shape=box];
+  C [label="Pressure impact",shape=box];
+  D [label="🔑 🌐 📄",shape=box];
+  E [label="Height",shape=box];
+  F [label="Passability",shape=box];
+  G [label="Downstream problem",shape=box];
+  I [label="Presence eel pass (+ date)",shape=box];
+  H [label="Fishway type",shape=box];
+  J [label="Hydropower plant",shape=box];
+  K [label="Turbine",shape=box];
+  L [label="Bypass",shape=box];
+
+  {rank=same;A;B}
+  {rank=same;D;C}
+
+
+  A -- B
+  B -- C
+  D -- C
+  C -- E
+  C -- F
+  C -- G
+  C -- H
+  C -- I
+  C -- J
+  J -- K
+  J -- L
+}
+```
+
+# Geographical structure
+
+```{dot}
+digraph {
+    compound=true;
+    newrank=true;
+
+    A [label="Rivers bassins",shape="box"] 
+    B [style=invis]
+
+
+    subgraph clusterA {
+      label = "Complex / Area (NAC,NEC / Baltic, Med)";
+      style=full;
+      color=black;
+      center=true;
+
+      subgraph clusterB {
+        label = "Country";
+        style=full;
+        color=black;
+        center=true;
+    
+        subgraph clusterC {
+          label = "Regions within country (EMU, Ireland.N_FO...)";
+          style=full;
+          color=black;
+          A;
+        }
+      }
+      subgraph clusterD{
+        label="Fishing areas (Faroes)";
+        style="full";
+        color="black";
+        B
+      }
+    }     
+  }
+```
+
+# Electrofishing DB
+
+# Time series - sampling and individual data (LHT)
+
+## BlockDiag
+
+````{=html}
+<!---
+```kroki-blockdiag
+#| eval: false
+blockdiag {
+  Hello -> World ;
+  Hello [color = "greenyellow"];
+  World [color = "orange"];
+}
+```
+-->
+````
+
+------------------------------------------------------------------------
+
+##  {background-image="images/title_slide_habitat.png"}
+
+![](images/catchments_map.png){.absolute top="200" left="250" width="380" height="400"}
 
 ## Habitat DB {.smaller}
 
@@ -56,17 +576,15 @@ editor: visual
 Notes for habitat db
 :::
 
-## Habitat DB 
+## Habitat DB
 
-
-![](images/salmon_db_andrew.png){.absolute top="-40" left="-30" 
- height="700"}
+![](images/salmon_db_andrew.png){.absolute top="-40" left="-30" height="700"}
 
 ## Habitat DB
 
-* A dataset 
+-   A dataset
 
-## Habitat DB 
+## Habitat DB
 
 Format : Geoparquet, Postgis schema
 
@@ -134,65 +652,49 @@ digraph {
 
 ## Habitat DB
 
-
-
-
 ## Habitat DB
 
 Presentation from Periklis : tool to edit rivers
 
-
-
-
-
-## WGBAST{.smaller}
+## WGBAST {.smaller}
 
 :::::: columns
 ::: column
 ![](images/assessment_units_wgbast.jpg){height="400"}
 :::
 
-
 :::: column
 ::: incremental
-- River part (Wild / Mixed / Reared)
-- River and river basins (vocabulary implemented in ICES)
-- Assessment units (6)
-- Three main groups of salmon populations
+-   River part (Wild / Mixed / Reared)
+-   River and river basins (vocabulary implemented in ICES)
+-   Assessment units (6)
+-   Three main groups of salmon populations
     -   Gulf of Bothnia
     -   Southern Sweden
     -   Gulf of Finland and eastern Main Basin
-- Corresponding ICES division and grouping of ICES div
-- Conceptual spatio temporal units. 
+-   Corresponding ICES division and grouping of ICES div
+-   Conceptual spatio temporal units.
 :::
 ::::
 ::::::
-::: footer 
+
+::: footer
 [assessment units](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgnas_salmoglob_description.html#location)
 
 [ICES subdiv](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#catch-habitat)
 
 [Rivers](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgbast_database_description.html#geography-1)
-
 :::
 
-::: notes 
-The GIS information for WGBAST will comprise
-- rivers (already implemented in ICES)
-- divisions
-- grouping of divisions
-- river sections by type (classification Wild Mixed Reared)
+::: notes
+The GIS information for WGBAST will comprise - rivers (already implemented in ICES) - divisions - grouping of divisions - river sections by type (classification Wild Mixed Reared)
 :::
-
 
 ## WGNAS {.smaller}
 
-
-
-
 ![](images\phylogeographic_structuring_salmon.png){.r-stretch}
 
-::: footer 
+::: footer
 Habitat DB
 :::
 
@@ -201,60 +703,59 @@ Habitat DB
 From lower to upper level ...
 
 ::: incremental
-* River sections
-* Rivers (not used yet)
-* Area (source) (FR, SC_WE, NI_FB ...)
-* Countries
-* Complex (NAC, NEC)
-* Conceptual spatio-temporal units (Bef. Fisheries, Bef. Gld fisheries, Aft. First fisheries)
+-   River sections
+-   Rivers (not used yet)
+-   Area (source) (FR, SC_WE, NI_FB ...)
+-   Countries
+-   Complex (NAC, NEC)
+-   Conceptual spatio-temporal units (Bef. Fisheries, Bef. Gld fisheries, Aft. First fisheries)
 :::
 
-
-
-::: footer 
+::: footer
 see tables in [WGNAS database description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wgnas_salmoglob_description.html#location)
 :::
 
-
 ::: notes
-The stucture in the current WGNAS habitat DB only uses regional stock units. Discussion with
-Etienne have shown that it would be of interest to give more details following what is done in
-WGBAST
+The stucture in the current WGNAS habitat DB only uses regional stock units. Discussion with Etienne have shown that it would be of interest to give more details following what is done in WGBAST
 :::
 
 ## WGEEL
 
 ![](images\EMUs.png){.r-stretch}
 
-::: footer 
+::: footer
 Habitat DB
 :::
+
 ## Global {.smaller}
 
 The database structure could be simplified to the following structure ![](images\SAM_database.png){.r-stretch}
 
-::: footer 
+::: footer
 Habitat DB
 :::
+
 ## Global - Regional Units
 
 ![](images\SAM_RU.png)
 
-::: footer 
+::: footer
 Habitat DB
 :::
+
 ## Global - Data type
 
 ![](images\SAM_DT.png)
 
-::: footer 
+::: footer
 Habitat DB
 :::
+
 ## Global - Life stage
 
 ![](images\SAM_LS.png)
 
-::: footer 
+::: footer
 Habitat DB
 :::
 
@@ -262,7 +763,7 @@ Habitat DB
 
 ![](images\SAM_YP.png)
 
-::: footer 
+::: footer
 Habitat DB
 :::
 
@@ -270,7 +771,7 @@ Habitat DB
 
 ![](images\SAM_A.png)
 
-::: footer 
+::: footer
 Habitat DB
 :::
 
@@ -278,7 +779,7 @@ Habitat DB
 
 ![](images\SAM_DS.png)
 
-::: footer 
+::: footer
 Habitat db
 :::
 
@@ -286,7 +787,7 @@ Habitat db
 
 ![](images\SAM_O.png)
 
-::: footer 
+::: footer
 Habitat db
 :::
 
@@ -294,7 +795,7 @@ Habitat db
 
 ![](images\SAM_H.png)
 
-::: footer 
+::: footer
 Habitat db
 :::
 
@@ -302,15 +803,13 @@ Habitat db
 
 ![](images\SAM_ICESS.png)
 
-::: footer 
+::: footer
 Habitat db
 :::
 
-##  {background-image=images/title_slide_sam.png}
+##  {background-image="images/title_slide_sam.png"}
 
-![](images/wgnas_shiny.png){.absolute top="200" left="250" width="700" height="350"} 
-
-
+![](images/wgnas_shiny.png){.absolute top="200" left="250" width="700" height="350"}
 
 # Dam DB
 
