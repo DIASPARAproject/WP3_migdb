@@ -3,6 +3,7 @@ title: "Creating database for migratory fishes"
 subtitle: " To support a holistic and transparent assessment"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
+geometry: "top:0.0 cm, bottom:0.0 cm"
 filters:
   - quarto-kroki
   - speakernotes
@@ -15,6 +16,7 @@ footer: ""
 format: 
   revealjs :
     self-contained: true
+    auto-stretch: false
   pdf:
     speakernotes:
       displayNotes: true
@@ -32,7 +34,7 @@ background-transition: fade
 editor: visual
 ---
 
-#  {background-image="images/title_slide.png"}
+#  {background-image="images/title_slide_bigger.png"}
 
 # What is WP3?
 
@@ -376,4 +378,4 @@ Our work principles
 :::
 :::::
 
-#  {background-image="images/title_slide_thank_you.png"}
+#  {background-image="images/title_slide_thank_you_bigger.png"}
