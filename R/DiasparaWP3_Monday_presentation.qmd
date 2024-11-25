@@ -16,7 +16,6 @@ footer: ""
 format: 
   revealjs :
     self-contained: true
-    auto-stretch: false
   pdf:
     speakernotes:
       displayNotes: true
