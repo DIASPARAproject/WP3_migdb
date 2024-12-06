@@ -83,14 +83,13 @@ R/images/landings_wgbast_report2024.png
 # Visual studio specifics
 .vscode/global.code-snippets
 
-# shiny (for the moment ignore all)
+# shiny 
 
 
-shiny/*
-
-shiny/WGNAS-ToolBox/**/Nimble_output/*.rds
-shiny/WGNAS-ToolBox/**/Nimble_output/*.png
-shiny/WGNAS-ToolBox/**/Nimble_output/*.PNG
+shiny/Nimble_output/*
+shiny/Nimble_input/*
+shiny/WGNAS-ToolBox/doc_repository/*
+shiny/WGNAS-ToolBox/data/*
 
 shiny/WGNAS-ToolBox/data/tab_corres_SalmoGlob.csv
 shiny/WGNAS-ToolBox/data/tab_type_object_all_variables_08_10_v4.csv
@@ -102,5 +101,12 @@ shiny/WGNAS-ToolBox/R/manage_database.R
 shiny/WGNAS-ToolBox/R/manage_database2.R
 shiny/WGNAS-ToolBox/R/create_metadata_tab_label.R
 shiny/WGNAS-ToolBox/R/create_new_db_version.R
+
+R/connec.R
+R/functions_manage_db_from_wide_to_long.R
+R/modifying_database_object_names_and_dimension.R
+R/manage_database.R
+R/manage_database2.R
+R/manage_database2.R
 
 
