@@ -1,0 +1,112 @@
+    /* WGNAS-ToolBox logo part */
+    .shiny-output-error {
+      visibility: hidden;
+    }
+    .shiny-output-error:before {
+      visibility: hidden;
+    }
+    .main-header .logo {
+    font-family:  'Calibri';
+    font-weight: bold;
+    font-size: 30px;
+    color: #e1e6ed;
+    background-color: #e1e6ed;
+    }
+    .logo {background-color: #e1e6ed;
+    color:#e1e6ed;
+    }
+    .skin-blue .main-header .logo:hover {
+    background-color: #82d1c9;
+    }
+    .main-header .navbar-custom-menu {
+    float: left;
+    background-color: #e1e6ed;
+    color:#e1e6ed;
+    }
+    .main-sidebar{
+    width: 300px;
+    }
+    /* color behind text part of the siderbar */
+    .sidebar {
+    background-color: #82d1c9;
+    }
+    .sidebar-menu {
+    display: flex;
+    background-color: #408e94;
+    }
+  /* notification when data validated */
+   .shiny-notification {
+   position:fixed;
+   top: calc(50%);
+   left: calc(50%);
+   width: 250px;
+   height: 100px; 
+   opacity: 0.8;
+   font-size: 1000;
+   }
+   .shiny-notification-message {
+   background-color:#B5E26F;
+   color:#000000;
+   }
+    
+    /* main text */
+    .p{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #33ff33;
+    }
+    .h1{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #33ff33;
+    }
+    .shiny-output-error-validation {
+    color: #ff0000;
+    font-weight: bold;
+    }
+    /* color behind text part of the siderbar */
+    .skin-blue .main-header .navbar {background-color: #408e94;
+      color: #e1e6ed;
+    }
+    .skin-blue .main-header .navbar .sidebar-toggle:hover {background-color: #82d1c9;}
+    .navbar-default .navbar-brand {color: #e1e6ed;
+      background-color: #e1e6ed;
+    }
+    .navbar {color: #e1e6ed;
+      background-color: #e1e6ed;
+    }
+    .navbar-dropdown {color: #e1e6ed;
+      background-color: #e1e6ed;
+    }
+    .navbar-nav li a{
+      color: #e1e6ed;
+      background-color: #408e94;
+    }
+    .navbar-nav li a:hover, .navbar-nav > .active > a {
+      color: #000000 !important;
+      background-color: #82d1c9 !important;
+      background-image: none !important;
+    }
+    /* color behind text part of the siderbar */
+    .skin-blue .main-sidebar  {color: #82d1c9; background-color: #82d1c9;}
+    .skin-blue .main-sidebar .sidebar .sidebar-menu .active a {background-color: #82d1c9;}
+    .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover {background-color: #ff69b4; }
+     /* color toogle --- button */
+    .skin-blue .main-header .navbar .sidebar-toggle {background-color: #408e94;}
+    .skin-blue .main-header .logo {background-color: #408e94;border-bottom: 0 solid transparent; }
+    .skin-blue .main-header .logo:hover {background-color: #408e94;}
+    #loadmessage {
+      position: fixed;
+      top: 40%;
+      left: 25%;
+      width: 50%;
+      padding: 5px 0 5px 0;
+      text-align: center;
+      font-weight: bold;
+      font-size: 100%;
+      color: #000000;
+      background-color: #82d1c9;
+      z-index: 105;
+    }
