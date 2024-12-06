@@ -60,3 +60,8 @@ CREATE TABLE "ref".tr_pararmeter_parm (
 
 
 SELECT * FROM DATABASE WHERE var_mod='p_smolt_gamma_pr'
+
+
+SELECT * FROM public.metadata AS m WHERE definition ILIKE '%female%'
+
+SELECT * FROM public.metadata AS m WHERE var_mod LIKE '%eggs%'

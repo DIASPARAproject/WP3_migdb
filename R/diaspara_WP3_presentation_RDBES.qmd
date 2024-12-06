@@ -34,7 +34,7 @@ background-transition: fade
 editor: visual
 ---
 
-# Crash presentation of Diadromous Working Groups
+# Presentation of Diadromous Working Groups
 
 ## WGNAS
 
@@ -58,6 +58,7 @@ editor: visual
 
 ::: notes
 WGNAS only collects data at the scale of regional units.
+Pre-processing of landings done by the group before integrating
 :::
 
 ::: footer
@@ -142,10 +143,14 @@ WGNAS only collects data at the scale of regional units.
 ![](images/EMUS.png){fig-align="center"}
 :::
 ::::::
+# Database development (DIASPARA)
+
+* database for Stock assessment model
+* data will be grouped by regional units
+* data could go into this database as soon as ready
+* different datasets will be used
 
 
-
-
-# Potential data inclusion in RDBES{.smaller .scrollable}
+# Potential data inclusion in RDBES {.smaller .scrollable}
 
 ![](images/data_RDBES.png){fig-align="top"}
