@@ -87,8 +87,7 @@ R/images/landings_wgbast_report2024.png
 # shiny 
 
 
-shiny/Nimble_output/*
-shiny/Nimble_input/*
+shiny/exchange_plateform/*
 shiny/WGNAS-ToolBox/doc_repository/*
 shiny/WGNAS-ToolBox/data/*
 
