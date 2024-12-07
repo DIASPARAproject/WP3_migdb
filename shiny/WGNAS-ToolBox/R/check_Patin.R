@@ -99,11 +99,7 @@ newegg<-array(NA,dim = c(2,25,47))
 dim(egg)
 egg[1,1:2,1:47]
 
-  for (d in 1:47){
-    
-    newegg[,,d]<-
-    
-  }
+
 array(NA,dim = c(2,25,47))
 
 

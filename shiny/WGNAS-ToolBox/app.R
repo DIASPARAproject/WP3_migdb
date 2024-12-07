@@ -708,9 +708,6 @@ server <- function(input, output, session) {
   # ------------ SERVER #1 Creating basic variables and reactive objects ---------------
   #------------------------------------------------------------------------------------#
   # CB add a clean way of disconnecting the app
-  session$onSessionEnded(function() {
-    dbDisconnect(con)
-  })
   # These objects will be called in following sections of the Server.
 
   # I don't remember what is that; I will try to remove it and see if it changes anything - but I think it is not used anymore
