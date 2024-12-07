@@ -62,7 +62,7 @@ source("R/manage_database.R")
 source("R/formate_upload_data.R")
 source("R/sort_upload_data.R")
 source("R/function_explo_data.R")
-source("R/calculate_updating_status.R")
+source("R/fun_perc_updated.R")
 source("R/functions_building_templates.R")
 source("R/time_line_plot_by_type.R")
 
@@ -2162,7 +2162,7 @@ server <- function(input, output, session) {
 
   output$box_max <- renderUI({
     infoBox(
-      "Updated data", paste(pc_updated(database(), tab_type_object)[1], "%"),
+      "Updated data", paste(fun_perc_updated(database(), tab_type_object)[1], "%"),
       icon = icon("fish"),
       color = "orange", fill = TRUE, width = 6
     )
@@ -2170,7 +2170,7 @@ server <- function(input, output, session) {
 
   output$box_current_nimble <- renderUI({
     infoBox(
-      "Model ready for", pc_updated(database(), tab_type_object)[2],
+      "Model ready for", fun_perc_updated(database(), tab_type_object)[2],
       icon = icon("calendar-check"),
       color = "green", fill = TRUE, width = 6
     )
@@ -2178,7 +2178,7 @@ server <- function(input, output, session) {
 
   output$box_current_nimble_bis <- renderUI({
     infoBox(
-      "Model ready for", pc_updated(database(), tab_type_object)[2],
+      "Model ready for", fun_perc_updated(database(), tab_type_object)[2],
       icon = icon("calendar-check"),
       color = "olive", fill = TRUE, width = 6
     )
@@ -2206,7 +2206,6 @@ server <- function(input, output, session) {
   metadata <- dbReadTable(con, "metadata")
   dbDisconnect(con)
 
-  source("R/functions_building_templates_db_formate.R", local = T)
 
   output$TemplateDataCall <- downloadHandler(
     filename = function() {
@@ -2263,7 +2262,7 @@ server <- function(input, output, session) {
       var_data_call_fish <- unique(slice_fish_db$var_mod)
 
       for (i in var_data_call_fish) {
-        produce_template_db_fishery_it(slice_fish_db, fish_template, i, 1970 + as.numeric(Const_nimble["date_end_hindcast"]))
+        fun_produce_template_db_fishery_it(slice_fish_db, fish_template, i, 1970 + as.numeric(Const_nimble["date_end_hindcast"]))
       }
 
       worksheetOrder(fish_template) <- order(sheets(fish_template))

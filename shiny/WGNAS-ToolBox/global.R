@@ -69,7 +69,7 @@ source("R/manage_database.R")
 source("R/formate_upload_data.R")
 source("R/sort_upload_data.R")
 source("R/function_exploration_data.R")
-source("R/calculate_updating_status.R")
+source("R/fun_perc_updated.R")
 source("R/functions_building_templates.R")
 source("R/time_line_plot_by_type.R")
 
