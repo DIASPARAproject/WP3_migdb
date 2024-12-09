@@ -1,6 +1,7 @@
-#' fun_perc_updated function, calculates the % of uddated series
+#' fun_perc_updated function, calculates the % of updated series
 #' checks wich type of data have a Year in one of the three nimble dimensions
-#' and calculates which value corresponds to tha maximum of year encountered in groups of var_mod and metric
+#' and calculates which value corresponds to tha maximum of year
+#' encountered in groups of var_mod and metric
 #' @param database The database
 #' @param tab_type_object A table of object types
 #' @return A table with column pc_update the perecentage of data

@@ -62,8 +62,9 @@ tab_users <- dbReadTable(con, "users")
 # ------------ Preliminary #3 Loading the functions called by the application---------
 #------------------------------------------------------------------------------------#
 
-# These functions qre used by the SERVER part of the application to plot outputs, updated data etc.
-source("R/check_uploaded_data_format_varyingSU.R")
+# These functions are used by the SERVER part of the
+# application to plot outputs, updated data etc.
+
 source("R/graph_functions.R")
 source("R/manage_database.R")
 source("R/formate_upload_data.R")
@@ -72,6 +73,20 @@ source("R/function_exploration_data.R")
 source("R/fun_perc_updated.R")
 source("R/functions_building_templates.R")
 source("R/time_line_plot_by_type.R")
+source("R/fun_produce_template_db_SU_it.R")
+source("R/fun_produce_template_db_fishery_it.R")
+source("R/fun_check_time_cov_before_nimble.R")
+source("R/fun_check_input_data_set.R")
 
-# Here we just specify a directory that will be used by the SERVER part of the application
+# Here we just specify a directory that will be used by
+# the SERVER part of the application
 outputDir <- "data"
+
+# list the R script loaded from the server envionment using local=TRUE
+
+# R/check_time_cov_bef_nimble.R # TODO make function
+# R/store_Nimble_objects.R
+# R/check_uploaded_data_format_emergency_procedure.R
+# R/check_uploaded_data_format_varyingSU.R
+# R/functions_building_templates_db_formate.R"
+# R/store_Nimble_objects_older.R

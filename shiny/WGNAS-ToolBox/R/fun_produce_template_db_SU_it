@@ -1,9 +1,9 @@
 #' fun_produce_template_db_SU_it create excel template
-#' @parm sub
-#' @parm SU_id
-#' @parm template
-#' @parm i
-#' @parm blank_y
+#' @param sub
+#' @param SU_id
+#' @param template
+#' @param i
+#' @param blank_y
 #' @return Nothing
 fun_produce_template_db_SU_it <- function(sub, SU_id, template, i, blank_y) {
     var_data_area <- subset(sub, sub$var_mod == i)[, c(
