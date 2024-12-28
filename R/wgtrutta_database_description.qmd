@@ -1,0 +1,944 @@
+---
+title: "wgtrutta database description"
+subtitle: "DIASPARA WP3.2 working document"
+author: "Briand Cédric, Oliviero Jules, Helminen Jani"
+date: last-modified
+date-format: "DD-MM-YYYY"
+description: "Technical analysis of the wgtrutta database"
+title-block-banner: "images/diaspara_bandeau.png"
+title-block-banner-color: "white"
+format:
+ html:
+  self-contained: true
+  theme: styles.scss
+  smooth-scroll: true
+  fontcolor: black
+  toc: true
+  toc-location: left
+  toc-title: Summary
+  toc-depth: 3
+execute: 
+ keep-md: true
+reference-location: document
+bibliography: diaspara.bib
+include-after-body: "footer.html"
+---
+
+
+
+The following working document is a technical analysis of the WGTRUTTA templates. 
+This document does not engage the WGTRUTTA, it's to try to get how this works.
+The documents have been kindly provided by Iain Malcolm  & Carlos Alexandre. The dataset is analysed in separation without trying to fit it in a common format for the different species (which will be the final product). This analysis doesn't question the format of the excel table for a datacall (it's probably best to ask for a wide format, this is what we do in eel). We are just trying to puzzle out how we would store this info, and thus gaining knowledge about the data structure for future discussions.
+This document is listed as a task there [github link to diaspara](https://github.com/DIASPARAproject/WP3_migdb/issues/11)
+
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+# if (!grepl("montepomi", getwd())) {
+if (Sys.info()[["user"]] == "joliviero") {
+    setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+    datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == "cedric.briand") {
+    setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+    datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgtrutta"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+```
+
+# Part I : BIO-ECOLOGICAL DATA FOR SEA TROUT RIVERS ACROSS EUROPE
+
+## Regional site spatio-temporal units (table general information)
+```{r read_db1}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+
+# note I have created 3 named regions in the excel to load the data
+general_information <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Short BioEcological Template_DIASPARA.xlsx"), namedRegion = "general_information")
+population_data <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Short BioEcological Template_DIASPARA.xlsx"), namedRegion = "population_data")
+individual_data <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Short BioEcological Template_DIASPARA.xlsx"), namedRegion = "individual_data")
+
+```
+
+```{r general_information}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: General information table metadata in the WGTRUTTA DB
+#| label: tbl-general_information
+
+kable(general_information) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+
+:::{.callout-note appearance="simple"}
+## NOTE WGTRUTTA
+Site n° is the primary key
+
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: River basin
+::::
+::::{.questionbox-body}
+Do you have specific frame for this, like in the Baltic, not all basins have Sea Trouts, so how do we proceed there ? Would there be regional units (quite large) like those of WGNAS or do you intend this to be specific river codes (which we intend to provide) soon in WP3.1
+Note if we provide the code you can link it and hopefully get the river name for the referential
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: River ID
+::::
+::::{.questionbox-body}
+If you have a referential why do you need the country ? Because of the country providing the data and these will come as separate lines ?
+::::
+:::
+
+:::{.callout-note appearance="simple"}
+## NOTE WGTRUTTA
+ESPG 4326 WGS84 is given as degree decimals like -7.522888 37.663168
+
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question ICES
+::::
+::::{.questionbox-body}
+Do you have a vocabulary of data providers to ICES. Do you need one. Then wouldn't this make adding new data time demanding ? Should we leave this open ?
+::::
+:::
+
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: Time series available
+::::
+::::{.questionbox-body}
+Would you agree that if the database is built, a query to detailed table should give this information and that it would be tedious to maintain ?
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: comments
+::::
+::::{.questionbox-body}
+This information should be more specific ? We had this in WGEEL and have now to do additional datacalls to qualify the data in a harmonised way among series. Would you agree to have several columns there ?
+::::
+:::
+
+```{dot}
+digraph G {
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+graph [
+rankdir = "LR"
+]  ;
+node [
+fontsize = "16"
+shape = "record"
+];
+edge [ ];
+subgraph global {
+label = "general information";
+style=dashed;
+color=black;
+cluster=true;
+"sampling" [
+label = "sampling table | <f0> sampling id | <f1> \<site id\> | <f2> country |  method | protocol |comment | public status"
+shape = "record"
+style=filled,
+fillcolor=chocolate
+];
+"site" [
+label = "site table | <f0> \<site id\> | <f1> \<river id\> | geom"
+shape = "record"
+];
+
+"river" [
+label = "river table | <f0> \<river id\> | <f1> \<basin id\> | geom"
+shape = "record"
+];
+
+"basin" [
+label = "basin table |<f0> \<basin id\> | geom"
+shape = "record"
+];
+
+"country" [
+label = "country table | <f0> \<country id\> "
+shape = "record"
+];
+   
+sampling:f1 -> site:f0 ;
+site:f1 -> river:f0;
+river:f1 -> basin:f0 ;
+sampling:f2 -> country:f0;
+
+
+  }
+}
+```
+**Graph: general information**: A temptative table format for the general information.
+
+The ordering of site > river > basin is straithforward. With proper postgis tables,
+Gis attributes (geometries) should allow constraint to check wheter a site is within the basin.
+A river (Mondego) or basin can belong to many countries, country is related to the `<sampling id>`. For this reason there is no link between site and country.
+
+## Population data
+
+```{r population_data}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Population data table metadata in the WGTRUTTA DB
+#| label: tbl-population_data
+
+kable(population_data) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+The structuring of the population data has in fact three different levels.
+It is obvious that the year / season creates a different population id (a unit for analysis). For this reason, it is separated from the rest, and creates the unicity constraint, this table also stores an eventual comment and info on other occurring salmonids.
+From this table two types of data would probably best be separated, it would make more sense to store together in a row level format all data pertaining to the same level of complexity, so some data will depend on stage, age and whether the trouts are resident or anadromous. This table is called `popdetailmetric` table in the diagram. Some other information are however related to the whole population `popgroupmetrics table`
+
+```{dot}
+# no code align for dot > creates problem for plain html tables
+digraph G {
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+graph [
+rankdir = "LR"
+]  ;
+node [
+fontsize = "16"
+shape = "record"
+];
+edge [
+];
+  
+
+subgraph population {
+label = "population data";
+style=dashed;
+color=black;
+cluster=true;
+node [style=filled, fillcolor=cadetblue, shape = record];
+  
+popsample [
+label = "popsample table | <f0> \<population_id\>|
+<f1> \<popsample_id\> |
+year |
+season |
+omments |
+other occuring salmonids"
+];
+   
+popdetailmetrics [
+label = "popdetailmetrics table | 
+<f0> \<popsample_id\>|
+value |
+<f3> datatype |
+<f2> stage  |
+<f1> age | 
+anadromous"
+];
+
+"popgroupmetrics" [
+label = "popgroupmetrics table |
+<f0> \<popsample_id\>|
+value |
+<f1> datatypegroupdetail"
+];  
+  
+
+stage[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b> stage </b> </td> </tr>
+<tr> <td align="left">juvenile<br align="left"/> 
+smolt<br align="left"/> 
+finnock<br align="left"/> 
+adult </td> </tr> 
+</table>>
+shape = note
+fillcolor = "white"
+]; 
+
+age[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b> age </b> </td> </tr>
+<tr> <td align="left">   river age <br align="left"/> 
+sea age  </td> </tr> 
+</table>> 
+shape =note
+fillcolor = "white"
+]; 
+
+datatypedetail[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>datatypedetail </b> </td> </tr>
+<tr> <td align="left"> number <br align="left"/> 
+density  <br align="left"/>
+length  <br align="left"/>
+weight </td> </tr> 
+</table>> 
+shape = note
+fillcolor = "white"
+]
+
+datatypegroup[
+fillcolor="white"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>datatypegroup</b> </td> </tr>
+<tr> <td align="left"> %anadromous <br align="left"/>
+%resident<br align="left"/>
+%Marine survival <br align="left"/>
+finnock <br align="left"/>
+Total Ova Deposition<br align="left"/>
+% Sea Lice (Total)<br align="left"/>
+% Sea Lice (Attached)<br align="left"/>
+% Sea Lice (Mobile)<br align="left"/>
+% Sea Lice (Wounds)<br align="left"/></td> </tr> 
+</table>> 
+shape = note
+]
+  #popsample:f0 -> sampling:f0;
+popdetailmetrics:f0 -> popsample:f1
+popgroupmetrics:f0 -> popsample:f1
+popdetailmetrics:f1 -> age;
+popdetailmetrics:f2 -> stage;
+popdetailmetrics:f3 -> datatypedetail;
+popgroupmetrics:f1 -> datatypegroup;
+}
+}
+```
+**Graph:population table**. Proposed structure for the population data. The content of referential values for datatype, stage, age is given to facilitate the understanding of the proposed table structure.
+
+## Individual data
+```{r individual_data}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Individual data table metadata in the WGTRUTTA DB
+#| label: tbl-individual_data
+
+kable(individual_data) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: comments
+::::
+::::{.questionbox-body}
+Won't the year and season attibutes be provided by the dates ?
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: site and habitats
+::::
+::::{.questionbox-body}
+What is the definition of a site. Site is the lowest level in the basin / river /site but seems the basins for the population structuring. Is that right ? I was just wondering about the relation between site and habitat, and whether a site if it's small extended over several habitats.
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: public
+::::
+::::{.questionbox-body}
+Will the public status be managed at the fish level ? 
+Shouldn't it be related to an upper level ?
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: tag
+::::
+::::{.questionbox-body}
+Can there be several tag per fish ?
+::::
+:::
+
+```{dot}
+# Individual data
+digraph G {
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+graph [
+rankdir = "LR"
+]  ;
+node [
+fontsize = "16"
+shape = "record"
+];
+edge [
+];
+  
+
+subgraph individual {
+label = "Individual data";
+style=dashed;
+color=black;
+cluster=true;
+node [style=filled, fillcolor=palegreen, shape = record];
+
+indivtable [
+label = "individual table |
+<f0> \<fish_id\>|
+fish_idorigin |
+<f1> \<popsample_id\> |
+<f2> stage |
+date |
+x |
+y |
+catch method |
+habitat |
+comments"
+];
+   
+fishmetrics [
+label = "fishmetrics table | 
+<f0> \<fish_id\>|
+<f1> metric | 
+value" 
+];
+
+tag [
+label = "tag table | 
+<f0> \<fish_id\>|
+<f1> tag_type | 
+<f2> tag_code |
+tag_action
+value" 
+];
+
+
+stage[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b> stage </b> </td> </tr>
+<tr> <td align="left">juvenile<br align="left"/> 
+smolt<br align="left"/> 
+finnock<br align="left"/> 
+adult </td> </tr> 
+</table>>
+shape = note
+fillcolor = "white"
+]; 
+
+metric[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>metric</b> </td> </tr>
+<tr> <td align="left"> length <br align="left"/> 
+weight <br align="left"/> 
+sex <br align="left"/> 
+river age <br align="left"/>
+sea age <br align="left"/>
+Sea Lice Infestation <br align="left"/>
+Sea Lice (Attached)<br align="left"/>
+Sea Lice (Mobile)<br align="left"/>
+Sea Lice (Wounds)</td> </tr>
+</table>> 
+shape = note
+fillcolor = "white"
+]
+
+  #popsample:f0 -> sampling:f0;
+indivtable:f1 -> popsample:f1
+indivtable:f2 -> stage
+fishmetrics:f0 -> indivtable:f0
+fishmetrics:f1 -> metric:f0
+tag:f0 -> indivtable:f0
+tag:f1 -> tagaction
+
+}
+}
+```
+**Graph:individual table**. Proposed structure for the population data. The content of referential values for datatype, stage, age is given to facilitate the understanding of the proposed table structure. `Fish idorigin` is the id in the orginal table (necessary to update the right fish when changes are made).
+More information about tags have been added. In the end it should just be few fishes. We've also added more details on sea lice, those that are at population level have been reported there. Normally everything in value should work as numeric, some values (sex) or sea Lice infestation can be recoded as zero or one.
+
+# Part II:  ENVIRONMENTAL DATA FOR SEA TROUT RIVERS ACROSS EUROPE					
+
+
+## Site level environmental data
+
+```{r read_db2}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+
+# note I have created 3 named regions in the excel to load the data
+# general_information_env <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Environmental Template_DIASPARA.xlsx"), sheet= "General information", startRow = 4)
+site_env <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Environmental Template_DIASPARA.xlsx"), sheet= "Site level habitat", startRow = 4)
+macroscale_information <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Environmental Template_DIASPARA.xlsx"), sheet= "Macro-scale information", startRow = 4)
+reach_level_habitat <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Environmental Template_DIASPARA.xlsx"), sheet= "Reach level habitat", startRow = 4)
+
+site_env <- janitor::clean_names(site_env)
+reach_level_habitat <- janitor::clean_names(reach_level_habitat)
+macroscale_information <- janitor::clean_names(macroscale_information)
+#available_data <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Environmental Template_DIASPARA.xlsx"), sheet= "Available data", startRow = 4)
+```
+
+
+
+```{r site_env}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Site - env table metadata in the WGTRUTTA DB
+#| label: tbl-sitenv
+data.frame(column = site_env %>% colnames()) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: what is a site ?
+::::
+::::{.questionbox-body}
+The main problem is to relate this information to site. What is a site ? Is it large, several segments, is it the scale of a subcatchment, does it correspond to an electrofishing site ? It seems, as you have reach level information, that the data at a site is maybe an average of data collected in different reaches. We will  probably need more explanation. 
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: what is a site ?
+::::
+::::{.questionbox-body}
+There is  an information about the year season and month.
+Can there really be information about multiple years ? How do you relate that to month and season ? Do you expect to fill one or the other column ?
+Do you expect to have chronicles of habitat measures ? If it's the case would it be possible to simply use a date here ? 
+::::
+:::
+
+
+
+## Macroscale information
+
+```{r macroscale_information}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Macroscale information columns in the WGTRUTTA DB
+#| label: tbl-macroscale_information
+data.frame(column = macroscale_information %>% colnames()) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+To my understanding, the macroscale information will be collected in a gis table of river segments. There will be several gis, possibly with segments coverage that will be different from the portion of habitat described at site level. This table will carry out the macroscale information and be used to transfer it.
+
+## Reach level habitat
+
+```{r reach_level_habitat}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Reach level habitat columns in the WGTRUTTA DB
+#| label: tbl-reach_level_habitat
+data.frame(column = reach_level_habitat %>% colnames()) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: what is a reach ?
+::::
+::::{.questionbox-body}
+Could the reach level habitat be characterized as a point geometry or is it a segment ?
+How do you relate reach and sites ?
+::::
+:::
+
+```{dot}
+digraph G {
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+graph [
+rankdir = "LR"
+]  ;
+node [
+fontsize = "16"
+shape = "record"
+];
+edge [
+];
+
+subgraph global {
+label = "general information";
+style=dashed;
+color=black;
+cluster=true;
+"sampling" [
+label = "sampling table | <f0> sampling id | <f1> \<site id\> | <f2> country |  method | protocol |comment | public status"
+shape = "record"
+style=filled,
+fillcolor=chocolate
+];
+
+segmentsite [
+  label = "segment-site table | <f0> \<site id\> | <f1> \<segment id\>"]
+
+reach [
+label = "reach table | <f0> \<reach id\> | <f1> \<site id\> | geom"
+shape = "record"
+]
+
+"site" [
+label = "site table | <f0> \<site id\> | <f1> \<river id\> | geom"
+shape = "record"
+];
+
+"river" [
+label = "river table | <f0> \<river id\> | <f1> \<basin id\> | geom"
+shape = "record"
+];
+
+"basin" [
+label = "basin table |<f0> \<basin id\> | geom"
+shape = "record"
+];
+
+"country" [
+label = "country table | <f0> \<country id\> "
+shape = "record"
+];
+   
+sampling:f1 -> site:f0 ;
+reach:f1 -> site:f0
+site:f1 -> river:f0;
+river:f1 -> basin:f0 ;
+sampling:f2 -> country:f0;
+}
+
+subgraph population {
+label = "population data";
+style=dashed;
+color=black;
+cluster=true;
+node [style=filled, fillcolor=cadetblue, shape = record];
+
+popsample [
+label = "popsample table | <f0> \<population_id\>|
+<f1> popsample_id |
+year |
+season |
+omments |
+other occuring salmonids"
+];
+   
+popdetailmetrics [
+label = "popdetailmetrics table | 
+<f0> \<popsample_id\>|
+value |
+<f3> datatype |
+<f2> stage  |
+<f1> age | 
+anadromous"
+];
+
+popgroupmetrics [
+label = "popgroupmetrics table |
+<f0> \<popsample_id\>|
+value |
+<f1> datatypegroupdetail"
+];  
+  
+
+stage[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b> stage </b> </td> </tr>
+<tr> <td align="left">juvenile<br align="left"/> 
+smolt<br align="left"/> 
+finnock<br align="left"/> 
+adult </td> </tr> 
+</table>>      
+shape = note
+fillcolor = "white"
+]; 
+
+age[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b> age </b> </td> </tr>
+<tr> <td align="left">   river age <br align="left"/> 
+sea age  </td> </tr> 
+</table>> 
+shape =note
+fillcolor = "white"
+]; 
+
+datatypedetail[    
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>datatypedetail </b> </td> </tr>
+<tr> <td align="left"> number <br align="left"/> 
+density  <br align="left"/>
+length  <br align="left"/>
+weight </td> </tr> 
+</table>> 
+shape = note
+fillcolor = "white"
+]
+
+datatypegroup[    
+fillcolor="white"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>datatypegroup</b> </td> </tr>
+<tr> <td align="left"> %anadromous <br align="left"/>
+%resident<br align="left"/>
+%Marine survival <br align="left"/>
+finnock <br align="left"/>
+Total Ova Deposition<br align="left"/>
+% Sea Lice (Total)<br align="left"/>
+% Sea Lice (Attached)<br align="left"/>
+% Sea Lice (Mobile)<br align="left"/>
+% Sea Lice (Wounds)<br align="left"/></td> </tr> 
+</table>> 
+shape = note
+]
+}  
+
+subgraph individual {
+label = "Individual data";
+style=dashed;
+color=black;
+cluster=true;
+node [style=filled, fillcolor=palegreen, shape = record];
+
+indivtable [
+label = "individual table |
+<f0> \<fish_id\>|
+fish_idorigin |
+<f1> \<popsample_id\> |
+<f2> stage |
+date |
+x |
+y |
+catch method |
+habitat |
+comments"
+];
+   
+fishmetrics [
+label = "fishmetrics table | 
+<f0> \<fish_id\>|
+<f1> metric | 
+value" 
+];
+
+tag [
+label = "tag table | 
+<f0> \<fish_id\>|
+<f1> tag_type | 
+<f2> tag_code |
+tag_action
+value" 
+];
+
+
+stage[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b> stage </b> </td> </tr>
+<tr> <td align="left">juvenile<br align="left"/> 
+smolt<br align="left"/> 
+finnock<br align="left"/> 
+adult </td> </tr> 
+</table>>
+shape = note
+fillcolor = "white"
+]; 
+
+metric[
+label = <<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>metric</b> </td> </tr>
+<tr> <td align="left"> length <br align="left"/> 
+weight <br align="left"/> 
+sex <br align="left"/> 
+river age <br align="left"/>
+sea age <br align="left"/>
+Sea Lice Infestation <br align="left"/>
+Sea Lice (Attached)<br align="left"/>
+Sea Lice (Mobile)<br align="left"/>
+Sea Lice (Wounds)</td> </tr>
+</table>> 
+shape = note
+fillcolor = "white"
+]
+
+tagaction[
+fillcolor="white"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>tagaction</b> </td> </tr>
+<tr> <td align="left">
+read <br align="left"/>
+remove<br align="left"/>
+apply    </td> </tr> 
+</table>> 
+shape = note
+]
+  #popsample:f0 -> sampling:f0;
+
+indivtable:f2 -> stage
+fishmetrics:f0 -> indivtable:f0
+fishmetrics:f1 -> metric:f0
+tag:f0 -> indivtable:f0
+tag:f1 -> tagaction
+
+}
+
+subgraph environmental {
+label = "Envionmental data";
+style=dashed;
+color=black;
+cluster=true;
+node [style=filled, fillcolor=whitesmoke, shape = record];
+
+
+segment [
+label = "segment table |
+ <f0> \<segment id\> |
+ distance to sea |
+ distance to farthest source |
+ wetted area |
+ altitude |
+ slope  |
+ nb dam downstream |
+ regulated flow |
+ habitat restoration |
+ fisheries |
+ restocking |
+ <f1> \<river id\> | 
+ geom"
+shape = "record"
+]
+
+sitehabitat [
+label = "site habitat | 
+<f0> \<site id\> | 
+geom|
+year|
+month|
+length|
+average_width|
+predominant_substrate_first|
+predominant_substrate_second|
+predominant_substrate_third|
+average_depth|
+pool|
+run|
+riffle|
+vegetation_extension|
+vegetation_predominant_type|
+large_woody_debris|
+riparian_gallery_density_left_bank|
+riparian_gallery_density_right_bank|
+shade|
+ths_width|
+ths_depth|
+ths_velocity|
+ths_substrate|
+ths_shade|
+ths_slope|
+estimated_ths|
+alcalinity|
+comments"
+shape = "record"
+];
+
+reachhabitat [
+label = "reach habitat | 
+<f0> \<reach id\> | 
+geom|
+year|
+month|
+length|
+average_width|
+predominant_substrate_first|
+predominant_substrate_second|
+predominant_substrate_third|
+average_depth|
+pool|
+run|
+riffle|
+vegetation_extension|
+vegetation_predominant_type|
+large_woody_debris|
+riparian_gallery_density_left_bank|
+riparian_gallery_density_right_bank|
+shade|
+ths_width|
+ths_depth|
+ths_velocity|
+ths_substrate|
+ths_shade|
+ths_slope|
+estimated_ths|
+alcalinity|
+comments"
+shape = "record"
+];
+
+segmentsite:f1 -> segment:f0 
+
+}
+reachhabitat:f0 -> reach:f0
+site:f0 -> segmentsite:f0
+sitehabitat:f0 -> site:f0
+indivtable:f1 -> popsample:f1
+popsample:f0 -> sampling:f0;
+popdetailmetrics:f0 -> popsample:f1
+popgroupmetrics:f0 -> popsample:f1
+popdetailmetrics:f1 -> age
+popdetailmetrics:f2 -> stage
+popdetailmetrics:f3 -> datatypedetail
+popgroupmetrics:f1 -> datatypegroup
+
+}
+```
+**graph: ** A temptative table format for the WGTRUTTA datacall template.   
