@@ -110,3 +110,5 @@ R/manage_database2.R
 R/manage_database2.R
 
 
+R/data/country_sf.Rdata
+R/data/tr_species_spe_temp.Rdata
