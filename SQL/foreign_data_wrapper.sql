@@ -9,7 +9,7 @@ CREATE SERVER wgeel_data_wrapper
 CREATE SERVER wgnas_data_wrapper
   FOREIGN DATA WRAPPER postgres_fdw
   OPTIONS (host 'localhost', port '5432', dbname 'salmoglob');
--- 
+
 CREATE USER MAPPING FOR USER
   SERVER wgeel_data_wrapper
   OPTIONS (user 'postgres', password 'postgres');
@@ -21,3 +21,5 @@ IMPORT FOREIGN SCHEMA ref
     INTO refwgeel;
     
 GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;
+
+SELECT * FROM pg_stat_get_activity(NULL::integer) 

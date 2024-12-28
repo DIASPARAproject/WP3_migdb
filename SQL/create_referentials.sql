@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS "ref".tr_species_spe;
 CREATE TABLE "ref".tr_species_spe (
      spe_code CHARACTER VARYING(3) PRIMARY KEY,
      spe_codeices CHARACTER VARYING(6) NOT NULL, -- TODO CHANGE WHEN ICES VOCAB
+     
      spe_description TEXT);
 INSERT INTO "ref".tr_species_spe VALUES ('eel','ele','mieux que le saumon');
 
@@ -41,6 +42,44 @@ CREATE TABLE ref.tr_country_cou (
 -- how to inegrate with hierarchical level in salmodb ? Same for eel ?
 
 ALTER TABLE ref.tr_country_cou OWNER TO diaspara_admin;
+
+
+SELECT * FROM SELECT * FROM "public"."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" LIMIT 10
+
+
+SELECT "CNTR_ID", "CNTR_NAME", "NAME_ENGL","NAME_GERM", "NAME_FREN", "ISO3_CODE"
+FROM  "public"."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" 
+WHERE "CNTR_ID" IN ('GL', 'CA', 'US')
+-- anguilla rostrata would need much more
+
+
+DELETE FROM ref.tr_country_cou WHERE cou_code IN ('GL', 'CA', 'US');
+
+INSERT INTO ref.tr_country_cou ( cou_code,
+    cou_country,    
+    cou_iso3code,
+    geom, 
+    cou_order)
+SELECT "CNTR_ID" AS cou_code, "NAME_ENGL" AS cou_country,  "ISO3_CODE" AS cou_isocode, geom,
+CASE WHEN "CNTR_ID" = 'GL' THEN 47
+     WHEN "CNTR_ID" = 'CA' THEN 48
+     ELSE 49 END AS cou_order
+FROM  "public"."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" 
+WHERE "CNTR_ID" IN ('GL', 'CA', 'US');
+
+
+UPDATE ref.tr_country_cou SET geom = nuts.geom FROM 
+"public"."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" nuts 
+WHERE nuts."CNTR_ID" = tr_country_cou.cou_code; # 40
+
+
+SELECT cou_code,cou_country,cou_order, cou_iso3code
+('BM', 'BS', 'TC', 'DO', 'HT', 'CU', 'PR', 'VG', 
+'VI', 'AI','BL', 'SX','BQ', 'KN', 'AG', 'DM', 'LC', 'VC', 'GD')
+
+SELECT "CNTR_ID", "CNTR_NAME", "NAME_ENGL","NAME_GERM", "NAME_FREN", "ISO3_CODE"
+FROM  "public"."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" 
+WHERE "CNTR_ID" ILIKE 'AN'
 
 
 -- Habitat types
@@ -93,5 +132,9 @@ CREATE TABLE "ref".tr_parameter_parm (
   CONSTRAINT parm_pkey PRIMARY KEY (typ_id),
   CONSTRAINT c_fk_parm_uni_code FOREIGN KEY (typ_uni_code) REFERENCES "ref".tr_units_uni(uni_code) ON UPDATE CASCADE
 );
+
+
+
+
 
 
