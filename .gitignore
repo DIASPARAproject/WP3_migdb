@@ -61,7 +61,7 @@ rsconnect/
 *.aux
 
 credentials.yml
-credentials_sav.yml # corresponds to credentials for INRAe
+credentials_sav.yml
 
 # Quarto presentations and docs
 
