@@ -51,6 +51,7 @@ load_library("yaml")
 load_library("DBI")
 load_library("knitr")
 load_library("kableExtra")
+load_library("DT")
 cred=read_yaml("../credentials.yml")
 con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,port=cred$port,user=cred$usersalmo, password=cred$passwordsalmo)
 ```
@@ -454,7 +455,20 @@ knitr::kable(pb1,
 ``` 
 # Metadata
 
+The metadata structure is described in table @tbl-globaldata.
 ``` {r tbl-globaldata}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Metadata structure 
+DBI::dbGetQuery(con_salmoglob, 
+  "SELECT * FROM metadata") %>%
+  DT::datatable(rownames = FALSE,
+              options = list(pageLength = 10))
+```
+Details on values inserted in the DB are described in subtables from table @tbl-globaldata2.
+``` {r tbl-globaldata2}
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
