@@ -61,7 +61,7 @@ rsconnect/
 *.aux
 
 credentials.yml
-credentials_sav.yml # corresponds to credentials for INRAe
+credentials_sav.yml
 
 # Quarto presentations and docs
 
@@ -110,3 +110,5 @@ R/manage_database2.R
 R/manage_database2.R
 
 
+R/data/country_sf.Rdata
+R/data/tr_species_spe_temp.Rdata

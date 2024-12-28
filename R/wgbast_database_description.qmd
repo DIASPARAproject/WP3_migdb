@@ -20,7 +20,8 @@ format:
 execute: 
  keep-md: true
 reference-location: document
-bibliography: ../diaspara.bib
+bibliography: diaspara.bib
+include-after-body: "footer.html"
 ---
 
 

@@ -1,0 +1,423 @@
+---
+title: "diaspara database creation script"
+subtitle: "DIASPARA WP3.2 working document"
+author: "Briand Cédric, Oliviero Jules, Helminen Jani"
+date: last-modified
+date-format: "DD-MM-YYYY"
+description: "Creation of the migdb Migratory fishes database"
+title-block-banner: "images/diaspara_bandeau.png"
+title-block-banner-color: "white"
+format:
+ html:
+  self-contained: true
+  theme: styles.scss
+  smooth-scroll: true
+  fontcolor: black
+  toc: true
+  toc-location: left
+  toc-title: Summary
+  toc-depth: 3
+execute: 
+ keep-md: true
+reference-location: document
+bibliography: diaspara.bib
+include-after-body: "footer.html"
+---
+
+
+The main structure of the database has been proposed during the online diaspara meeting : [database structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/diaspara_WP3_Tuesday_presentation.html#/section-1). 
+This stucture would allow to store the data necessary to run the international stock models for the different working groups working on diadromous fishes.
+The structure of the proposed database and the structure of the wgeel database are very similar. This documents creates the diaspara database, first creating referential table for the different types proposed, and then populates the database with the contents of the wgeel and wgnas database. All chunks are run sequentially to run the database, but some are later marked with eval = FALSE to speed up the process of running the quarto document.
+
+# Create the diaspara database
+
+
+All along this document, the database will be named `diaspara`. The database is created with postgres.
+
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$userdiaspara,
+                           password = cred$passworddiaspara)
+con_diaspara_admin <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+con_salmoglob <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamesalmo,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+
+```
+
+This is run in localhost, check the wp3_habitat repository for code to set up access to the database.
+In the future we will grant diaspara_admin and diaspara_read to specific users for example with one friend named frankenstein `GRANT diaspara_admin TO frankenstein` ; 
+Note to self : need to edit the pb_hba.conf on the server if not in localhost to allow access to  diaspara.
+
+```{r}
+#| label: create_diaspara_db
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein'"))
+dbExecute(con_diaspara_admin, "DROP schema if exists ref CASCADE;");
+dbExecute(con_diaspara_admin, "CREATE schema ref;")
+dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA ref TO diaspara_admin ;")
+dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA public TO diaspara_read ;")
+dbExecute(con_diaspara_admin, paste0("GRANT CONNECT ON DATABASE ",cred$dbnamediaspara," TO diaspara_read;"))
+dbExecute(con_diaspara_admin, paste0("ALTER DATABASE ",cred$dbnamediaspara," OWNER TO diaspara_admin;"))
+dbExecute(con_diaspara_admin, "DROP schema if exists refeel CASCADE;");
+dbExecute(con_diaspara_admin, "CREATE SCHEMA refeel;")
+dbExecute(con_diaspara_admin, "ALTER SCHEMA refeel OWNER TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "DROP schema if exists refnas CASCADE;");
+dbExecute(con_diaspara_admin, "CREATE SCHEMA refnas;")
+dbExecute(con_diaspara_admin, "ALTER SCHEMA refnas OWNER TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "DROP schema if exists refbast CASCADE;");
+dbExecute(con_diaspara_admin, "CREATE SCHEMA refbast;")
+dbExecute(con_diaspara_admin, "ALTER SCHEMA refbast OWNER TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "DROP schema if exists reftrutta CASCADE;");
+dbExecute(con_diaspara_admin, "CREATE SCHEMA reftrutta;")
+dbExecute(con_diaspara_admin, "ALTER SCHEMA reftrutta OWNER TO diaspara_admin;")
+
+# Create foreign data wrapper to wgeel database
+
+dbExecute(con_diaspara_admin, "CREATE EXTENSION IF NOT EXISTS postgres_fdw;")
+
+dbExecute(con_diaspara_admin,"
+CREATE SERVER wgeel_data_wrapper
+  FOREIGN DATA WRAPPER postgres_fdw
+  OPTIONS (host 'localhost', port '5432', dbname 'wgeel');")
+dbExecute(con_diaspara_admin,"
+CREATE SERVER wgnas_data_wrapper
+  FOREIGN DATA WRAPPER postgres_fdw
+  OPTIONS (host 'localhost', port '5432', dbname 'salmoglob');")
+dbExecute(con_diaspara_admin,"
+CREATE USER MAPPING FOR USER
+  SERVER wgeel_data_wrapper
+  OPTIONS (user 'postgres', password 'postgres');")
+dbExecute(con_diaspara_admin,"  
+CREATE SCHEMA refwgeel;")
+dbExecute(con_diaspara_admin,"IMPORT FOREIGN SCHEMA ref    
+    FROM SERVER wgeel_data_wrapper
+    INTO refwgeel;")
+    
+dbExecute(con_diaspara_admin,"GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
+
+```
+
+Now the database has been created with different schema (@fig-schema_diaspara). The main schema for dictionaries is ref, and a schema is created per working group for specific referential tables. The Schema refwgeel is a schema created with a foreign data wrapper to get the data from wgeel, the same schema exists for wgnas. We'll see later for wgbast and wgtrutta.
+
+```{dot}
+//| label: fig-schema_diaspara
+//| fig-cap: "Structure of the schema in diaspara."
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];
+	ref [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref</b> </td> </tr>
+       <tr> <td align="left">
+        tr_species_spe <br align="left"/>
+        tr_country_cou <br align="left"/>
+        tr_area_are    </td> </tr> 
+       </table>> 
+       shape = cylinder]; 
+    refeel [fillcolor="pink"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refeel</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    refbast [fillcolor="purple"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refbast</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    refnas [fillcolor="limegreen"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refnas</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    reftrutta [fillcolor="tan1"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>reftrutta</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    reftrutta;
+    refwgeel;  # this in an archive
+    
+
+	refeel -> ref 
+	refbast -> ref;
+	refnas -> ref 
+  reftrutta -> ref
+  refwgeel -> ref [style="dashed"]
+  salmoglob -> ref [style="dashed"]
+}
+```
+# Creating referentials
+
+## Species
+
+
+There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**, **Petromyzon marinus**, **Lampetra fluviatilis**. 
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION ICES: species code
+::::
+::::{.questionbox-body}
+ALA, ALF, SLP, FLP are these code OK ?
+::::
+:::
+
+``` {r tbl-icesVocabspecies}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+
+# To get keys for each subdivisions
+
+# No code for Lampetra, Alosa, petromyzon
+sp <- getCodeList("IC_Species")
+grep("Lampetra", sp$description)
+grep("Petromyzon", sp$description)
+grep("Alosa",  sp$description)
+
+bind_rows(
+  ele <- getCodeDetail("IC_Species","ELE")$detail,
+  sal <- getCodeDetail("IC_Species","SAL")$detail,
+  trs <- getCodeDetail("IC_Species","TRS")$detail) %>%
+knitr::kable(caption = "Codes for migratory species in ICES, no code found for other species (Lamprey, Alosa ...)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+if (file.exists("data/tr_species_spe_temp.Rdata")) {
+  load("data/tr_species_spe_temp.Rdata") } else {
+  species_list <- tibble(
+    spe_code = c("SAL", "ELE", "TRT", "ALA", "ALF", "SLP", "RLP"),
+    spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
+    spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
+  )
+  tr_species_spe_temp <- species_list %>%
+    rowwise() %>%
+    mutate(
+      spe_codeaphia = findAphia(spe_scientificname, latin = TRUE)
+    ) %>%
+    ungroup()
+  save(tr_species_spe_temp, file = "data/tr_species_spe_temp.Rdata")
+  }
+  knitr::kable(tr_species_spe_temp, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  
+```
+
+
+```{r}
+#| label: species
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+
+dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_species_spe;")
+dbExecute(con_diaspara_admin,"CREATE TABLE ref.tr_species_spe (
+     spe_code CHARACTER VARYING(3) PRIMARY KEY,
+     spe_commonnname TEXT,
+     spe_scientificname TEXT,
+     spe_codeaphia numeric NOT NULL,
+     spe_description TEXT)");
+dbExecute(con_diaspara_admin, "GRANT ALL ON TABLE ref.tr_species_spe to diaspara_admin")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_species_spe to diaspara_read")
+dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species_spe_temp, overwrite = TRUE)
+dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
+dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
+``` 
+## Country
+
+
+```{r}
+#| label: country
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+
+dbExecute(con_diaspara, "DROP TABLE IF EXISTS ref.tr_country_cou;")
+dbExecute(con_diaspara,"CREATE TABLE ref.tr_country_cou (
+    cou_code character varying(2) NOT NULL,
+    cou_country text NOT NULL,
+    cou_order integer NOT NULL,
+    geom public.geometry,
+    cou_iso3code character varying(3)
+);")
+dbExecute(con_diaspara_admin,"ALTER TABLE ref.tr_country_cou OWNER TO diaspara_admin;")
+dbExecute(con_diaspara_admin,"GRANT SELECT ON TABLE ref.tr_country_cou TO diaspara_read;")
+
+dbExecute(con_diaspara_admin,"INSERT INTO ref.tr_country_cou SELECT * FROM refwgeel.tr_country_cou;") #40
+# Add some constraints
+dbExecute(con_diaspara_admin, "ALTER TABLE ref.tr_country_cou ADD CONSTRAINT c_pk_cou_code PRIMARY KEY (cou_code);")
+dbExecute(con_diaspara_admin, "ALTER TABLE ref.tr_country_cou ADD CONSTRAINT c_uk_cou_iso3code UNIQUE (cou_iso3code);")
+
+# missing values from America downloaded from https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2024-01m.gdb.zip
+# uploaded to postgres
+dbExecute(con_diaspara_admin,
+"INSERT INTO ref.tr_country_cou ( cou_code,
+    cou_country,    
+    cou_iso3code,
+    geom, 
+    cou_order)
+SELECT \"CNTR_ID\" AS cou_code, \"NAME_ENGL\" AS cou_country,  \"ISO3_CODE\" AS cou_isocode, geom,
+CASE WHEN \"CNTR_ID\" = 'GL' THEN 47
+     WHEN \"CNTR_ID\" = 'CA' THEN 48
+     ELSE 49 END AS cou_order
+FROM  public.\"ref-countries-2024-01m — CNTR_RG_01M_2024_4326\" 
+WHERE \"CNTR_ID\" IN ('GL', 'CA', 'US');")
+
+dbExecute(con_diaspara_admin,
+"UPDATE ref.tr_country_cou SET geom = nuts.geom FROM 
+public.\"ref-countries-2024-01m — CNTR_RG_01M_2024_4326\" nuts 
+WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
+
+``` 
+
+```{r tbl-country}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Country table in the diaspara DB
+tr_country_cou <- dbGetQuery(con_diaspara, "SELECT cou_code,cou_country,cou_order, cou_iso3code FROM ref.tr_country_cou order by cou_order")
+knitr::kable(tr_country_cou, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r fig-country}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| fig-cap: Map of countries in the diaspara DB &copy; [EuroGeographics](https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/)
+
+if (file.exists("data/country_sf.Rdata")) load("data/country_sf.Rdata") else {
+country_sf <- sf::st_read(con_diaspara,
+                          query = "SELECT cou_code, ST_MakeValid(geom) 
+                          from ref.tr_country_cou") %>%
+  sf::st_transform(4326) 
+save(country_sf, file="data/country_sf.Rdata")
+}
+#see here : https://stackoverflow.com/questions/70756215/plot-geodata-on-the-globe-perspective-in-r
+# Note there is a problem of geometry for some of the polygons, and this require 
+# ST_Makevalid before intersection
+
+# projection string used for the polygons & ocean background
+crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
+
+# background for the globe - center buffered by earth radius
+ocean <- sf::st_point(x = c(0,0)) %>%
+  sf::st_buffer(dist = 6371000) %>%
+  sf::st_sfc(crs = crs_string)
+country_sf2 <-  country_sf %>% 
+  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% # select visible area only
+  sf::st_transform(crs = crs_string) # reproject to ortho
+# now the action!
+ggplot(data = country_sf2) +
+  geom_sf(data = ocean, fill = "aliceblue", color = NA) + # background first
+  geom_sf(aes(fill = cou_code), lwd = .1) + # now land over the oceans
+  scale_fill_discrete(guide = "none") +
+  theme_void()
+
+```
+The shapefiles have been downloaded from https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries 
+source EuroGeographics and UN-FAO. Countries are ordered from North to South starting from the Baltic and ending in the Mediterranean, with American number being the highest in order.
+
+
+## Parameters
+
+Parameters are a simple way to reduce the complexity of data. It will correspond to all nimble variables, reduced to their lower level (e.g. 3 dimensional arrays with dimensions [area, year, stage] will be translated as many lines with the corresponding values in columns area, year, and stage), and the identifyer of the variable will be used for all the lines necessary to store this dataset. In practise, parameters also correspond to input data, and output data in the model.
+The parameters will be described by their metadata as illustrated in figure (@fig-metadata)
+
+![Mind map of the metadata structure](images\SAM_parm_metadata.png){#fig-metadata}
+We can have a look at the metadata, there is a problem in the "order or the dimensions which need to be aligned. These could be used within a vector or array type more conveniently.
+
+```{r tab-metadatasalmo}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tab-cap: The metadata in salmoglob
+
+metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
+head(metadata) %>% kable %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+"CREATE TABLE ref.metadata_met AS (
+  met_var_id TEXT,
+	met_typeobject text NULL,
+	met_dim integer ARRAY,
+  met_dimname text ARRAY,
+	met_nimble TEXT NULL,
+	met_modelstage text NULL,
+	met_type text NULL,
+	met_location text NULL,
+	met_fishery text NULL,
+	met_metric text NULL,
+	met_status text NULL,
+	met_environment text NULL,
+	met_lfs_code text NULL,
+	met_complex text NULL,
+	met_ages text NULL,
+	met_definition text NULL
+);"
+
+
+```
