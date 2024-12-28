@@ -18,7 +18,7 @@ format:
   toc-title: Summary
   toc-depth: 3
 reference-location: document
-bibliography: ../diaspara.bib
+bibliography: diaspara.bib
 ---
 
 
@@ -452,6 +452,90 @@ knitr::kable(pb1,
  kable_material(c("striped", "hover"))
 
 ``` 
+# Metadata
+
+``` {r tbl-globaldata}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Various values in the salmoglob metadata, description of their content
+#| tbl-subcap: 
+#|   - type_object
+#|   - nimble
+#|   - model_stage
+#|   - type
+#|   - locations
+#|   - fishery
+#|   - metric	
+#|   - status	
+#|   - environment
+#|   - life_stage	
+#|   - complex	
+#|   - ages 
+
+DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT type_object FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT nimble FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+ DBI::dbGetQuery(con_salmoglob, 
+ model_stage <-  "SELECT DISTINCT model_stage FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+ DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT type FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+  DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT locations FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+  DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT fishery FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+  DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT metric FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+   DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT status FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+  DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT environment FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+   DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT life_stage FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+   DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT complex FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+  DBI::dbGetQuery(con_salmoglob, 
+  "SELECT DISTINCT ages  FROM metadata") %>%
+  knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+
+``` 
 
 
 # Hierarchical structure of the database
@@ -487,58 +571,5 @@ Additional values about maturity, stage, can be stored in the metadata table.
 
 There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
 
-``` {r conmigdb}
-#| echo: FALSE
-#| eval: FALSE
-
-con_diaspara = dbConnect(Postgres(), dbname=cred$dbnamediaspara,host=cred$host,port=cred$port,user=cred$userdiaspara, password=cred$passworddiaspara)
-```
-
-# Referentials
 
 
-```{sql create_referentials}
---| echo: FALSE
---| eval: FALSE
-
--- CREATE REFERENTIAL TABLES
-
-/*
-This is a comment
-*/
-DROP schema if exists "ref";
-CREATE schema "ref";
-GRANT ALL PRIVILEGES ON SCHEMA "ref" TO diaspara_admin ;
-GRANT ALL PRIVILEGES ON SCHEMA public TO diaspara_read ;
-GRANT CONNECT ON DATABASE "diaspara" TO diaspara_read;
-ALTER DATABASE "diaspara" OWNER TO diaspara_admin;
-
--- edit pg_hba.conf on the server
-
-
--- TODO search countries for Salmon US
-CREATE TABLE ref.tr_country_cou (
-    cou_code character varying(2) NOT NULL,
-    cou_country text NOT NULL,
-    cou_order integer NOT NULL,
-    geom public.geometry,
-    cou_iso3code character varying(3)
-);
--- how to inegrate with hierarchical level in salmodb ? Same for eel ?
-
-ALTER TABLE ref.tr_country_cou OWNER TO postgres;
-GRANT ALL ON SCHEMA ref diaspara_admin;
-CREATE ROLE diaspara_read
-
-CREATE TABLE "ref".tr_pararmeter_parm (
-  parm_id serial4 NOT NULL,
-  parm_name TEXT NOT NULL UNIQUE,
-  parm_species TEXT
-  parm_description text NULL,
-  parm_uni_code varchar(20) NULL,
-  CONSTRAINT parm_pkey PRIMARY KEY (typ_id),
-  CONSTRAINT c_fk_parm_uni_code FOREIGN KEY (typ_uni_code) REFERENCES "ref".tr_units_uni(uni_code) ON UPDATE CASCADE
-);
-
-
-``` 
