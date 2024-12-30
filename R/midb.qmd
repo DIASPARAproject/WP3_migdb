@@ -4,7 +4,7 @@ subtitle: "DIASPARA WP3.2 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
-description: "Creation of the migdb Migratory fishes database"
+description: "Creation of the migdb Migratory fishes database, version = build"
 title-block-banner: "images/diaspara_bandeau.png"
 title-block-banner-color: "white"
 format:
@@ -54,7 +54,7 @@ Another important point to add (at least to the salmoglob database) is unicity c
 One of the table will have to contain twice the area it will have to be treated separately.
 (`year, area, area, parameter`)
 
-# Create the diaspara database
+# Creating the diaspara database
 
 
 All along this document, the database will be named `diaspara`. The database is created with postgres.
@@ -113,15 +113,22 @@ con_salmoglob <- dbConnect(Postgres(),
 ```
 
 This is run in localhost, check the wp3_habitat repository for code to set up access to the database.
-In the future we will grant diaspara_admin and diaspara_read to specific users for example with one friend named frankenstein `GRANT diaspara_admin TO frankenstein` ; 
-Note to self : need to edit the pb_hba.conf on the server if not in localhost to allow access to  diaspara.
+In the future we will grant diaspara_admin and diaspara_read to specific users for example with one friend named frankenstein `GRANT diaspara_admin TO frankenstein` ;
+
+::: {.callout-note appearance="simple"}
+## DIASPARA Note to self
+ need to edit the pb_hba.conf on the server if not in localhost to allow access to  diaspara.
+:::
+ 
 
 ```{r}
-#| label: create_diaspara_db
+#| label: creatediasparadb
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create the diaspara DB
 dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein'"))
 dbExecute(con_diaspara_admin, "DROP schema if exists ref CASCADE;");
 dbExecute(con_diaspara_admin, "CREATE schema ref;")
@@ -256,13 +263,20 @@ Should we use SpecWoRMS or is Aphia OK ?
 ::::
 :::
 
+<details> 
+
+<summary>Creating a referential table for species - code and queries to ICES 
+</summary>
+
 ``` {r tbl-icesVocabspecies}
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-
-# To get keys for each subdivisions
+#| tbl-cap: Species
+#| tbl-subcap :
+#|    - Code found in IC_Species
+#|    - Three letter code for species. Should we use ang instead of ele ?
 
 # No code for Lampetra, Alosa, petromyzon
 sp <- getCodeList("IC_Species")
@@ -295,6 +309,7 @@ if (file.exists("data/tr_species_spe_temp.Rdata")) {
   
 ```
 
+ 
 
 ```{r}
 #| label: species
@@ -316,8 +331,16 @@ dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species
 dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
 dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
 ``` 
+
+</details>
+
 ## Country
 
+Countries are mostly OK in the wgeel database but we need to add american countries.
+<details> 
+
+<summary>Code to create table from wgeel and NUTS
+</summary>
 
 ```{r}
 #| label: country
@@ -371,6 +394,7 @@ WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
 
 ``` 
 
+
 ```{r tbl-country}
 #| echo: TRUE
 #| eval: TRUE
@@ -378,8 +402,10 @@ WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
 #| message: FALSE
 #| tbl-cap: Country table in the diaspara DB
 tr_country_cou <- dbGetQuery(con_diaspara, "SELECT cou_code,cou_country,cou_order, cou_iso3code FROM ref.tr_country_cou order by cou_order")
-knitr::kable(tr_country_cou, caption = " ") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(tr_country_cou) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+
+</details> 
 
 ```{r fig-country}
 #| echo: TRUE
@@ -419,11 +445,17 @@ ggplot(data = country_sf2) +
   theme_void()
 
 ```
+
 The shapefiles have been downloaded from https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries 
-source EuroGeographics and UN-FAO. Countries are ordered from North to South starting from the Baltic and ending in the Mediterranean, with American number being the highest in order.
+source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered from North to South starting from the Baltic and ending in the Mediterranean, with American number being the highest in order.
+
 
 ## Unit
 
+
+<details> 
+
+<summary>Creating the unit from wgeel and checking ICES code </summary>
 First we import from wgeel
 
 ```{r}
@@ -455,7 +487,7 @@ Sometimes several vocab are available for the same thing. We used the p06 as the
 most common source. Hopefully that was the right choices ?
 
 ```{r}
-#| label: unit_ices
+#| label: unitices
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -550,7 +582,7 @@ dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='idx', 
 
 
 ``` 
-
+<\details> 
 
 ```{r}
 #| label: tbl-unit
@@ -558,11 +590,10 @@ dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='idx', 
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-
+#| tbl-cap: tr_units_uni table, check missing values currently not found in ICES Vocab
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-
 ``` 
+
 Some of the values are missing from ICES vocab (Table @tbl-unit).
 
 :::{.questionbox}
@@ -583,9 +614,6 @@ series ?
 to sampling box, basket. And it's not the number of haul.
 
 * Before working any further I would like your opinion there.
-
-
-
 ::::
 :::
 
@@ -594,26 +622,29 @@ to sampling box, basket. And it's not the number of haul.
 ## Parameters
 
 Parameters are a simple way to reduce the complexity of data. It will correspond to all nimble variables, reduced to their lower level (e.g. 3 dimensional arrays with dimensions [area, year, stage] will be translated as many lines with the corresponding values in columns area, year, and stage), and the identifyer of the variable will be used for all the lines necessary to store this dataset. In practise, parameters also correspond to input data, and output data in the model.
-The parameters will be described by their metadata as illustrated in figure (@fig-metadata)
+The parameters will be described by their metadata as illustrated in @fig-metadata
 
 ![Mind map of the metadata structure](images\SAM_parm_metadata.png){#fig-metadata}
+
 We can have a look at the metadata in the analysis done on the WGNAS database [WGNAS description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wgnas_salmoglob_description.html#metadata).
 
-Some thought : 
-
-1) there is a problem in the "order or the dimensions which need to be aligned. For instance a column can hold year, or age. This is not good. The description could be used within a type [array](https://www.postgresql.org/docs/current/arrays.html)  more conveniently,
-2) we just want to use vocabs as close to the referentials as possible
+There is a problem in the "order or the dimensions which need to be aligned. For instance a column can hold year, or age. This is not good. The description could be used within a type [array](https://www.postgresql.org/docs/current/arrays.html).
+SQL server does not work with array so it's not a good idea to use those. 
 
 
-```{r tab-advice}
+<details> 
+
+<summary>Checking stock codes using icesASD and icesSD packages</summary>
+
+```{r tbl-advice}
 #| echo: TRUE
-#| eval: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tab-cap: Access to the advice using icesASD
-#| 
+#| tbl-cap: Access to the advice using icesASD
+
 # install.packages('icesASD', repos = c('https://ices-tools-prod.r-universe.dev', 'https://cloud.r-project.org'))
-install.packages("icesSD", repos = c("https://ices-tools-prod.r-universe.dev", "https://cloud.r-project.org"))
+#install.packages("icesSD", repos = c("https://ices-tools-prod.r-universe.dev", "https://cloud.r-project.org"))
 
 library('icesASD')
 library('icesSD')
@@ -628,9 +659,19 @@ sd[ww,] %>% kable()
 
 ```
 
-```{sql metadata_and_related_tables}
+</details> 
+
+
+The code for creating metadata is listed below @lst-metadata
+
+<details> 
+
+<summary>SQL code to create tables</summary>
+
+```{#lst-metadata .sql lst-cap="The big metadata referential and small referential tables to support metadata building"}
 --| echo: TRUE
 --| eval: FALSE
+
 
 -- Note this code is plain SQL because when there is a lot to code
 -- it's faster. It cannot be executed from a quarto chunk so look
@@ -898,13 +939,16 @@ is 'Is the variable still used ?';
 GRANT ALL ON ref.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON ref.tr_metadata_met TO diaspara_read;
 ```
+</details> 
+
+
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
  Not yet completely sure about this ....
  Environment (sea, transition ...), age, life stage and complex are in the metadata.
- But they are also in the database itself
- We will remove them to reduce complexity and avoid errors.
- The complex will be derived from the spatial structure
+ But they are also in the main table.
+To start with, we remove them to reduce complexity and avoid errors.
+ The `complex` will be derived from the spatial structure still in construction
 :::
 
 ::: {.callout-note appearance="simple"}
@@ -923,14 +967,15 @@ GRANT SELECT ON ref.tr_metadata_met TO diaspara_read;
 
 ## Object type (tr_objectype_oty)
 
-This table (@ tbl-tr_objectype_oty) is used in metadata 
+This table (@tbl-objectype) is used in metadata 
 
 ```{r}
-#| label: tbl-tr_objectype_oty
-#| echo: TRUE
+#| label: tbl-objectype
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Object type
 
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
@@ -939,15 +984,16 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable
 
 ## Type of parm / data (tr_nimble_nim)
 
-In the salmoglob db, this table corresponded to both tables status and nimble 
+In the salmoglob db, this table (@tbl-nimble) corresponded to both tables status and nimble 
 which most often contained the same information.
 
 ```{r}
-#| label: tbl-tr_nimble_nim
-#| echo: TRUE
+#| label: tbl-nimble
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Nimble
 
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
@@ -963,18 +1009,19 @@ For instance we create a new variable, so we know when it was introduced.
 So I'm moving this from the main table and adding to metadata
 Some variables might get deprecated over time. The year will be the year
 when the variable was introduced.
-The version contains both reference to the datacall (when data are loaded)
+The version (@tbl-version) contains both reference to the datacall (when data are loaded)
 and to the advice. The advice might still be null at the time the values
 will be entered into the database.
 
 
 
 ```{r}
-#| label: tbl-tr_version_ver
-#| echo: TRUE
+#| label: tbl-version
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: Version
 
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
@@ -987,47 +1034,89 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")%>% knitr::kable() 
 QUESTION ICES: What is the vocabulary for datacalls
 ::::
 ::::{.questionbox-body}
-I would like to access to this table [datacall](https://data.ices.dk/DataCalls/listDataCalls)? 
+I would like to access to this table : [datacall (see link in ICES webpage)](https://data.ices.dk/DataCalls/listDataCalls).
 Currently we see the current year, this is nice, how do we access to historical data, is there a way to get it using a query ?
 We've found a link for advice or stocks but not data calls.
 
 ::::
 :::
 
-# Metric (tr_metric_mtr)
+## Metric (tr_metric_mtr)
 
-```{r}
-#| label: tbl-tr_metric_mtr
-#| echo: TRUE
+```{r tbl-metric}
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap : Metric, type of parm used in the model
 
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
 
 ::: {.callout-note appearance="simple"}
-## NOTE TO SELF
-Some code will have changed, be sure to update (e.g. change Standard Deviation to SD, before pulling the data
+## NOTE
+This list is probably incomplete. But the metric can be NULL in case of a number
+of fish released, not of the above (@tbl-metric) will apply.
 :::
 
 
-# Metric (tr_metric_mtr)
 
-The metric is the mathematical type of value or parameter stored. Parameters can be
-either prior or posterior (estimate).
+## Category (tr_category_cat)
+
+categories @Tbl-category were in the salmoglob metadata, we have simplified to reduce the number of categories
+and be able to get for instance all parameters dealing with catch.
 
 ```{r}
-#| label: tbl-tr_metric_mtr
-#| echo: TRUE
+#| label: tbl-category
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| tbl-cap: category of parameters
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+## Outcome (tr_outcome_oco)
+
+
+A bit cumbersome this table, the idea is "what becomes of this fish". 
+Different types of landings.
+But it's just in metatdata and we need need in WGBAST
+
+```{r}
+#| label: tbl-outcome
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: category of parameters
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_outcome_oco;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+``` 
+
+## Metadata (tr_metadata_met)
+
+
+
+
+```{r}
+#| label: tbl-metadata
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: metadata
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
 
 
+# WORK IN PROGRESS....
 
+This document is still in construction
+
+# Acknowledgements
+
+* Data source : EuroGeographics and UN-FAO for countries
