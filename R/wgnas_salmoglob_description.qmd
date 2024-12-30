@@ -552,31 +552,21 @@ DBI::dbGetQuery(con_salmoglob,
 ``` 
 
 
-# Hierarchical structure of the database
+:::{.callout-note appearance="simple"}
+## TODO
+Remove NA, -, and main ? from fishery
+:::
 
-The database could start with the simplest structure, with a basic table corresponding to all data. 
-Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors.
-The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.
-
-
-From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).
-
-## Referential tables
-
-Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g. source from ICES vocab, which corresponds to working group or accession events (datacalls)).
-
-## Unicity constraints
-
-Another important point to add (at least to the salmoglob database) is unicity constraint. As some values would be null, creating unicity constraints with indexes would be necessary. These allow to have different levels of constraints for instance the unicity would be defined for :
-(`year, age, area, parameter`)
-(`year, age, parameter`)
-(`year, area, parameter`)
-(`year, parameter`)
-
-One of the table will have to contain twice the area it will have to be treated separately.
-(`year, area, area, parameter`)
-
-
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+  QUESTION TO WGNAS
+::::
+::::{.questionbox-body}
+In the metadata column fishery what is 'main' ? Should we remove NA and - and leave it NULL ?
+::::
+:::
 ## Other comments.
 
 Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model. 
