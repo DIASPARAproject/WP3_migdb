@@ -175,11 +175,58 @@ dbExecute(con_diaspara_admin,"GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspar
 
 ```
 
+<details> 
+
+<summary>SQL code to additional data schema </summary>
+
+```{#lst-schema.sql lst-cap="Building additional schema"}
+--| echo: TRUE
+--| eval: FALSE
+
+
+-- this one is straight into sql ... 
+
+DROP SCHEMA IF EXISTS dat CASCADE;
+CREATE SCHEMA dat;
+GRANT SELECT ON SCHEMA dat TO diaspara_read;
+ALTER SCHEMA dat OWNER TO diaspara_admin;
+COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance;'
+
+DROP SCHEMA IF EXISTS datang CASCADE;
+CREATE SCHEMA datang;
+GRANT SELECT ON SCHEMA datang TO diaspara_read;
+ALTER SCHEMA datang OWNER TO diaspara_admin;
+COMMENT ON SCHEMA datang IS 'SCHEMA for WGEEL;'
+
+DROP SCHEMA IF EXISTS datnas CASCADE;
+CREATE SCHEMA datnas;
+GRANT SELECT ON SCHEMA datnas TO diaspara_read;
+ALTER SCHEMA datnas OWNER TO diaspara_admin;
+COMMENT ON SCHEMA datnas IS 'SCHEMA for WGNAS';
+
+DROP SCHEMA IF EXISTS datbast CASCADE;
+CREATE SCHEMA datbast;
+GRANT SELECT ON SCHEMA datbast TO diaspara_read;
+ALTER SCHEMA datbast OWNER TO diaspara_admin;
+COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST;'
+
+DROP SCHEMA IF EXISTS dattrutta CASCADE;
+CREATE SCHEMA dattrutta;
+GRANT SELECT ON SCHEMA dattrutta TO diaspara_read;
+ALTER SCHEMA dattrutta OWNER TO diaspara_admin;
+COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA;
+```
+
+
+</details> 
+
 Now the database has been created with different schema (@fig-schema_diaspara). The main schema for dictionaries is ref, and a schema is created per working group for specific referential tables. The Schema refwgeel is a schema created with a foreign data wrapper to get the data from wgeel, the same schema exists for wgnas. We'll see later for wgbast and wgtrutta.
+
+
 
 ```{dot}
 //| label: fig-schema_diaspara
-//| fig-cap: "Structure of the schema in diaspara."
+//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
 digraph schema {
 	rankdir=TB;
 	size="8,5"
@@ -190,12 +237,27 @@ digraph schema {
        <tr> <td align="left">
         tr_species_spe <br align="left"/>
         tr_country_cou <br align="left"/>
-        tr_area_are    </td> </tr> 
+        tr_icworkinggroup_wkg <br align="left"/>
+        tr_version_ver <br align="left"/>
+        tr_metric_mtr <br align="left"/>
+        tr_category_cat <br align="left"/>
+        tr_outcome_oco <br align="left"/>
+        tr_metadata_met <br align="left"/>
+        tr_area_are <br align="left"/> </td> </tr> 
        </table>> 
        shape = cylinder]; 
     refeel [fillcolor="pink"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>refeel</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    dateel [fillcolor="pink"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dateel</b> </td> </tr>
        <tr> <td align="left">
          <br align="left"/>
          <br align="left"/>
@@ -211,6 +273,15 @@ digraph schema {
             </td> </tr> 
        </table>> 
        shape = cylinder];
+    datbast [fillcolor="purple"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>datbast</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
     refnas [fillcolor="limegreen"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>refnas</b> </td> </tr>
@@ -220,6 +291,15 @@ digraph schema {
             </td> </tr> 
        </table>> 
        shape = cylinder];
+    datnas [fillcolor="limegreen"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>datnas</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];   
     reftrutta [fillcolor="tan1"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>reftrutta</b> </td> </tr>
@@ -229,6 +309,15 @@ digraph schema {
             </td> </tr> 
        </table>> 
        shape = cylinder];
+    dattrutta [fillcolor="tan1"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dattrutta</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];   
     reftrutta;
     refwgeel;  # this in an archive
     
@@ -237,10 +326,39 @@ digraph schema {
 	refbast -> ref;
 	refnas -> ref 
   reftrutta -> ref
+  dateel -> ref
+  datnas -> ref
+  datbast -> ref
+  dattrutta -> ref
+  dateel -> refeel
+  datnas -> refnas
+  dattrutta -> reftrutta
+  datbast  -> refbast
+
   refwgeel -> ref [style="dashed"]
+  refwgeel -> refeel [style="dashed"]
   salmoglob -> ref [style="dashed"]
+  salmoglob -> refnas [style="dashed"]
+
 }
 ```
+
+Now the database has been created with different schema (@fig-schema_diaspara). 
+The main schema for dictionaries is ref, and a schema is created per working group
+for specific referential tables. The Schema refwgeel has been filled in with a 
+foreign data wrapper to get the data from wgeel, the same schema exists for wgnas. 
+We'll see later for wgbast and wgtrutta.
+The schema `dat` is the common schema for all data. 
+For each working group, schema `datbast`, `dateel`, `datnas` are created.
+The tables will be created in dat and later similar or a bit more complex tables
+(with some more columns) will be created using the `INHERIT FROM` syntax, which
+will allow to have a hierarchical structure in the db, and maintain the structure
+in a table common to all fishes.
+When going to SQL server in ICES, this will have to be abandonned, and replaced
+with views or partitioned views, but by then the structure will hold firm.
+Note that`dat` should not containt any data, 
+but will hold all the views and inherited tables comming from the different schema. 
+
 # Creating referentials
 
 ## Species
@@ -250,7 +368,10 @@ Anyways, we searched a bit for other species, even if we don't plan to start sto
 data on Alosa and Lamprey it's good to prepare the database.
 There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**, **Petromyzon marinus**, **Lampetra fluviatilis**.
 
-Thinking later about this, I chose to get rid of `ELE` and select `ANG`. This column with species will be everywhere. We want to avoid generations of researchers to avoid what `ELE` is (apart from elephants). For the others I've taken as close as possible to the latin name.
+Note Cédric : Thinking later about this, I chose to get rid of `ELE` and select 
+`ANG`. This column with species will be everywhere. We want to avoid generations 
+of researchers to avoid what `ELE` is (apart from elephants). For the others
+I've taken as close as possible to the latin name.
 
 
 
@@ -367,7 +488,8 @@ JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
-
+#| code-fold: TRUE
+#| code-summary: Code to create reference table for working groups 
 
 dbExecute(con_diaspara_admin,
 "DROP TABLE IF EXISTS ref.tr_icworkinggroup_wkg CASCADE;")
