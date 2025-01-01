@@ -33,7 +33,7 @@ The structure of the proposed database and the structure of the wgeel database a
 # Hierarchical structure of the database
 
 The database could start with the simplest structure, with a basic table corresponding to all data. 
-Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors. It not clear however how this could be handled in ICES? I don't know if SQL server handles hierachies
+Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors. It not clear however how this could be handled in ICES? I don't know if SQL server handles hierarchies
 The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.
 
 
@@ -113,7 +113,7 @@ con_salmoglob <- dbConnect(Postgres(),
 ```
 
 This is run in localhost, check the wp3_habitat repository for code to set up access to the database.
-In the future we will grant diaspara_admin and diaspara_read to specific users for example with one friend named frankenstein `GRANT diaspara_admin TO frankenstein` ;
+In the future we will grant diaspara_admin and diaspara_read to specific users for example with a used named trout `GRANT diaspara_admin TO trout` ;
 
 ::: {.callout-note appearance="simple"}
 ## DIASPARA Note to self
@@ -129,7 +129,7 @@ In the future we will grant diaspara_admin and diaspara_read to specific users f
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to create the diaspara DB
-dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein'"))
+dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein :-)'"))
 dbExecute(con_diaspara_admin, "DROP schema if exists ref CASCADE;");
 dbExecute(con_diaspara_admin, "CREATE schema ref;")
 dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA ref TO diaspara_admin ;")
@@ -250,6 +250,10 @@ Anyways, we searched a bit for other species, even if we don't plan to start sto
 data on Alosa and Lamprey it's good to prepare the database.
 There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**, **Petromyzon marinus**, **Lampetra fluviatilis**.
 
+Thinking later about this, I chose to get rid of `ELE` and select `ANG`. This column with species will be everywhere. We want to avoid generations of researchers to avoid what `ELE` is (apart from elephants). For the others I've taken as close as possible to the latin name.
+
+
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -257,9 +261,9 @@ There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**, **Petromy
 QUESTION ICES: species code
 ::::
 ::::{.questionbox-body}
-ALA, ALF, SLP, FLP are these code OK ?
-
+ANG,  ALA, ALF, PET, LAM are these internal code OK ?
 Should we use SpecWoRMS or is Aphia OK ?
+
 ::::
 :::
 
@@ -293,7 +297,8 @@ knitr::kable(caption = "Codes for migratory species in ICES, no code found for o
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
   species_list <- tibble(
-    spe_code = c("SAL", "ELE", "TRT", "ALA", "ALF", "SLP", "RLP"),
+    spe_code = c("SAL", "ANG", "TRT", "ALA", "ALF", "PET", "LAM"),
+    spe_icspecieskey = c("SAL", "ELE", "TRT", NA,NA,NA,NA),
     spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
     spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
   )
@@ -334,6 +339,94 @@ dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
 
 </details>
 
+
+## Working group
+
+Species is not enough. Data will be split by working groups. Several working
+groups working on the same species. There is a table for working group.
+Proposed table is @tbl-icworkinggroup but need confirmation for WKTRUTTA2.
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION ICES/ WGTRUTTA/ DIASPARA
+::::
+::::{.questionbox-body}
+what is the latest working group for WGTRUTTA, I found a
+WKTRUTTA2 but that is quite old. Do we want to refer to other groups on diadromous
+fishes there ?
+The name of the WGEEL is wrong in the referential, needs to reference GFCM...
+JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
+::::
+:::
+
+```{r}
+#| label: working_group
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+
+
+dbExecute(con_diaspara_admin,
+"DROP TABLE IF EXISTS ref.tr_icworkinggroup_wkg CASCADE;")
+dbExecute(con_diaspara_admin,
+"CREATE TABLE ref.tr_icworkinggroup_wkg (
+wkg_code TEXT PRIMARY KEY,
+wkg_description TEXT,
+wkg_icesguid uuid
+);")
+
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_icworkinggroup_wkg 
+IS 'TABLE corresponding to the IC_WorkingGroup referential;';")
+# Using the jsonlite to download the guid also
+tbl <- jsonlite::fromJSON(
+  "https://vocab.ices.dk/services/api/Code/3f6fb38a-a3c5-4f5c-bf31-2045e12536ee")
+
+
+
+temp_tr_icworkinggroup_wkg <- tbl %>%
+  select(key,description,guid) %>%
+  rename(wkg_code = key,
+         wkg_description = description,
+         wkg_icesguid = guid)%>%
+  filter(wkg_code %in% c("WGEEL", "WGNAS", "WGBAST"))
+temp_tr_icworkinggroup_wkg <- bind_rows(temp_tr_icworkinggroup_wkg,
+                                        data.frame(wkg_code="WKTRUTTA"))
+
+dbWriteTable(con_diaspara_admin, 
+             "temp_tr_icworkinggroup_wkg", 
+             temp_tr_icworkinggroup_wkg)
+
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_icworkinggroup_wkg 
+          SELECT 
+          wkg_code,
+          wkg_description,
+          wkg_icesguid::uuid
+         FROM temp_tr_icworkinggroup_wkg;") #4
+dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_icworkinggroup_wkg;")
+
+dbExecute(con_diaspara_admin, "COMMENT ON COLUMN 
+ref.tr_icworkinggroup_wkg.wkg_code IS 
+'Working group code uppercase, WGEEL, WGNAS, WGBAST, WGTRUTTA';")
+
+
+dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_icworkinggroup_wkg 
+          TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_icworkinggroup_wkg 
+          TO diaspara_read;")
+```
+```{r tbl-icworkinggroup}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Working groups table in the diaspara DB
+tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_icworkinggroup_wkg")
+knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
 ## Country
 
 Countries are mostly OK in the wgeel database but we need to add american countries.
@@ -349,8 +442,8 @@ Countries are mostly OK in the wgeel database but we need to add american countr
 #| warning: FALSE
 #| message: FALSE
 
-dbExecute(con_diaspara, "DROP TABLE IF EXISTS ref.tr_country_cou;")
-dbExecute(con_diaspara,"CREATE TABLE ref.tr_country_cou (
+dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_country_cou;")
+dbExecute(con_diaspara_admin, "CREATE TABLE ref.tr_country_cou (
     cou_code character varying(2) NOT NULL,
     cou_country text NOT NULL,
     cou_order integer NOT NULL,
@@ -834,10 +927,11 @@ INSERT INTO ref.tr_category_cat VALUES (
 'Life trait', 'Life trait parameterized in model, e.g. growth parameter, 
 fecundity rate ...');
 
-COMMENT ON TABLE ref.tr_category_cat IS 'Broad category of data or parameter, 
-catch, effort, biomass, mortality, count ..., more details in the table ref.tr_parameter_parm e.g. commercial catch,
-recreational catch are found in the parameter value and definition and unit, this list
-is intended to be short.';
+COMMENT ON TABLE ref.tr_category_cat IS 
+'Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
+ more details in the table ref.tr_parameter_parm e.g. commercial catch,
+recreational catch are found in the parameter value and definition and unit, 
+this list is intended to be short.';
 
 GRANT ALL ON ref.tr_category_cat TO diaspara_admin;
 GRANT SELECT ON ref.tr_category_cat TO diaspara_read;
@@ -848,9 +942,9 @@ oco_code TEXT PRIMARY KEY,
 oco_description TEXT
 );
 
-COMMENT ON TABLE ref.tr_outcome_oco IS 'When dealing with fish, e.g. in landings,
-what is the outcome of the fish, e.g. released alive, seal damage,
-removed from the environment';
+COMMENT ON TABLE ref.tr_outcome_oco IS 
+'When dealing with fish, e.g. in landings,what is the outcome of the fish,
+ e.g. Released (alive), Seal damage, Removed (from the environment)';
 INSERT INTO ref.tr_outcome_oco VALUES 
 ('Removed', 'Removed from the environment, e.g. caught and kept');
 INSERT INTO ref.tr_outcome_oco VALUES (
@@ -908,33 +1002,43 @@ CREATE TABLE ref.tr_metadata_met (
   CONSTRAINT c_pk_met_var_id_met_lfs_code PRIMARY KEY(met_var_code, met_spe_code)
 );
 COMMENT ON COLUMN ref.tr_metadata_met.met_var_code 
-is 'Code of the variable, primary key on both met_lfs_code';
+IS 'Code of the variable, primary key on both met_spe_code and met_var_code';
+COMMENT ON COLUMN ref.tr_metadata_met.met_spe_code 
+IS 'Species, ANG, SAL, TRT ... primary key on both met_spe_code and met_var_code';
 COMMENT ON COLUMN ref.tr_metadata_met.met_ver_code 
-is 'Code on the version of the model, see table tr_version_ver';
+IS 'Code on the version of the model, see table tr_version_ver';
 COMMENT ON COLUMN ref.tr_metadata_met.met_oty_code 
-is 'Object type, single_value, vector, matrix see table tr_objecttype_oty';
+IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty';
 COMMENT ON COLUMN ref.tr_metadata_met.met_nim_code 
-is 'Nimble type, one of data, constant, output, other';
+IS 'Nimble type, one of data, constant, output, other';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dim 
-is 'Dimension of the Nimble variable, use {10, 100, 100} 
+IS 'Dimension of the Nimble variable, use {10, 100, 100} 
 to insert the description of an array(10,100,100)';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dimname 
-is 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}';
+IS 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}';
 COMMENT ON COLUMN ref.tr_metadata_met.met_modelstage 
-is 'Currently one of fit, other, First year';
+IS 'Currently one of fit, other, First year';
 COMMENT ON COLUMN ref.tr_metadata_met.met_type 
-is 'Type of data in the variable, homewatercatches, Initialisation first year,
+IS 'Type of data in the variable, homewatercatches, Initialisation first year,
 abundance ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_location 
-is 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fisheries';
+IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fisheries';
 COMMENT ON COLUMN ref.tr_metadata_met.met_fishery 
-is 'Description of the fishery';
+IS 'Description of the fishery';
+COMMENT ON COLUMN ref.tr_metadata_met.met_oco_code 
+IS 'Outcome of the fish, e.g. Released (alive), Seal damage,
+Removed (from the environment), references table tr_outcome_oco';
+COMMENT ON COLUMN ref.tr_metadata_met.met_uni_code 
+IS 'Unit, references table tr_unit_uni';
+COMMENT ON COLUMN ref.tr_metadata_met.met_cat_code 
+IS 'Broad category of data or parameter, 
+catch, effort, biomass, mortality, count ...references table tr_category_cat';
 COMMENT ON COLUMN ref.tr_metadata_met.met_mtr_code 
-is 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
+IS 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_definition 
-is 'Definition of the metric';
+IS 'Definition of the metric';
 COMMENT ON COLUMN ref.tr_metadata_met.met_deprecated
-is 'Is the variable still used ?';
+IS'Is the variable still used ?';
 
 GRANT ALL ON ref.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON ref.tr_metadata_met TO diaspara_read;
@@ -1112,6 +1216,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable()
 
 ``` 
 
+![Structure of the db (still in construction)](images\diaspara-ref.png){#fig-ref}
 
 # WORK IN PROGRESS....
 

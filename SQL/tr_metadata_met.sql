@@ -1,4 +1,4 @@
--- THis code is the same as in migdb.qmd, here it is executed
+-- This code is the same as in migdb.qmd, here it is executed
 -- type_object in salmoglob
 
 DROP TABLE IF EXISTS ref.tr_objecttype_oty CASCADE;
@@ -151,10 +151,11 @@ INSERT INTO ref.tr_category_cat VALUES (
 'Life trait', 'Life trait parameterized in model, e.g. growth parameter, 
 fecundity rate ...');
 
-COMMENT ON TABLE ref.tr_category_cat IS 'Broad category of data or parameter, 
-catch, effort, biomass, mortality, count ..., more details in the table ref.tr_parameter_parm e.g. commercial catch,
-recreational catch are found in the parameter value and definition and unit, this list
-is intended to be short.';
+COMMENT ON TABLE ref.tr_category_cat IS 
+'Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
+ more details in the table ref.tr_parameter_parm e.g. commercial catch,
+recreational catch are found in the parameter value and definition and unit, 
+this list is intended to be short.';
 
 GRANT ALL ON ref.tr_category_cat TO diaspara_admin;
 GRANT SELECT ON ref.tr_category_cat TO diaspara_read;
@@ -165,9 +166,9 @@ oco_code TEXT PRIMARY KEY,
 oco_description TEXT
 );
 
-COMMENT ON TABLE ref.tr_outcome_oco IS 'When dealing with fish, e.g. in landings,
-what is the outcome of the fish, e.g. released alive, seal damage,
-removed from the environment';
+COMMENT ON TABLE ref.tr_outcome_oco IS 
+'When dealing with fish, e.g. in landings,what is the outcome of the fish,
+ e.g. Released (alive), Seal damage, Removed (from the environment)';
 INSERT INTO ref.tr_outcome_oco VALUES 
 ('Removed', 'Removed from the environment, e.g. caught and kept');
 INSERT INTO ref.tr_outcome_oco VALUES (
@@ -181,11 +182,38 @@ INSERT INTO ref.tr_outcome_oco VALUES (
 GRANT ALL ON ref.tr_outcome_oco TO diaspara_admin;
 GRANT SELECT ON ref.tr_outcome_oco TO diaspara_read;
 
+
+-- TODO go to R and create there
+DROP TABLE IF EXISTS ref.tr_workinggroup_wkg CASCADE;
+CREATE TABLE ref.tr_workinggroup_wkg (
+wkg_code TEXT PRIMARY KEY,
+--TODO SOMETHING IN ICES THERE
+wkg_description TEXT
+--TODO GUID THERE
+);
+
+COMMENT ON TABLE ref.tr_workinggroup_wkg IS 
+'Working group code lowercase, wgeel, wgnas, wgbast';
+INSERT INTO ref.tr_workinggroup_wkg VALUES 
+('Removed', 'Removed from the environment, e.g. caught and kept');
+INSERT INTO ref.tr_workinggroup_wkg VALUES (
+'Seal damaged', 'Seal damage');
+INSERT INTO ref.tr_workinggroup_wkg VALUES (
+'Discarded', 'Discards');
+INSERT INTO ref.tr_workinggroup_wkg VALUES (
+'Released', 'Released alive');
+
+
+GRANT ALL ON ref.tr_workinggroup_wkg TO diaspara_admin;
+GRANT SELECT ON ref.tr_workinggroup_wkg TO diaspara_read;
+
+
 DROP TABLE IF EXISTS ref.tr_metadata_met CASCADE;
 CREATE TABLE ref.tr_metadata_met (
-  met_var_code TEXT NOT NULL,
+  met_var TEXT NOT NULL,
   met_spe_code character varying(3) NOT  NULL,
-  met_ver_code TEXT NOT NULL,
+  met_wkg_code TEXT NOT NULL,
+  met_ver_code TEXT NULL,
   met_oty_code TEXT NOT NULL,
   met_nim_code TEXT NOT NULL,
   met_dim integer ARRAY,
@@ -200,18 +228,31 @@ CREATE TABLE ref.tr_metadata_met (
   met_cat_code TEXT NULL,
   met_definition TEXT NULL, 
   met_deprecated BOOLEAN DEFAULT FALSE,
+  CONSTRAINT c_pk_met_var_met_lfs_code PRIMARY KEY(met_var, met_spe_code),
+  CONSTRAINT c_fk_met_spe_code FOREIGN KEY (met_spe_code)
+  REFERENCES ref.tr_species_spe(spe_code) 
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+    CONSTRAINT c_fk_met_wgk_code FOREIGN KEY (met_wgk_code)
+  REFERENCES ref.tr_workinggroup_wkg(wkg_code) 
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT c_fk_met_ver_code FOREIGN KEY (met_ver_code)
+  REFERENCES ref.tr_version_ver(ver_code) 
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_oty_code FOREIGN KEY (met_oty_code) 
   REFERENCES ref.tr_objecttype_oty (oty_code) ON DELETE CASCADE
   ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_nim_code FOREIGN KEY (met_nim_code) 
   REFERENCES ref.tr_nimble_nim (nim_code) ON DELETE CASCADE
-  ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_spe_code FOREIGN KEY (met_spe_code)
-  REFERENCES ref.tr_species_spe(spe_code) 
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
+  ON UPDATE CASCADE,  
   CONSTRAINT c_fk_met_mtr_code FOREIGN KEY (met_mtr_code)
   REFERENCES ref.tr_metric_mtr(mtr_code)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT c_fk_met_uni_code FOREIGN KEY (met_uni_code)
+  REFERENCES ref.tr_units_uni(uni_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_cat_code FOREIGN KEY (met_cat_code)
@@ -221,37 +262,46 @@ CREATE TABLE ref.tr_metadata_met (
   CONSTRAINT c_fk_met_oco_code FOREIGN KEY (met_oco_code)
   REFERENCES ref.tr_outcome_oco(oco_code)
   ON DELETE CASCADE
-  ON UPDATE CASCADE,
-  CONSTRAINT c_pk_met_var_id_met_lfs_code PRIMARY KEY(met_var_code, met_spe_code)
+  ON UPDATE CASCADE
 );
-COMMENT ON COLUMN ref.tr_metadata_met.met_var_code 
-is 'Code of the variable, primary key on both met_lfs_code';
+COMMENT ON COLUMN ref.tr_metadata_met.met_var 
+IS 'Variable code, primary key on both met_spe_code and met_var';
+COMMENT ON COLUMN ref.tr_metadata_met.met_spe_code 
+IS 'Species, ANG, SAL, TRT ... primary key on both met_spe_code and met_var';
 COMMENT ON COLUMN ref.tr_metadata_met.met_ver_code 
-is 'Code on the version of the model, see table tr_version_ver';
+IS 'Code on the version of the model, see table tr_version_ver';
 COMMENT ON COLUMN ref.tr_metadata_met.met_oty_code 
-is 'Object type, single_value, vector, matrix see table tr_objecttype_oty';
+IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty';
 COMMENT ON COLUMN ref.tr_metadata_met.met_nim_code 
-is 'Nimble type, one of data, constant, output, other';
+IS 'Nimble type, one of data, constant, output, other';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dim 
-is 'Dimension of the Nimble variable, use {10, 100, 100} 
+IS 'Dimension of the Nimble variable, use {10, 100, 100} 
 to insert the description of an array(10,100,100)';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dimname 
-is 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}';
+IS 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}';
 COMMENT ON COLUMN ref.tr_metadata_met.met_modelstage 
-is 'Currently one of fit, other, First year';
+IS 'Currently one of fit, other, First year';
 COMMENT ON COLUMN ref.tr_metadata_met.met_type 
-is 'Type of data in the variable, homewatercatches, Initialisation first year,
+IS 'Type of data in the variable, homewatercatches, InitialISation first year,
 abundance ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_location 
-is 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fisheries';
+IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries';
 COMMENT ON COLUMN ref.tr_metadata_met.met_fishery 
-is 'Description of the fishery';
+IS 'Description of the fishery';
+COMMENT ON COLUMN ref.tr_metadata_met.met_oco_code 
+IS 'Outcome of the fish, e.g. Released (alive), Seal damage,
+Removed (from the environment), references table tr_outcome_oco';
+COMMENT ON COLUMN ref.tr_metadata_met.met_uni_code 
+IS 'Unit, references table tr_unit_uni';
+COMMENT ON COLUMN ref.tr_metadata_met.met_cat_code 
+IS 'Broad category of data or parameter, 
+catch, effort, biomass, mortality, count ...references table tr_category_cat';
 COMMENT ON COLUMN ref.tr_metadata_met.met_mtr_code 
-is 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
+IS 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_definition 
-is 'Definition of the metric';
+IS 'Definition of the metric';
 COMMENT ON COLUMN ref.tr_metadata_met.met_deprecated
-is 'Is the variable still used ?';
+IS'Is the variable still used ?';
 
 GRANT ALL ON ref.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON ref.tr_metadata_met TO diaspara_read;
