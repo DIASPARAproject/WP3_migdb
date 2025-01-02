@@ -32,32 +32,81 @@ The structure of the proposed database and the structure of the wgeel database a
 
 # Hierarchical structure of the database
 
-The database could start with the simplest structure, with a basic table corresponding to all data. 
-Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors. It not clear however how this could be handled in ICES? I don't know if SQL server handles hierarchies
-The tables could have a different format, meaning maybe parameter does not have stage (only if this simplifies further development). Data should have stage because eel data need stage. The stage can be easily pulled up with a joining of the metadata table.
+The database could start with the simplest structure, with a basic table
+ corresponding to all data. 
+Then three tables could be created, one per species. This is to allow querying 
+the different tables independently. From these species tables, three different 
+tables could be produced, one for data, one for parameters outputs, one for 
+parameters priors. Since SQL server does not handle inheritance, once the table
+ built, some of those will have to be replaced with views or partitioned views.
 
+From these three table on could envisage the creation of specific table for 
+working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas),
+ one table for salmon (wgbast), and one table for trutta (wgtrutta).
 
-From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).
+## Referential tables 
 
-## Referential tables
+> [TO BE EDITED LATER WHEN WE KNOW EXACTLY WHAT WE HAVE DONE]
 
-Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. This would make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g. source from ICES vocab, which corresponds to working group or accession events (datacalls)).
+Similarly, referential tables could be created with a mother table 
+from which specific (or wg specific) tables would inherit. 
+All mother table will be held in a schema called ref.
+Having working group specific tables make the setting up of consistent
+foreign key more easy. For instance wgbast could reference different age class
+than wgnas, and the stage would be completely different between wgeel 
+and wgnas reference daughter tables. Some of these referential table
+would be common between species (e.g. source from ICES vocab,
+which corresponds to working group or accession events (datacalls)).
 
 ## Unicity constraints
 
-Another important point to add (at least to the salmoglob database) is unicity constraint. As some values would be null, creating unicity constraints with indexes would be necessary. These allow to have different levels of constraints for instance the unicity would be defined for :
+Another important point to add (at least to the salmoglob database) 
+is unicity constraint. As some values would be null, creating unicity 
+constraints with indexes would be necessary. These allow to have different 
+levels of constraints for instance the unicity would be defined for :
 (`year, age, area, parameter`)
 (`year, age, parameter`)
 (`year, area, parameter`)
 (`year, parameter`)
 
-One of the table will have to contain twice the area it will have to be treated separately.
-(`year, area, area, parameter`)
+One of the table will have to contain twice the area it will have to be treated
+ separately. (`year, area, area, parameter`)
 
 # Creating the diaspara database
 
+All along this document, the database will be named `diaspara`. 
+The database is created with postgres. 
 
-All along this document, the database will be named `diaspara`. The database is created with postgres.
+** Some rules **
+
+* By default values will be capitalised for the first 
+ letter e.g. `Public` for the code in dataaccess. 
+* Code ELE, ANG, TRT are capitalized, as are the working group names
+  WGEEL, WGNAS, or country codes.
+* Units are lowercase e.g. g, mmm ...
+* All integer used for primary keys are called `id` all text used for primary 
+ keys are called `code`.
+* All tables end with a 3 letter summary which allows to identify the source of 
+ one column so the table dataaccess will be called `tr_dataaccess_dta`. And the 
+ column for code will be named 
+* Referential tables or dictionaries are called `tr_`(sometable), tables build
+ in conjuction from other tables and not in the dictionaries are called 
+ `t_`(sometable).
+* Foreign key are used instead of check constrainst as check constraint
+ might not ensure the integrity of data after their integration (only when
+ new rows are created or modified).
+* Foreign key are name `c_fk_columnname` where the column name is the name 
+in the table
+* Primary keys are names `_pk_columnnames` (with column name having possibly
+  more than one column).
+* All tables and column have a definition, we will ask the working groups
+ to check those.
+
+* Column and table name are ALWAYS LOWERCASE, the underscore is only used
+ to separate type of table and table shortcode t_table_abc. In column
+ is separates table code abc_def_code (table abc will reference the column
+ def_code in table def).
+ 
 
 
 ```{r init}
@@ -171,7 +220,8 @@ dbExecute(con_diaspara_admin,"IMPORT FOREIGN SCHEMA ref
     FROM SERVER wgeel_data_wrapper
     INTO refwgeel;")
     
-dbExecute(con_diaspara_admin,"GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
+dbExecute(con_diaspara_admin,
+"GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
 
 ```
 
@@ -179,7 +229,7 @@ dbExecute(con_diaspara_admin,"GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspar
 
 <summary>SQL code to additional data schema </summary>
 
-```{#lst-schema.sql lst-cap="Building additional schema"}
+```{#lst-schema .sql lst-cap="Building additional schema"}
 --| echo: TRUE
 --| eval: FALSE
 
@@ -208,13 +258,14 @@ DROP SCHEMA IF EXISTS datbast CASCADE;
 CREATE SCHEMA datbast;
 GRANT SELECT ON SCHEMA datbast TO diaspara_read;
 ALTER SCHEMA datbast OWNER TO diaspara_admin;
-COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST;'
+COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST';
+
 
 DROP SCHEMA IF EXISTS dattrutta CASCADE;
 CREATE SCHEMA dattrutta;
 GRANT SELECT ON SCHEMA dattrutta TO diaspara_read;
 ALTER SCHEMA dattrutta OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA;
+COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA';
 ```
 
 
@@ -354,8 +405,6 @@ The tables will be created in dat and later similar or a bit more complex tables
 (with some more columns) will be created using the `INHERIT FROM` syntax, which
 will allow to have a hierarchical structure in the db, and maintain the structure
 in a table common to all fishes.
-When going to SQL server in ICES, this will have to be abandonned, and replaced
-with views or partitioned views, but by then the structure will hold firm.
 Note that`dat` should not containt any data, 
 but will hold all the views and inherited tables comming from the different schema. 
 
@@ -456,6 +505,9 @@ dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_species_spe to diasp
 dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species_spe_temp, overwrite = TRUE)
 dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
 dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE  ref.tr_species_spe IS 
+'Table of fish species, spe_code SAL, ANG, TRT, ALA, ALF, PET, LAM, with 
+reference to ICES vocabularies.'")
 ``` 
 
 </details>
@@ -501,7 +553,7 @@ wkg_icesguid uuid
 );")
 
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_icworkinggroup_wkg 
-IS 'TABLE corresponding to the IC_WorkingGroup referential;';")
+IS 'Table corresponding to the IC_WorkingGroup referential;';")
 # Using the jsonlite to download the guid also
 tbl <- jsonlite::fromJSON(
   "https://vocab.ices.dk/services/api/Code/3f6fb38a-a3c5-4f5c-bf31-2045e12536ee")
@@ -572,10 +624,7 @@ dbExecute(con_diaspara_admin, "CREATE TABLE ref.tr_country_cou (
     geom public.geometry,
     cou_iso3code character varying(3)
 );")
-dbExecute(con_diaspara_admin,"ALTER TABLE ref.tr_country_cou 
-          OWNER TO diaspara_admin;")
-dbExecute(con_diaspara_admin,
-          "GRANT SELECT ON TABLE ref.tr_country_cou TO diaspara_read;")
+
 
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_country_cou 
@@ -607,6 +656,12 @@ dbExecute(con_diaspara_admin,
 public.\"ref-countries-2024-01m — CNTR_RG_01M_2024_4326\" nuts 
 WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
 
+dbExecute(con_diaspara_admin,"COMMENT ON TABLE ref.tr_country_cou IS
+          'Table of country codes source EuroGeographics and UN-FAO.';")
+dbExecute(con_diaspara_admin,"ALTER TABLE ref.tr_country_cou 
+          OWNER TO diaspara_admin;")
+dbExecute(con_diaspara_admin,
+          "GRANT SELECT ON TABLE ref.tr_country_cou TO diaspara_read;")
 ``` 
 
 
@@ -673,6 +728,10 @@ source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered from Nor
 <summary>Creating the unit from wgeel and checking ICES code </summary>
 First we import from wgeel
 
+Then we standarize using ICES codes, it takes a while to scroll through the vocab.
+Sometimes several vocab are available for the same thing. We used the p06 as the
+most common source. Hopefully that was the right choices ?
+
 ```{r}
 #| label: unit
 #| echo: TRUE
@@ -680,40 +739,25 @@ First we import from wgeel
 #| warning: FALSE
 #| message: FALSE
 
-dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_unit_uni;")
+
+dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_units_uni CASCADE;")
 
 dbExecute(con_diaspara_admin,
 "CREATE TABLE ref.tr_units_uni (
 	uni_code varchar(20) NOT NULL,
-	uni_name text NOT NULL,
+	uni_description text NOT NULL,
+  uni_icesvalue character varying(4),  uni_icesguid uuid,
+  uni_icestablesource text,
 	CONSTRAINT pk_uni PRIMARY KEY (uni_code),
-	CONSTRAINT uk_uni_name UNIQUE (uni_name)
+	CONSTRAINT uk_uni_description UNIQUE (uni_description),
+  CONSTRAINT uk_uni_icesguid UNIQUE (uni_icesguid),
+  CONSTRAINT uk_uni_icesvalue UNIQUE (uni_icesvalue)
 );")
-dbExecute(con_diaspara_admin, "GRANT ALL ON TABLE ref.tr_units_uni 
-          to diaspara_admin;")
-dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_units_uni 
-          to diaspara_read;")
-dbExecute(con_diaspara_admin,"INSERT INTO ref.tr_units_uni SELECT * FROM refwgeel.tr_units_uni;")#25
- 
-``` 
 
-Then we standarize using ICES codes, it takes a while to scroll through the vocab.
-Sometimes several vocab are available for the same thing. We used the p06 as the
-most common source. Hopefully that was the right choices ?
+dbExecute(con_diaspara_admin,"INSERT INTO ref.tr_units_uni (
+uni_code, uni_description)
+SELECT * FROM refwgeel.tr_units_uni;")#25
 
-```{r}
-#| label: unitices
-#| echo: TRUE
-#| eval: FALSE
-#| warning: FALSE
-#| message: FALSE
-
-dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_unit_uni;")
-
-dbExecute(con_diaspara_admin,
-"ALTER TABLE ref.tr_units_uni ADD COLUMN uni_icesvalue character varying(4);")
-dbExecute(con_diaspara_admin, "COMMENT ON COLUMN ref.tr_units_uni.uni_icesvalue IS 
-          'ICES code standard from the British Oceanographic Data Centre';")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='KGXX' 
           where uni_code = 'kg';") 
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='MTON'
@@ -728,11 +772,6 @@ dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='UPMM'
           where uni_code = 'nr/m3';")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='UYRS' 
           where uni_code = 'nr year';")
-dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set 
-          (uni_icesvalue, uni_name)=('XXXX', 'Not applicable (without unit)')
-          where uni_code = 'wo';")
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_units_uni 
-          VALUES ('Year-1', 'Per year', 'XXPY');")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='UXMM' 
           where uni_code = 'mm';")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='NGPG' 
@@ -741,48 +780,56 @@ dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='HCTR'
           where uni_code = 'ha';")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='UTAA' 
           where uni_code = 'nr day';")
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_units_uni 
-          VALUES ('s', 'Seconds', 'UTBB');")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='NOPH'
           where uni_code = 'nr/h';")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='NGPG'
           where uni_code = 'ng/g';")
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='UPCT'
           where uni_code = 'percent';")
+dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set 
+          (uni_icesvalue, uni_description)=
+          ('XXXX', 'Not applicable (without unit)')
+          where uni_code = 'wo';")          
 
-dbExecute(con_diaspara_admin,
-"ALTER TABLE ref.tr_units_uni ADD COLUMN uni_icesguid uuid;")
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_units_uni 
+          VALUES ('year-1', 'Per year', 'XXPY');")          
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_units_uni 
+          VALUES ('s', 'Seconds', 'UTBB');")
+
+
+
 p06 <- icesVocab::getCodeList('p06')
 SamplingUnit <- icesVocab::getCodeList('SamplingUnit')
-uni <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")
+uni <- dbGetQuery(con_diaspara_admin, "SELECT * FROM ref.tr_units_uni;")
 tempuni <- inner_join(uni, p06, by=join_by(uni_icesvalue==Key))
-dbWriteTable(con_diaspara_admin, "tempuni", tempuni)
+dbWriteTable(con_diaspara_admin, "tempuni", tempuni, overwrite=TRUE)
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni 
 set uni_icesguid = \"GUID\"::uuid
-          FROM tempuni where tempuni.uni_icesvalue=tr_units_uni.uni_icesvalue;") #15
+          FROM tempuni 
+          where tempuni.uni_icesvalue=tr_units_uni.uni_icesvalue;") #16
 dbExecute(con_diaspara_admin, "DROP TABLE tempuni;")
-dbExecute(con_diaspara_admin,
-"ALTER TABLE ref.tr_units_uni ADD COLUMN uni_icestablesource text;")
+
 dbExecute(con_diaspara_admin,
 "UPDATE ref.tr_units_uni set uni_icestablesource = 'p06' where uni_icesvalue 
 IS NOT NULL AND
-uni_icestablesource IS NULL;")
+uni_icestablesource IS NULL;") # 16
 
-query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_name, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
+query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
                  "gd", 
                  "Gear days for fyke/trap nets",
                  "gd", 
                  "MUNIT",
                  "bf0570b7-45f2-41c7-9a46-de912a2b9ad4")              
 dbExecute(con_diaspara_admin,  query)
-query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_name, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
+query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
                  "gd", 
                  "Gear days for fyke/trap nets",
                  "gd", 
                  "MUNIT",
                  "bf0570b7-45f2-41c7-9a46-de912a2b9ad4")   
 
-dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='idx', uni_icestablesource = 'MUNIT',
+dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='idx', 
+          uni_icestablesource = 'MUNIT',
           uni_icesguid ='87a9cf7f-fff4-4712-b693-76eec1403254'::uuid
           where uni_code = 'index';")
 
@@ -795,7 +842,26 @@ dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='idx', 
 # p06[grep('nanogram',tolower(p06$Description)),c("Description","Key")]
 # p06[grep('haul',tolower(p06$Description)),c("Description","Key")]
 
-
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_units_uni IS 
+'Table of units, values from tables MUNIT and p06 have corresponding ICES code.'")
+dbExecute(con_diaspara_admin, "COMMENT ON COLUMN ref.tr_units_uni.uni_code IS 
+'Unit code, lowercase, nr number, otherwise standard units.'")
+dbExecute(con_diaspara_admin, "COMMENT ON COLUMN ref.tr_units_uni.uni_description
+ IS 'Unit code, lowercase, nr number, otherwise standard units.'")
+dbExecute(con_diaspara_admin, "COMMENT ON COLUMN ref.tr_units_uni.uni_icesvalue IS 
+'ICES code standard from the British Oceanographic Data Centre (p06) or MUNIT 
+table.';") 
+dbExecute(con_diaspara_admin, 
+"COMMENT ON COLUMN ref.tr_units_uni.uni_icestablesource IS 
+'Table source in ICES.';") 
+dbExecute(con_diaspara_admin, 
+"COMMENT ON COLUMN ref.tr_units_uni.uni_icesguid IS 
+'GUID, type https://vocab.ices.dk/?codetypeguid=<guidcode> to get access to the 
+vocab in ICES.';") 
+dbExecute(con_diaspara_admin, "GRANT ALL ON TABLE ref.tr_units_uni 
+          to diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_units_uni 
+          to diaspara_read;")
 ``` 
 <\details> 
 
@@ -893,22 +959,16 @@ The code for creating metadata is listed below @lst-metadata
 -- at SQL/tr_metadata_met.sql for executable sql code. Still we keep 
 -- it there to show what we do.
 
--- THis code is the same as in migdb.qmd, here it is executed
--- type_object in salmoglob
-
--- THis code is the same as in migdb.qmd, here it is executed
--- type_object in salmoglob
-
 DROP TABLE IF EXISTS ref.tr_objecttype_oty CASCADE;
 CREATE TABLE ref.tr_objecttype_oty (
 oty_code TEXT PRIMARY KEY,
 oty_description TEXT
 );
 
-INSERT INTO ref.tr_objecttype_oty VALUES ('single_value', 'Single value');
-INSERT INTO ref.tr_objecttype_oty VALUES ('vector', 'One dimension vector');
-INSERT INTO ref.tr_objecttype_oty VALUES ('matrix', 'Two dimensions matrix');
-INSERT INTO ref.tr_objecttype_oty VALUES ('array', 'Three dimensions array');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Single_value', 'Single value');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Vector', 'One dimension vector');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Matrix', 'Two dimensions matrix');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Array', 'Three dimensions array');
 
 COMMENT ON TABLE ref.tr_objecttype_oty IS 
 'Table indicating the dimensions of the object stored in the model, 
@@ -932,17 +992,17 @@ COMMENT ON TABLE ref.tr_nimble_nim IS
 'Indicate the type of data, parameter constant, parameter estimate, output, other ...';
 -- Note this is a mix of nimble and status, which mean the same....
 
-INSERT INTO ref.tr_nimble_nim VALUES ('data', 'Data entry to the model');
+INSERT INTO ref.tr_nimble_nim VALUES ('Data', 'Data entry to the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('parameter constant', 'Parameter input to the model');
+VALUES ('Parameter constant', 'Parameter input to the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('parameter estimate', 'Parameter input to the model');
+VALUES ('Parameter estimate', 'Parameter input to the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('output', 'Output from the model, derived quantity');
+VALUES ('Output', 'Output from the model, derived quantity');
 -- Do we want another type here ?
 --INSERT INTO ref.tr_nimble_nim VALUES ('observation', 'Observation not used in the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('other', 'Applies currently to conservation limits');
+VALUES ('Other', 'Applies currently to conservation limits');
 GRANT ALL ON ref.tr_nimble_nim TO diaspara_admin;
 GRANT SELECT ON ref.tr_nimble_nim TO diaspara_read;
 
@@ -965,26 +1025,28 @@ CONSTRAINT c_fk_ver_spe_code FOREIGN KEY (ver_spe_code)
 REFERENCES ref.tr_species_spe(spe_code)
 ON UPDATE CASCADE ON DELETE CASCADE
 );
+COMMENT ON TABLE ref.tr_version_ver
+IS 'Table of data or variable version, essentially one datacall or advice.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_version 
-IS 'version code, stockkey-year-version';
+IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_year 
-IS 'year of assessement';
+IS 'Year of assessement.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_spe_code 
-IS 'species code e.g. ''ele'' references tr_species_spe';
+IS 'Species code e.g. ''ele'' references tr_species_spe.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_stockkey 
-IS 'Stockkey (integer) from the stock database';
+IS 'Stockkey (integer) from the stock database.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_stockkeylabel 
-IS 'ver_stockkeylabel e.g. ele.2737.nea';
+IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_stockadvicedoi 
 IS 'Advice DOI corresponding to column adviceDOI 
-when using icesASD::getAdviceViewRecord()';
+when using icesASD::getAdviceViewRecord().';
 COMMENT ON COLUMN ref.tr_version_ver.ver_datacalldoi 
 IS 'Data call DOI, find a way to retreive that information 
 and update this comment';
 COMMENT ON COLUMN ref.tr_version_ver.ver_version 
-IS 'Version code in original database, eg 2,4 for wgnas, dc_2020 for wgeel';
+IS 'Version code in original database, eg 2,4 for wgnas, dc_2020 for wgeel.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_description 
-IS 'Description of the data call / version';
+IS 'Description of the data call / version.';
 GRANT ALL ON ref.tr_version_ver TO diaspara_admin;
 GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
 -- metric 
@@ -1019,6 +1081,8 @@ INSERT INTO ref.tr_metric_mtr VALUES
 
 GRANT ALL ON ref.tr_metric_mtr TO diaspara_admin;
 GRANT SELECT ON ref.tr_metric_mtr TO diaspara_read;
+COMMENT ON TABLE ref.tr_metric_mtr IS 
+'Table metric describe the possible values of parameters, Index, Bound ...';
 
 -- tr_category_cat
 
@@ -1029,20 +1093,20 @@ cat_description TEXT
 );
 
 INSERT INTO ref.tr_category_cat VALUES 
-('Catch', 'Catch, including recreational and commercial catch');
+('Catch', 'Catch, including recreational and commercial catch.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Effort', 'Parameter measuring fishing effort');
+'Effort', 'Parameter measuring fishing effort.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Biomass', 'Biomass of fish either in number or weight');
+'Biomass', 'Biomass of fish either in number or weight.');
 INSERT INTO ref.tr_category_cat VALUES (
 'Mortality', 'Mortality either expressed in year-1 (instantaneous rate) 
-as F in exp(-FY) but can also be harvest rate');
+as F in exp(-FY) but can also be harvest rate.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Release', 'Release or restocking');
+'Release', 'Release or restocking.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Density', 'Fish density');
+'Density', 'Fish density.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Count', 'Count or abundance or number of fish');
+'Count', 'Count or abundance or number of fish.');
 INSERT INTO ref.tr_category_cat VALUES (
 'Conservation limit', 'Limit of conservation in Number or Number of eggs.');
 INSERT INTO ref.tr_category_cat VALUES (
@@ -1065,8 +1129,9 @@ oco_description TEXT
 );
 
 COMMENT ON TABLE ref.tr_outcome_oco IS 
-'When dealing with fish, e.g. in landings,what is the outcome of the fish,
- e.g. Released (alive), Seal damage, Removed (from the environment)';
+'Table of fish outcome. When dealing with fish, e.g. in landings,what is the 
+outcome of the fish, e.g. Released (alive), Seal damage, 
+Removed (from the environment)';
 INSERT INTO ref.tr_outcome_oco VALUES 
 ('Removed', 'Removed from the environment, e.g. caught and kept');
 INSERT INTO ref.tr_outcome_oco VALUES (
@@ -1080,11 +1145,16 @@ INSERT INTO ref.tr_outcome_oco VALUES (
 GRANT ALL ON ref.tr_outcome_oco TO diaspara_admin;
 GRANT SELECT ON ref.tr_outcome_oco TO diaspara_read;
 
+
+
+
+
 DROP TABLE IF EXISTS ref.tr_metadata_met CASCADE;
 CREATE TABLE ref.tr_metadata_met (
-  met_var_code TEXT NOT NULL,
+  met_var TEXT NOT NULL,
   met_spe_code character varying(3) NOT  NULL,
-  met_ver_code TEXT NOT NULL,
+  met_wkg_code TEXT NOT NULL,
+  met_ver_code TEXT NULL,
   met_oty_code TEXT NOT NULL,
   met_nim_code TEXT NOT NULL,
   met_dim integer ARRAY,
@@ -1099,18 +1169,31 @@ CREATE TABLE ref.tr_metadata_met (
   met_cat_code TEXT NULL,
   met_definition TEXT NULL, 
   met_deprecated BOOLEAN DEFAULT FALSE,
+  CONSTRAINT c_pk_met_var_met_lfs_code PRIMARY KEY(met_var, met_spe_code),
+  CONSTRAINT c_fk_met_spe_code FOREIGN KEY (met_spe_code)
+  REFERENCES ref.tr_species_spe(spe_code) 
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+    CONSTRAINT c_fk_met_wkg_code FOREIGN KEY (met_wkg_code)
+  REFERENCES ref.tr_icworkinggroup_wkg(wkg_code) 
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT c_fk_met_ver_code FOREIGN KEY (met_ver_code)
+  REFERENCES ref.tr_version_ver(ver_code) 
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_oty_code FOREIGN KEY (met_oty_code) 
   REFERENCES ref.tr_objecttype_oty (oty_code) ON DELETE CASCADE
   ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_nim_code FOREIGN KEY (met_nim_code) 
   REFERENCES ref.tr_nimble_nim (nim_code) ON DELETE CASCADE
-  ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_spe_code FOREIGN KEY (met_spe_code)
-  REFERENCES ref.tr_species_spe(spe_code) 
-  ON DELETE CASCADE
-  ON UPDATE CASCADE,
+  ON UPDATE CASCADE,  
   CONSTRAINT c_fk_met_mtr_code FOREIGN KEY (met_mtr_code)
   REFERENCES ref.tr_metric_mtr(mtr_code)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT c_fk_met_uni_code FOREIGN KEY (met_uni_code)
+  REFERENCES ref.tr_units_uni(uni_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_cat_code FOREIGN KEY (met_cat_code)
@@ -1120,45 +1203,46 @@ CREATE TABLE ref.tr_metadata_met (
   CONSTRAINT c_fk_met_oco_code FOREIGN KEY (met_oco_code)
   REFERENCES ref.tr_outcome_oco(oco_code)
   ON DELETE CASCADE
-  ON UPDATE CASCADE,
-  CONSTRAINT c_pk_met_var_id_met_lfs_code PRIMARY KEY(met_var_code, met_spe_code)
+  ON UPDATE CASCADE
 );
-COMMENT ON COLUMN ref.tr_metadata_met.met_var_code 
-IS 'Code of the variable, primary key on both met_spe_code and met_var_code';
+COMMENT ON TABLE ref.tr_metadata_met IS 
+'Table (metadata) of each variable (parameter) in the database.';
+COMMENT ON COLUMN ref.tr_metadata_met.met_var 
+IS 'Variable code, primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_spe_code 
-IS 'Species, ANG, SAL, TRT ... primary key on both met_spe_code and met_var_code';
+IS 'Species, ANG, SAL, TRT ... primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_ver_code 
-IS 'Code on the version of the model, see table tr_version_ver';
+IS 'Code on the version of the model, see table tr_version_ver.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_oty_code 
-IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty';
+IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_nim_code 
-IS 'Nimble type, one of data, constant, output, other';
+IS 'Nimble type, one of data, constant, output, other.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dim 
 IS 'Dimension of the Nimble variable, use {10, 100, 100} 
-to insert the description of an array(10,100,100)';
+to insert the description of an array(10,100,100).';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dimname 
-IS 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}';
+IS 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_modelstage 
-IS 'Currently one of fit, other, First year';
+IS 'Currently one of fit, other, First year.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_type 
-IS 'Type of data in the variable, homewatercatches, Initialisation first year,
+IS 'Type of data in the variable, homewatercatches, InitialISation first year,
 abundance ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_location 
-IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fisheries';
+IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_fishery 
-IS 'Description of the fishery';
+IS 'Description of the fishery.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_oco_code 
 IS 'Outcome of the fish, e.g. Released (alive), Seal damage,
-Removed (from the environment), references table tr_outcome_oco';
+Removed (from the environment), references table tr_outcome_oco.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_uni_code 
-IS 'Unit, references table tr_unit_uni';
+IS 'Unit, references table tr_unit_uni.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_cat_code 
 IS 'Broad category of data or parameter, 
-catch, effort, biomass, mortality, count ...references table tr_category_cat';
+catch, effort, biomass, mortality, count ...references table tr_category_cat.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_mtr_code 
 IS 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_definition 
-IS 'Definition of the metric';
+IS 'Definition of the metric.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_deprecated
 IS'Is the variable still used ?';
 
@@ -1338,11 +1422,308 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable()
 
 ``` 
 
-![Structure of the db (still in construction)](images\diaspara-ref.png){#fig-ref}
+
+
+# Areas tr_area_are
+
+
+Here I'm trying to build something consistent. I guess only the final result 
+will tell but I have to start somewhere ...
+
+```{r}
+#| label: area
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create area
+
+
+dbExecute(con_diaspara_admin,
+"DROP TABLE IF EXISTS ref.tr_level_lev CASCADE;")
+
+dbExecute(con_diaspara_admin,
+"CREATE TABLE ref.tr_level_lev(
+   lev_code TEXT PRIMARY KEY,
+   lev_description TEXT  
+);")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'stock',
+  'This is the highest geographic level for assessement, stock level.'  
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'complex',
+  'Corresponds to large sublevels at which the stock is assessed, e.g.
+  NAC NEC for WGNAST, Gulf of Bothnia for WGBAST, Mediterranean for WGEEL.'  
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'country',
+  'Corresponds to one or more units, but in almost all stocks
+  this level is relevant to split data.'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'assessment_unit',
+  'Corresponds to an assessment unit in the Baltic sea, and area for  
+  WGNAS, and EMU for WGEEL.'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'regional',
+  'Corresponds to subunits of stock assessment units or 
+  basins grouping several river. Although it is not used yet for
+  some models, regional genetic difference or difference in stock
+  dynamic support collecting a regional level.'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'river',
+  'One river is a unit corresponding practically almost always to a watershed.'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'river_section',
+  'Section of river, only a part of a basin, for instance to separate between
+  wild and mixed river category in the Baltic.'
+  );")
+
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_level_lev 
+IS 'Table of geographic levels stock, complex, country, region, basin, river,
+the specific order depend according to working groups.';")
+
+dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_level_lev 
+          TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_level_lev 
+          TO diaspara_read;")
+
+
+dbExecute(con_diaspara_admin,
+"DROP TABLE IF EXISTS ref.tr_area_are CASCADE;")
+dbExecute(con_diaspara_admin,
+"CREATE TABLE ref.tr_area_are (
+   are_id INTEGER PRIMARY KEY,
+   are_are_id INTEGER,
+   are_code  TEXT,
+   are_lev_code TEXT,
+   geom geometry(MULTIPOLYGON, 4326),
+  CONSTRAINT c_fk_are_are_id FOREIGN KEY (are_are_id) 
+  REFERENCES ref.tr_area_are (are_id) ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT c_uk_are_code UNIQUE (are_code),
+  CONSTRAINT c_cf_area_lev_code FOREIGN KEY (are_lev_code) REFERENCES
+  ref.tr_level_lev(lev_code) ON UPDATE CASCADE ON DELETE CASCADE
+);")
+
+dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_area_are 
+          TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_area_are 
+          TO diaspara_read;")
+
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_area_are 
+IS 'Table corresponding to different geographic levels, from stock 
+to river section.';")
+
+```
+
+```{r}
+#| label: tbl-level
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Geographical level tr_level_lev
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_level_lev;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+``` 
+
+
+
+```{r}
+#| label: tbl-area
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Geographic areas
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_area_are;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+``` 
+
+```{dot}
+//| label: fig-area_hierarchy
+//| fig-cap: The nested structure layed out in table tr_area_area, dotted box indicate that the level is optional. This table will be created specifically for each group.
+
+
+digraph {
+    compound=true;
+    newrank=true;
+
+    subgraph clusterA {
+      label = "stock"
+      style=full
+      color=black
+      center=true
+
+      subgraph clusterB {
+        label = "complex"
+        style=full
+        color=black
+        center=true
+    
+        subgraph clusterC {
+          label = "country"
+          style=dashed
+          color=black
+          center=true
+
+          subgraph clusterD {
+            label = "assessment_unit"
+            style=full
+            color=black; 
+              subgraph clusterE {
+                label = "regional";
+                style=dashed;
+                color=black;             
+                  subgraph clusterF {
+                    label = "river";
+                    style=full;
+                    color=black;
+                    section [label="rivers_section",shape="box", style ="dashed"]                     
+                  }
+              }
+          }
+        }
+        subgraph clusterH{
+          label="Fishing areas (Faroes)";
+          style="full";
+          color="black";
+          Fishing [style=invis]
+        }}}}
+```
+
+## Data access (tr_dataaccess_dta)
+
+Type of data Public, or Restricted
+```{r}
+#| label: access
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create dataaccess tr_dataaccess_dta
+
+
+dbExecute(con_diaspara_admin,
+"DROP TABLE IF EXISTS ref.tr_dataaccess_dta CASCADE;")
+
+dbExecute(con_diaspara_admin,
+"CREATE TABLE ref.tr_dataaccess_dta(
+   dta_code TEXT PRIMARY KEY,
+   dta_description TEXT  
+);")
+
+
+tr_dataaccess_dta <- dbGetQuery(con_diaspara_admin, 
+"SELECT * FROM refwgeel.tr_dataaccess_dta")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_dataaccess_dta 
+  SELECT * FROM refwgeel.tr_dataaccess_dta
+  ;")#2
+
+dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_dataaccess_dta 
+          TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_dataaccess_dta 
+          TO diaspara_read;")
+
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_dataaccess_dta 
+IS 'Table with two values, Public or Restricted access.';")
+
+```
+
+## Missing data (tr_missvalueqal_mis)
+
+This comes from wgeel.
+
+```{r}
+#| label: missvaluequal
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create tr_missvalueqal_mis
+
+
+dbExecute(con_diaspara_admin,
+"DROP TABLE IF EXISTS ref.tr_missvalueqal_mis CASCADE;")
+
+dbExecute(con_diaspara_admin,
+"CREATE TABLE ref.tr_missvalueqal_mis(
+   mis_code TEXT PRIMARY KEY,
+   mis_description TEXT NOT NULL,  
+   mis_definition TEXT);")
+
+dbExecute(con_diaspara_admin,
+"INSERT INTO ref.tr_missvalueqal_mis 
+SELECT
+'NR',
+'Not reported',	
+'Data or activity exist but numbers are not reported to authorities (for example for commercial confidentiality reasons).';")
+dbExecute(con_diaspara_admin,
+"INSERT INTO ref.tr_missvalueqal_mis 
+SELECT
+'NC',	
+'Not collected',	
+'Activity / habitat exists but data are not collected by authorities (for example where a fishery exists but the catch data are not collected at the relevant level or at all).';")
+dbExecute(con_diaspara_admin,
+"INSERT INTO ref.tr_missvalueqal_mis 
+SELECT
+'NP',	
+'Not pertinent',
+'Where the question asked does not apply to the individual case (for example where catch data are absent as there is no fishery or where a habitat type does not exist in a stock unit).';")
+
+dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_missvalueqal_mis 
+          TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_missvalueqal_mis 
+          TO diaspara_read;")
+
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_missvalueqal_mis 
+IS 'Table showing the qualification when value is missing, NC, NP, NR.';")
+```
+
+```{r}
+#| label: tbl-missvaluequal
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Code for missing values
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_missvalueqal_mis;")%>% 
+knitr::kable() %>% 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+``` 
+
+
+
 
 # WORK IN PROGRESS....
 
 This document is still in construction
+![Structure of the db (still in construction)](images\diaspara-ref.png){#fig-ref}
 
 # Acknowledgements
 

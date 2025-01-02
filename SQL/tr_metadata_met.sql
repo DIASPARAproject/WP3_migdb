@@ -7,10 +7,10 @@ oty_code TEXT PRIMARY KEY,
 oty_description TEXT
 );
 
-INSERT INTO ref.tr_objecttype_oty VALUES ('single_value', 'Single value');
-INSERT INTO ref.tr_objecttype_oty VALUES ('vector', 'One dimension vector');
-INSERT INTO ref.tr_objecttype_oty VALUES ('matrix', 'Two dimensions matrix');
-INSERT INTO ref.tr_objecttype_oty VALUES ('array', 'Three dimensions array');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Single_value', 'Single value');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Vector', 'One dimension vector');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Matrix', 'Two dimensions matrix');
+INSERT INTO ref.tr_objecttype_oty VALUES ('Array', 'Three dimensions array');
 
 COMMENT ON TABLE ref.tr_objecttype_oty IS 
 'Table indicating the dimensions of the object stored in the model, 
@@ -31,20 +31,20 @@ nim_description TEXT
 );
 
 COMMENT ON TABLE ref.tr_nimble_nim IS 
-'Indicate the type of data, parameter constant, parameter estimate, output, other ...';
+'Table indicating the type of data, parameter constant, parameter estimate, output, other ...';
 -- Note this is a mix of nimble and status, which mean the same....
 
-INSERT INTO ref.tr_nimble_nim VALUES ('data', 'Data entry to the model');
+INSERT INTO ref.tr_nimble_nim VALUES ('Data', 'Data entry to the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('parameter constant', 'Parameter input to the model');
+VALUES ('Parameter constant', 'Parameter input to the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('parameter estimate', 'Parameter input to the model');
+VALUES ('Parameter estimate', 'Parameter input to the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('output', 'Output from the model, derived quantity');
+VALUES ('Output', 'Output from the model, derived quantity');
 -- Do we want another type here ?
 --INSERT INTO ref.tr_nimble_nim VALUES ('observation', 'Observation not used in the model');
 INSERT INTO ref.tr_nimble_nim 
-VALUES ('other', 'Applies currently to conservation limits');
+VALUES ('Other', 'Applies currently to conservation limits');
 GRANT ALL ON ref.tr_nimble_nim TO diaspara_admin;
 GRANT SELECT ON ref.tr_nimble_nim TO diaspara_read;
 
@@ -67,26 +67,28 @@ CONSTRAINT c_fk_ver_spe_code FOREIGN KEY (ver_spe_code)
 REFERENCES ref.tr_species_spe(spe_code)
 ON UPDATE CASCADE ON DELETE CASCADE
 );
+COMMENT ON TABLE ref.tr_version_ver
+IS 'Table of data or variable version, essentially one datacall or advice.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_version 
-IS 'version code, stockkey-year-version';
+IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_year 
-IS 'year of assessement';
+IS 'Year of assessement.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_spe_code 
-IS 'species code e.g. ''ele'' references tr_species_spe';
+IS 'Species code e.g. ''ele'' references tr_species_spe.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_stockkey 
-IS 'Stockkey (integer) from the stock database';
+IS 'Stockkey (integer) from the stock database.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_stockkeylabel 
-IS 'ver_stockkeylabel e.g. ele.2737.nea';
+IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_stockadvicedoi 
 IS 'Advice DOI corresponding to column adviceDOI 
-when using icesASD::getAdviceViewRecord()';
+when using icesASD::getAdviceViewRecord().';
 COMMENT ON COLUMN ref.tr_version_ver.ver_datacalldoi 
 IS 'Data call DOI, find a way to retreive that information 
 and update this comment';
 COMMENT ON COLUMN ref.tr_version_ver.ver_version 
-IS 'Version code in original database, eg 2,4 for wgnas, dc_2020 for wgeel';
+IS 'Version code in original database, eg 2,4 for wgnas, dc_2020 for wgeel.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_description 
-IS 'Description of the data call / version';
+IS 'Description of the data call / version.';
 GRANT ALL ON ref.tr_version_ver TO diaspara_admin;
 GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
 -- metric 
@@ -121,6 +123,8 @@ INSERT INTO ref.tr_metric_mtr VALUES
 
 GRANT ALL ON ref.tr_metric_mtr TO diaspara_admin;
 GRANT SELECT ON ref.tr_metric_mtr TO diaspara_read;
+COMMENT ON TABLE ref.tr_metric_mtr IS 
+'Table metric describe the possible values of parameters, Index, Bound ...';
 
 -- tr_category_cat
 
@@ -131,20 +135,20 @@ cat_description TEXT
 );
 
 INSERT INTO ref.tr_category_cat VALUES 
-('Catch', 'Catch, including recreational and commercial catch');
+('Catch', 'Catch, including recreational and commercial catch.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Effort', 'Parameter measuring fishing effort');
+'Effort', 'Parameter measuring fishing effort.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Biomass', 'Biomass of fish either in number or weight');
+'Biomass', 'Biomass of fish either in number or weight.');
 INSERT INTO ref.tr_category_cat VALUES (
 'Mortality', 'Mortality either expressed in year-1 (instantaneous rate) 
-as F in exp(-FY) but can also be harvest rate');
+as F in exp(-FY) but can also be harvest rate.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Release', 'Release or restocking');
+'Release', 'Release or restocking.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Density', 'Fish density');
+'Density', 'Fish density.');
 INSERT INTO ref.tr_category_cat VALUES (
-'Count', 'Count or abundance or number of fish');
+'Count', 'Count or abundance or number of fish.');
 INSERT INTO ref.tr_category_cat VALUES (
 'Conservation limit', 'Limit of conservation in Number or Number of eggs.');
 INSERT INTO ref.tr_category_cat VALUES (
@@ -152,7 +156,7 @@ INSERT INTO ref.tr_category_cat VALUES (
 fecundity rate ...');
 
 COMMENT ON TABLE ref.tr_category_cat IS 
-'Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
+'Table showing Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
  more details in the table ref.tr_parameter_parm e.g. commercial catch,
 recreational catch are found in the parameter value and definition and unit, 
 this list is intended to be short.';
@@ -167,8 +171,9 @@ oco_description TEXT
 );
 
 COMMENT ON TABLE ref.tr_outcome_oco IS 
-'When dealing with fish, e.g. in landings,what is the outcome of the fish,
- e.g. Released (alive), Seal damage, Removed (from the environment)';
+'Table of fish outcome. When dealing with fish, e.g. in landings,what is the 
+outcome of the fish, e.g. Released (alive), Seal damage, 
+Removed (from the environment)';
 INSERT INTO ref.tr_outcome_oco VALUES 
 ('Removed', 'Removed from the environment, e.g. caught and kept');
 INSERT INTO ref.tr_outcome_oco VALUES (
@@ -183,29 +188,7 @@ GRANT ALL ON ref.tr_outcome_oco TO diaspara_admin;
 GRANT SELECT ON ref.tr_outcome_oco TO diaspara_read;
 
 
--- TODO go to R and create there
-DROP TABLE IF EXISTS ref.tr_workinggroup_wkg CASCADE;
-CREATE TABLE ref.tr_workinggroup_wkg (
-wkg_code TEXT PRIMARY KEY,
---TODO SOMETHING IN ICES THERE
-wkg_description TEXT
---TODO GUID THERE
-);
 
-COMMENT ON TABLE ref.tr_workinggroup_wkg IS 
-'Working group code lowercase, wgeel, wgnas, wgbast';
-INSERT INTO ref.tr_workinggroup_wkg VALUES 
-('Removed', 'Removed from the environment, e.g. caught and kept');
-INSERT INTO ref.tr_workinggroup_wkg VALUES (
-'Seal damaged', 'Seal damage');
-INSERT INTO ref.tr_workinggroup_wkg VALUES (
-'Discarded', 'Discards');
-INSERT INTO ref.tr_workinggroup_wkg VALUES (
-'Released', 'Released alive');
-
-
-GRANT ALL ON ref.tr_workinggroup_wkg TO diaspara_admin;
-GRANT SELECT ON ref.tr_workinggroup_wkg TO diaspara_read;
 
 
 DROP TABLE IF EXISTS ref.tr_metadata_met CASCADE;
@@ -233,8 +216,8 @@ CREATE TABLE ref.tr_metadata_met (
   REFERENCES ref.tr_species_spe(spe_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-    CONSTRAINT c_fk_met_wgk_code FOREIGN KEY (met_wgk_code)
-  REFERENCES ref.tr_workinggroup_wkg(wkg_code) 
+    CONSTRAINT c_fk_met_wkg_code FOREIGN KEY (met_wkg_code)
+  REFERENCES ref.tr_icworkinggroup_wkg(wkg_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   CONSTRAINT c_fk_met_ver_code FOREIGN KEY (met_ver_code)
@@ -264,42 +247,44 @@ CREATE TABLE ref.tr_metadata_met (
   ON DELETE CASCADE
   ON UPDATE CASCADE
 );
+COMMENT ON TABLE ref.tr_metadata_met IS 
+'Table (metadata) of each variable (parameter) in the database.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_var 
-IS 'Variable code, primary key on both met_spe_code and met_var';
+IS 'Variable code, primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_spe_code 
-IS 'Species, ANG, SAL, TRT ... primary key on both met_spe_code and met_var';
+IS 'Species, ANG, SAL, TRT ... primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_ver_code 
-IS 'Code on the version of the model, see table tr_version_ver';
+IS 'Code on the version of the model, see table tr_version_ver.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_oty_code 
-IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty';
+IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_nim_code 
-IS 'Nimble type, one of data, constant, output, other';
+IS 'Nimble type, one of data, constant, output, other.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dim 
 IS 'Dimension of the Nimble variable, use {10, 100, 100} 
-to insert the description of an array(10,100,100)';
+to insert the description of an array(10,100,100).';
 COMMENT ON COLUMN ref.tr_metadata_met.met_dimname 
-IS 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}';
+IS 'Dimension of the variable in Nimble, use {''year'', ''stage'', ''area''}.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_modelstage 
-IS 'Currently one of fit, other, First year';
+IS 'Currently one of fit, other, First year.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_type 
 IS 'Type of data in the variable, homewatercatches, InitialISation first year,
 abundance ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_location 
-IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries';
+IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_fishery 
-IS 'Description of the fishery';
+IS 'Description of the fishery.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_oco_code 
 IS 'Outcome of the fish, e.g. Released (alive), Seal damage,
-Removed (from the environment), references table tr_outcome_oco';
+Removed (from the environment), references table tr_outcome_oco.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_uni_code 
-IS 'Unit, references table tr_unit_uni';
+IS 'Unit, references table tr_unit_uni.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_cat_code 
 IS 'Broad category of data or parameter, 
-catch, effort, biomass, mortality, count ...references table tr_category_cat';
+catch, effort, biomass, mortality, count ...references table tr_category_cat.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_mtr_code 
 IS 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN ref.tr_metadata_met.met_definition 
-IS 'Definition of the metric';
+IS 'Definition of the metric.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_deprecated
 IS'Is the variable still used ?';
 
