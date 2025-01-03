@@ -95,10 +95,12 @@ The database is created with postgres.
 * Foreign key are used instead of check constrainst as check constraint
  might not ensure the integrity of data after their integration (only when
  new rows are created or modified).
-* Foreign key are name `c_fk_columnname` where the column name is the name 
+* Foreign key are name `fk_columnname` where the column name is the name 
 in the table
-* Primary keys are names `_pk_columnnames` (with column name having possibly
-  more than one column).
+* Primary keys are names `tablename_pkey` (with the constraint possibly 
+referering to more than one column).
+* Other constraints are check constraints `ck_columnname` and unique contraints
+  `uk_columnname`
 * All tables and column have a definition, we will ask the working groups
  to check those.
 
@@ -178,7 +180,7 @@ In the future we will grant diaspara_admin and diaspara_read to specific users f
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to create the diaspara DB
-dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein :-)'"))
+
 dbExecute(con_diaspara_admin, "DROP schema if exists ref CASCADE;");
 dbExecute(con_diaspara_admin, "CREATE schema ref;")
 dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA ref TO diaspara_admin ;")
@@ -219,7 +221,8 @@ CREATE SCHEMA refwgeel;")
 dbExecute(con_diaspara_admin,"IMPORT FOREIGN SCHEMA ref    
     FROM SERVER wgeel_data_wrapper
     INTO refwgeel;")
-    
+
+dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein :-)'"))    
 dbExecute(con_diaspara_admin,
 "GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
 
@@ -238,34 +241,30 @@ dbExecute(con_diaspara_admin,
 
 DROP SCHEMA IF EXISTS dat CASCADE;
 CREATE SCHEMA dat;
-GRANT SELECT ON SCHEMA dat TO diaspara_read;
 ALTER SCHEMA dat OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance;'
+COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance';
 
 DROP SCHEMA IF EXISTS datang CASCADE;
 CREATE SCHEMA datang;
-GRANT SELECT ON SCHEMA datang TO diaspara_read;
 ALTER SCHEMA datang OWNER TO diaspara_admin;
-COMMENT ON SCHEMA datang IS 'SCHEMA for WGEEL;'
+COMMENT ON SCHEMA datang IS 'SCHEMA for WGEEL';
 
 DROP SCHEMA IF EXISTS datnas CASCADE;
 CREATE SCHEMA datnas;
-GRANT SELECT ON SCHEMA datnas TO diaspara_read;
 ALTER SCHEMA datnas OWNER TO diaspara_admin;
 COMMENT ON SCHEMA datnas IS 'SCHEMA for WGNAS';
 
 DROP SCHEMA IF EXISTS datbast CASCADE;
 CREATE SCHEMA datbast;
-GRANT SELECT ON SCHEMA datbast TO diaspara_read;
 ALTER SCHEMA datbast OWNER TO diaspara_admin;
 COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST';
 
 
 DROP SCHEMA IF EXISTS dattrutta CASCADE;
 CREATE SCHEMA dattrutta;
-GRANT SELECT ON SCHEMA dattrutta TO diaspara_read;
 ALTER SCHEMA dattrutta OWNER TO diaspara_admin;
 COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA';
+
 ```
 
 
@@ -410,7 +409,7 @@ but will hold all the views and inherited tables comming from the different sche
 
 # Creating referentials
 
-## Species
+## Species (tr_species_spe)
 
 The first thing is to create a referential table for species. 
 Anyways, we searched a bit for other species, even if we don't plan to start storing
@@ -513,7 +512,7 @@ reference to ICES vocabularies.'")
 </details>
 
 
-## Working group
+## Working group (tr_icworkinggroup_wkg)
 
 Species is not enough. Data will be split by working groups. Several working
 groups working on the same species. There is a table for working group.
@@ -592,7 +591,7 @@ dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_icworkinggroup_wkg
           TO diaspara_read;")
 ```
 ```{r tbl-icworkinggroup}
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -601,9 +600,12 @@ tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_icworkin
 knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-## Country
+## Country (tr_country_cou)
 
 Countries are mostly OK in the wgeel database but we need to add american countries.
+The shapefiles have been downloaded from https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries 
+source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered from North to South starting from the Baltic and ending in the Mediterranean, with American number being the highest in order.
+
 <details> 
 
 <summary>Code to create table from wgeel and NUTS
@@ -631,12 +633,22 @@ dbExecute(con_diaspara_admin,
           SELECT * FROM refwgeel.tr_country_cou;") #40
 # Add some constraints
 dbExecute(con_diaspara_admin, "ALTER TABLE ref.tr_country_cou 
-          ADD CONSTRAINT c_pk_cou_code PRIMARY KEY (cou_code);")
+          ADD CONSTRAINT t_country_cou_pkey PRIMARY KEY (cou_code);")
 dbExecute(con_diaspara_admin, "ALTER TABLE ref.tr_country_cou 
-          ADD CONSTRAINT c_uk_cou_iso3code UNIQUE (cou_iso3code);")
+          ADD CONSTRAINT uk_cou_iso3code UNIQUE (cou_iso3code);")
 
 # missing values from America downloaded from https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2024-01m.gdb.zip
 # uploaded to postgres
+
+# the tables
+# ICES_Areas_20160601_cut_dense_3857
+# NAFO_Divisions_2021_poly_clipped
+# ref-countries-2024-01m — CNTR_RG_01M_2024_4326
+# have been copied to folder area ref-countries was renamed
+# ALTER TABLE area."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" 
+# RENAME TO "ref-countries-2024-01m-4326";
+
+
 dbExecute(con_diaspara_admin,
 "INSERT INTO ref.tr_country_cou ( cou_code,
     cou_country,    
@@ -648,12 +660,14 @@ AS cou_isocode, geom,
 CASE WHEN \"CNTR_ID\" = 'GL' THEN 47
      WHEN \"CNTR_ID\" = 'CA' THEN 48
      ELSE 49 END AS cou_order
-FROM  public.\"ref-countries-2024-01m — CNTR_RG_01M_2024_4326\" 
-WHERE \"CNTR_ID\" IN ('GL', 'CA', 'US');")
+FROM  area.\"ref-countries-2024-01m-4326\"
+WHERE \"CNTR_ID\" IN ('GL', 'CA', 'US');") #3
+
 
 dbExecute(con_diaspara_admin,
-"UPDATE ref.tr_country_cou SET geom = nuts.geom FROM 
-public.\"ref-countries-2024-01m — CNTR_RG_01M_2024_4326\" nuts 
+"UPDATE ref.tr_country_cou 
+SET geom = nuts.geom  
+FROM  area.\"ref-countries-2024-01m-4326\" nuts 
 WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
 
 dbExecute(con_diaspara_admin,"COMMENT ON TABLE ref.tr_country_cou IS
@@ -682,6 +696,8 @@ knitr::kable(tr_country_cou) %>% kable_styling(bootstrap_options = c("striped", 
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create map from table in R
 #| fig-cap: Map of countries in the diaspara DB &copy; [EuroGeographics](https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/)
 
 if (file.exists("data/country_sf.Rdata")) load("data/country_sf.Rdata") else {
@@ -716,11 +732,8 @@ ggplot(data = country_sf2) +
 
 ```
 
-The shapefiles have been downloaded from https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries 
-source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered from North to South starting from the Baltic and ending in the Mediterranean, with American number being the highest in order.
 
-
-## Unit
+## Unit (tr_units_uni)
 
 
 <details> 
@@ -748,7 +761,7 @@ dbExecute(con_diaspara_admin,
 	uni_description text NOT NULL,
   uni_icesvalue character varying(4),  uni_icesguid uuid,
   uni_icestablesource text,
-	CONSTRAINT pk_uni PRIMARY KEY (uni_code),
+	CONSTRAINT t_units_uni_pkey PRIMARY KEY (uni_code),
 	CONSTRAINT uk_uni_description UNIQUE (uni_description),
   CONSTRAINT uk_uni_icesguid UNIQUE (uni_icesguid),
   CONSTRAINT uk_uni_icesvalue UNIQUE (uni_icesvalue)
@@ -863,11 +876,14 @@ dbExecute(con_diaspara_admin, "GRANT ALL ON TABLE ref.tr_units_uni
 dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_units_uni 
           to diaspara_read;")
 ``` 
-<\details> 
+
+</details> 
+
+
 
 ```{r}
 #| label: tbl-unit
-#| echo: TRUE
+#| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -1021,7 +1037,7 @@ ver_stockadvicedoi TEXT NOT NULL,
 ver_datacalldoi TEXT NULL,
 ver_version INTEGER NOT NULL,
 ver_description TEXT,
-CONSTRAINT c_fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
+CONSTRAINT fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
 REFERENCES ref.tr_species_spe(spe_code)
 ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -1169,38 +1185,38 @@ CREATE TABLE ref.tr_metadata_met (
   met_cat_code TEXT NULL,
   met_definition TEXT NULL, 
   met_deprecated BOOLEAN DEFAULT FALSE,
-  CONSTRAINT c_pk_met_var_met_lfs_code PRIMARY KEY(met_var, met_spe_code),
-  CONSTRAINT c_fk_met_spe_code FOREIGN KEY (met_spe_code)
+  CONSTRAINT t_metadata_met_pkey PRIMARY KEY(met_var, met_spe_code),
+  CONSTRAINT fk_met_spe_code FOREIGN KEY (met_spe_code)
   REFERENCES ref.tr_species_spe(spe_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-    CONSTRAINT c_fk_met_wkg_code FOREIGN KEY (met_wkg_code)
+    CONSTRAINT fk_met_wkg_code FOREIGN KEY (met_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_ver_code FOREIGN KEY (met_ver_code)
+  CONSTRAINT fk_met_ver_code FOREIGN KEY (met_ver_code)
   REFERENCES ref.tr_version_ver(ver_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_oty_code FOREIGN KEY (met_oty_code) 
+  CONSTRAINT fk_met_oty_code FOREIGN KEY (met_oty_code) 
   REFERENCES ref.tr_objecttype_oty (oty_code) ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_nim_code FOREIGN KEY (met_nim_code) 
+  CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
   REFERENCES ref.tr_nimble_nim (nim_code) ON DELETE CASCADE
   ON UPDATE CASCADE,  
-  CONSTRAINT c_fk_met_mtr_code FOREIGN KEY (met_mtr_code)
+  CONSTRAINT fk_met_mtr_code FOREIGN KEY (met_mtr_code)
   REFERENCES ref.tr_metric_mtr(mtr_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_uni_code FOREIGN KEY (met_uni_code)
+  CONSTRAINT fk_met_uni_code FOREIGN KEY (met_uni_code)
   REFERENCES ref.tr_units_uni(uni_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_cat_code FOREIGN KEY (met_cat_code)
+  CONSTRAINT fk_met_cat_code FOREIGN KEY (met_cat_code)
   REFERENCES ref.tr_category_cat(cat_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_oco_code FOREIGN KEY (met_oco_code)
+  CONSTRAINT fk_met_oco_code FOREIGN KEY (met_oco_code)
   REFERENCES ref.tr_outcome_oco(oco_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE
@@ -1451,34 +1467,34 @@ dbExecute(con_diaspara_admin,
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'stock',
+  'Stock',
   'This is the highest geographic level for assessement, stock level.'  
   );")
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'complex',
+  'Complex',
   'Corresponds to large sublevels at which the stock is assessed, e.g.
   NAC NEC for WGNAST, Gulf of Bothnia for WGBAST, Mediterranean for WGEEL.'  
   );")
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'country',
+  'Country',
   'Corresponds to one or more units, but in almost all stocks
   this level is relevant to split data.'
   );")
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'assessment_unit',
+  'Assessment_unit',
   'Corresponds to an assessment unit in the Baltic sea, and area for  
   WGNAS, and EMU for WGEEL.'
   );")
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'regional',
+  'Regional',
   'Corresponds to subunits of stock assessment units or 
   basins grouping several river. Although it is not used yet for
   some models, regional genetic difference or difference in stock
@@ -1487,7 +1503,7 @@ dbExecute(con_diaspara_admin,
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'river',
+  'River',
   'One river is a unit corresponding practically almost always to a watershed.'
   );")
 
@@ -1496,6 +1512,30 @@ dbExecute(con_diaspara_admin,
   'river_section',
   'Section of river, only a part of a basin, for instance to separate between
   wild and mixed river category in the Baltic.'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'Major',
+  'Major fishing areas from ICES.'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'Subarea',
+  'Subarea from ICES, FAO and NAFO'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'Division',
+  'Division from ICES, GFCM and NAFO'
+  );")
+
+dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'Subdivision',
+  'Subdivision level from ICES, GFCM and NAFO'
   );")
 
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_level_lev 
@@ -1516,12 +1556,13 @@ dbExecute(con_diaspara_admin,
    are_are_id INTEGER,
    are_code  TEXT,
    are_lev_code TEXT,
+   are_ismarine BOOLEAN,
    geom geometry(MULTIPOLYGON, 4326),
-  CONSTRAINT c_fk_are_are_id FOREIGN KEY (are_are_id) 
+  CONSTRAINT fk_are_are_id FOREIGN KEY (are_are_id) 
   REFERENCES ref.tr_area_are (are_id) ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_uk_are_code UNIQUE (are_code),
-  CONSTRAINT c_cf_area_lev_code FOREIGN KEY (are_lev_code) REFERENCES
+  CONSTRAINT uk_are_code UNIQUE (are_code),
+  CONSTRAINT fk_area_lev_code FOREIGN KEY (are_lev_code) REFERENCES
   ref.tr_level_lev(lev_code) ON UPDATE CASCADE ON DELETE CASCADE
 );")
 
@@ -1570,46 +1611,82 @@ digraph {
     newrank=true;
 
     subgraph clusterA {
-      label = "stock"
+      label = "Stock"
       style=full
       color=black
       center=true
 
       subgraph clusterB {
-        label = "complex"
+        label = "Complex"
         style=full
         color=black
         center=true
     
         subgraph clusterC {
-          label = "country"
+          label = "Country"
           style=dashed
-          color=black
+          color=firebrick
+          fontcolor=firebrick
           center=true
 
           subgraph clusterD {
-            label = "assessment_unit"
+            label = "Assessment_unit"
             style=full
-            color=black; 
+            color=green 
+            fontcolor=green
               subgraph clusterE {
-                label = "regional";
-                style=dashed;
-                color=black;             
+                label = "Regional";
+                style=dashed
+                color=green4
+                fontcolor=green4
                   subgraph clusterF {
-                    label = "river";
-                    style=full;
-                    color=black;
-                    section [label="rivers_section",shape="box", style ="dashed"]                     
+                    label = "River"
+                    style=full
+                    color=green3
+                    fontcolor=green3
+                        subgraph clusterFF {
+                                label = "River_section"
+                                style=full
+                                color=green2
+                                fontcolor=green2
+                                    section [
+                                        label="data",
+                                        shape="box", 
+                                        style =invis
+                                      
+                                        ]
+                        }
                   }
               }
           }
         }
         subgraph clusterH{
-          label="Fishing areas (Faroes)";
-          style="full";
-          color="black";
-          Fishing [style=invis]
-        }}}}
+          label="Fishing_areas"
+          style="full"
+          color="royalblue4"
+          fontcolor="royalblue4"
+                subgraph clusterI{
+                    label="Subareas"
+                    style="full"
+                    color="royalblue3"
+                    fontcolor="royalblue3"
+                        subgraph clusterJ{
+                            label="Division"
+                            style="full"
+                            color="royalblue2"
+                            fontcolor="royalblue2"
+                                subgraph clusterJ{
+                                    label="Sudivision"
+                                    style="full"
+                                    color="royalblue"
+                                    fontcolor="royalblue"
+                                    Fishing [
+                                        style=invis]
+                                }
+                        }
+                }            
+        }          
+      }}}
 ```
 
 ## Data access (tr_dataaccess_dta)
@@ -1716,6 +1793,23 @@ knitr::kable() %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
+
+# ICES areas
+
+Download shapefiles from NAFO => 
+create table following ICES_Areas for GUID
+FAO major fishing area (27, 21, 37, 34, 31)
+27 Atlantic, Northeast
+21 Atlantic, Northwest
+37 Mediterranean and Black Sea
+34 Atlantic, Eastern Central
+31 Atlantic, Western Central
+subarea
+division
+subdivision
+
+code 27.9.b.2 area_full
+area_27 9.b.2
 
 
 

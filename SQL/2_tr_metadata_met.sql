@@ -31,7 +31,7 @@ nim_description TEXT
 );
 
 COMMENT ON TABLE ref.tr_nimble_nim IS 
-'Table indicating the type of data, parameter constant, parameter estimate, output, other ...';
+'Indicate the type of data, parameter constant, parameter estimate, output, other ...';
 -- Note this is a mix of nimble and status, which mean the same....
 
 INSERT INTO ref.tr_nimble_nim VALUES ('Data', 'Data entry to the model');
@@ -63,7 +63,7 @@ ver_stockadvicedoi TEXT NOT NULL,
 ver_datacalldoi TEXT NULL,
 ver_version INTEGER NOT NULL,
 ver_description TEXT,
-CONSTRAINT c_fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
+CONSTRAINT fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
 REFERENCES ref.tr_species_spe(spe_code)
 ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -156,7 +156,7 @@ INSERT INTO ref.tr_category_cat VALUES (
 fecundity rate ...');
 
 COMMENT ON TABLE ref.tr_category_cat IS 
-'Table showing Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
+'Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
  more details in the table ref.tr_parameter_parm e.g. commercial catch,
 recreational catch are found in the parameter value and definition and unit, 
 this list is intended to be short.';
@@ -211,38 +211,38 @@ CREATE TABLE ref.tr_metadata_met (
   met_cat_code TEXT NULL,
   met_definition TEXT NULL, 
   met_deprecated BOOLEAN DEFAULT FALSE,
-  CONSTRAINT c_pk_met_var_met_lfs_code PRIMARY KEY(met_var, met_spe_code),
-  CONSTRAINT c_fk_met_spe_code FOREIGN KEY (met_spe_code)
+  CONSTRAINT t_metadata_met_pkey PRIMARY KEY(met_var, met_spe_code),
+  CONSTRAINT fk_met_spe_code FOREIGN KEY (met_spe_code)
   REFERENCES ref.tr_species_spe(spe_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-    CONSTRAINT c_fk_met_wkg_code FOREIGN KEY (met_wkg_code)
+    CONSTRAINT fk_met_wkg_code FOREIGN KEY (met_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_ver_code FOREIGN KEY (met_ver_code)
+  CONSTRAINT fk_met_ver_code FOREIGN KEY (met_ver_code)
   REFERENCES ref.tr_version_ver(ver_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_oty_code FOREIGN KEY (met_oty_code) 
+  CONSTRAINT fk_met_oty_code FOREIGN KEY (met_oty_code) 
   REFERENCES ref.tr_objecttype_oty (oty_code) ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_nim_code FOREIGN KEY (met_nim_code) 
+  CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
   REFERENCES ref.tr_nimble_nim (nim_code) ON DELETE CASCADE
   ON UPDATE CASCADE,  
-  CONSTRAINT c_fk_met_mtr_code FOREIGN KEY (met_mtr_code)
+  CONSTRAINT fk_met_mtr_code FOREIGN KEY (met_mtr_code)
   REFERENCES ref.tr_metric_mtr(mtr_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_uni_code FOREIGN KEY (met_uni_code)
+  CONSTRAINT fk_met_uni_code FOREIGN KEY (met_uni_code)
   REFERENCES ref.tr_units_uni(uni_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_cat_code FOREIGN KEY (met_cat_code)
+  CONSTRAINT fk_met_cat_code FOREIGN KEY (met_cat_code)
   REFERENCES ref.tr_category_cat(cat_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT c_fk_met_oco_code FOREIGN KEY (met_oco_code)
+  CONSTRAINT fk_met_oco_code FOREIGN KEY (met_oco_code)
   REFERENCES ref.tr_outcome_oco(oco_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE

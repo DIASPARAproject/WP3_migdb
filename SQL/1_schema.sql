@@ -1,0 +1,28 @@
+DROP SCHEMA IF EXISTS dat CASCADE;
+CREATE SCHEMA dat;
+ALTER SCHEMA dat OWNER TO diaspara_admin;
+COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance';
+
+DROP SCHEMA IF EXISTS datang CASCADE;
+CREATE SCHEMA datang;
+ALTER SCHEMA datang OWNER TO diaspara_admin;
+COMMENT ON SCHEMA datang IS 'SCHEMA for WGEEL';
+
+DROP SCHEMA IF EXISTS datnas CASCADE;
+CREATE SCHEMA datnas;
+ALTER SCHEMA datnas OWNER TO diaspara_admin;
+COMMENT ON SCHEMA datnas IS 'SCHEMA for WGNAS';
+
+DROP SCHEMA IF EXISTS datbast CASCADE;
+CREATE SCHEMA datbast;
+ALTER SCHEMA datbast OWNER TO diaspara_admin;
+COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST';
+
+
+DROP SCHEMA IF EXISTS dattrutta CASCADE;
+CREATE SCHEMA dattrutta;
+ALTER SCHEMA dattrutta OWNER TO diaspara_admin;
+COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA';
+
+
+ALTER TABLE area."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" RENAME TO "ref-countries-2024-01m-4326";
