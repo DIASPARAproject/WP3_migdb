@@ -138,6 +138,7 @@ load_library("yaml")
 load_library("DBI")
 load_library("ggplot2")
 load_library("sf")
+load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
                            dbname = cred$dbnamediaspara,
@@ -663,6 +664,20 @@ CASE WHEN \"CNTR_ID\" = 'GL' THEN 47
 FROM  area.\"ref-countries-2024-01m-4326\"
 WHERE \"CNTR_ID\" IN ('GL', 'CA', 'US');") #3
 
+# Svalbard et Jan Mayen	SJM	NO Territory	
+dbExecute(con_diaspara_admin,
+"INSERT INTO ref.tr_country_cou ( cou_code,
+    cou_country,    
+    cou_iso3code,
+    geom, 
+    cou_order)
+SELECT \"CNTR_ID\" AS cou_code, \"NAME_ENGL\" AS cou_country,  \"ISO3_CODE\" 
+AS cou_isocode, geom,
+CASE WHEN \"CNTR_ID\" = 'GL' THEN 47
+     WHEN \"CNTR_ID\" = 'CA' THEN 48
+     ELSE 49 END AS cou_order
+FROM  area.\"ref-countries-2024-01m-4326\"
+WHERE \"CNTR_ID\" IN ('SJ');") #3
 
 dbExecute(con_diaspara_admin,
 "UPDATE ref.tr_country_cou 
@@ -1325,7 +1340,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")%>% knitr::kable() %
 
 ``` 
 
-## version (tr_version_ver)
+## Version (tr_version_ver)
 
 Currently in the salmoglob metadata there is no information about version.
 The version number is in the table itself.
@@ -1440,11 +1455,15 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable()
 
 
 
-# Areas tr_area_are
+## Area (tr_area_are)
 
 
 Here I'm trying to build something consistent. I guess only the final result 
 will tell but I have to start somewhere ...
+A good idea to simplify the structure of the db is to get together marine
+and continental areas. 
+
+### Continental areas
 
 ```{r}
 #| label: area
@@ -1611,77 +1630,90 @@ digraph {
     newrank=true;
 
     subgraph clusterA {
-      label = "Stock"
+      label = Stock
       style=full
       color=black
       center=true
 
       subgraph clusterB {
-        label = "Complex"
+        label = Complex
         style=full
         color=black
         center=true
     
         subgraph clusterC {
-          label = "Country"
+          label = Country
           style=dashed
           color=firebrick
           fontcolor=firebrick
           center=true
 
           subgraph clusterD {
-            label = "Assessment_unit"
+            label = Assessment_unit
             style=full
             color=green 
             fontcolor=green
+            
               subgraph clusterE {
-                label = "Regional";
+                label = Regional;
                 style=dashed
                 color=green4
                 fontcolor=green4
+                
                   subgraph clusterF {
-                    label = "River"
+                    label = River
                     style=full
                     color=green3
                     fontcolor=green3
-                        subgraph clusterFF {
-                                label = "River_section"
+                    
+                        subgraph clusterG {
+                                label = River_section
                                 style=full
                                 color=green2
                                 fontcolor=green2
                                     section [
-                                        label="data",
-                                        shape="box", 
+                                        label=data,
+                                        shape=box, 
                                         style =invis
-                                      
                                         ]
                         }
                   }
               }
           }
         }
-        subgraph clusterH{
-          label="Fishing_areas"
-          style="full"
-          color="royalblue4"
-          fontcolor="royalblue4"
-                subgraph clusterI{
-                    label="Subareas"
-                    style="full"
-                    color="royalblue3"
-                    fontcolor="royalblue3"
-                        subgraph clusterJ{
-                            label="Division"
-                            style="full"
-                            color="royalblue2"
-                            fontcolor="royalblue2"
-                                subgraph clusterJ{
-                                    label="Sudivision"
-                                    style="full"
-                                    color="royalblue"
-                                    fontcolor="royalblue"
-                                    Fishing [
-                                        style=invis]
+        subgraph clusterZ{
+          label=Major
+          style=full
+          color=royalblue4
+          fontcolor=royalblue4
+          
+                subgraph clusterY{
+                    label=Subareas
+                    style=full
+                    color=royalblue3
+                    fontcolor=royalblue3
+                    
+                        subgraph clusterX{
+                            label=Division
+                            style=full
+                            color=royalblue2
+                            fontcolor=royalblue2
+                            
+                                subgraph clusterW{
+                                    label=Sudivision
+                                    style=full
+                                    color=royalblue1
+                                    fontcolor=royalblue1
+                                    
+                                       subgraph clusterV{
+                                           label=Unit
+                                            style=full
+                                            color=deepskyblue
+                                            fontcolor=deepskyblue
+                                            
+                                                Fishing [
+                                                    style=invis]
+                                       }
                                 }
                         }
                 }            
@@ -1811,9 +1843,291 @@ subdivision
 code 27.9.b.2 area_full
 area_27 9.b.2
 
+source : GFCM geographical subareas
+https://www.fao.org/gfcm/data/maps/gsas/fr/
+https://gfcmsitestorage.blob.core.windows.net/website/5.Data/ArcGIS/GSAs_simplified_updated_division%20(2).zip
+
+source : NAFO divisions
+https://www.nafo.int/Data/GIS
+https://www.nafo.int/Portals/0/GIS/Divisions.zip
+
+source : ICES statistical areas
+https://gis.ices.dk/shapefiles/ICES_areas.zip
+https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c784a0a3-752f-4b50-b02f-f225f6c815eb
+
+The rest of the word was somewhere on my computer. Cannot trace the source,
+it's exaclty the same for NAFO but changed in the med and ICES. For some reasons
+was not complete in table from wgeel so have to download it again to postgres.
+
+Values for geom have been updated from ICES areas, the new boundaries are 
+different, however, more than the previous ones. The values for Areas and Subareas
+have not been updated but these are for wide maps so we'll leave it as it is.
+
+
+```{r}
+#| label: fishingareas
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create reference fishing area maps 
+
+dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_fishingarea_fia 
+CASCADE;")
+dbExecute(con_diaspara_admin,
+"
+  CREATE TABLE ref.tr_fishingarea_fia
+  (  
+    fia_level TEXT,
+    fia_code TEXT,
+    fia_status numeric,
+    fia_ocean TEXT,
+    fia_subocean TEXT,
+    fia_area TEXT,
+    fia_subarea TEXT,
+    fia_division TEXT,
+    fia_subdivision TEXT,
+    fia_unit TEXT,
+    fia_name TEXT NULL,
+    geom geometry(MultiPolygon,4326),
+    CONSTRAINT tr_fishingarea_fia_pkey PRIMARY KEY (fia_code),
+    CONSTRAINT uk_fia_subdivision UNIQUE (fia_unit)
+  )
+  ;
+")
+
+
+# start with initial FAO dataset
+
+#area_all <- dbGetQuery(con_diaspara_admin, "SELECT * FROM area.\"FAO_AREAS\"
+# WHERE f_area IN ('21','27','31','34','37') ;")
+
+# In this table all geom are mixed from unit to division.
+# It only make sense to extract for a unique f_level
+
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_fishingarea_fia
+SELECT
+   initcap(f_level) AS fia_level, 
+   f_code AS  fia_code,
+   f_status AS  fia_status,
+   ocean AS  fia_ocean,
+   subocean AS  fia_subocean,
+   f_area AS  fia_area,
+   f_subarea AS  fia_subarea,
+   f_division AS  fia_division,
+   f_subdivis AS  fia_subdivision,
+   f_subunit AS  fia_unit,
+   NULL as fia_name,
+   geom 
+  FROM area.\"FAO_AREAS\"
+  WHERE f_area IN ('21','27','31','34','37') 
+") # 187
+
+# Replace values ices
+dbExecute(con_diaspara_admin, "UPDATE ref.tr_fishingarea_fia
+    set geom = st_transform(are.geom, 4326)
+    FROM
+    area.\"ICES_Areas_20160601_cut_dense_3857\" are
+    WHERE area_full = fia_code;") # 66
+# Replace values NAFO (nothing to do ...)
 
 
 
+# Replace values GFCM
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_fishingarea_fia
+SELECT 
+'Subdivision' AS fia_level, 
+f_gsa AS fia_code,
+1 AS fia_status,
+'Atlantic' AS fia_ocean, 
+3 AS fia_subocean, 
+f_area, 
+f_subarea, 
+f_division, 
+f_gsa AS fia_subdivision,
+NULL AS fia_unit,
+smu_name AS fia_name,
+geom
+FROM area.\"GSAs_simplified_division\";") # 32
+
+dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_fishingarea_fia 
+          TO diaspara_admin;")
+dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_fishingarea_fia 
+          TO diaspara_read;")
+
+dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_fishingarea_fia 
+IS 'Table of fishing areas, attention, different levels of geometry
+details are present in the table, area, subarea, division, subdivision, unit,
+most query will use WHERE 
+ fia_level = ''Subdivision''';")
+``` 
+
+```{r fig-fishingareas_major}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create a map of fishing areas at Major level
+#| fig-cap: Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.
+
+library(rnaturalearth)
+world <- ne_countries(scale = "small", returnclass = "sf")
+
+
+if (file.exists("data/fishingareas_major.Rdata")) 
+load("data/fishingareas_major.Rdata") else {
+fishing_areas_major <- sf::st_read(con_diaspara,
+                          query = "SELECT fia_code, ST_MakeValid(geom) 
+                          from ref.tr_fishingarea_fia
+                          WHERE fia_level = 'Major'") %>%
+  sf::st_transform(4326) 
+save(fishing_areas_major, file="data/fishing_areas_major.Rdata")
+}
+load("data/country_sf.Rdata")
+crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
+
+ocean <- sf::st_point(x = c(0,0)) %>%
+  sf::st_buffer(dist = 6371000) %>%
+  sf::st_sfc(crs = crs_string)
+area_sf2 <-  fishing_areas_major %>% 
+  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+  sf::st_transform(crs = crs_string) 
+
+country_sf2 <-  country_sf %>% 
+  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+  sf::st_transform(crs = crs_string) 
+
+
+
+ggplot() + 
+  geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
+  geom_sf(data = area_sf2, aes(fill = fia_code), color="white", lwd = .1) + 
+  geom_sf(data = world, fill="black", color="grey20") + 
+  geom_sf(data= country_sf2 , fill= "grey10",color="grey30")  +
+  theme_void()
+  #scale_fill_discrete(guide = "none") +
+
+  
+
+
+
+```
+
+
+```{r fig-fishingareas_subarea}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create a map of fishing areas at Subarea level
+#| fig-cap: Map of ICES fishing areas at Subarea level, source NAFO, FAO, ICES, GFCM.
+
+if (file.exists("data/fishingareas_subarea.Rdata")) load("data/fishingareas_subarea.Rdata") else {
+fishing_areas_subarea <- sf::st_read(con_diaspara,
+                          query = "SELECT fia_code, ST_MakeValid(geom) 
+                          from ref.tr_fishingarea_fia
+                          WHERE fia_level = 'Subarea'") %>%
+  sf::st_transform(4326) 
+save(fishing_areas_subarea, file="data/fishing_areas_subarea.Rdata")
+}
+crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
+
+area_sf2 <-  fishing_areas_subarea %>% 
+  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+  sf::st_transform(crs = crs_string) # reproject to ortho
+
+ggplot() + 
+  geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
+  geom_sf(data = area_sf2, aes(fill = fia_code), color="white", lwd = .1) + 
+  geom_sf(data = world, fill="black", color="grey20") + 
+  geom_sf(data= country_sf2 , fill= "grey10",color="grey30")  +
+  scale_fill_discrete(guide = "none")  +
+  theme_void()
+
+
+```
+
+```{r fig-fishingareas_division}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create a map of fishing areas at Division level
+#| fig-cap: Map of ICES fishing areas at Division level, source NAFO, FAO, ICES, GFCM.
+
+if (file.exists("data/fishingareas_division.Rdata")) load("data/fishingareas_division.Rdata") else {
+fishing_areas_division <- sf::st_read(con_diaspara,
+                          query = "SELECT fia_code, ST_MakeValid(geom) 
+                          from ref.tr_fishingarea_fia
+                          WHERE fia_level = 'Division'") %>%
+  sf::st_transform(4326) 
+save(fishing_areas_division, file="data/fishing_areas_division.Rdata")
+}
+
+crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
+
+
+ocean <- sf::st_point(x = c(0,0)) %>%
+  sf::st_buffer(dist = 6371000) %>%
+  sf::st_sfc(crs = crs_string)
+  
+area_sf2 <-  fishing_areas_division %>% 
+  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+  sf::st_transform(crs = crs_string) 
+
+ggplot() + 
+  geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
+  geom_sf(data = area_sf2, aes(fill = fia_code), color="white", lwd = .1) + 
+  geom_sf(data = world, fill="black", color="grey20") + 
+  geom_sf(data= country_sf2 , fill= "grey10",color="grey30")  +
+  scale_fill_discrete(guide = "none") +
+  theme_void() 
+
+```
+
+```{r fig-fishingareas_subdivision}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create a map of fishing areas at subdivision level
+#| fig-cap: Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.
+
+if (file.exists("data/fishingareas_subdivision.Rdata")) load("data/fishingareas_subdivision.Rdata") else {
+fishing_areas_subdivision <- sf::st_read(con_diaspara,
+                          query = "SELECT fia_code, ST_MakeValid(geom) 
+                          from ref.tr_fishingarea_fia
+                          WHERE fia_level = 'Subdivision'") %>%
+  sf::st_transform(4326) 
+save(fishing_areas_subdivision, file="data/fishing_areas_subdivision.Rdata")
+}
+
+crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
+
+
+ocean <- sf::st_point(x = c(0,0)) %>%
+  sf::st_buffer(dist = 6371000) %>%
+  sf::st_sfc(crs = crs_string)
+  
+area_sf2 <-  fishing_areas_subdivision %>% 
+  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+  sf::st_transform(crs = crs_string) 
+
+ggplot() + 
+  geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
+  geom_sf(data = area_sf2, aes(fill = fia_code), color= "white", lwd = .1) + 
+  geom_sf(data = world, fill="black", color="grey20") + 
+  geom_sf(data= country_sf2 , fill= "grey10",color="grey30")  +
+  scale_fill_discrete(guide = "none") +
+  theme_void()
+
+
+```
 # WORK IN PROGRESS....
 
 This document is still in construction
