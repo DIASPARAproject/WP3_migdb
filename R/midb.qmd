@@ -77,15 +77,15 @@ One of the table will have to contain twice the area it will have to be treated
 All along this document, the database will be named `diaspara`. 
 The database is created with postgres. 
 
-** Some rules **
+ **Some rules**
 
 * By default values will be capitalised for the first 
  letter e.g. `Public` for the code in dataaccess. 
 * Code ELE, ANG, TRT are capitalized, as are the working group names
   WGEEL, WGNAS, or country codes.
-* Units are lowercase e.g. g, mmm ...
+* Units are lowercase e.g. g, mm ...
 * All integer used for primary keys are called `id` all text used for primary 
- keys are called `code`.
+ keys are called `code`, the text is always called `description`.
 * All tables end with a 3 letter summary which allows to identify the source of 
  one column so the table dataaccess will be called `tr_dataaccess_dta`. And the 
  column for code will be named 
@@ -447,7 +447,7 @@ Should we use SpecWoRMS or is Aphia OK ?
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: Species
+#| tbl-cap: Species in ICES
 #| tbl-subcap :
 #|    - Code found in IC_Species
 #|    - Three letter code for species. Should we use ang instead of ele ?
@@ -511,6 +511,16 @@ reference to ICES vocabularies.'")
 ``` 
 
 </details>
+
+```{r tbl-species}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Working groups table in the diaspara DB
+tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_species_spe")
+knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 
 ## Working group (tr_icworkinggroup_wkg)
@@ -642,8 +652,7 @@ dbExecute(con_diaspara_admin, "ALTER TABLE ref.tr_country_cou
 # uploaded to postgres
 
 # the tables
-# ICES_Areas_20160601_cut_dense_3857
-# NAFO_Divisions_2021_poly_clipped
+
 # ref-countries-2024-01m — CNTR_RG_01M_2024_4326
 # have been copied to folder area ref-countries was renamed
 # ALTER TABLE area."ref-countries-2024-01m — CNTR_RG_01M_2024_4326" 
@@ -849,12 +858,7 @@ query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, uni_ic
                  "MUNIT",
                  "bf0570b7-45f2-41c7-9a46-de912a2b9ad4")              
 dbExecute(con_diaspara_admin,  query)
-query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
-                 "gd", 
-                 "Gear days for fyke/trap nets",
-                 "gd", 
-                 "MUNIT",
-                 "bf0570b7-45f2-41c7-9a46-de912a2b9ad4")   
+
 
 dbExecute(con_diaspara_admin, "UPDATE ref.tr_units_uni set uni_icesvalue='idx', 
           uni_icestablesource = 'MUNIT',
@@ -1906,6 +1910,8 @@ dbExecute(con_diaspara_admin,
 # In this table all geom are mixed from unit to division.
 # It only make sense to extract for a unique f_level
 
+
+# TODO add species, wk
 dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_fishingarea_fia
 SELECT
    initcap(f_level) AS fia_level, 

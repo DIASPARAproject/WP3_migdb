@@ -136,5 +136,41 @@ CREATE TABLE "ref".tr_parameter_parm (
 
 
 
+SELECT * FROM area."ICES_Areas_20160601_cut_dense_3857" JOIN
+ref.tr_fishingarea_fia ON area_full = fia_code;
 
+ALTER TABLE ref.tr_fishingarea_fia ADD COLUMN fia_name TEXT NULL;
+
+
+SELECT * FROM area."ICES_Areas_20160601_cut_dense_3857"
+EXCEPT
+SELECT are.* FROM area."ICES_Areas_20160601_cut_dense_3857" are JOIN
+ref.tr_fishingarea_fia ON area_full = fia_code; -- nothing
+
+
+
+SELECT * FROM area."GSAs_simplified_division" JOIN
+ref.tr_fishingarea_fia ON f_gsa = fia_code; -- NOTHING
+
+UPDATE ref.tr_fishingarea_fia  SET fia_level = initcap(fia_level)
+
+INSERT INTO ref.tr_fishingarea_fia
+SELECT 
+'Subdivision' AS fia_level, 
+f_gsa AS fia_code,
+1 AS fia_status,
+'Atlantic' AS fia_ocean, 
+3 AS fia_subocean, 
+f_area, 
+f_subarea, 
+f_division, 
+f_gsa AS fia_subdivision,
+NULL AS fia_unit,
+smu_name AS fia_name,
+geom
+FROM area."GSAs_simplified_division";
+
+
+SELECT DISTINCT(fia_level) FROM ref.tr_fishingarea_fia
+                         
 
