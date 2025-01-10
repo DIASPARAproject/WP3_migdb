@@ -1,5 +1,6 @@
--- This code is the same as in migdb.qmd, here it is executed
--- type_object in salmoglob
+
+-- the code is here : SQL/tr_metadata_met.sql
+-- we first create all referential tables then the metadata itself
 
 DROP TABLE IF EXISTS ref.tr_objecttype_oty CASCADE;
 CREATE TABLE ref.tr_objecttype_oty (
