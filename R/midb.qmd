@@ -750,14 +750,19 @@ country_sf2 <-  country_sf %>%
   # select visible area only
   sf::st_transform(crs = crs_string) # reproject to ortho
 # now the action!
-ggplot(data = country_sf2) +
+g <- ggplot(data = country_sf2) +
   geom_sf(data = ocean, fill = "aliceblue", color = NA) + # background first
   geom_sf(aes(fill = cou_code), lwd = .1) + # now land over the oceans
   scale_fill_discrete(guide = "none") +
   theme_void()
 
-```
+# this part is used to avoid long computations
+png(filename="images/fig-country.png", bg="transparent")
+print(g)
+dev.off()
 
+```
+![Map of countries in the diaspara DB &copy; [EuroGeographics](https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/)](images/fig-country.png "A planisphere with countries in migdb"){#fig-country}
 
 ## Unit (tr_units_uni)
 
@@ -980,7 +985,7 @@ sd[ww,] %>% kable()
 </details> 
 
 
-The code for creating metadata is listed below @lst-metadata
+The code for creating metadata is listed below
 
 <details> 
 
@@ -1675,7 +1680,7 @@ most query will use WHERE
 
 ```{r fig-fishingareas_major}
 #| echo: TRUE
-#| eval: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
@@ -1711,7 +1716,7 @@ country_sf2 <-  country_sf %>%
 
 
 
-ggplot() + 
+g <- ggplot() + 
   geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
   geom_sf(data = area_sf2, aes(fill = fia_code), color="white", lwd = .1) + 
   geom_sf(data = world, fill="black", color="grey20") + 
@@ -1720,11 +1725,15 @@ ggplot() +
   #scale_fill_discrete(guide = "none") +
 
   
-
+# this part is used to avoid long computations
+png(filename="images/fig-fishingareas_major.png",width=600, height=600, res=300, bg="transparent")
+print(g)
+dev.off()
 
 
 ```
 
+![ Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
 
 ```{r fig-fishingareas_subarea}
 #| echo: TRUE
@@ -1749,7 +1758,7 @@ area_sf2 <-  fishing_areas_subarea %>%
   sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
   sf::st_transform(crs = crs_string) # reproject to ortho
 
-ggplot() + 
+g <- ggplot() + 
   geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
   geom_sf(data = area_sf2, aes(fill = fia_code), color="white", lwd = .1) + 
   geom_sf(data = world, fill="black", color="grey20") + 
@@ -1757,8 +1766,15 @@ ggplot() +
   scale_fill_discrete(guide = "none")  +
   theme_void()
 
+# this part is used to avoid long computations
+png(filename="images/fig-fishingareas_subarea.png", bg="transparent")
+print(g)
+dev.off()
 
 ```
+
+
+![ Map of ICES fishing areas at Subarea level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subarea.png "A planisphere with ocean fishing subareas"){#fig-fishingareas_subarea}
 
 ```{r fig-fishingareas_division}
 #| echo: TRUE
@@ -1789,15 +1805,22 @@ area_sf2 <-  fishing_areas_division %>%
   sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
   sf::st_transform(crs = crs_string) 
 
-ggplot() + 
+g <- ggplot() + 
   geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
   geom_sf(data = area_sf2, aes(fill = fia_code), color="white", lwd = .1) + 
   geom_sf(data = world, fill="black", color="grey20") + 
   geom_sf(data= country_sf2 , fill= "grey10",color="grey30")  +
   scale_fill_discrete(guide = "none") +
-  theme_void() 
+  theme_void()
+
+png(filename="images/fig-fishingareas_division.png", bg="transparent")
+print(g)
+dev.off() 
 
 ```
+
+
+![Map of ICES fishing areas at division level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_division.png "A planisphere with ocean fishing division"){#fig-fishingareas_division}
 
 ```{r fig-fishingareas_subdivision}
 #| echo: TRUE
@@ -1828,7 +1851,7 @@ area_sf2 <-  fishing_areas_subdivision %>%
   sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
   sf::st_transform(crs = crs_string) 
 
-ggplot() + 
+g <- ggplot() + 
   geom_sf(data = ocean, fill = "deepskyblue4", color = NA) + 
   geom_sf(data = area_sf2, aes(fill = fia_code), color= "white", lwd = .1) + 
   geom_sf(data = world, fill="black", color="grey20") + 
@@ -1836,8 +1859,13 @@ ggplot() +
   scale_fill_discrete(guide = "none") +
   theme_void()
 
-
+png(filename="images/fig-fishingareas_subdivision.png", bg="transparent")
+print(g)
+dev.off() 
 ```
+
+![Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
+
 # WORK IN PROGRESS....
 
 This document is still in construction
