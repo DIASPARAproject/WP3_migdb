@@ -1680,11 +1680,11 @@ most query will use WHERE
 
 ```{r fig-fishingareas_major}
 #| echo: TRUE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to create a map of fishing areas at Major level
+#| code-summary: Coderedce  to create a map of fishing areas at Major level
 #| fig-cap: Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.
 
 library(rnaturalearth)
