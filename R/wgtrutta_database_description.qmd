@@ -210,6 +210,8 @@ sampling:f2 -> country:f0;
 The ordering of site > river > basin is straithforward. With proper postgis tables,
 Gis attributes (geometries) should allow constraint to check wheter a site is within the basin.
 A river (Mondego) or basin can belong to many countries, country is related to the `<sampling id>`. For this reason there is no link between site and country.
+You can have a look at the format envisioned for the migratory fishes database
+for [areas](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/rep_wp3/midb.html#area-tr_area_are).
 
 ## Population data
 
@@ -227,7 +229,7 @@ kable(population_data) %>%
 
 The structuring of the population data has in fact three different levels.
 It is obvious that the year / season creates a different population id (a unit for analysis). For this reason, it is separated from the rest, and creates the unicity constraint, this table also stores an eventual comment and info on other occurring salmonids.
-From this table two types of data would probably best be separated, it would make more sense to store together in a row level format all data pertaining to the same level of complexity, so some data will depend on stage, age and whether the trouts are resident or anadromous. This table is called `popdetailmetric` table in the diagram. Some other information are however related to the whole population `popgroupmetrics table`
+From this table two types of data would probably best be separated, it would make more sense to store together in a row level format all data pertaining to the same level of complexity, so some data will depend on stage, age and whether the trouts are resident or anadromous. This table is called `popdetailmetric` table in the diagram. Some other information are however related to the whole population and don't need details per stage, age, resident and would go to as `popgroupmetrics table`
 
 ```{dot}
 # no code align for dot > creates problem for plain html tables

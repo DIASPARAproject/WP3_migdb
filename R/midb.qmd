@@ -27,7 +27,7 @@ include-after-body: "footer.html"
 ---
 
 
-The main structure of the database has been proposed during the online diaspara meeting : [database structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/diaspara_WP3_Tuesday_presentation.html#/section-1). 
+The main structure of the database has been proposed during the online diaspara meeting : [database structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1). 
 This stucture would allow to store the data necessary to run the international stock models for the different working groups working on diadromous fishes.
 The structure of the proposed database and the structure of the wgeel database are very similar. This documents creates the diaspara database, first creating referential table for the different types proposed, and then populates the database with the contents of the wgeel and wgnas database. All chunks are run sequentially to run the database, but some are later marked with eval = FALSE to speed up the process of running the quarto document.
 
@@ -944,7 +944,7 @@ The parameters will be described by their metadata as illustrated in @fig-metada
 
 ![Mind map of the metadata structure](images\SAM_parm_metadata.png){#fig-metadata}
 
-We can have a look at the metadata in the analysis done on the WGNAS database [WGNAS description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wgnas_salmoglob_description.html#metadata).
+We can have a look at the metadata in the analysis done on the WGNAS database [WGNAS description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
 
 There is a problem in the "order or the dimensions which need to be aligned. For instance a column can hold year, or age. This is not good. The description could be used within a type [array](https://www.postgresql.org/docs/current/arrays.html).
 SQL server does not work with array so it's not a good idea to use those. 
