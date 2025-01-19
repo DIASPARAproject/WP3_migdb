@@ -17,7 +17,7 @@ WITH n_data AS (
 SELECT count(*) n,  "year", "type", age, area, "location", var_mod FROM public.database_archive
 GROUP BY   "year", "type", age, area, "location", var_mod)
 SELECT DISTINCT n FROM n_data WHERE n>1 ORDER BY n DESC;  -- 2 to 14 repetitions
-
+ 
 
 -- When sereral repetitions are there, they have different data_time
 WITH n_data AS (
