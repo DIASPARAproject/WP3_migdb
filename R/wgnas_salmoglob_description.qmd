@@ -3,7 +3,7 @@ title: "WGNAS database description"
 subtitle: "DIASPARA WP3.2 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
-date-format: "DD-MM-YYYY"
+date-format: "[Last Updated on] DD-MM-YYYY"
 description: "Technical analysis of the salmoglob database"
 title-block-banner: "images/diaspara_bandeau.png"
 title-block-banner-color: "white"
@@ -80,6 +80,12 @@ Phylogeographic structuring observed across studies in Atlantic salmon resolved 
 :::
 
 We first analyse the types of area that are found in the database. These are the possible geographical locations.
+
+From (@rivot_hierarchical_2021) :
+> The model considers the dynamics of 25 SU (subscript r = 1, ... , N with N=25) (Fig. 1):  
+> * 6 SU from NA CSG, indexed by r = 1, ..., 6: 1 = Newfoundland, 2 = Gulf, 3 = Scotia-Fundy, 4 =  USA, 5 = Quebec and 6 = Labrador;  
+> * 8 SU from the SE CSG, indexed by r = 7, ..., 14: 7 = France, 8 = UK England and Wales, 9 =  Ireland, 10 = UK Northern Ireland - FO, 11 = UK Northern Ireland - FB, 12 = UK Scotland East,  13 = UK Scotland West, 14 = Iceland South-West;  
+> * 11 SU from NE CSG, indexed by r= 15, ..., 25: 15 = Iceland North-East, 16 = Sweden, 17 =  Norway South-East, 18 = Norway South-West, 19 = Norway Middle, 20 = Norway North, 21 =  Finland, 22 = Russia Kola Barents, 23 = Russia Kola White Sea, 24 = Russia Arkhangelsk Karelia  and 25 = Russia River Pechora.  SU are defined on the basis of freshwater areas. All salmon within a SU are assumed to have the  same demographic parameters and to undertake a similar migration route at sea. Note that  Germany and Spain (SE CSG) are not considered at this stage because no complete series of data  are provided to ICES WGNAS by these two jurisdictions.
 
 ```{r tbl-areatypes}
 #| echo: FALSE
@@ -412,7 +418,8 @@ knitr::kable(summary_metric,
 
 ``` 
 
- There is a problem of correspondence between the database and metadata, detailed below :
+ There is a problem of correspondence between the database and metadata, detailed below where we query the database to find where the metric in metatdata, and 
+ the metric in database are different :
 
 ``` {r check_metric_correspondence}
 #| echo: FALSE
@@ -551,6 +558,85 @@ DBI::dbGetQuery(con_salmoglob,
 
 ``` 
 
+# version
+
+Versions are simple numbers from 1 to 14, they represent version of variables,
+how does that work ?
+
+> "The database_archive table allows for data versioning to strengthen the data security and quality. Its content matches that of the database table plus supplementary information, i.e. the date (day-month-year/hour-minute) when the data has been updated and an identifier to register the author of data updating (the corresponding information on the author, i.e. first name, name, email address and institute affiliation can be retrieved from the users table - not presented here). The database_archive table contains the data present in the database table and all its previous versions, which are referred by a **version number (one single version number by variable)**. At any time, an older version of database can hence be retrieved" (source @hernvann_wgnassalmoglob_2021).
+
+The date time in database archive is also present in the database.
+but this date time has several values both in the latest db and in the archive,
+see below : (Table @tbl-version).
+
+``` {r check_version}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Version in the database  = number of lines, narch = number of lines in the archive database, year =last year when present in column date, year_last_update = year extracted from date_time
+#| tbl-subcap:  
+#|   - version.
+#|   - Year of data in date_time, both in database, and in database archive.
+#| label: tbl-version
+
+# this query didn't return as expected
+ version <- DBI::dbGetQuery(con_salmoglob, 
+  "WITH maxyear AS (SELECT count(*) as N, version, 
+  max(year) as year,
+  extract(year from date_time) as year_last_update
+  FROM public.database
+  group by version, date_time, year
+  order by version)
+
+  SELECT version,  sum(N) as N, max(year) as year, max(year_last_update) as year_last_update
+  FROM maxyear Group by version order by version
+  ")
+knitr::kable(version,
+ ) %>%
+ kable_material(c("striped", "hover"))
+
+# to which years correspond the data (2020 to 2024)
+ dates_db <- DBI::dbGetQuery(con_salmoglob, 
+  "SELECT count(*) as N,  
+    extract(year from date_time) as year
+  FROM public.database
+  group by extract(year from date_time) 
+  ")
+
+ # to which years correspond the data archive (2020 to 2024)
+ dates_db_archive <- DBI::dbGetQuery(con_salmoglob, 
+  "SELECT count(*) as n_arch,  
+    extract(year from date_time) as year
+  FROM public.database_archive
+  group by extract(year from date_time) ")
+
+full_join(dates_db,dates_db_archive)   %>%
+select(year, n, n_arch)  %>%
+arrange(year)  %>%
+knitr::kable() %>%
+ kable_material(c("striped", "hover"))
+
+
+
+``` 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION TO WGNAS
+::::
+::::{.questionbox-body}
+From the results in the database (Table @tbl-version), it's not clear what version represents here. 
+What does `version` mean ? Just a version for each variable.
+Values have been inserted in 2020, but it's not clear how you can identify the 
+origin of data in database archive, since those same dates are in 
+the database, and not really updated. Are we right ?
+::::
+:::
+
+
+
 
 :::{.callout-note appearance="simple"}
 ## TODO
@@ -564,16 +650,20 @@ Remove NA, -, and main ? from fishery
   QUESTION TO WGNAS
 ::::
 ::::{.questionbox-body}
-In the metadata column fishery what is 'main' ? Should we remove NA and - and leave it NULL ?
+In the metadata column fishery what is 'main' ? Should we remove NA and - and 
+leave it NULL ?
 ::::
 :::
 ## Other comments.
 
-Currently stage in metadata not consistent, replicates information about maturity but not always. The lack of consistency in the metadata is not a problem as this table refers to the model. 
+Currently stage in metadata not consistent, replicates information about maturity 
+but not always. The lack of consistency in the metadata is not a problem as this table refers to the model. 
 
 Additional values about maturity, stage, can be stored in the metadata table.
 
-There is a discrepancy between data in the historical dataset and the current, so we need to create additional parameters for the historical database and this will need to be checked.
+There is a discrepancy between data in the historical dataset and the current, 
+so we need to create additional parameters for the historical database and this 
+will need to be checked.
 
 
 
