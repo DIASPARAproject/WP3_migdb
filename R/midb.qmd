@@ -1057,8 +1057,9 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")%>% knitr::kable() %
 ## Version (tr_version_ver)
 
 Currently in the salmoglob metadata there is no information about version.
-The version number is in the table itself.
-We will keep it that way but it seems to me that metadata should also contain 
+The version number is in the table itself. It seems to correspond to different 
+versions of the same parameter.
+While currently this information is stored in the `database` and `database_archive` it seems to that metadata should also contain 
 information about historical variables.
 For instance we create a new variable, so we know when it was introduced.
 So I'm moving this from the main table and adding to metadata
@@ -1076,9 +1077,23 @@ will be entered into the database.
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to insert values into the tr_version_ver table
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")
-ver_code(paste0(1:12,"nas"))
-dbExecute(con_diaspara, )
+sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
+sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
+
+
+
+data.frame(
+ver_code = "NAS_"||2020:2024,
+ver_year = 2020:2024
+ver_spe_code = "NAS",
+ver_datacalldoi=c(NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+# TODO FIND other DOI (mail sent to ICES)
+ver_version=c(1,1,1,1), # TODO check that there is just one version
+ver_description=c(NA,NA,NA,NA))
+SELECT 
+nas_2020
+
+")
 
 ```
 
