@@ -996,6 +996,7 @@ The code for creating metadata is listed below
 </details> 
 
 
+
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
  Not yet completely sure about this ....
@@ -1067,7 +1068,19 @@ The version (@tbl-version) contains both reference to the datacall (when data ar
 and to the advice. The advice might still be null at the time the values
 will be entered into the database.
 
+```{r }
+#| label: tr_version_ver insert
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to insert values into the tr_version_ver table
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")
+ver_code(paste0(1:12,"nas"))
+dbExecute(con_diaspara, )
 
+```
 
 ```{r}
 #| label: tbl-version
@@ -1288,6 +1301,7 @@ dbExecute(con_diaspara_admin,
    are_are_id INTEGER,
    are_code  TEXT,
    are_lev_code TEXT,
+   are_wkg_code TEXT,
    are_ismarine BOOLEAN,
    geom geometry(MULTIPOLYGON, 4326),
   CONSTRAINT fk_are_are_id FOREIGN KEY (are_are_id) 
@@ -1295,7 +1309,9 @@ dbExecute(con_diaspara_admin,
   ON UPDATE CASCADE,
   CONSTRAINT uk_are_code UNIQUE (are_code),
   CONSTRAINT fk_area_lev_code FOREIGN KEY (are_lev_code) REFERENCES
-  ref.tr_level_lev(lev_code) ON UPDATE CASCADE ON DELETE CASCADE
+  ref.tr_level_lev(lev_code) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_area_wkg_code FOREIGN KEY (are_lev_code) REFERENCES
+  ref.tr_icworkinggroup_wkg(wkg_code) ON UPDATE CASCADE ON DELETE CASCADE
 );")
 
 dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_area_are 
@@ -1866,6 +1882,56 @@ dev.off()
 
 ![Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
+
+
+# SCHEMA datnas
+
+```{r refnas.tr_metadata_met}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to refnas
+
+# TODO create tr_area_are
+# tr_metadata_met
+
+
+
+
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met;")
+clipr::write_clip(colnames(res))
+
+data.frame(
+met_var= dbGetQuery(con_salmoglob, "SELECT var_mod FROM metadata"),
+met_spe_code = 'NAS',
+met_wkg_code = 'WGNAS',
+met_ver_code = 
+met_oty_code
+met_nim_code
+met_dim
+met_dimname
+met_modelstage
+met_type
+met_location
+met_fishery
+met_mtr_code
+met_oco_code
+met_uni_code
+met_cat_code
+met_definition
+met_deprecated
+
+```
+
+ 
+```{.sql include="../SQL/3_refnas.sql"}
+```
+
+[//]: # IS THIS WORKING AS A COMMENT ?
+
 # WORK IN PROGRESS....
 
 This document is still in construction
@@ -1874,3 +1940,5 @@ This document is still in construction
 # Acknowledgements
 
 * Data source : EuroGeographics and UN-FAO for countries
+
+
