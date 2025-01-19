@@ -1072,30 +1072,42 @@ will be entered into the database.
 ```{r }
 #| label: tr_version_ver insert
 #| echo: TRUE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to insert values into the tr_version_ver table
-sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
-sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
 
+#sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
+#sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
 
-
-data.frame(
-ver_code = "NAS_"||2020:2024,
-ver_year = 2020:2024
-ver_spe_code = "NAS",
-ver_datacalldoi=c(NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+tr_version_ver <- data.frame(
+ver_code = paste0("SAL_",2020:2024),
+ver_year = 2020:2024,
+ver_spe_code = "SAL",
+ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
 # TODO FIND other DOI (mail sent to ICES)
-ver_version=c(1,1,1,1), # TODO check that there is just one version
-ver_description=c(NA,NA,NA,NA))
-SELECT 
-nas_2020
+ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version
+ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
 
-")
+DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
+overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
 
 ```
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question to WNGAS / ICES
+::::
+::::{.questionbox-body}
+* Check there is just one version per year
+* Provide descriptions of the version of the model
+* Questions sent to ICES to provide access to historical DOI
+::::
+:::
 
 ```{r}
 #| label: tbl-version
@@ -1907,7 +1919,7 @@ dev.off()
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import to refnas
+#| code-summary: Code to import to refnas work in progress ...
 
 # TODO create tr_area_are
 # tr_metadata_met
@@ -1923,7 +1935,7 @@ data.frame(
 met_var= dbGetQuery(con_salmoglob, "SELECT var_mod FROM metadata"),
 met_spe_code = 'NAS',
 met_wkg_code = 'WGNAS',
-met_ver_code = 
+met_ver_code = TODO
 met_oty_code
 met_nim_code
 met_dim
@@ -1941,10 +1953,13 @@ met_deprecated
 
 ```
 
- 
+ <details> 
+
+<summary>Creating the referential for WGNAS , work in progress ...
+</summary>
 ```{.sql include="../SQL/3_refnas.sql"}
 ```
-
+</details> 
 [//]: # IS THIS WORKING AS A COMMENT ?
 
 # WORK IN PROGRESS....
