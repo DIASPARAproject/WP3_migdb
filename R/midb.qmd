@@ -439,6 +439,17 @@ Should we use SpecWoRMS or is Aphia OK ?
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER ICES : Maria
+::::
+::::{.answerbox-body}
+For species, we would recommend that you use AphiaIDs (a copy of which is SpecWoRMs). You can also use the FAO ASFIS list, or both, but we would recommend having the AphiaIDs for sure.
+::::
+:::
+
 <details> 
 
 <summary>Creating a referential table for species - code and queries to ICES 
@@ -1191,7 +1202,7 @@ But it's just in metatdata and we need need in WGBAST
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_deestination_dest;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_dest;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
 
@@ -1410,72 +1421,79 @@ digraph {
     newrank=true;
 
     subgraph clusterA {
-      label = Stock
+      label = Panpopulation
       style=full
       color=black
       center=true
 
       subgraph clusterB {
         label = Complex
-        style=full
+        style=dashed
         color=black
         center=true
-    
-        subgraph clusterC {
-          label = Country
-          style=dashed
-          color=firebrick
-          fontcolor=firebrick
-          center=true
 
-          subgraph clusterD {
-            label = Assessment_unit
-            style=full
-            color=green 
-            fontcolor=green
-            
-              subgraph clusterE {
-                label = Regional;
-                style=dashed
-                color=green4
-                fontcolor=green4
-                
-                  subgraph clusterF {
-                    label = River
+              subgraph clusterC {
+              label = Stock
+              style=dashed
+              color=black
+              center=true
+    
+                subgraph clusterD {
+                  label = Country
+                  style=dashed
+                  color=firebrick
+                  fontcolor=firebrick
+                  center=true
+
+                  subgraph clusterE {
+                    label = Assessment_unit
                     style=full
-                    color=green3
-                    fontcolor=green3
+                    color=green 
+                    fontcolor=green
                     
-                        subgraph clusterG {
-                                label = River_section
-                                style=full
-                                color=green2
-                                fontcolor=green2
-                                    section [
-                                        label=data,
-                                        shape=box, 
-                                        style =invis
-                                        ]
-                        }
+                      subgraph clusterF {
+                        label = Regional;
+                        style=dashed
+                        color=green4
+                        fontcolor=green4
+                        
+                          subgraph clusterG {
+                            label = River
+                            style=dashed
+                            color=green3
+                            fontcolor=green3
+                            
+                                subgraph clusterH {
+                                        label = River_section
+                                        style=dashed
+                                        color=green2
+                                        fontcolor=green2
+                                            section [
+                                                label=data,
+                                                shape=box, 
+                                                style =invis
+                                                ]
+                                }
+                          }
+                      }
                   }
+                }
               }
-          }
-        }
         subgraph clusterZ{
           label=Major
-          style=full
+          style=dashed
           color=royalblue4
           fontcolor=royalblue4
           
                 subgraph clusterY{
                     label=Subareas
-                    style=full
+                    style=dashed
                     color=royalblue3
                     fontcolor=royalblue3
                     
                         subgraph clusterX{
                             label=Division
-                            style=full
+                            style=dashed
                             color=royalblue2
                             fontcolor=royalblue2
                             
@@ -1487,7 +1505,7 @@ digraph {
                                     
                                        subgraph clusterV{
                                            label=Unit
-                                            style=full
+                                            style=dashed
                                             color=deepskyblue
                                             fontcolor=deepskyblue
                                             
