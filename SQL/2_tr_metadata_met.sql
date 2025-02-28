@@ -61,7 +61,7 @@ ver_code TEXT PRIMARY KEY,
 ver_year INTEGER NOT NULL,
 ver_spe_code CHARACTER VARYING(3),
 --ver_stockkey INTEGER NOT NULL, 
---ver_stockkeylabel TEXT NOT NULL,
+ver_stockkeylabel TEXT,
 ---ver_stockadvicedoi TEXT NOT NULL,
 ver_datacalldoi TEXT NULL,
 ver_version INTEGER NOT NULL,
@@ -80,8 +80,8 @@ COMMENT ON COLUMN ref.tr_version_ver.ver_spe_code
 IS 'Species code e.g. ''ele'' references tr_species_spe.';
 --COMMENT ON COLUMN ref.tr_version_ver.ver_stockkey 
 --IS 'Stockkey (integer) from the stock database.';
---COMMENT ON COLUMN ref.tr_version_ver.ver_stockkeylabel 
---IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
+COMMENT ON COLUMN ref.tr_version_ver.ver_stockkeylabel 
+IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
 --COMMENT ON COLUMN ref.tr_version_ver.ver_stockadvicedoi 
 --IS 'Advice DOI corresponding to column adviceDOI 
 --when using icesASD::getAdviceViewRecord().';
@@ -167,28 +167,27 @@ this list is intended to be short.';
 GRANT ALL ON ref.tr_category_cat TO diaspara_admin;
 GRANT SELECT ON ref.tr_category_cat TO diaspara_read;
 
-DROP TABLE IF EXISTS ref.tr_outcome_oco CASCADE;
-CREATE TABLE ref.tr_outcome_oco (
-oco_code TEXT PRIMARY KEY,
-oco_description TEXT
+DROP TABLE IF EXISTS ref.tr_destination_des CASCADE;
+CREATE TABLE ref.tr_destination_des (
+des_code TEXT PRIMARY KEY,
+des_description TEXT
 );
 
-COMMENT ON TABLE ref.tr_outcome_oco IS 
-'Table of fish outcome. When dealing with fish, e.g. in landings,what is the 
-outcome of the fish, e.g. Released (alive), Seal damage, 
-Removed (from the environment)';
-INSERT INTO ref.tr_outcome_oco VALUES 
+COMMENT ON TABLE ref.tr_destination_des IS 
+'Table of fish destination. When dealing with fish, e.g. in landings,what is the future of the fish, e.g. Released (alive), Seal damage, 
+Removed (from the environment)'; 
+INSERT INTO ref.tr_destination_des VALUES 
 ('Removed', 'Removed from the environment, e.g. caught and kept');
-INSERT INTO ref.tr_outcome_oco VALUES (
+INSERT INTO ref.tr_destination_des VALUES (
 'Seal damaged', 'Seal damage');
-INSERT INTO ref.tr_outcome_oco VALUES (
+INSERT INTO ref.tr_destination_des VALUES (
 'Discarded', 'Discards');
-INSERT INTO ref.tr_outcome_oco VALUES (
+INSERT INTO ref.tr_destination_des VALUES (
 'Released', 'Released alive');
 
 
-GRANT ALL ON ref.tr_outcome_oco TO diaspara_admin;
-GRANT SELECT ON ref.tr_outcome_oco TO diaspara_read;
+GRANT ALL ON ref.tr_destination_des TO diaspara_admin;
+GRANT SELECT ON ref.tr_destination_des TO diaspara_read;
 
 
 
@@ -209,7 +208,7 @@ CREATE TABLE ref.tr_metadata_met (
   met_location TEXT NULL,
   met_fishery TEXT NULL,
   met_mtr_code TEXT NULL,
-  met_oco_code TEXT NULL,
+  met_des_code TEXT NULL,
   met_uni_code TEXT NULL,
   met_cat_code TEXT NULL,
   met_definition TEXT NULL, 
@@ -245,8 +244,8 @@ CREATE TABLE ref.tr_metadata_met (
   REFERENCES ref.tr_category_cat(cat_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT fk_met_oco_code FOREIGN KEY (met_oco_code)
-  REFERENCES ref.tr_outcome_oco(oco_code)
+  CONSTRAINT fk_met_des_code FOREIGN KEY (met_des_code)
+  REFERENCES ref.tr_destination_des(des_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE
 );
@@ -276,9 +275,9 @@ COMMENT ON COLUMN ref.tr_metadata_met.met_location
 IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_fishery 
 IS 'Description of the fishery.';
-COMMENT ON COLUMN ref.tr_metadata_met.met_oco_code 
+COMMENT ON COLUMN ref.tr_metadata_met.met_des_code 
 IS 'Outcome of the fish, e.g. Released (alive), Seal damage,
-Removed (from the environment), references table tr_outcome_oco.';
+Removed (from the environment), references table tr_destination_des.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_uni_code 
 IS 'Unit, references table tr_unit_uni.';
 COMMENT ON COLUMN ref.tr_metadata_met.met_cat_code 

@@ -294,7 +294,7 @@ digraph schema {
         tr_version_ver <br align="left"/>
         tr_metric_mtr <br align="left"/>
         tr_category_cat <br align="left"/>
-        tr_outcome_oco <br align="left"/>
+        tr_destination_dest <br align="left"/>
         tr_metadata_met <br align="left"/>
         tr_area_are <br align="left"/> </td> </tr> 
        </table>> 
@@ -561,7 +561,8 @@ dbExecute(con_diaspara_admin,
 "CREATE TABLE ref.tr_icworkinggroup_wkg (
 wkg_code TEXT PRIMARY KEY,
 wkg_description TEXT,
-wkg_icesguid uuid
+wkg_icesguid uuid,
+wkg_stockkeylabel TEXT
 );")
 
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_icworkinggroup_wkg 
@@ -580,16 +581,19 @@ temp_tr_icworkinggroup_wkg <- tbl %>%
   filter(wkg_code %in% c("WGEEL", "WGNAS", "WGBAST"))
 temp_tr_icworkinggroup_wkg <- bind_rows(temp_tr_icworkinggroup_wkg,
                                         data.frame(wkg_code="WKTRUTTA"))
-
+temp_tr_icworkinggroup_wkg$wkg_stockkeylabel <-
+  c("sal.27.22–31","ele.2737.nea","sal.neac.all",NA)
 dbWriteTable(con_diaspara_admin, 
              "temp_tr_icworkinggroup_wkg", 
-             temp_tr_icworkinggroup_wkg)
+             temp_tr_icworkinggroup_wkg,
+             overwrite = TRUE)
 
 dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_icworkinggroup_wkg 
           SELECT 
           wkg_code,
           wkg_description,
-          wkg_icesguid::uuid
+          wkg_icesguid::uuid,
+          WKG_stockkeylabel
          FROM temp_tr_icworkinggroup_wkg;") #4
 dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_icworkinggroup_wkg;")
 
@@ -1015,8 +1019,8 @@ To start with, we remove them to reduce complexity and avoid errors.
 
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
- WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in tr_outcome.
- Note this is just a column in tr_metadata_met not in the main table.
+ WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in tr_destination_dest.
+ Note this is just a column in tr_metadata_met not in the main table. Check if it could not simply be removed if the definition of the parameter is clear ?
 :::
 
 
@@ -1086,6 +1090,7 @@ ver_code = paste0("SAL_",2020:2024),
 ver_year = 2020:2024,
 ver_spe_code = "SAL",
 ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+ver_stockkeylabel =c("ele.2737.nea","sal.27.22–31","sal.neac.all"), # sugested by Hilaire.
 # TODO FIND other DOI (mail sent to ICES)
 ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version
 ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
@@ -1172,7 +1177,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")%>% knitr::kable()
 
 ```
 
-## Outcome (tr_outcome_oco)
+## Destination (tr_destination_dest)
 
 
 A bit cumbersome this table, the idea is "what becomes of this fish". 
@@ -1180,15 +1185,21 @@ Different types of landings.
 But it's just in metatdata and we need need in WGBAST
 
 ```{r}
-#| label: tbl-outcome
+#| label: tbl-destination
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_outcome_oco;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_deestination_dest;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
+
+:::{.callout-note appearance="simple"}
+## NOTE DIASPARA
+Here Hilaire say that naming the table "outcome" wasn't ideal so I've followed his suggestion
+:::
+
 
 ## Metadata (tr_metadata_met)
 
@@ -1213,7 +1224,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable()
 
 Here I'm trying to build something consistent. I guess only the final result 
 will tell but I have to start somewhere ...
-A good idea to simplify the structure of the db is to get together marine
+A good idea to simploify the structure of the db is to get together marine
 and continental areas. 
 
 ### Continental areas
@@ -1239,15 +1250,22 @@ dbExecute(con_diaspara_admin,
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'Stock',
-  'This is the highest geographic level for assessement, stock level.'  
+  'Panpopulation',
+  'This is the highest geographic level for assessement.'  
   );")
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
   'Complex',
-  'Corresponds to large sublevels at which the stock is assessed, e.g.
+  'Corresponds to large sublevels at which the Panpopulation is assessed, e.g.
   NAC NEC for WGNAST, Gulf of Bothnia for WGBAST, Mediterranean for WGEEL.'  
+  );")
+
+  dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'Stock',
+  'Correspond to stock units for which advices are provided in ICES, this can be the level of the panpopulation,
+  or another level e.g. .'  
   );")
 
 dbExecute(con_diaspara_admin,
@@ -1362,6 +1380,12 @@ to river section.';")
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_level_lev;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
+
+:::{.callout-note appearance="simple"}
+## Note from Hilaire
+The working groups might change over time, referencing a working group there is probably not the best.
+Cédric : Added stockkeylabel, this table is necessary to aggregate data (species is not enough).
+:::
 
 
 
@@ -1921,10 +1945,9 @@ dev.off()
 #| code-fold: TRUE
 #| code-summary: Code to import to refnas work in progress ...
 
+
 # TODO create tr_area_are
 # tr_metadata_met
-
-
 
 
 
@@ -1970,5 +1993,12 @@ This document is still in construction
 # Acknowledgements
 
 * Data source : EuroGeographics and UN-FAO for countries
+
+
+
+
+
+
+
 
 
