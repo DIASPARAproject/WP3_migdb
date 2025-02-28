@@ -127,7 +127,7 @@ INSERT INTO ref.tr_metric_mtr VALUES
 GRANT ALL ON ref.tr_metric_mtr TO diaspara_admin;
 GRANT SELECT ON ref.tr_metric_mtr TO diaspara_read;
 COMMENT ON TABLE ref.tr_metric_mtr IS 
-'Table metric describe the possible values of parameters, Index, Bound ...';
+'Table metric describe the type of parm used, Index, Bound ...';
 
 -- tr_category_cat
 
