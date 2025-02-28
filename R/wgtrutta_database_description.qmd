@@ -113,6 +113,19 @@ If you have a referential why do you need the country ? Because of the country p
 ::::
 :::
 
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: Site & Site ID
+::::
+::::{.questionbox-body}
+Are those the same ?
+::::
+:::
+
+
 :::{.callout-note appearance="simple"}
 ## NOTE WGTRUTTA
 ESPG 4326 WGS84 is given as degree decimals like -7.522888 37.663168
@@ -129,6 +142,20 @@ Question ICES
 Do you have a vocabulary of data providers to ICES. Do you need one. Then wouldn't this make adding new data time demanding ? Should we leave this open ?
 ::::
 :::
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ICES answer (Maria)
+::::
+::::{.answerbox-body}
+We are currently using EDMO for data providers: [EDMO](https://vocab.ices.dk/?codetypeguid=a6b6c7f8-c1cd-4bc0-bf9b-0895aa316618)
+Here you can also find the list of [EDMO codes for all institutes](https://edmo.seadatanet.org/search). If you can not find your institution, I think that as an EU country, you should have national managers that can add the new codes. If you do not know who it is, or are referring to a Non-EU institution, you can send an EDMO request to `info@maris.nl`, and CC to `peter@maris.nl`. As minimum, you need to provide the institution name, native name, address, contact info, web-link.
+In combination with the EDMO codes, we have this [list of ‘roles’](https://vocab.ices.dk/?codetypeguid=82ad7124-5482-4319-8870-bc97293dafca) where you can specify whether it is the data provider, custodian or else.
+::::
+:::
+
 
 
 :::{.questionbox}
@@ -376,6 +403,17 @@ QUESTION WGTRUTTA: site and habitats
 ::::
 ::::{.questionbox-body}
 What is the definition of a site. Site is the lowest level in the basin / river /site but seems the basins for the population structuring. Is that right ? I was just wondering about the relation between site and habitat, and whether a site if it's small extended over several habitats.
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: site and habitats
+::::
+::::{.questionbox-body}
+It seems that a population is related to a site. Will there be simple
 ::::
 :::
 
