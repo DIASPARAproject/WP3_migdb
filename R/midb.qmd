@@ -1083,6 +1083,8 @@ when the variable was introduced.
 The version (@tbl-version) contains both reference to the datacall (when data are loaded)
 and to the advice. The advice might still be null at the time the values
 will be entered into the database.
+The version will be handled in inherited tables for WGNAS, WGEEL and WGBAST.
+Here I'm currently entering the WGNAS data.
 
 ```{r }
 #| label: tr_version_ver insert
@@ -1095,20 +1097,27 @@ will be entered into the database.
 
 #sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
 #sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
+ 
+ DBI::dbExecute(con_diaspara_admin, "CREATE TABLE refnas.tr_version_ver() inherits (ref.tr_version_ver);")
 
 tr_version_ver <- data.frame(
 ver_code = paste0("SAL_",2020:2024),
 ver_year = 2020:2024,
 ver_spe_code = "SAL",
 ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
-ver_stockkeylabel =c("ele.2737.nea","sal.27.22–31","sal.neac.all"), # sugested by Hilaire.
+ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
 # TODO FIND other DOI (mail sent to ICES)
-ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version
+ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
 ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
 overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+
+
+# TODO eel and wgbast
+#"ele.2737.nea","sal.27.22–31",
 
 ```
 
@@ -1971,7 +1980,7 @@ dev.off()
 
 res <- dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met;")
 clipr::write_clip(colnames(res))
-
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")
 data.frame(
 met_var= dbGetQuery(con_salmoglob, "SELECT var_mod FROM metadata"),
 met_spe_code = 'NAS',
