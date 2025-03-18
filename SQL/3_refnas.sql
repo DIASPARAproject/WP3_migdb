@@ -34,7 +34,7 @@ GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
 
 DROP TABLE IF EXISTS refnas.tr_metadata_met;
 
-CREATE TABLE refnas.tr_metadata_met(oldversion numeric)
+CREATE TABLE refnas.tr_metadata_met(met_oldversion numeric)
 INHERITS (ref.tr_metadata_met);
 
 
@@ -144,6 +144,10 @@ COMMENT ON COLUMN refnas.tr_metadata_met.met_definition
 IS 'Definition of the metric.';
 COMMENT ON COLUMN refnas.tr_metadata_met.met_deprecated
 IS'Is the variable still used ?';
+COMMENT ON COLUMN refnas.tr_metadata_met.met_oldversion
+IS 'VERSION of the variable used by salmonglob';
 
 GRANT ALL ON refnas.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON refnas.tr_metadata_met TO diaspara_read;
+
+
