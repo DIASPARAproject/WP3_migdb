@@ -1211,7 +1211,8 @@ But it's just in metatdata and we need need in WGBAST
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_dest;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") %>% 
+knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
 
