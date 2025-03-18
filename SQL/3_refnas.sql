@@ -1,8 +1,40 @@
 
+DROP TABLE IF EXISTS refnas.tr_version_ver;
+CREATE TABLE refnas.tr_version_ver() inherits (ref.tr_version_ver);
+
+ALTER TABLE refnas.tr_version_ver ADD CONSTRAINT ver_code_pkey PRIMARY KEY (ver_code);
+ALTER TABLE refnas.tr_version_ver ADD CONSTRAINT  fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
+REFERENCES ref.tr_species_spe(spe_code)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
+COMMENT ON TABLE refnas.tr_version_ver
+IS 'Table of data or variable version, essentially one datacall or advice, inherits ref.tr_version_ver';
+
+COMMENT ON COLUMN .tr_version_ver.ver_version 
+IS 'Version code, stockkey-year-version.';
+COMMENT ON COLUMN refnas.tr_version_ver.ver_year 
+IS 'Year of assessement.';
+COMMENT ON COLUMN refnas.tr_version_ver.ver_spe_code 
+IS 'Species code e.g. 'SAL' references tr_species_spe.';
+COMMENT ON COLUMN ref.tr_version_ver.ver_stockkeylabel 
+IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
+COMMENT ON COLUMN ref.tr_version_ver.ver_datacalldoi 
+IS 'Data call DOI, find a way to retreive that information 
+and update this comment';
+COMMENT ON COLUMN ref.tr_version_ver.ver_version 
+IS 'Version code in original database, eg 2,4 for wgnas, dc_2020 for wgeel.';
+COMMENT ON COLUMN ref.tr_version_ver.ver_description 
+IS 'Description of the data call / version.';
+GRANT ALL ON ref.tr_version_ver TO diaspara_admin;
+GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
+
+
+
+
 
 DROP TABLE IF EXISTS refnas.tr_metadata_met;
 
-CREATE TABLE refnas.tr_metadata_met()
+CREATE TABLE refnas.tr_metadata_met(oldversion numeric)
 INHERITS (ref.tr_metadata_met);
 
 
@@ -29,10 +61,9 @@ ALTER TABLE refnas.tr_metadata_met ADD
 ALTER TABLE refnas.tr_metadata_met ADD
     CONSTRAINT ck_met_wkg_code CHECK (met_wkg_code='WGNAS');
 
-
 ALTER TABLE refnas.tr_metadata_met ADD
   CONSTRAINT fk_met_ver_code FOREIGN KEY (met_ver_code)
-  REFERENCES ref.tr_version_ver(ver_code) 
+  REFERENCES refnas.tr_version_ver(ver_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
@@ -65,12 +96,10 @@ ALTER TABLE refnas.tr_metadata_met ADD
   ON UPDATE CASCADE;
 
 ALTER TABLE refnas.tr_metadata_met ADD
-  CONSTRAINT fk_met_oco_code FOREIGN KEY (met_oco_code)
-  REFERENCES ref.tr_outcome_oco(oco_code)
+  CONSTRAINT fk_met_des_code FOREIGN KEY (met_des_code)
+  REFERENCES ref.tr_destination_des(des_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
-
-
 --  COMMENTS FOR WGNAS
 
 
@@ -100,9 +129,10 @@ COMMENT ON COLUMN refnas.tr_metadata_met.met_location
 IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries.';
 COMMENT ON COLUMN refnas.tr_metadata_met.met_fishery 
 IS 'Description of the fishery.';
-COMMENT ON COLUMN refnas.tr_metadata_met.met_oco_code 
-IS 'Outcome of the fish, e.g. Released (alive), Seal damage,
-Removed (from the environment), refnaserences table tr_outcome_oco.';
+COMMENT ON COLUMN ref.tr_metadata_met.met_des_code 
+IS 'Destination of the fish, e.g. Released (alive), Seal damage,
+Removed (from the environment), references table tr_destination_des., this is currently only used by WGBAST,
+so can be kept NULL';
 COMMENT ON COLUMN refnas.tr_metadata_met.met_uni_code 
 IS 'Unit, refnaserences table tr_unit_uni.';
 COMMENT ON COLUMN refnas.tr_metadata_met.met_cat_code 

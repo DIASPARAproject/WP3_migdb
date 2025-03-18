@@ -1098,10 +1098,10 @@ Here I'm currently entering the WGNAS data.
 #sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
 #sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
  
- DBI::dbExecute(con_diaspara_admin, "CREATE TABLE refnas.tr_version_ver() inherits (ref.tr_version_ver);")
+
 
 tr_version_ver <- data.frame(
-ver_code = paste0("SAL_",2020:2024),
+ver_code = paste0("SAL-",2020:2024,"-1"),
 ver_year = 2020:2024,
 ver_spe_code = "SAL",
 ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
@@ -1964,6 +1964,17 @@ dev.off()
 
 # SCHEMA datnas
 
+
+ <details> 
+
+<summary>Creating the referential for WGNAS , work in progress ...
+</summary>
+```{.sql include="../SQL/3_refnas.sql"}
+```
+</details> 
+[//]: # IS THIS WORKING AS A COMMENT ?
+
+
 ```{r refnas.tr_metadata_met}
 #| echo: TRUE
 #| eval: FALSE
@@ -1976,41 +1987,75 @@ dev.off()
 # TODO create tr_area_are
 # tr_metadata_met
 
+metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
 
-
-res <- dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met;")
+res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.tr_metadata_met;")
 clipr::write_clip(colnames(res))
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")
-data.frame(
-met_var= dbGetQuery(con_salmoglob, "SELECT var_mod FROM metadata"),
-met_spe_code = 'NAS',
-met_wkg_code = 'WGNAS',
-met_ver_code = TODO
-met_oty_code
-met_nim_code
-met_dim
-met_dimname
-met_modelstage
-met_type
-met_location
-met_fishery
-met_mtr_code
-met_oco_code
-met_uni_code
-met_cat_code
-met_definition
-met_deprecated
+
+# unique(metadata$metric)
+# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
+
+tr_metadata_met <-
+    data.frame(
+        met_var = metadata$var_mod,
+        met_spe_code = "NAS",
+        met_wkg_code = "WGNAS",
+        met_ver_code = "SAL-2024-1", # no data on version in metadata
+        met_oty_code = metadata$type_object,
+        met_nim_code = metadata$nimble,
+        met_dim = paste0(
+            "{", metadata$dim1, ",",
+            replace_na(metadata$dim2, 0), ",",
+            replace_na(metadata$dim3, 0), "}"
+        ),
+        met_dimname = paste0(
+            "{'", metadata$name_dim1, "',",
+            ifelse(metadata$name_dim2 == "", "NULL", paste0("'", metadata$name_dim2, "'")), ",",
+            ifelse(metadata$name_dim3 == "", "NULL", paste0("'", metadata$name_dim3, "'")), "}"
+        ),
+        met_modelstage = metadata$model_stage,
+        met_type = metadata$type,
+        met_location = metadata$locations,
+        met_fishery = metadata$fishery,
+        met_mtr_code = case_when(metadata$metric == "Standard Variation" ~ "SD",
+            metadata$metric == "Coefficient of variation" ~ "CV",
+            .default = metadata$metric
+        ),
+        met_oco_code = NA,
+        met_uni_code = NA, # (TODO)
+        met_cat_code = case_when(
+            grepl("Origin distribution in sea catches", metadata$type) ~ "Other",
+            grepl("catch", metadata$type) ~ "Catch",
+            grepl("harvest rates", metadata$type) ~ "Mortality",
+            grepl("Survival rate", metadata$type) ~ "Mortality",
+            grepl("Returns", metadata$type) ~ "Count",
+            grepl("Fecundity", metadata$type) ~ "life trait",
+            grepl("Sex ratio", metadata$type) ~ "life trait",
+            grepl("Maturation rate", metadata$type) ~ "life trait",
+            grepl("Proportion", metadata$type) ~ "Other",
+            grepl("Stocking", metadata$type) ~ "Count",
+            grepl("Smolt age structure", metadata$type) ~ "Life trait",
+            grepl("Time spent", metadata$type) ~ "Life trait",
+            grepl("Conservation limits", metadata$type) ~ "Conservation limit",
+            grepl("Abundance", metadata$type) ~ "Count",
+            grepl("Demographic transitions", metadata$type) ~ "Other",
+            grepl("year", metadata$type) ~ "Other",
+            grepl("Number of SU", metadata$type) ~ "Other",
+            grepl("Prior", metadata$type) ~ "Other",
+            grepl("Number of SU", metadata$type) ~ "Other",
+            .default = NA
+        ),
+        met_deprecated = NA
+    )
+
+res <- dbWriteTable(con_diaspara_admin, "tr_metadata_met_temp", 
+tr_metadata_met, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met SELECT * from 
+tr_metadata_met_temp")
+dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
 
 ```
 
- <details> 
-
-<summary>Creating the referential for WGNAS , work in progress ...
-</summary>
-```{.sql include="../SQL/3_refnas.sql"}
-```
-</details> 
-[//]: # IS THIS WORKING AS A COMMENT ?
 
 # WORK IN PROGRESS....
 
