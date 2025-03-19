@@ -44,7 +44,6 @@ Why would we need another another database ?
 ::::: columns
 ::: {.column .incremental width="50%"}
 -   WGEEL, WGBAST and WGNAS (+WGTRUTTA & WGDIAD) have each developed their own databases.
--   
 -   These need to be maintained in the long term.
 :::
 
@@ -187,11 +186,11 @@ We'll need help to populate this. ::: footer Habitat DB :::
 
 # Group and individual metric DB
 
-DIASPARA WP2 data collection.
+-   DIASPARA WP2 data collection.
 
-Based on our analysis of the three DB's: a common database structure for all species is possible
+-   Based on our analysis of the three DB's: a common database structure for all species is possible
 
-This structure will work on the same referential structure.
+-   This structure will work on the same referential structure.
 
 # Database structure
 
@@ -440,7 +439,7 @@ digraph {
 
 ![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
-## Summary
+## Summary - Benefits for the WG
 
 -   Data calls using Shiny / Datsu
 -   DB manager (at ICES?) can handle all migratory species
