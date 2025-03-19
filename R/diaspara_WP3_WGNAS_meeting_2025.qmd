@@ -437,7 +437,23 @@ digraph {
 
 ## As habitat
 
-![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
+![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments"){#fig-fishingareas_subdivision}
+
+## Example from WGBAST
+
+::::: columns
+::: {.column .incremental width="50%"}
+![Salmon assessment units in the Baltic sea.](images/WGBAST_stocks.jpg "Baltic Sea and salmon assessment units"){#fig-fishingareas_subdivision}
+:::
+
+::: {.column .incremental width="50%"}
+-   Assessment units, genetic origin, available habitat
+-   Connection to marine: (ICES) fishing areas
+-   River names (ICES), river coding
+
+:::
+:::::
+
 
 ## Summary - Benefits for the WG
 
