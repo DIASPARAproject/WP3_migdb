@@ -1,5 +1,5 @@
 
-DROP TABLE IF EXISTS refnas.tr_version_ver;
+DROP TABLE IF EXISTS refnas.tr_version_ver CASCADE;
 CREATE TABLE refnas.tr_version_ver() inherits (ref.tr_version_ver);
 
 ALTER TABLE refnas.tr_version_ver ADD CONSTRAINT ver_code_pkey PRIMARY KEY (ver_code);
@@ -10,26 +10,26 @@ ON UPDATE CASCADE ON DELETE CASCADE;
 COMMENT ON TABLE refnas.tr_version_ver
 IS 'Table of data or variable version, essentially one datacall or advice, inherits ref.tr_version_ver';
 
-COMMENT ON COLUMN .tr_version_ver.ver_version 
+COMMENT ON COLUMN refnas.tr_version_ver.ver_version 
 IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_year 
 IS 'Year of assessement.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_spe_code 
 IS 'Species code e.g. 'SAL' references tr_species_spe.';
-COMMENT ON COLUMN ref.tr_version_ver.ver_stockkeylabel 
+COMMENT ON COLUMN refnas.tr_version_ver.ver_stockkeylabel 
 IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
-COMMENT ON COLUMN ref.tr_version_ver.ver_datacalldoi 
-IS 'Data call DOI, find a way to retreive that information 
+COMMENT ON COLUMN refnas.tr_version_ver.ver_datacalldoi 
+IS 'Data call DOI, find a way to retrieve that information 
 and update this comment';
-COMMENT ON COLUMN ref.tr_version_ver.ver_version 
+COMMENT ON COLUMN refnas.tr_version_ver.ver_version 
 IS 'Version code in original database, eg 2,4 for wgnas, dc_2020 for wgeel.';
-COMMENT ON COLUMN ref.tr_version_ver.ver_description 
+COMMENT ON COLUMN refnas.tr_version_ver.ver_description 
 IS 'Description of the data call / version.';
-GRANT ALL ON ref.tr_version_ver TO diaspara_admin;
-GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
+GRANT ALL ON refnas.tr_version_ver TO diaspara_admin;
+GRANT SELECT ON refnas.tr_version_ver TO diaspara_read;
 
 
-
+-- values inserted in chunk tr_version_ver insert
 
 
 DROP TABLE IF EXISTS refnas.tr_metadata_met;
@@ -144,8 +144,7 @@ COMMENT ON COLUMN refnas.tr_metadata_met.met_definition
 IS 'Definition of the metric.';
 COMMENT ON COLUMN refnas.tr_metadata_met.met_deprecated
 IS'Is the variable still used ?';
-COMMENT ON COLUMN refnas.tr_metadata_met.met_oldversion
-IS 'VERSION of the variable used by salmonglob';
+
 
 GRANT ALL ON refnas.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON refnas.tr_metadata_met TO diaspara_read;

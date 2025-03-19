@@ -157,7 +157,9 @@ INSERT INTO ref.tr_category_cat VALUES (
 INSERT INTO ref.tr_category_cat VALUES (
 'Life trait', 'Life trait parameterized in model, e.g. growth parameter, 
 fecundity rate ...');
-
+INSERT INTO ref.tr_category_cat VALUES (
+'Other', 'Other variable/ parameter used in the model other than the previous categories, 
+origin distribution of catches, proportions, parameters setting the beginning and ending dates....');
 COMMENT ON TABLE ref.tr_category_cat IS 
 'Broad category of data or parameter, catch, effort, biomass, mortality, count ...,
  more details in the table ref.tr_parameter_parm e.g. commercial catch,

@@ -1077,17 +1077,35 @@ versions of the same parameter.
 While currently this information is stored in the `database` and `database_archive` it seems to that metadata should also contain 
 information about historical variables.
 For instance we create a new variable, so we know when it was introduced.
-So I'm moving this from the main table and adding to metadata
+So in addition with the data in the main table I'm adding a version number to metadata, 
 Some variables might get deprecated over time. The year will be the year
-when the variable was introduced.
-The version (@tbl-version) contains both reference to the datacall (when data are loaded)
+when the variable was introduced. All variables in this version of the DB in metadata
+will start with SAL-2024-1, the tr_version_ver should be able to store a version number
+but currently I need to understand to what it corresponds.
+
+Note that the version (@tbl-version) contains both reference to the datacall (when data are loaded)
 and to the advice. The advice might still be null at the time the values
 will be entered into the database.
 The version will be handled in inherited tables for WGNAS, WGEEL and WGBAST.
 Here I'm currently entering the WGNAS data.
 
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question to WNGAS / Etienne
+::::
+::::{.questionbox-body}
+Check that this is correct, original values in the table metadata were 
+"Const_nimble" "Data_nimble"  "Output"       "other"  
+::::
+:::
+
+
+
+
 ```{r }
-#| label: tr_version_ver insert
+#| label: tr_version_ver_insert
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -1131,6 +1149,7 @@ Question to WNGAS / ICES
 * Check there is just one version per year
 * Provide descriptions of the version of the model
 * Questions sent to ICES to provide access to historical DOI
+* Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves Hernvann
 ::::
 :::
 
@@ -1999,11 +2018,16 @@ clipr::write_clip(colnames(res))
 tr_metadata_met <-
     data.frame(
         met_var = metadata$var_mod,
-        met_spe_code = "NAS",
+        met_spe_code = "SAL",
         met_wkg_code = "WGNAS",
         met_ver_code = "SAL-2024-1", # no data on version in metadata
         met_oty_code = metadata$type_object,
-        met_nim_code = metadata$nimble,
+         met_nim_code =  case_when(
+            "Data_nimble"== metadata$nimble ~ "Data",
+            "Const_nimble" == metadata$nimble ~ "Parameter constant",
+            "Output" == metadata$nimble ~ "Output",
+            "other" == metadata$nimble ~ "Other",
+            .default = NA),
         met_dim = paste0(
             "{", metadata$dim1, ",",
             replace_na(metadata$dim2, 0), ",",
@@ -2018,11 +2042,11 @@ tr_metadata_met <-
         met_type = metadata$type,
         met_location = metadata$locations,
         met_fishery = metadata$fishery,
-        met_mtr_code = case_when(metadata$metric == "Standard Variation" ~ "SD",
+        met_mtr_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
             metadata$metric == "Coefficient of variation" ~ "CV",
             .default = metadata$metric
         ),
-        met_oco_code = NA,
+        met_des_code = NA,
         met_uni_code = NA, # (TODO)
         met_cat_code = case_when(
             grepl("Origin distribution in sea catches", metadata$type) ~ "Other",
@@ -2030,9 +2054,9 @@ tr_metadata_met <-
             grepl("harvest rates", metadata$type) ~ "Mortality",
             grepl("Survival rate", metadata$type) ~ "Mortality",
             grepl("Returns", metadata$type) ~ "Count",
-            grepl("Fecundity", metadata$type) ~ "life trait",
-            grepl("Sex ratio", metadata$type) ~ "life trait",
-            grepl("Maturation rate", metadata$type) ~ "life trait",
+            grepl("Fecundity", metadata$type) ~ "Life trait",
+            grepl("Sex ratio", metadata$type) ~ "Life trait",
+            grepl("Maturation rate", metadata$type) ~ "Life trait",
             grepl("Proportion", metadata$type) ~ "Other",
             grepl("Stocking", metadata$type) ~ "Count",
             grepl("Smolt age structure", metadata$type) ~ "Life trait",
@@ -2046,13 +2070,36 @@ tr_metadata_met <-
             grepl("Number of SU", metadata$type) ~ "Other",
             .default = NA
         ),
+        met_definition = metadata$definition,
         met_deprecated = NA
+        
     )
 
 res <- dbWriteTable(con_diaspara_admin, "tr_metadata_met_temp", 
 tr_metadata_met, overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met SELECT * from 
-tr_metadata_met_temp")
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met 
+SELECT 
+ met_var,
+ met_spe_code,
+ met_wkg_code,
+ met_ver_code,
+ upper(substring(met_oty_code from 1 for 1)) ||
+          substring(met_oty_code from 2 for length(met_oty_code)), 
+ met_nim_code,
+ met_dim::INTEGER[], 
+ met_dimname::TEXT[], 
+ met_modelstage, 
+ met_type,
+ met_location, 
+ met_fishery, 
+ met_mtr_code, 
+ met_des_code, 
+ met_uni_code,
+ met_cat_code, 
+ met_definition, 
+ met_deprecated
+FROM tr_metadata_met_temp")
+
 dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
 
 ```
