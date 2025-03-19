@@ -459,6 +459,17 @@ digraph {
 :::
 :::::
 
+## Example from WGBAST : Whole stock level
+
+![Whole stock level WGBAST](images/WGBAST_hierarchy_whole.png "Baltic Sea as a whole stock unit for Salmon"){#fig-WGBAST_hierarchy_whole}
+
+## Example from WGBAST : Subdivision level
+
+![Subdivision level WGBAST](images/WGBAST_hierarchy_subdivision.png "Baltic Sea Marine and Continental split per subdivision"){#fig-WGBAST_hierarchy_subdivision}
+
+## Example from WGBAST : Unit level
+
+![Units level WGBAST](images/WGBAST_hierarchy_units.png "Baltic Sea Marine split per unit"){#fig-WGBAST_hierarchy_unit}
 
 ## Summary - Benefits for the WG
 
