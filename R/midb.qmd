@@ -1337,7 +1337,7 @@ dbExecute(con_diaspara_admin,
   CONSTRAINT uk_are_code UNIQUE (are_code),
   CONSTRAINT fk_area_lev_code FOREIGN KEY (are_lev_code) REFERENCES
   ref.tr_level_lev(lev_code) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT fk_area_wkg_code FOREIGN KEY (are_lev_code) REFERENCES
+  CONSTRAINT fk_area_wkg_code FOREIGN KEY (are_wkg_code) REFERENCES
   ref.tr_icworkinggroup_wkg(wkg_code) ON UPDATE CASCADE ON DELETE CASCADE
 );")
 
