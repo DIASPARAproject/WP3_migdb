@@ -294,7 +294,7 @@ digraph schema {
         tr_version_ver <br align="left"/>
         tr_metric_mtr <br align="left"/>
         tr_category_cat <br align="left"/>
-        tr_outcome_oco <br align="left"/>
+        tr_destination_dest <br align="left"/>
         tr_metadata_met <br align="left"/>
         tr_area_are <br align="left"/> </td> </tr> 
        </table>> 
@@ -439,6 +439,17 @@ Should we use SpecWoRMS or is Aphia OK ?
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER ICES : Maria
+::::
+::::{.answerbox-body}
+For species, we would recommend that you use AphiaIDs (a copy of which is SpecWoRMs). You can also use the FAO ASFIS list, or both, but we would recommend having the AphiaIDs for sure.
+::::
+:::
+
 <details> 
 
 <summary>Creating a referential table for species - code and queries to ICES 
@@ -561,7 +572,8 @@ dbExecute(con_diaspara_admin,
 "CREATE TABLE ref.tr_icworkinggroup_wkg (
 wkg_code TEXT PRIMARY KEY,
 wkg_description TEXT,
-wkg_icesguid uuid
+wkg_icesguid uuid,
+wkg_stockkeylabel TEXT
 );")
 
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_icworkinggroup_wkg 
@@ -580,16 +592,19 @@ temp_tr_icworkinggroup_wkg <- tbl %>%
   filter(wkg_code %in% c("WGEEL", "WGNAS", "WGBAST"))
 temp_tr_icworkinggroup_wkg <- bind_rows(temp_tr_icworkinggroup_wkg,
                                         data.frame(wkg_code="WKTRUTTA"))
-
+temp_tr_icworkinggroup_wkg$wkg_stockkeylabel <-
+  c("sal.27.22–31","ele.2737.nea","sal.neac.all",NA)
 dbWriteTable(con_diaspara_admin, 
              "temp_tr_icworkinggroup_wkg", 
-             temp_tr_icworkinggroup_wkg)
+             temp_tr_icworkinggroup_wkg,
+             overwrite = TRUE)
 
 dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_icworkinggroup_wkg 
           SELECT 
           wkg_code,
           wkg_description,
-          wkg_icesguid::uuid
+          wkg_icesguid::uuid,
+          WKG_stockkeylabel
          FROM temp_tr_icworkinggroup_wkg;") #4
 dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_icworkinggroup_wkg;")
 
@@ -1015,8 +1030,8 @@ To start with, we remove them to reduce complexity and avoid errors.
 
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
- WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in tr_outcome.
- Note this is just a column in tr_metadata_met not in the main table.
+ WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in tr_destination_dest.
+ Note this is just a column in tr_metadata_met not in the main table. Check if it could not simply be removed if the definition of the parameter is clear ?
 :::
 
 
@@ -1062,15 +1077,35 @@ versions of the same parameter.
 While currently this information is stored in the `database` and `database_archive` it seems to that metadata should also contain 
 information about historical variables.
 For instance we create a new variable, so we know when it was introduced.
-So I'm moving this from the main table and adding to metadata
+So in addition with the data in the main table I'm adding a version number to metadata, 
 Some variables might get deprecated over time. The year will be the year
-when the variable was introduced.
-The version (@tbl-version) contains both reference to the datacall (when data are loaded)
+when the variable was introduced. All variables in this version of the DB in metadata
+will start with SAL-2024-1, the tr_version_ver should be able to store a version number
+but currently I need to understand to what it corresponds.
+
+Note that the version (@tbl-version) contains both reference to the datacall (when data are loaded)
 and to the advice. The advice might still be null at the time the values
 will be entered into the database.
+The version will be handled in inherited tables for WGNAS, WGEEL and WGBAST.
+Here I'm currently entering the WGNAS data.
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+Question to WNGAS / Etienne
+::::
+::::{.questionbox-body}
+Check that this is correct, original values in the table metadata were 
+"Const_nimble" "Data_nimble"  "Output"       "other"  
+::::
+:::
+
+
+
 
 ```{r }
-#| label: tr_version_ver insert
+#| label: tr_version_ver_insert
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -1080,19 +1115,27 @@ will be entered into the database.
 
 #sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
 #sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
+ 
+
 
 tr_version_ver <- data.frame(
-ver_code = paste0("SAL_",2020:2024),
+ver_code = paste0("SAL-",2020:2024,"-1"),
 ver_year = 2020:2024,
 ver_spe_code = "SAL",
 ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
 # TODO FIND other DOI (mail sent to ICES)
-ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version
+ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
 ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
 overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+
+
+# TODO eel and wgbast
+#"ele.2737.nea","sal.27.22–31",
 
 ```
 
@@ -1106,6 +1149,7 @@ Question to WNGAS / ICES
 * Check there is just one version per year
 * Provide descriptions of the version of the model
 * Questions sent to ICES to provide access to historical DOI
+* Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves Hernvann
 ::::
 :::
 
@@ -1172,7 +1216,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")%>% knitr::kable()
 
 ```
 
-## Outcome (tr_outcome_oco)
+## Destination (tr_destination_dest)
 
 
 A bit cumbersome this table, the idea is "what becomes of this fish". 
@@ -1180,15 +1224,22 @@ Different types of landings.
 But it's just in metatdata and we need need in WGBAST
 
 ```{r}
-#| label: tbl-outcome
+#| label: tbl-destination
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_outcome_oco;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") %>% 
+knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ``` 
+
+:::{.callout-note appearance="simple"}
+## NOTE DIASPARA
+Here Hilaire say that naming the table "outcome" wasn't ideal so I've followed his suggestion
+:::
+
 
 ## Metadata (tr_metadata_met)
 
@@ -1213,7 +1264,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable()
 
 Here I'm trying to build something consistent. I guess only the final result 
 will tell but I have to start somewhere ...
-A good idea to simplify the structure of the db is to get together marine
+A good idea to simploify the structure of the db is to get together marine
 and continental areas. 
 
 ### Continental areas
@@ -1239,15 +1290,22 @@ dbExecute(con_diaspara_admin,
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
-  'Stock',
-  'This is the highest geographic level for assessement, stock level.'  
+  'Panpopulation',
+  'This is the highest geographic level for assessement.'  
   );")
 
 dbExecute(con_diaspara_admin,
   "INSERT INTO ref.tr_level_lev VALUES( 
   'Complex',
-  'Corresponds to large sublevels at which the stock is assessed, e.g.
+  'Corresponds to large sublevels at which the Panpopulation is assessed, e.g.
   NAC NEC for WGNAST, Gulf of Bothnia for WGBAST, Mediterranean for WGEEL.'  
+  );")
+
+  dbExecute(con_diaspara_admin,
+  "INSERT INTO ref.tr_level_lev VALUES( 
+  'Stock',
+  'Correspond to stock units for which advices are provided in ICES, this can be the level of the panpopulation,
+  or another level e.g. .'  
   );")
 
 dbExecute(con_diaspara_admin,
@@ -1363,6 +1421,12 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_level_lev;")%>% knitr::kable() %>
 
 ``` 
 
+:::{.callout-note appearance="simple"}
+## Note from Hilaire
+The working groups might change over time, referencing a working group there is probably not the best.
+Cédric : Added stockkeylabel, this table is necessary to aggregate data (species is not enough).
+:::
+
 
 
 ```{r}
@@ -1386,72 +1450,79 @@ digraph {
     newrank=true;
 
     subgraph clusterA {
-      label = Stock
+      label = Panpopulation
       style=full
       color=black
       center=true
 
       subgraph clusterB {
         label = Complex
-        style=full
+        style=dashed
         color=black
         center=true
-    
-        subgraph clusterC {
-          label = Country
-          style=dashed
-          color=firebrick
-          fontcolor=firebrick
-          center=true
 
-          subgraph clusterD {
-            label = Assessment_unit
-            style=full
-            color=green 
-            fontcolor=green
-            
-              subgraph clusterE {
-                label = Regional;
-                style=dashed
-                color=green4
-                fontcolor=green4
-                
-                  subgraph clusterF {
-                    label = River
+              subgraph clusterC {
+              label = Stock
+              style=dashed
+              color=black
+              center=true
+    
+                subgraph clusterD {
+                  label = Country
+                  style=dashed
+                  color=firebrick
+                  fontcolor=firebrick
+                  center=true
+
+                  subgraph clusterE {
+                    label = Assessment_unit
                     style=full
-                    color=green3
-                    fontcolor=green3
+                    color=green 
+                    fontcolor=green
                     
-                        subgraph clusterG {
-                                label = River_section
-                                style=full
-                                color=green2
-                                fontcolor=green2
-                                    section [
-                                        label=data,
-                                        shape=box, 
-                                        style =invis
-                                        ]
-                        }
+                      subgraph clusterF {
+                        label = Regional;
+                        style=dashed
+                        color=green4
+                        fontcolor=green4
+                        
+                          subgraph clusterG {
+                            label = River
+                            style=dashed
+                            color=green3
+                            fontcolor=green3
+                            
+                                subgraph clusterH {
+                                        label = River_section
+                                        style=dashed
+                                        color=green2
+                                        fontcolor=green2
+                                            section [
+                                                label=data,
+                                                shape=box, 
+                                                style =invis
+                                                ]
+                                }
+                          }
+                      }
                   }
+                }
               }
-          }
-        }
         subgraph clusterZ{
           label=Major
-          style=full
+          style=dashed
           color=royalblue4
           fontcolor=royalblue4
           
                 subgraph clusterY{
                     label=Subareas
-                    style=full
+                    style=dashed
                     color=royalblue3
                     fontcolor=royalblue3
                     
                         subgraph clusterX{
                             label=Division
-                            style=full
+                            style=dashed
                             color=royalblue2
                             fontcolor=royalblue2
                             
@@ -1463,7 +1534,7 @@ digraph {
                                     
                                        subgraph clusterV{
                                            label=Unit
-                                            style=full
+                                            style=dashed
                                             color=deepskyblue
                                             fontcolor=deepskyblue
                                             
@@ -1913,45 +1984,6 @@ dev.off()
 
 # SCHEMA datnas
 
-```{r refnas.tr_metadata_met}
-#| echo: TRUE
-#| eval: FALSE
-#| warning: FALSE
-#| message: FALSE
-#| code-fold: TRUE
-#| code-summary: Code to import to refnas work in progress ...
-
-# TODO create tr_area_are
-# tr_metadata_met
-
-
-
-
-
-res <- dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met;")
-clipr::write_clip(colnames(res))
-
-data.frame(
-met_var= dbGetQuery(con_salmoglob, "SELECT var_mod FROM metadata"),
-met_spe_code = 'NAS',
-met_wkg_code = 'WGNAS',
-met_ver_code = TODO
-met_oty_code
-met_nim_code
-met_dim
-met_dimname
-met_modelstage
-met_type
-met_location
-met_fishery
-met_mtr_code
-met_oco_code
-met_uni_code
-met_cat_code
-met_definition
-met_deprecated
-
-```
 
  <details> 
 
@@ -1962,6 +1994,117 @@ met_deprecated
 </details> 
 [//]: # IS THIS WORKING AS A COMMENT ?
 
+
+```{r refnas.tr_metadata_met}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to refnas work in progress ...
+
+
+# TODO create tr_area_are
+# tr_metadata_met
+
+metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.tr_metadata_met;")
+clipr::write_clip(colnames(res))
+
+# unique(metadata$metric)
+# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
+
+tr_metadata_met <-
+    data.frame(
+        met_var = metadata$var_mod,
+        met_spe_code = "SAL",
+        met_wkg_code = "WGNAS",
+        met_ver_code = "SAL-2024-1", # no data on version in metadata
+        met_oty_code = metadata$type_object,
+         met_nim_code =  case_when(
+            "Data_nimble"== metadata$nimble ~ "Data",
+            "Const_nimble" == metadata$nimble ~ "Parameter constant",
+            "Output" == metadata$nimble ~ "Output",
+            "other" == metadata$nimble ~ "Other",
+            .default = NA),
+        met_dim = paste0(
+            "{", metadata$dim1, ",",
+            replace_na(metadata$dim2, 0), ",",
+            replace_na(metadata$dim3, 0), "}"
+        ),
+        met_dimname = paste0(
+            "{'", metadata$name_dim1, "',",
+            ifelse(metadata$name_dim2 == "", "NULL", paste0("'", metadata$name_dim2, "'")), ",",
+            ifelse(metadata$name_dim3 == "", "NULL", paste0("'", metadata$name_dim3, "'")), "}"
+        ),
+        met_modelstage = metadata$model_stage,
+        met_type = metadata$type,
+        met_location = metadata$locations,
+        met_fishery = metadata$fishery,
+        met_mtr_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
+            metadata$metric == "Coefficient of variation" ~ "CV",
+            .default = metadata$metric
+        ),
+        met_des_code = NA,
+        met_uni_code = NA, # (TODO)
+        met_cat_code = case_when(
+            grepl("Origin distribution in sea catches", metadata$type) ~ "Other",
+            grepl("catch", metadata$type) ~ "Catch",
+            grepl("harvest rates", metadata$type) ~ "Mortality",
+            grepl("Survival rate", metadata$type) ~ "Mortality",
+            grepl("Returns", metadata$type) ~ "Count",
+            grepl("Fecundity", metadata$type) ~ "Life trait",
+            grepl("Sex ratio", metadata$type) ~ "Life trait",
+            grepl("Maturation rate", metadata$type) ~ "Life trait",
+            grepl("Proportion", metadata$type) ~ "Other",
+            grepl("Stocking", metadata$type) ~ "Count",
+            grepl("Smolt age structure", metadata$type) ~ "Life trait",
+            grepl("Time spent", metadata$type) ~ "Life trait",
+            grepl("Conservation limits", metadata$type) ~ "Conservation limit",
+            grepl("Abundance", metadata$type) ~ "Count",
+            grepl("Demographic transitions", metadata$type) ~ "Other",
+            grepl("year", metadata$type) ~ "Other",
+            grepl("Number of SU", metadata$type) ~ "Other",
+            grepl("Prior", metadata$type) ~ "Other",
+            grepl("Number of SU", metadata$type) ~ "Other",
+            .default = NA
+        ),
+        met_definition = metadata$definition,
+        met_deprecated = NA
+        
+    )
+
+res <- dbWriteTable(con_diaspara_admin, "tr_metadata_met_temp", 
+tr_metadata_met, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met 
+SELECT 
+ met_var,
+ met_spe_code,
+ met_wkg_code,
+ met_ver_code,
+ upper(substring(met_oty_code from 1 for 1)) ||
+          substring(met_oty_code from 2 for length(met_oty_code)), 
+ met_nim_code,
+ met_dim::INTEGER[], 
+ met_dimname::TEXT[], 
+ met_modelstage, 
+ met_type,
+ met_location, 
+ met_fishery, 
+ met_mtr_code, 
+ met_des_code, 
+ met_uni_code,
+ met_cat_code, 
+ met_definition, 
+ met_deprecated
+FROM tr_metadata_met_temp")
+
+dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
+
+```
+
+
 # WORK IN PROGRESS....
 
 This document is still in construction
@@ -1970,5 +2113,12 @@ This document is still in construction
 # Acknowledgements
 
 * Data source : EuroGeographics and UN-FAO for countries
+
+
+
+
+
+
+
 
 

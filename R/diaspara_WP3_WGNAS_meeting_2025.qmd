@@ -1,0 +1,464 @@
+---
+title: "Diaspara WP3 & WGNAS meeting 2025"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo.png
+footer: "DIASPARA WP3"
+format: 
+  revealjs :
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+# INTRODUCTION
+
+-   Cédric Briand
+-   Jules Oliviéro
+-   Jani Helminen
+
+# INTRODUCTION
+
+Why would we need another another database ?
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   WGEEL, WGBAST and WGNAS (+WGTRUTTA & WGDIAD) have each developed their own databases.
+-   These need to be maintained in the long term.
+:::
+
+::: {.column .incremental width="50%"}
+-   Integrating each database in ICES databases would take a lot of resources.
+
+-   Use of TAF (Transparent assessment Framework) & FAIR (Findability, Accessibility, Interoperability, Reusability)
+
+-   Use of DATSU (quality insurance and checking procedures for data call)
+:::
+:::::
+
+# OBJECTIVES
+
+We intend to build a common database structure (same referentials several DB to store)
+
+-   Data from models at the scale of the management unit (WGEEL, WGNAS, WGBAST)
+
+-   Continental habitat in support of ICES (e.g. landings in continental habitats) (WGEEL, WGNAS, WGBAST, WGTRUTTA)
+
+-   DB for dams/migration obstacles
+
+-   Individual and group metrics, series of data
+
+-   DB of Electrofishing
+
+# General structure of the DB
+
+```{dot}
+digraph DatabaseRelations {
+    node [shape=cylinder, style=filled];
+
+    ref [fillcolor=lightblue, shape = square];
+    RDBES [fillcolor=lightgreen];
+    Model_DB [fillcolor=lightgreen];
+    Metrics_Series [fillcolor=lightgreen];
+    E_fishing [fillcolor=lightyellow];
+    Dam_DB [fillcolor=lightyellow];
+    Regional_models[fillcolor=pink, shape = rectangle]
+    RDBES  -> ref;
+    Model_DB  -> ref;
+    Metrics_Series -> ref;
+    E_fishing -> Regional_models [style=dashed, label="model", color =purple];
+    Dam_DB -> Regional_models  [style=dashed, label="model", color =purple];
+    Regional_models ->  Model_DB [style=dashed, label="TAF", color =tan]
+    Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
+}
+```
+
+## Habitat DB
+
+::::: columns
+::: {.column .incremental width="30%"}
+-   Following the work by Andrew French
+-   Using ICES vocabulary
+-   Freshwater habitat in ICES work: to be available for all species
+-   Combined with migration obstacles
+-   Connected to marine areas, e.g. ICES areas
+:::
+
+::: {.column .incremental width="70%"}
+![](images/salmon_db_andrew.png){.absolute top="60" right="-30" height="400"}
+:::
+:::::
+
+
+## Habitat DB
+
+Format : Geoparquet, Postgis schema
+
+We intend to deliver several releases (ZENODO ?)
+
+```{dot}
+digraph {
+    //rankdir=TB; // Top-to-bottom orientation
+    compound=true;
+    newrank=true;
+    A [label="2001", shape=box];
+    B [label="2002", shape=box];
+    C [label="2003", shape=box];
+    D [label="FR", shape=ellipse];
+    E [label="ES", shape=ellipse];
+    F [label="SE", shape=ellipse];
+    G [label="CCM | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="Ecrins | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    L [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+
+    subgraph clusterA {
+      label = "CCM, HydroAtlas, Ecrins, Regions";
+      style=dashed;
+      color=black;
+      A;
+      B;
+      C;
+    }
+
+    subgraph clusterB {
+      label = "Country or regions layer";
+      style=dashed;
+      color=black;
+      D;
+      E;
+      F;
+    }
+
+    
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
+    E -> G,H [ltail=clusterB];
+
+    I [label="Salmon River / Stock units", shape=box];
+    J [label="Fishing areas", shape=box];
+    K [label="EMU (Eel Managment Unit)", shape=box];
+
+
+    {rank=same;D;E;F;}
+    {rank=same;A;B;C;I;J;K}
+    {rank=same;G;H;L;} 
+
+    subgraph clusterC {
+      label = "";
+      style=dashed;
+      color=black;
+      I;
+      J;
+      K;
+    }
+
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
+    //L -> H [style=invis]
+}
+
+```
+
+
+## WGNAS {.smaller}
+
+![](images\phylogeographic_structuring_salmon.png){.r-stretch}
+
+We'll need help to populate this. ::: footer Habitat DB :::
+
+# Group and individual metric DB
+
+-   DIASPARA WP2 data collection.
+
+-   Based on our analysis of the three DB's: a common database structure for all species is possible
+
+-   This structure will work on the same referential structure.
+
+# Database structure
+
+```{dot}
+//| label: fig-schema_diaspara
+//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];
+	ref [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref</b> </td> </tr>
+       <tr> <td align="left">
+        tr_species_spe <br align="left"/>
+        tr_country_cou <br align="left"/>
+        tr_icworkinggroup_wkg <br align="left"/>
+        tr_version_ver <br align="left"/>
+        tr_metric_mtr <br align="left"/>
+        tr_category_cat <br align="left"/>
+        tr_destination_dest <br align="left"/>
+        tr_metadata_met <br align="left"/>
+        tr_area_are <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = cylinder]; 
+    refeel [fillcolor="pink"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refeel</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    dateel [fillcolor="pink"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dateel</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    refbast [fillcolor="purple"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refbast</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    datbast [fillcolor="purple"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>datbast</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    refnas [fillcolor="limegreen"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refnas</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    datnas [fillcolor="limegreen"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>datnas</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];   
+    reftrutta [fillcolor="tan1"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>reftrutta</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    dattrutta [fillcolor="tan1"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dattrutta</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];   
+    reftrutta;
+    refwgeel;  # this in an archive
+    
+
+	refeel -> ref 
+	refbast -> ref;
+	refnas -> ref 
+  reftrutta -> ref
+  dateel -> ref
+  datnas -> ref
+  datbast -> ref
+  dattrutta -> ref
+  dateel -> refeel
+  datnas -> refnas
+  dattrutta -> reftrutta
+  datbast  -> refbast
+
+  refwgeel -> ref [style="dashed"]
+  refwgeel -> refeel [style="dashed"]
+  salmoglob -> ref [style="dashed"]
+  salmoglob -> refnas [style="dashed"]
+
+}
+```
+
+# Database structure
+
+```{dot}
+//| label: fig-area_hierarchy
+//| fig-cap: The nested structure layed out in table tr_area_area, dotted box indicate that the level is optional. This table will be created specifically for each group.
+
+
+digraph {
+    compound=true;
+    newrank=true;
+
+    subgraph clusterA {
+      label = Panpopulation
+      style=full
+      color=black
+      center=true
+
+      subgraph clusterB {
+        label = Complex
+        style=dashed
+        color=black
+        center=true
+
+              subgraph clusterC {
+              label = Stock
+              style=dashed
+              color=black
+              center=true
+    
+                subgraph clusterD {
+                  label = Country
+                  style=dashed
+                  color=firebrick
+                  fontcolor=firebrick
+                  center=true
+
+                  subgraph clusterE {
+                    label = Assessment_unit
+                    style=full
+                    color=green 
+                    fontcolor=green
+                    
+                      subgraph clusterF {
+                        label = Regional;
+                        style=dashed
+                        color=green4
+                        fontcolor=green4
+                        
+                          subgraph clusterG {
+                            label = River
+                            style=dashed
+                            color=green3
+                            fontcolor=green3
+                            
+                                subgraph clusterH {
+                                        label = River_section
+                                        style=dashed
+                                        color=green2
+                                        fontcolor=green2
+                                            section [
+                                                label=data,
+                                                shape=box, 
+                                                style =invis
+                                                ]
+                                }
+                          }
+                      }
+                  }
+                }
+              }
+        subgraph clusterZ{
+          label=Major
+          style=dashed
+          color=royalblue4
+          fontcolor=royalblue4
+          
+                subgraph clusterY{
+                    label=Subareas
+                    style=dashed
+                    color=royalblue3
+                    fontcolor=royalblue3
+                    
+                        subgraph clusterX{
+                            label=Division
+                            style=dashed
+                            color=royalblue2
+                            fontcolor=royalblue2
+                            
+                                subgraph clusterW{
+                                    label=Sudivision
+                                    style=full
+                                    color=royalblue1
+                                    fontcolor=royalblue1
+                                    
+                                       subgraph clusterV{
+                                           label=Unit
+                                            style=dashed
+                                            color=deepskyblue
+                                            fontcolor=deepskyblue
+                                            
+                                                Fishing [
+                                                    style=invis]
+                                       }
+                                }
+                        }
+                }            
+        }          
+      }}}
+```
+
+## Major
+
+![Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
+
+## Division
+
+![Map of ICES fishing areas at division level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_division.png "A planisphere with ocean fishing division"){#fig-fishingareas_division}
+
+## Subdivision
+
+![Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
+
+## As habitat
+
+![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments"){#fig-fishingareas_subdivision}
+
+## Example from WGBAST
+
+::::: columns
+::: {.column .incremental width="50%"}
+![Salmon assessment units in the Baltic sea.](images/WGBAST_stocks.jpg "Baltic Sea and salmon assessment units"){#fig-fishingareas_subdivision}
+:::
+
+::: {.column .incremental width="50%"}
+-   Assessment units, genetic origin, available habitat
+-   Connection to marine: (ICES) fishing areas
+-   River names (ICES), river coding
+
+:::
+:::::
+
+
+## Summary - Benefits for the WG
+
+-   Data calls using Shiny / Datsu
+-   DB manager (at ICES?) can handle all migratory species
+-   People moving between WGs know the data & Inter-WG Collaboration.
+-   Direct access to WGNASS -\> modeling
+-   Potential for spatial models: available habitat, scenarios, etc.
