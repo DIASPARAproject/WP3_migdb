@@ -1,6 +1,7 @@
 ---
-title: "Diaspara_WGNAS_meeting_2025"
+title: "Diaspara WP3 & WGNAS meeting 2025"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
 filters:
   - quarto-kroki
   - speakernotes
@@ -32,15 +33,29 @@ editor: visual
 
 # INTRODUCTION
 
+-   Cédric Briand
+-   Jules Oliviéro
+-   Jani Helminen
+
+# INTRODUCTION
+
 Why would we need another another database ?
 
-WGEEL, WGBAST and WGNAS have developped their own database. These need to be maintained in the long term.
+::::: columns
+::: {.column .incremental width="50%"}
+-   WGEEL, WGBAST and WGNAS (+WGTRUTTA & WGDIAD) have each developed their own databases.
+-   
+-   These need to be maintained in the long term.
+:::
 
-Use of DATSU (quality insurance and checking procedures for data call)
+::: {.column .incremental width="50%"}
+-   Integrating each database in ICES databases would take a lot of resources.
 
-Use of TAF (Transparent assessment Framework)
+-   Use of TAF (Transparent assessment Framework) & FAIR (Findability, Accessibility, Interoperability, Reusability)
 
-Integrating each database in ICES databases would take a lot of ressources.
+-   Use of DATSU (quality insurance and checking procedures for data call)
+:::
+:::::
 
 # OBJECTIVES
 
@@ -50,11 +65,11 @@ We intend to build a common database structure (same referentials several DB to 
 
 -   Continental habitat in support of ICES (e.g. landings in continental habitats) (WGEEL, WGNAS, WGBAST, WGTRUTTA)
 
-- Individual and group metrics, series of data
+-   DB for dams/migration obstacles
 
-- DB for dams
+-   Individual and group metrics, series of data
 
-- DB of Electrofishing
+-   DB of Electrofishing
 
 # General structure of the DB
 
@@ -78,13 +93,23 @@ digraph DatabaseRelations {
     Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
 }
 ```
-## Habitat DB
-
-![](images/salmon_db_andrew.png){.absolute top="-40" left="-30" height="700"}
 
 ## Habitat DB
 
--   A dataset
+::::: columns
+::: {.column .incremental width="30%"}
+-   Following the work by Andrew French
+-   Using ICES vocabulary
+-   Freshwater habitat in ICES work: to be available for all species
+-   Combined with migration obstacles
+-   Connected to marine areas, e.g. ICES areas
+:::
+
+::: {.column .incremental width="70%"}
+![](images/salmon_db_andrew.png){.absolute top="60" right="-30" height="400"}
+:::
+:::::
+
 
 ## Habitat DB
 
@@ -150,32 +175,23 @@ digraph {
     K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
     //L -> H [style=invis]
 }
+
 ```
-
-## Habitat DB
-
-
 
 
 ## WGNAS {.smaller}
 
 ![](images\phylogeographic_structuring_salmon.png){.r-stretch}
 
-We'll need help to populate this.
-::: footer
-Habitat DB
-:::
+We'll need help to populate this. ::: footer Habitat DB :::
 
 # Group and individual metric DB
 
-
 DIASPARA WP2 data collection.
 
-We should be able to provide a common database structure for all species
+Based on our analysis of the three DB's: a common database structure for all species is possible
 
 This structure will work on the same referential structure.
-
-
 
 # Database structure
 
@@ -408,12 +424,26 @@ digraph {
       }}}
 ```
 
-## Major 
-![ Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
+## Major
+
+![Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
 
 ## Division
+
 ![Map of ICES fishing areas at division level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_division.png "A planisphere with ocean fishing division"){#fig-fishingareas_division}
 
 ## Subdivision
+
 ![Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
+## As habitat
+
+![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
+
+## Summary
+
+-   Data calls using Shiny / Datsu
+-   DB manager (at ICES?) can handle all migratory species
+-   People moving between WGs know the data & Inter-WG Collaboration.
+-   Direct access to WGNASS -\> modeling
+-   Potential for spatial models: available habitat, scenarios, etc.
