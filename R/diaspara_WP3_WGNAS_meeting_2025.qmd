@@ -182,7 +182,12 @@ digraph {
 
 ![](images\phylogeographic_structuring_salmon.png){.r-stretch}
 
-We'll need help to populate this. ::: footer Habitat DB :::
+We'll need help to populate this. 
+
+::: footer 
+
+
+:::
 
 # Group and individual metric DB
 
@@ -459,6 +464,8 @@ digraph {
 
 -   Data calls using Shiny / Datsu
 -   DB manager (at ICES?) can handle all migratory species
--   People moving between WGs know the data & Inter-WG Collaboration.
--   Direct access to WGNASS -\> modeling
+-   People moving between WGs know the data & Inter-WG Collaboration
+-   Direct access to WGNAS -\> modeling
 -   Potential for spatial models: available habitat, scenarios, etc.
+-   One shiny instead of two / three
+-   Work with ICES tools (DATSU, DB, data calls)
