@@ -33,9 +33,13 @@ editor: visual
 
 # INTRODUCTION
 
--   Cédric Briand
--   Jules Oliviéro
--   Jani Helminen
+-   Cédric Briand (WP3)
+-   Jules Oliviéro (WP3)
+-   Jani Helminen (WP3)
+-   Viktor Thunell (WP2)
+-   Rebecca Witlock (WP2)
+-   Etienne Rivot (WP4)
+-   Rob Van Gemert (WP4)
 
 # INTRODUCTION
 
@@ -43,16 +47,18 @@ Why would we need another another database ?
 
 ::::: columns
 ::: {.column .incremental width="50%"}
--   WGEEL, WGBAST and WGNAS (+WGTRUTTA & WGDIAD) have each developed their own databases.
+-   WGEEL, WGBAST and WGNAS (+WGTRUTTA) have each developed their own databases.
 -   These need to be maintained in the long term.
 :::
 
 ::: {.column .incremental width="50%"}
 -   Integrating each database in ICES databases would take a lot of resources.
 
--   Use of TAF (Transparent assessment Framework) & FAIR (Findability, Accessibility, Interoperability, Reusability)
+- FAIR (Findability, Accessibility, Interoperability, Reusability).
 
--   Use of DATSU (quality insurance and checking procedures for data call)
+-  Use of TAF (Transparent assessment Framework).
+
+-  Use of DATSU (quality insurance and checking procedures for data call).
 :::
 :::::
 
@@ -64,9 +70,9 @@ We intend to build a common database structure (same referentials several DB to 
 
 -   Continental habitat in support of ICES (e.g. landings in continental habitats) (WGEEL, WGNAS, WGBAST, WGTRUTTA)
 
--   DB for dams/migration obstacles
-
 -   Individual and group metrics, series of data
+
+-   DB for dams/migration obstacles
 
 -   DB of Electrofishing
 
@@ -93,85 +99,8 @@ digraph DatabaseRelations {
 }
 ```
 
-```{dot}
-digraph {
-    //rankdir=TB; // Top-to-bottom orientation
-    compound=true;
-    newrank=true;
-    A [label="2001", shape=box];
-    B [label="2002", shape=box];
-    C [label="2003", shape=box];
-    D [label="FR", shape=ellipse];
-    E [label="ES", shape=ellipse];
-    F [label="SE", shape=ellipse];
-    G [label="CCM | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-    H [label="Ecrins | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-    L [label="NAT | Topo | Habitat | Eel | Salmon | Trout", shape=box];
 
-    subgraph clusterA {
-      label = "CCM, HydroAtlas, Ecrins, Regions";
-      style=dashed;
-      color=black;
-      A;
-      B;
-      C;
-    }
-
-    subgraph clusterB {
-      label = "Country or regions layer";
-      style=dashed;
-      color=black;
-      D;
-      E;
-      F;
-    }
-
-    
-    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
-    E -> G,H [ltail=clusterB];
-
-    I [label="Salmon River / Stock units", shape=box];
-    J [label="Fishing areas", shape=box];
-    K [label="EMU (Eel Managment Unit)", shape=box];
-
-
-    {rank=same;D;E;F;}
-    {rank=same;A;B;C;I;J;K}
-    {rank=same;G;H;L;} 
-
-    subgraph clusterC {
-      label = "";
-      style=dashed;
-      color=black;
-      I;
-      J;
-      K;
-    }
-
-    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
-    //L -> H [style=invis]
-}
-
-```
-
-## WGNAS {.smaller}
-
-![](images\phylogeographic_structuring_salmon.png){.r-stretch}
-
-We'll need help to populate this.
-
-::: footer
-:::
-
-# Group and individual metric DB
-
--   DIASPARA WP2 data collection.
-
--   Based on our analysis of the three DB's: a common database structure for all species is possible
-
--   This structure will work on the same referential structure.
-
-# Database structure
+# DATA AND REFERENTIALS
 
 ```{dot}
 //| label: fig-schema_diaspara
@@ -292,6 +221,110 @@ digraph schema {
 }
 ```
 
+
+
+
+# MODEL DB  {.smaller}
+
+The database structure could be simplified to the following structure
+
+ ![](images\SAM_database.png)
+
+::: footer
+
+[Report on DB build](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/rep4.html)
+
+:::
+
+# Group and individual metric DB
+
+-   DIASPARA WP2 data collection.
+
+-   Based on our analysis of the three DB's: a common database structure for all species is possible
+
+-   This structure will work on the same referential structure.
+
+![Excel file for the DB](images\Viktor.png "An excel template to import data to WP2")
+
+
+# GENERAL STRUCTURE OF THE HABITAT DB
+
+```{dot}
+digraph {
+    //rankdir=TB; // Top-to-bottom orientation
+    compound=true;
+    newrank=true;
+    A [label="Celtic Seas", shape=box];
+    B [label="Greater North Sea", shape=box];
+    C [label="Baltic", shape=box];
+    D [label="FR", shape=ellipse];
+    E [label="ES", shape=ellipse];
+    F [label="SE", shape=ellipse];
+    G [label="Hydroshed | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="EU-Hydro | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    L [label="National | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+
+    subgraph clusterA {
+      label = "Hydroshed, EU-Hydro";
+      style=dashed;
+      color=black;
+      A;
+      B;
+      C;
+    }
+
+    subgraph clusterB {
+      label = "Country, regions, EMU, ICES divisions, Stock Units";
+      style=dashed;
+      color=black;
+      D;
+      E;
+      F;
+    }
+
+    
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
+    E -> G,H [ltail=clusterB];
+
+    I [label="Salmon River / Stock units", shape=box];
+    J [label="Fishing areas", shape=box];
+    K [label="EMU (Eel Managment Unit)", shape=box];
+
+
+    {rank=same;D;E;F;}
+    {rank=same;A;B;C;I;J;K}
+    {rank=same;G;H;L;} 
+
+    subgraph clusterC {
+      label = "";
+      style=dashed;
+      color=black;
+      I;
+      J;
+      K;
+    }
+
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
+    //L -> H [style=invis]
+}
+
+```
+
+## Splitting per ICES Ecoregion
+
+![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
+
+
+## WGNAS {.smaller}
+
+![](images\phylogeographic_structuring_salmon.png){.r-stretch}
+
+We'll need help to populate this.
+
+::: footer
+:::
+
+
 # Database structure
 
 ```{dot}
@@ -402,30 +435,6 @@ digraph {
       }}}
 ```
 
-## Habitat DB
-
-::::: columns
-::: {.column .incremental width="30%"}
--   Following the work by Andrew French
--   Using ICES vocabulary
--   Freshwater habitat in ICES work: to be available for all species
--   Combined with migration obstacles
--   Connected to marine areas, e.g. ICES areas
-:::
-
-::: {.column .incremental width="70%"}
-![](images/salmon_db_andrew.png){.absolute top="60" right="-30" height="400"}
-:::
-:::::
-
-## Habitat DB
-
--   Format : Geoparquet, Postgis schema
--   Hydroatlas. Version 2 is coming!
--   EU-Hydro more information but smaller coverage
--   Idea is to have access to both
--   We intend to deliver several releases (ZENODO)
-
 ## Major
 
 ![Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
@@ -438,9 +447,29 @@ digraph {
 
 ![Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
-## As habitat
+# Habitat DB (EU-Hydro)
 
-![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
+::::: columns
+::: {.column .incremental width="30%"}
+- We will integrate the work by Andrew French
+- Work in progress
+- Also used as a reference for WGTRUTTA (tools developed by ICES)
+:::
+
+::: {.column .incremental width="70%"}
+![](images/salmon_db_andrew.png){.absolute top="60" right="-30" height="400"}
+:::
+:::::
+
+## Habitat DB
+
+-   Format : Geoparquet, Postgis schema
+-   Hydroatlas. Version 2 is coming!
+-   EU-Hydro different information but smaller coverage
+-   The idea is to have access to both
+-   We intend to deliver several releases (ZENODO) first one coming in april
+
+
 
 ## Example from WGBAST
 
@@ -475,19 +504,6 @@ digraph {
 ## Examples of use
 
 ![Screenshot](images/jani_screenshot.jpg "Qgis screenshot")
-
-## EDA model
-
-::::: columns
-::: {.column .incremental width="50%"}
-![Screenshot](images/jules_screenshot.png "Dbeaver screenshot")
-:::
-
-::: {.column .incremental width="50%"}
--   Spatial modeling
--   Fill in different habitat
-:::
-:::::
 
 ## Summary - Benefits for the WG
 
