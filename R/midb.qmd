@@ -1982,7 +1982,7 @@ dev.off()
 
 
 
-# SCHEMA datnas
+# SCHEMA datnas and refnas
 
 
  <details> 
@@ -1996,6 +1996,137 @@ dev.off()
 
 
 ```{r refnas.tr_metadata_met}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to refnas work in progress ...
+
+
+# TODO create tr_area_are
+# tr_metadata_met
+
+metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.tr_metadata_met;")
+clipr::write_clip(colnames(res))
+
+# unique(metadata$metric)
+# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
+
+tr_metadata_met <-
+    data.frame(
+        met_var = metadata$var_mod,
+        met_spe_code = "SAL",
+        met_wkg_code = "WGNAS",
+        met_ver_code = "SAL-2024-1", # no data on version in metadata
+        met_oty_code = metadata$type_object,
+         met_nim_code =  case_when(
+            "Data_nimble"== metadata$nimble ~ "Data",
+            "Const_nimble" == metadata$nimble ~ "Parameter constant",
+            "Output" == metadata$nimble ~ "Output",
+            "other" == metadata$nimble ~ "Other",
+            .default = NA),
+        met_dim = paste0(
+            "{", metadata$dim1, ",",
+            replace_na(metadata$dim2, 0), ",",
+            replace_na(metadata$dim3, 0), "}"
+        ),
+        met_dimname = paste0(
+            "{'", metadata$name_dim1, "',",
+            ifelse(metadata$name_dim2 == "", "NULL", paste0("'", metadata$name_dim2, "'")), ",",
+            ifelse(metadata$name_dim3 == "", "NULL", paste0("'", metadata$name_dim3, "'")), "}"
+        ),
+        met_modelstage = metadata$model_stage,
+        met_type = metadata$type,
+        met_location = metadata$locations,
+        met_fishery = metadata$fishery,
+        met_mtr_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
+            metadata$metric == "Coefficient of variation" ~ "CV",
+            .default = metadata$metric
+        ),
+        met_des_code = NA,
+        met_uni_code = NA, # (TODO)
+        met_cat_code = case_when(
+            grepl("Origin distribution in sea catches", metadata$type) ~ "Other",
+            grepl("catch", metadata$type) ~ "Catch",
+            grepl("harvest rates", metadata$type) ~ "Mortality",
+            grepl("Survival rate", metadata$type) ~ "Mortality",
+            grepl("Returns", metadata$type) ~ "Count",
+            grepl("Fecundity", metadata$type) ~ "Life trait",
+            grepl("Sex ratio", metadata$type) ~ "Life trait",
+            grepl("Maturation rate", metadata$type) ~ "Life trait",
+            grepl("Proportion", metadata$type) ~ "Other",
+            grepl("Stocking", metadata$type) ~ "Count",
+            grepl("Smolt age structure", metadata$type) ~ "Life trait",
+            grepl("Time spent", metadata$type) ~ "Life trait",
+            grepl("Conservation limits", metadata$type) ~ "Conservation limit",
+            grepl("Abundance", metadata$type) ~ "Count",
+            grepl("Demographic transitions", metadata$type) ~ "Other",
+            grepl("year", metadata$type) ~ "Other",
+            grepl("Number of SU", metadata$type) ~ "Other",
+            grepl("Prior", metadata$type) ~ "Other",
+            grepl("Number of SU", metadata$type) ~ "Other",
+            .default = NA
+        ),
+        met_definition = metadata$definition,
+        met_deprecated = NA
+        
+    )
+
+res <- dbWriteTable(con_diaspara_admin, "tr_metadata_met_temp", 
+tr_metadata_met, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met 
+SELECT 
+ met_var,
+ met_spe_code,
+ met_wkg_code,
+ met_ver_code,
+ upper(substring(met_oty_code from 1 for 1)) ||
+          substring(met_oty_code from 2 for length(met_oty_code)), 
+ met_nim_code,
+ met_dim::INTEGER[], 
+ met_dimname::TEXT[], 
+ met_modelstage, 
+ met_type,
+ met_location, 
+ met_fishery, 
+ met_mtr_code, 
+ met_des_code, 
+ met_uni_code,
+ met_cat_code, 
+ met_definition, 
+ met_deprecated
+FROM tr_metadata_met_temp")
+
+dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
+
+```
+
+:::{.callout-note appearance="simple"}
+## Integrate new data from REFNAS
+Collect the latest version of the db from Jerome, there are new variables there.
+:::
+
+
+After integration,, the table of metadata from WGNAS is not changed much, apart from
+adapting to the new referentials. The table is show in Table @tbl-metadata.
+
+
+```{r}
+#| label: tbl-metadatawgnas
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Content of the refnas metadata table
+
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met limit 10;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+``` 
+
+```{r refnas.t_stock_sto}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
