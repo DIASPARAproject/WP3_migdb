@@ -367,6 +367,8 @@ vcd::doubledecker(fishery ~  species + sub_div, data = catchdb)
 The values for habitat are : `r unique(catchdb$fishery)` 
 there are `r sum(is.na(catchdb$fishery))` NA values in the database.
 200=MainB(22-29); 300=GoB(30-31).
+
+
 :::{.callout-note appearance="simple"}
 ## TODO
 Create geographical grouping of areas + use ICES subdiv3
@@ -1047,11 +1049,17 @@ Yes for Trutta the ages are divided between 0+ and older than 0+ which is a grou
 #| tbl-cap: Geographical units in the trutta densities dataset
 #| tbl-subcap: 
 #|   - Rivers (note that some labels seem to be duplicated in the database)
+#|   - Rivers, main_river, and country
 #|   - Rivers with more than one ICES division
 #|   - Table for values corresponding to more than one ICES division
 #|   - Table of main rivers
 
 table(ttd$river, useNA="ifany", dnn = "river") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
+ttd %>% group_by(river,main_river, country)  %>% summarize(N=n()) %>% 
   kable() %>%
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
