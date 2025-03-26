@@ -1,5 +1,5 @@
 ---
-title: "Diaspara WP3 & WGNAS meeting 2025"
+title: "Diaspara WP3 & WGNAS WGBAST meeting 2025"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
 filters:
@@ -33,16 +33,6 @@ editor: visual
 
 # INTRODUCTION
 
--   Cédric Briand (WP3)
--   Jules Oliviéro (WP3)
--   Jani Helminen (WP3)
--   Viktor Thunell (WP2)
--   Rebecca Witlock (WP2)
--   Etienne Rivot (WP4)
--   Rob Van Gemert (WP4)
-
-# INTRODUCTION
-
 Why would we need another another database ?
 
 ::::: columns
@@ -54,11 +44,11 @@ Why would we need another another database ?
 ::: {.column .incremental width="50%"}
 -   Integrating each database in ICES databases would take a lot of resources.
 
-- FAIR (Findability, Accessibility, Interoperability, Reusability).
+-   FAIR (Findability, Accessibility, Interoperability, Reusability).
 
--  Use of TAF (Transparent assessment Framework).
+-   Use of TAF (Transparent assessment Framework).
 
--  Use of DATSU (quality insurance and checking procedures for data call).
+-   Use of DATSU (quality insurance and checking procedures for data call).
 :::
 :::::
 
@@ -98,7 +88,6 @@ digraph DatabaseRelations {
     Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
 }
 ```
-
 
 # DATA AND REFERENTIALS
 
@@ -221,19 +210,14 @@ digraph schema {
 }
 ```
 
-
-
-
-# MODEL DB  {.smaller}
+# MODEL DB {.smaller}
 
 The database structure could be simplified to the following structure
 
- ![](images\SAM_database.png)
+![](images\SAM_database.png)
 
 ::: footer
-
 [Report on DB build](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/rep4.html)
-
 :::
 
 # Group and individual metric DB
@@ -245,7 +229,6 @@ The database structure could be simplified to the following structure
 -   This structure will work on the same referential structure.
 
 ![Excel file for the DB](images\Viktor.png "An excel template to import data to WP2")
-
 
 # GENERAL STRUCTURE OF THE HABITAT DB
 
@@ -312,8 +295,7 @@ digraph {
 
 ## Splitting per ICES Ecoregion
 
-![All Catchments corresponding to ICES ecoregions.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
-
+![All Catchments corresponding to ICES ecoregions, source of the catchments hydrosheds.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
 
 ## WGNAS {.smaller}
 
@@ -323,7 +305,6 @@ We'll need help to populate this.
 
 ::: footer
 :::
-
 
 # Database structure
 
@@ -451,9 +432,9 @@ digraph {
 
 ::::: columns
 ::: {.column .incremental width="30%"}
-- We will integrate the work by Andrew French
-- Work in progress
-- Also used as a reference for WGTRUTTA (tools developed by ICES)
+-   We will integrate the work by Andrew French
+-   Work in progress
+-   Also used as a reference for WGTRUTTA (tools developed by ICES)
 :::
 
 ::: {.column .incremental width="70%"}
@@ -468,8 +449,6 @@ digraph {
 -   EU-Hydro different information but smaller coverage
 -   The idea is to have access to both
 -   We intend to deliver several releases (ZENODO) first one coming in april
-
-
 
 ## Example from WGBAST
 
@@ -487,11 +466,11 @@ digraph {
 
 ## Example from WGBAST : Whole stock level
 
-![Whole stock level WGBAST](images/WGBAST_hierarchy_whole.png "Baltic Sea as a whole stock unit for Salmon"){#fig-WGBAST_hierarchy_whole}
+![Whole stock level WGBAST, souce hydrosheds for the continental habitat](images/WGBAST_hierarchy_whole.png "Baltic Sea as a whole stock unit for Salmon"){#fig-WGBAST_hierarchy_whole}
 
 ## Example from WGBAST : Subdivision level
 
-![Subdivision level WGBAST](images/WGBAST_hierarchy_subdivision.png "Baltic Sea Marine and Continental split per subdivision"){#fig-WGBAST_hierarchy_subdivision}
+![Subdivision level WGBAST, souce hydrosheds for the continental habitat](images/WGBAST_hierarchy_subdivision.png "Baltic Sea Marine and Continental split per subdivision"){#fig-WGBAST_hierarchy_subdivision}
 
 ## Example from WGBAST : Unit level
 
@@ -514,18 +493,16 @@ digraph {
 -   People moving between WGs know the data & Inter-WG Collaboration
 -   Direct access to WGNAS -\> modeling
 -   Potential for spatial models: available habitat, scenarios, etc.
+-   Please contact us, read our reports and let us know. We'll be giving a presentation of the WP3 package work soon. <https://projets_eabx.pages.mia.inra.fr/diaspara/workpackage3.html>
 
 ## Thank you!
 
 ::::: columns
 ::: {.column .incremental width="40%"}
-
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"}
-![](images/clipboard-639830824.png "electrofishing"){width="370"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
 
 ::: {.column .incremental width="60%"}
 ![](images/clipboard-2078010992.png)
 :::
 :::::
-
