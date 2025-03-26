@@ -1984,16 +1984,18 @@ dev.off()
 
 # SCHEMA datnas and refnas
 
+## Create referential for WGNAS
 
  <details> 
 
-<summary>Creating the referential for WGNAS , work in progress ...
+<summary>Creating the referential for WGNAS
 </summary>
 ```{.sql include="../SQL/3_refnas.sql"}
 ```
 </details> 
 [//]: # IS THIS WORKING AS A COMMENT ?
 
+## Import the metadata table
 
 ```{r refnas.tr_metadata_met}
 #| echo: TRUE
@@ -2105,13 +2107,11 @@ dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
 ```
 
 :::{.callout-note appearance="simple"}
-## Integrate new data from REFNAS
+## TODO diaspara: Integrate new data from REFNAS
 Collect the latest version of the db from Jerome, there are new variables there.
 :::
 
-
-After integration,, the table of metadata from WGNAS is not changed much, apart from
-adapting to the new referentials. The table is show in Table @tbl-metadata.
+After integration,, the table of metadata from WGNAS is not changed much, apart from adapting to the new referentials. The table is show in Table @tbl-metadata.
 
 
 ```{r}
@@ -2126,19 +2126,46 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met limit 10;")%>% kn
 
 ``` 
 
+
+# Import the `database` table from the salmoglob (WGNAS) database
+
+For data we first need to create the table.
+
+The code for creating `t_stock_sto` is listed below
+
+<details> 
+
+<summary>SQL code to create tables (work in progress ....)</summary>
+
+```{.sql include="../SQL/4_stock.sql"}
+```
+</details> 
+
+
+While creating the table, we stumbled on some issues (which we have put on the github site for details):
+
+* [duplicated values in archive DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
+
+Some of the variables in salmoglob have no `year` dimension, this leads to dropping 
+the non null constraint on year. We need to check for possible impact in the eel db.
+
+* [NULL values allowed for year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
+
+## Import the stock_sto
+
 ```{r refnas.t_stock_sto}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import to refnas work in progress ...
+#| code-summary: Code to import salmoglob main db into the new database.
 
 
 # TODO create tr_area_are
 # tr_metadata_met
 
-metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
+stock <- dbGetQuery(con_salmoglob, "SELECT * FROM database")
 
 res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.tr_metadata_met;")
 clipr::write_clip(colnames(res))
@@ -2234,6 +2261,7 @@ FROM tr_metadata_met_temp")
 dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
 
 ```
+
 
 
 # WORK IN PROGRESS....

@@ -192,7 +192,9 @@ GRANT ALL ON ref.tr_destination_des TO diaspara_admin;
 GRANT SELECT ON ref.tr_destination_des TO diaspara_read;
 
 
-
+SELECT * FROM refsalmoglob."database" JOIN
+refnas.tr_metadata_met AS tmm ON tmm.met_var = var_mod
+WHERE "year" IS NULL
 
 
 DROP TABLE IF EXISTS ref.tr_metadata_met CASCADE;

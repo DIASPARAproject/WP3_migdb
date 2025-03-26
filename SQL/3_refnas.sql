@@ -150,3 +150,5 @@ GRANT ALL ON refnas.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON refnas.tr_metadata_met TO diaspara_read;
 
 
+
+

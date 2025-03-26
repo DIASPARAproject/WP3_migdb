@@ -68,3 +68,41 @@ SELECT * FROM public.metadata AS m WHERE var_mod LIKE '%eggs%'
 
 SELECT * FROM public.metadata AS m WHERE nimble = 'other'
 
+
+
+-- testing for version
+
+With checklarger as (SELECT count(*) c, version, area, var_mod, year 
+FROM public.database
+group by version, area, var_mod, year)
+SELECT * FROM checklarger where c >5;
+
+SELECT * FROM public.DATABASE WHERE var_mod = 'eggs' AND VERSION = 10 AND area ='NI_FB' AND YEAR = 1972
+-- OK it's two ages
+
+SELECT * FROM public.DATABASE WHERE var_mod = 'omega' AND area ='SF' ;
+-- OK pour celui location est rentré comme area (c'est le seul)
+
+SELECT * FROM public.DATABASE WHERE var_mod = 'p_smolt' AND area ='SF' ;
+
+-- here it's 6 because we have 6 ages.
+
+With checklarger as (SELECT count(*) c,  area, var_mod, "year", "location",age
+FROM public.database
+group by version, area, var_mod, "year", "location", age)
+SELECT * FROM checklarger where c= 1;
+
+ALTER TABLE "database" ADD CONSTRAINT c_uk_area_varmod_year_location_age UNIQUE  (area, var_mod, "year", "location", age);
+ALTER TABLE "database_archive" ADD CONSTRAINT c_uk_archive_version_area_varmod_year_location_age UNIQUE  ("version", area, var_mod, "year", "location", age);
+
+
+SELECT * FROM database_archive
+WHERE  area= 'EW'
+AND var_mod = 'p_C8_NEC_3_far_mu'
+AND "year" = 1976
+AND "location" = 'FAR - by SU'
+AND age ='2SW'
+
+SELECT version()
+
+SELECT * FROM database WHERE YEAR IS NULL; -- 905 lines
