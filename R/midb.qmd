@@ -1006,7 +1006,7 @@ The code for creating metadata is listed below
 
 <summary>SQL code to create tables</summary>
 
-```{.sql include="../SQL/2_tr_metadata_met.sql"}
+```{.sql include="../SQL/2_ref.sql"}
 ```
 </details> 
 
