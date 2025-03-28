@@ -296,3 +296,4 @@ IS'Is the variable still used ?';
 
 GRANT ALL ON ref.tr_metadata_met TO diaspara_admin;
 GRANT SELECT ON ref.tr_metadata_met TO diaspara_read;
+

@@ -1122,14 +1122,8 @@ Do you have ways to separate the rivers (gis information) ?
 ::::
 :::
 
-# part IV - Electrofishing dataset for Salmon
 
-:::{.callout-note appearance="simple"}
-## TODO
-Get the dataset from WGBAST (Atso)
-:::
-
-# part V The model
+# part IV The model
 
 ![Overview of the different types of data available for the different Baltic salmon stocks. The table also indicates for which stocks the current assessment methodology is estimating smolt abundance, spawner abundance and associated stock–recruit function. River categories: W=wild, M=mixed, R=reared. (source wgbast stock annex)](images/table_data_wgbast.png)
 

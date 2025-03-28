@@ -106,3 +106,6 @@ AND age ='2SW'
 SELECT version()
 
 SELECT * FROM database WHERE YEAR IS NULL; -- 905 lines
+
+
+SELECT * FROM 

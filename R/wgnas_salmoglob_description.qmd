@@ -275,7 +275,7 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
 ::::
 :::
 
-
+# Developmental stage
 
 ``` {r check_maturity_metadata}
 #| echo: FALSE
@@ -288,8 +288,9 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
 
 summary_lifestage_metadata <- DBI::dbGetQuery(con_salmoglob, 
   'SELECT count(*) as  n,  life_stage FROM public.metadata group by life_stage')%>% arrange(life_stage)
-knitr::kable(summary_lifestage_metadata) %>%
- kable_material(c("striped", "hover"))
+knitr::kable(summary_lifestage_metadata, format = "markdown") %>%
+ kable_material(c("striped", "hover")) |>
+  kbl() 
 ``` 
 
 :::{.callout-note appearance="simple"}
@@ -307,62 +308,12 @@ knitr::kable(summary_lifestage_metadata) %>%
   Now there is the `PFA`, which is fine, but not really a stage.
 :::
 
-# Developmental stage
+
 
 We first start by looking at the possible reference tables in ICES corresponding to both maturity and stage. Currently we have to store information about the sea age (`0SW, 1SW, 2SW, ...,MSW`) , the freshwater age (`1FW 2FW 3FW 4FW ...`).
 The maturity could be stored in the metadata as it seems to be linked always with parameters. Currently in wgnas we have maturity : immature, mature, not maturing and post return. In the metadata we have `egg, smolts, spawner, adults`
 
 
-``` {r icesVocabrivers}
-#| echo: FALSE
-#| eval: TRUE
-#| warning: FALSE
-#| message: FALSE
-#| tbl-cap: ICES vocabularies for life stages
-#| tbl-subcap: 
-#|   - TS_MATURITY
-#|   - DevScale
-#|   - Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)
-#| label: tbl-maturityvocab
-
-types <- icesVocab::getCodeTypeList()
-types[grep('stage', tolower(types$Description)),]%>% kable()
-TS_MATURITY <- icesVocab::getCodeList('TS_MATURITY')
-TS_DevStage <- icesVocab::getCodeList('TS_DevStage')
-# Devstage is 1 to 15 => no use
-DevScale <- icesVocab::getCodeList('DevScale')
-# At the present the codetypes target Eggs and Larvae surveys
-# This is a description of scales types using different publications => not for use()
-kable(TS_MATURITY, caption = "TS_MATURITY") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-```
-
-:::{.questionbox}
-::::{.questionbox-header}
-::::{.questionbox-icon}
-::::
-QUESTION TO ICES
-::::
-::::{.questionbox-body}
- Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ?
-::::
-:::
-
-There seem to be a correspondence between the 4 stage scale and the maturity
-
-| Stage wgnas |  stage (4 scale ICES) | table |
-| ------------| ------------------------------------------------------| ------------|
-| eggs     |         Egg                   | TS_DevStage | 
-| smolt    |                                |                |
-| immature |  Immature (6-stage scale) |TS_MATURITY | 
-| Non mature (metadata) |  Immature (6-stage scale) | TS_MATURITY |
-| PFA      |                             | see question below |
-| mature   |  Maturing (6-stage scale) ? | TS_MATURITY |
-| mature   |  Pre-spawning (6-stage scale)  ?| TS_MATURITY |
-| not maturing| Resting/Skip of spawning (4-stage scale, additional option)|TS_MATURITY |
-| spawner (metadata table)	| Spawning (6-stage scale) |TS_MATURITY |
-| post-return |  Post-spawning (5-stage scale) |TS_MATURITY |
-: Life stages comparaison between WGNAS database and ICES vocabularies {#tbl-lifestagescomparaison}
 
 :::{.questionbox}
 ::::{.questionbox-header}
@@ -619,6 +570,7 @@ knitr::kable() %>%
 
 
 
+
 ``` 
 :::{.questionbox}
 ::::{.questionbox-header}
@@ -634,6 +586,26 @@ origin of data in database archive, since those same dates are in
 the database, and not really updated. Are we right ?
 ::::
 :::
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+Answer from Pierre-Yves Hernvann
+::::
+::::{.answerbox-body}
+In principle, this database update is performed variable by variable, that is, "var_mod" by "var_mod," as you can see in the table. For example, we choose to update the values ​​of the sea returns of salmon that have spent two winters at sea (var_mod=="log_N6_mu") via a csv file containing the return estimates for each region for the entire time series. For practical reasons, we can also update this variable "log_N6_mu" for a specific region ("area" column). The file we upload then contains the "log_N6_mu" values ​​for a single region, such as Newfoundland (NF).
+
+When this file is uploaded with new data, it undergoes a battery of tests to ensure the consistency of format and information with what is already in the database and an upload date ("date_time" column) is assigned. If these tests are passed successfully, the database rows corresponding to the "var_mod" or the "var_mod" / "area" pair are deleted and replaced with those of the updated csv file. This replacement is accompanied by the incrementation of the version number (by 1) which makes it possible to determine that the update dated "date_time" constitutes the Xth modification of the variable ("var_mod" or "var_mod" / "area" pair). The archive table (which I don't think you'll be able to access) contains all versions (with version numbers and dates) of the table used by the WGNAS (it's therefore a long table created by appending all updated versions of the WGNAS table).
+
+IN SUMMARY:
+- The version number is a strictly positive integer used to track updates to the data available in the database used by the WGNAS.
+- A version number is not specific to the entire database (not everything is updated every year; some information may be updated several times a year).
+- A version number is specific to a "var_mod" or a "var_mod" / "area" pair. Thus, in most cases, a "var_mod" will be characterized by the same "version" index, but some "var_mod" may have different version numbers depending on the region.
+- For a triplet, "version"/"var_mod"/"area" there is only one "date_time" indicating the date and time to the nearest second.
+::::
+:::
+
 
 
 
@@ -657,13 +629,14 @@ leave it NULL ?
 ## Other comments.
 
 Currently stage in metadata not consistent, replicates information about maturity 
-but not always. The lack of consistency in the metadata is not a problem as this table refers to the model. 
+but not always. The lack of consistency in the metadata is not a problem as this 
+table only serves as a reference to describe `var_mod` used in the database table. 
 
 Additional values about maturity, stage, can be stored in the metadata table.
 
 There is a discrepancy between data in the historical dataset and the current, 
-so we need to create additional parameters for the historical database and this 
-will need to be checked.
+so we need to create additional parameters (in the metadata table) for the historical
+ database and this will need to be checked.
 
 
 

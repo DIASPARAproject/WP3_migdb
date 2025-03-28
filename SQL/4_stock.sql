@@ -7,20 +7,29 @@ UNIQUE  ("version", area, var_mod, "year", "location", age);
 
 -- For the archive db, the constraint is not working meaning that we have duplicated values
 
-SELECT * FROM refnas.tr_metadata_met WHERE  met_cat_code ='Other'
+SELECT DISTINCT met_nim_code FROM refnas.tr_metadata_met
+JOIN refsalmoglob."database" ON var_mod = met_var
+
+WHERE  met_cat_code ='Other'
 
 
 -- This will create the main table to hold the stock data
-
+-- I'm currenlty putting foreign key to ref but this is just for show because this table
+-- will only contain inherited valeus
 
 
 
 
 CREATE TABLE dat.t_stock_sto (
   sto_id serial4 NOT NULL,
-  sto_met_var NOT NULL,
+  sto_met_var NOT NULL CONSTRAINT fk_met_var FOREIGN KEY REFERENCES "ref".tr_metadata_met(met_var) ,
   sto_year int4 NULL,
-  eel_value numeric NULL,
+  sto_value numeric NULL,
+  sto_are_code TEXT NOT NULL 
+  CONSTRAINT fk_sto_are_code FOREIGN KEY REFERENCES "ref".tr_area_are(are_code) 
+  ON UPDATE CASCADE ON DELETE CASCADE,
+  -- NOTE : here I'm referencing the code because it's more easy to grasp than a number, but the id is the primary key.
+  -- should work stil but requires a unique constraint on code (which we have set).
   eel_emu_nameshort varchar(20) NOT NULL,
   eel_cou_code varchar(2) NULL,
   eel_lfs_code varchar(2) NOT NULL,
@@ -61,7 +70,8 @@ COMMENT ON COLUMN dat.t_stock_sto.sto_id IS 'Integer serial identifying. Only un
 when looking at the pair, sto_id, sto_wkg_code';
 COMMENT ON COLUMN dat.t_stock_sto.sto_met_var IS 'Name of the variable in the database, this was previously named
 var_mod in the salmoglob database and eel_typ_id in the wgeel database';
-COMMENT ON COLUMN dat.t_stock_sto.stoyear IS 'Year';
+COMMENT ON COLUMN dat.t_stock_sto.sto_year IS 'Year';
+COMMENT ON COLUMN dat.t_stock_sto.sto_value IS 'Value';
 COMMENT ON COLUMN dat.t_stock_sto_sto_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 
@@ -81,7 +91,7 @@ CREATE TABLE datawg.t_eelstock_eel (
   eel_year int4 NOT NULL,
   eel_value numeric NULL,
   eel_emu_nameshort varchar(20) NOT NULL,
-  eel_cou_code varchar(2) NULL,
+  eel_cou_code varchar(2) NULL, -- we don't need that one IF we have an emu
   eel_lfs_code varchar(2) NOT NULL,
   eel_hty_code varchar(2) NULL,
   eel_area_division varchar(254) NULL,
