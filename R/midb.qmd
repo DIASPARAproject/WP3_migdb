@@ -1729,7 +1729,7 @@ FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 ```{r tbl_tr_lifestage_lfs}
 #| echo: TRUE
-#| eval: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
@@ -1788,7 +1788,7 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_maturity")
 
 ```{r tbl_tr_maturity_mat}
 #| echo: TRUE
-#| eval: FALSE
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
