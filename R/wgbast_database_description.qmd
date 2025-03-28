@@ -76,14 +76,10 @@ Could we have access to a gis of this map (river type) to create the referential
 ANSWER WGBAST
 ::::
 ::::{.answerbox-body}
-Jānis Bajinskis has produced this map
+Jānis Bajinskis has produced this map and kindly provided .shp
 ::::
 :::
 
-:::{.callout-note appearance="simple"}
-## TODO
-Contact Janis
-:::
 
 ### ICES vocab linked with catchments in the Baltic.
 ```{r init}
@@ -139,7 +135,7 @@ It does not seems as if there is a hierarchy in these geographic units.
 
 ::: {.callout-tip appearance="simple"}
 ## TODO
- We'll have to reconcile this table with GIS,  we have to if there is a GIS map somewhere in ICES.
+ We'll have to reconcile this table with GIS. No GIS data of these at ICES. Prelim. We will do a prelim. linking to GIS data using other (scarce) sources.
 :::
 
 ::: {.callout-tip appearance="simple"}
