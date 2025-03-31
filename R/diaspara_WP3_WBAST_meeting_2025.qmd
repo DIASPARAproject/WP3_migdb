@@ -1,0 +1,319 @@
+---
+title: "Diaspara WP3 & WGBAST meeting 2025"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo.png
+footer: "DIASPARA WP3"
+format: 
+  revealjs :
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+# INTRODUCTION
+
+Why would we need another another database ?
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   WGEEL, WGBAST and WGNAS (+WGTRUTTA) have each developed their own databases.
+-   These need to be maintained in the long term.
+:::
+
+::: {.column .incremental width="50%"}
+-   Integrating each database in ICES databases would take a lot of resources.
+
+-   FAIR (Findability, Accessibility, Interoperability, Reusability).
+
+-   Use of TAF (Transparent assessment Framework).
+
+-   Use of DATSU (quality insurance and checking procedures for data call).
+:::
+:::::
+
+# OBJECTIVES
+
+We intend to build a common database structure (same referentials several DB to store)
+
+-   Data from models at the scale of the management unit (WGEEL, WGNAS, WGBAST)
+
+-   Continental habitat in support of ICES (e.g. landings in continental habitats) (WGEEL, WGNAS, WGBAST, WGTRUTTA)
+
+-   Individual and group metrics, series of data
+
+-   DB for dams/migration obstacles
+
+-   DB of Electrofishing
+
+# General structure of the DB
+
+```{dot}
+digraph DatabaseRelations {
+    node [shape=cylinder, style=filled];
+
+    ref [fillcolor=lightblue, shape = square];
+    RDBES [fillcolor=lightgreen];
+    Model_DB [fillcolor=lightgreen];
+    Metrics_Series [fillcolor=lightgreen];
+    E_fishing [fillcolor=lightyellow];
+    Dam_DB [fillcolor=lightyellow];
+    Regional_models[fillcolor=pink, shape = rectangle]
+    RDBES  -> ref;
+    Model_DB  -> ref;
+    Metrics_Series -> ref;
+    E_fishing -> Regional_models [style=dashed, label="model", color =purple];
+    Dam_DB -> Regional_models  [style=dashed, label="model", color =purple];
+    Regional_models ->  Model_DB [style=dashed, label="TAF", color =tan]
+    Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
+}
+```
+
+# DATA AND REFERENTIALS
+
+```{dot}
+//| label: fig-schema_diaspara
+//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];
+	ref [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref</b> </td> </tr>
+       <tr> <td align="left">
+        tr_species_spe <br align="left"/>
+        tr_country_cou <br align="left"/>
+        tr_icworkinggroup_wkg <br align="left"/>
+        tr_version_ver <br align="left"/>
+        tr_metric_mtr <br align="left"/>
+        tr_category_cat <br align="left"/>
+        tr_destination_dest <br align="left"/>
+        tr_metadata_met <br align="left"/>
+        tr_area_are <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = cylinder]; 
+    refeel [fillcolor="pink"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refeel</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    dateel [fillcolor="pink"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dateel</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    refbast [fillcolor="purple"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refbast</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    datbast [fillcolor="purple"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>datbast</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    refnas [fillcolor="limegreen"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>refnas</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    datnas [fillcolor="limegreen"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>datnas</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];   
+    reftrutta [fillcolor="tan1"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>reftrutta</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];
+    dattrutta [fillcolor="tan1"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dattrutta</b> </td> </tr>
+       <tr> <td align="left">
+         <br align="left"/>
+         <br align="left"/>
+            </td> </tr> 
+       </table>> 
+       shape = cylinder];   
+    reftrutta;
+    refwgeel;  # this in an archive
+    
+
+	refeel -> ref 
+	refbast -> ref;
+	refnas -> ref 
+  reftrutta -> ref
+  dateel -> ref
+  datnas -> ref
+  datbast -> ref
+  dattrutta -> ref
+  dateel -> refeel
+  datnas -> refnas
+  dattrutta -> reftrutta
+  datbast  -> refbast
+
+  refwgeel -> ref [style="dashed"]
+  refwgeel -> refeel [style="dashed"]
+  salmoglob -> ref [style="dashed"]
+  salmoglob -> refnas [style="dashed"]
+
+}
+```
+
+# GENERAL STRUCTURE OF THE HABITAT DB
+
+```{dot}
+digraph {
+    //rankdir=TB; // Top-to-bottom orientation
+    compound=true;
+    newrank=true;
+    A [label="Celtic Seas", shape=box];
+    B [label="Greater North Sea", shape=box];
+    C [label="Baltic", shape=box];
+    D [label="FR", shape=ellipse];
+    E [label="ES", shape=ellipse];
+    F [label="SE", shape=ellipse];
+    G [label="Hydroshed | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="EU-Hydro | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    L [label="National | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+
+    subgraph clusterA {
+      label = "Hydroshed, EU-Hydro";
+      style=dashed;
+      color=black;
+      A;
+      B;
+      C;
+    }
+
+    subgraph clusterB {
+      label = "Country, regions, EMU, ICES divisions, Stock Units";
+      style=dashed;
+      color=black;
+      D;
+      E;
+      F;
+    }
+
+    
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
+    E -> G,H [ltail=clusterB];
+
+    I [label="Salmon River / Stock units", shape=box];
+    J [label="Fishing areas", shape=box];
+    K [label="EMU (Eel Managment Unit)", shape=box];
+
+
+    {rank=same;D;E;F;}
+    {rank=same;A;B;C;I;J;K}
+    {rank=same;G;H;L;} 
+
+    subgraph clusterC {
+      label = "";
+      style=dashed;
+      color=black;
+      I;
+      J;
+      K;
+    }
+
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
+    //L -> H [style=invis]
+}
+
+```
+
+## Splitting per ICES Ecoregion
+
+![All Catchments corresponding to ICES ecoregions, source of the catchments hydrosheds.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
+
+## Summary - Benefits for the WG
+
+-   Work with ICES tools (DATSU, DB, data calls)
+-   Data calls using Shiny / Datsu
+-   DB manager (at ICES?) can handle all migratory species
+-   One shiny instead of two / three
+-   People moving between WGs know the data & Inter-WG Collaboration
+-   Direct access to WGBAST-\> modeling
+-   Potential for spatial models: available habitat, scenarios, etc.
+-   Please contact us, read our reports and let us know. We'll be giving a presentation of the WP3 package work soon. <https://projets_eabx.pages.mia.inra.fr/diaspara/workpackage3.html>
+
+## FUTURE WORK
+
+-   Habitat DB beta version release in ZENODO https://zenodo.org/records/14726599
+
+-   Relase hierarchy in the Baltic before this summer
+
+-   Vocab of the rivers for you to check and work with us this summer
+
+-   Release stock DB this summer
+
+-   Integrate excel data (young fish + landings)
+
+-   Import to database from Nimble variables using R code from WGNAS
+
+-   Data call using DATSU 2027
+
+-   We need contacts
+
+## Thank you!
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column .incremental width="60%"}
+![](images/clipboard-2078010992.png)
+:::
+:::::
