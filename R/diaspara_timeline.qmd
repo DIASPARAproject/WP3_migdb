@@ -1,0 +1,184 @@
+---
+title: "DIASPAR WP3 timeline"
+author: "Briand Cédric, Oliviero Jules, Helminen Jani"
+date: last-modified
+date-format: "DD-MM-YYYY"
+description: "Timeline for the project"
+title-block-banner: "images/diaspara_bandeau.png"
+title-block-banner-color: "white"
+format:
+ html:
+  self-contained: true
+editor: visual
+include-after-body: "footer.html"
+---
+
+
+## Habitat DB
+
+The habitat DB also corresponds to some of the dictionaries created for the stock DB.
+
+More details here : 
+
+[github timeline](https://github.com/orgs/DIASPARAproject/projects/4/views/2)
+
+[issues](https://github.com/DIASPARAproject/WP3_habitat/issues) 
+
+[main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8/rep5.html)
+
+```{mermaid}
+gantt
+    title Habitat database project timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m
+    todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
+
+
+    section Build river referentials
+
+
+
+    section Needs / format
+    start   :milestone, start, 2024-06-01, 0d
+    Needs of ICES expert working groups #8 :done, 2024-06-01, until init
+    Discuss interoperability and storage with ICES and GFM #9 :done, 2024-11-01, until init
+    Initial meeting   :milestone, init, 2024-11-25, 3d
+    Analyse spatial structure :done, 2024-12-01, 5w
+    WP2 Analysis of eel data :active, after init, until v1
+    section GIS DB
+ 
+    Get all data from different species  #6 :done, 2024-09-01, 7M
+    Populate the DB using Hydro Atlas data  #7 :done, 2024-09-01, 7M
+    Populate DB using EU hydro #26 :active, 2025-02-01, 6M 
+    Export format Arrow & postgres #11 :active, 2025-02-01, until alpha
+    Beta release (basins)   :milestone, beta, 2025-03-15, 3d
+    Alpha release (hierarchy WGBAST)   :milestone, alpha, 2025-06-15, 3d
+    v 0.0.1 (rivers hierarchy WGNAS)   :milestone, v1, 2025-09-15, 3d
+    v 0.0.2 (eel)   :milestone, v2, 2026-03-01, 0d
+
+
+    section Validation
+    WGNAS habitat #22 :active, after alpha, until final
+    WGBAST habitat #21 :active, after alpha, until final
+
+    Final meeting   :milestone, final, 2025-12-01, 0d
+    WGEEL habitat #23 :active, after v1, until v2
+    Release to ICES: active, after v2, until end
+
+    End projet   :milestone, end, 2026-06-01, 0d
+    ```
+
+
+
+# Stock DB
+
+This is the main database where we wish to put all unified data, details on the data
+structure coming out but still need validation from ICES.
+
+
+More details here : 
+
+[github timeline](https://github.com/orgs/DIASPARAproject/projects/4/views/6)
+
+[issues](https://github.com/DIASPARAproject/WP3_migdb/issues) 
+
+[main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/rep4.html)
+
+```{mermaid}
+    gantt
+    title Stock DB Timeline
+    dateFormat  YYYY-MM-DD
+    todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
+
+    section Collect data and needs
+    Needs of ICES expert working groups #8 :done, 2024-06-01, until init
+    Link with RDBES/ICES/GFCM :done, 2024-08-12, until init
+    Initial meeting:milestone, init, 2024-11-25, 3d
+    Collect DB from WGNAS :done, 2024-06-01, 2024-08-30
+    Collect DB  From WGBAST :done, 2024-11-01, 2025-01-01
+
+    section Buid DB
+    WGNAS WGBFAS and WGTRUTTA database description : done, after init, until 2024-03-01
+    Create template DB :crit, 2024-12-30, until beta
+
+
+    section Import
+    Import data from WGNAS :current, 2025-02-01, until beta
+    Beta version (WGNAS): milestone, beta, 2025-06-01, 2d
+    Import data from WGEEL : after beta, until alpha
+    Alpha version (WGEEL): milestone, alpha, 2025-07-15, 2d
+    Import data from WGBAST landings: current, after alpha, until v1
+    V0.0.1 (WGBAST landings): milestone, v1, 2025-10-15, 2d
+    Import data from WGBAST young fish : after v1, until v2
+    V0.0.2 (WGBAST young fish): milestone, v2, 2025-11-15, 2d
+    Import data from WGBAST (stock) : after v2, until end
+
+    section validate
+
+    Database structure with ICES: crit, after alpha, 1M
+    Release first vocab to ICES: current, after alpha, 1M
+    Validate structure with WGNAS: after alpha, until final
+    Validate structure with WGEEL: after alpha, until final
+    Validate structure with WGBAST: after alpha, until end
+    Validate structure with WGTRUTTA: after alpha, until end
+    Final meeting:milestone, final, 2025-12-01, 3d
+    ICES Import to ICES db: crit, after final, until v3
+
+    section shiny / R
+
+    Export nimble functions WGNAS: current, after final, until 2026-02-01
+
+    V0.0.3 (WGBAST model): milestone, v3, 2026-04-01, 2d
+    Propose and adapt changes to shiny apps : current, after v3, until end
+    WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
+```
+
+
+# Metrics DB
+
+This database is part of the previous DB, using the same vocab, but the data
+structure is different. There is already a mapping by ICES of the data structure.
+The DB is currently in WGEEL (series + sampling) and we've release excel sheets
+to call for LHT with WP2.
+
+```{mermaid}
+gantt
+    title Metrics timeline
+    dateFormat  YYYY-MM-DD
+    todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
+
+    section Collect data and needs
+    Initial meeting:milestone, init, 2024-11-25, 3d
+
+
+    section Buid DB
+    Beta version vocab (stockDB): milestone, betastock, 2025-06-01, 2d
+    Write simplied structure using WGEEL :crit, after betastock, until beta
+    Beta version (Metrics): milestone, beta, 2025-08-01, 2d
+
+
+    section Import
+
+    Import data WGEEL : after beta, until alpha
+    Alpha version (Metrics): milestone, alpha, 2025-11-15, 2d
+    Final meeting:milestone, final, 2025-12-01, 3d
+    Import data WP2  : current, 2026-01-01, until end
+
+    
+
+    section validate
+
+    Database structure with ICES: crit, after alpha, 1M
+    Validate structure with WGNAS: after alpha, until end
+    Validate structure with WGEEL: after alpha, until end
+    Validate structure with WGBAST: after alpha, until end
+    Validate structure with WGTRUTTA: after alpha, until end
+
+    ICES Import to ICES db: crit, after final, until end
+
+    section shiny / R
+
+    WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
+    Propose and adapt changes to shiny apps ... : crit, 2026-03-01, 6M
+    Create datacall WGEEL ... : crit, after end, 3M
+```
