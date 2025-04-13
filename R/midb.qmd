@@ -24,57 +24,112 @@ filters:
 reference-location: document
 bibliography: diaspara.bib
 include-after-body: "footer.html"
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-The main structure of the database has been proposed during the online diaspara meeting : [database structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1). This stucture would allow to store the data necessary to run the international stock models for the different working groups working on diadromous fishes. The structure of the proposed database and the structure of the wgeel database are very similar. This documents creates the diaspara database, first creating referential table for the different types proposed, and then populates the database with the contents of the wgeel and wgnas database. All chunks are run sequentially to run the database, but some are later marked with eval = FALSE to speed up the process of running the quarto document.
+The main structure of the database has been proposed during the online
+diaspara meeting : [database
+structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1).
+This stucture would allow to store the data necessary to run the
+international stock models for the different working groups working on
+diadromous fishes. The structure of the proposed database and the
+structure of the wgeel database are very similar. This documents creates
+the diaspara database, first creating referential table for the
+different types proposed, and then populates the database with the
+contents of the wgeel and wgnas database. All chunks are run
+sequentially to run the database, but some are later marked with eval =
+FALSE to speed up the process of running the quarto document.
 
 # Hierarchical structure of the database {#sec-hierarchical}
 
-The database could start with the simplest structure, with a basic table corresponding to all data. Then three tables could be created, one per species. This is to allow querying the different tables independently. From these species tables, three different tables could be produced, one for data, one for parameters outputs, one for parameters priors. Since SQL server does not handle inheritance, once the table built, some of those will have to be replaced with views or partitioned views.
+The database could start with the simplest structure, with a basic table
+corresponding to all data. Then three tables could be created, one per
+species. This is to allow querying the different tables independently.
+From these species tables, three different tables could be produced, one
+for data, one for parameters outputs, one for parameters priors. Since
+SQL server does not handle inheritance, once the table built, some of
+those will have to be replaced with views or partitioned views.
 
-From these three table on could envisage the creation of specific table for working groups. Meaning one table for eel (wgeel), one table for salmon (wgnas), one table for salmon (wgbast), and one table for trutta (wgtrutta).
+From these three table on could envisage the creation of specific table
+for working groups. Meaning one table for eel (wgeel), one table for
+salmon (wgnas), one table for salmon (wgbast), and one table for trutta
+(wgtrutta).
 
 ## Referential tables
 
 > \[TO BE EDITED LATER WHEN WE KNOW EXACTLY WHAT WE HAVE DONE\]
 
-Similarly, referential tables could be created with a mother table from which specific (or wg specific) tables would inherit. All mother table will be held in a schema called ref. Having working group specific tables make the setting up of consistent foreign key more easy. For instance wgbast could reference different age class than wgnas, and the stage would be completely different between wgeel and wgnas reference daughter tables. Some of these referential table would be common between species (e.g. source from ICES vocab, which corresponds to working group or accession events (datacalls)).
+Similarly, referential tables could be created with a mother table from
+which specific (or wg specific) tables would inherit. All mother table
+will be held in a schema called ref. Having working group specific
+tables make the setting up of consistent foreign key more easy. For
+instance wgbast could reference different age class than wgnas, and the
+stage would be completely different between wgeel and wgnas reference
+daughter tables. Some of these referential table would be common between
+species (e.g. source from ICES vocab, which corresponds to working group
+or accession events (datacalls)).
 
 ## Unicity constraints
 
-Another important point to add (at least to the salmoglob database) is unicity constraint. As some values would be null, creating unicity constraints with indexes would be necessary. These allow to have different levels of constraints for instance the unicity would be defined for : (`year, age, area, parameter`) (`year, age, parameter`) (`year, area, parameter`) (`year, parameter`)
+Another important point to add (at least to the salmoglob database) is
+unicity constraint. As some values would be null, creating unicity
+constraints with indexes would be necessary. These allow to have
+different levels of constraints for instance the unicity would be
+defined for : (`year, age, area, parameter`) (`year, age, parameter`)
+(`year, area, parameter`) (`year, parameter`)
 
-One of the table will have to contain twice the area it will have to be treated separately. (`year, area, area, parameter`)
+One of the table will have to contain twice the area it will have to be
+treated separately. (`year, area, area, parameter`)
 
 # Creating the diaspara database
 
-All along this document, the database will be named `diaspara`. The database is created with postgres.
+All along this document, the database will be named `diaspara`. The
+database is created with postgres.
 
 **Some rules**
 
--   By default values will be capitalised for the first letter e.g. `Public` for the code in dataaccess.
+-   By default values will be capitalised for the first letter e.g.
+    `Public` for the code in dataaccess.
 
--   Code ELE, ANG, TRT are capitalized, as are the working group names WGEEL, WGNAS, or country codes.
+-   Code ELE, ANG, TRT are capitalized, as are the working group names
+    WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
 
--   All integer used for primary keys are called `id` all text used for primary keys are called `code`, the text is always called `description`.
+-   All integer used for primary keys are called `id` all text used for
+    primary keys are called `code`, the text is always called
+    `description`.
 
--   All tables end with a 3 letter summary which allows to identify the source of one column so the table dataaccess will be called `tr_dataaccess_dta`. And the column for code will be named
+-   All tables end with a 3 letter summary which allows to identify the
+    source of one column so the table dataaccess will be called
+    `tr_dataaccess_dta`. And the column for code will be named
 
--   Referential tables or dictionaries are called `tr_`(sometable), tables build in conjuction from other tables and not in the dictionaries are called `t_`(sometable).
+-   Referential tables or dictionaries are called `tr_`(sometable),
+    tables build in conjuction from other tables and not in the
+    dictionaries are called `t_`(sometable).
 
--   Foreign key are used instead of check constrainst as check constraint might not ensure the integrity of data after their integration (only when new rows are created or modified).
+-   Foreign key are used instead of check constrainst as check
+    constraint might not ensure the integrity of data after their
+    integration (only when new rows are created or modified).
 
--   Foreign key are name `fk_columnname` where the column name is the name in the table
+-   Foreign key are name `fk_columnname` where the column name is the
+    name in the table
 
--   Primary keys are names `tablename_pkey` (with the constraint possibly referering to more than one column).
+-   Primary keys are names `tablename_pkey` (with the constraint
+    possibly referering to more than one column).
 
--   Other constraints are check constraints `ck_columnname` and unique contraints `uk_columnname`
+-   Other constraints are check constraints `ck_columnname` and unique
+    contraints `uk_columnname`
 
--   All tables and column have a definition, we will ask the working groups to check those.
+-   All tables and column have a definition, we will ask the working
+    groups to check those.
 
--   Column and table name are ALWAYS LOWERCASE, the underscore is only used to separate type of table and table shortcode t_table_abc. In column is separates table code abc_def_code (table abc will reference the column def_code in table def).
+-   Column and table name are ALWAYS LOWERCASE, the underscore is only
+    used to separate type of table and table shortcode t_table_abc. In
+    column is separates table code abc_def_code (table abc will
+    reference the column def_code in table def).
 
 ```{r init}
 #| echo: FALSE
@@ -129,12 +184,16 @@ con_salmoglob <- dbConnect(Postgres(),
 
 ```
 
-This is run in localhost, check the wp3_habitat repository for code to set up access to the database. In the future we will grant diaspara_admin and diaspara_read to specific users for example with a used named trout `GRANT diaspara_admin TO trout` ;
+This is run in localhost, check the wp3_habitat repository for code to
+set up access to the database. In the future we will grant
+diaspara_admin and diaspara_read to specific users for example with a
+used named trout `GRANT diaspara_admin TO trout` ;
 
 ::: {.callout-note appearance="simple"}
 ## DIASPARA Note to self
 
-need to edit the pb_hba.conf on the server if not in localhost to allow access to diaspara.
+need to edit the pb_hba.conf on the server if not in localhost to allow
+access to diaspara.
 :::
 
 ```{r}
@@ -233,7 +292,12 @@ COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA';
 
 </details>
 
-Now the database has been created with different schema (@fig-schema_diaspara). The main schema for dictionaries is ref, and a schema is created per working group for specific referential tables. The Schema refwgeel is a schema created with a foreign data wrapper to get the data from wgeel, the same schema exists for wgnas. We'll see later for wgbast and wgtrutta.
+Now the database has been created with different schema
+(@fig-schema_diaspara). The main schema for dictionaries is ref, and a
+schema is created per working group for specific referential tables. The
+Schema refwgeel is a schema created with a foreign data wrapper to get
+the data from wgeel, the same schema exists for wgnas. We'll see later
+for wgbast and wgtrutta.
 
 ```{dot}
 //| label: fig-schema_diaspara
@@ -354,15 +418,35 @@ digraph schema {
 }
 ```
 
-Now the database has been created with different schema (@fig-schema_diaspara). The main schema for dictionaries is ref, and a schema is created per working group for specific referential tables. The Schema refwgeel has been filled in with a foreign data wrapper to get the data from wgeel, the same schema exists for wgnas. We'll see later for wgbast and wgtrutta. The schema `dat` is the common schema for all data. For each working group, schema `datbast`, `dateel`, `datnas` are created. The tables will be created in dat and later similar or a bit more complex tables (with some more columns) will be created using the `INHERIT FROM` syntax, which will allow to have a hierarchical structure in the db, and maintain the structure in a table common to all fishes. Note that`dat` should not containt any data, but will hold all the views and inherited tables comming from the different schema.
+Now the database has been created with different schema
+(@fig-schema_diaspara). The main schema for dictionaries is ref, and a
+schema is created per working group for specific referential tables. The
+Schema refwgeel has been filled in with a foreign data wrapper to get
+the data from wgeel, the same schema exists for wgnas. We'll see later
+for wgbast and wgtrutta. The schema `dat` is the common schema for all
+data. For each working group, schema `datbast`, `dateel`, `datnas` are
+created. The tables will be created in dat and later similar or a bit
+more complex tables (with some more columns) will be created using the
+`INHERIT FROM` syntax, which will allow to have a hierarchical structure
+in the db, and maintain the structure in a table common to all fishes.
+Note that`dat` should not containt any data, but will hold all the views
+and inherited tables comming from the different schema.
 
 # Creating referentials
 
 ## Species (tr_species_spe)
 
-The first thing is to create a referential table for species. Anyways, we searched a bit for other species, even if we don't plan to start storing data on Alosa and Lamprey it's good to prepare the database. There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**, **Petromyzon marinus**, **Lampetra fluviatilis**.
+The first thing is to create a referential table for species. Anyways,
+we searched a bit for other species, even if we don't plan to start
+storing data on Alosa and Lamprey it's good to prepare the database.
+There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**,
+**Petromyzon marinus**, **Lampetra fluviatilis**.
 
-Note Cédric : Thinking later about this, I chose to get rid of `ELE` and select `ANG`. This column with species will be everywhere. We want to avoid generations of researchers to avoid what `ELE` is (apart from elephants). For the others I've taken as close as possible to the latin name.
+Note Cédric : Thinking later about this, I chose to get rid of `ELE` and
+select `ANG`. This column with species will be everywhere. We want to
+avoid generations of researchers to avoid what `ELE` is (apart from
+elephants). For the others I've taken as close as possible to the latin
+name.
 
 :::::: questionbox
 :::: questionbox-header
@@ -373,7 +457,8 @@ QUESTION ICES: species code
 ::::
 
 ::: questionbox-body
-ANG, ALA, ALF, PET, LAM are these internal code OK ? Should we use SpecWoRMS or is Aphia OK ?
+ANG, ALA, ALF, PET, LAM are these internal code OK ? Should we use
+SpecWoRMS or is Aphia OK ?
 :::
 ::::::
 
@@ -386,13 +471,16 @@ ANSWER ICES : Maria
 ::::
 
 ::: answerbox-body
-For species, we would recommend that you use AphiaIDs (a copy of which is SpecWoRMs). You can also use the FAO ASFIS list, or both, but we would recommend having the AphiaIDs for sure.
+For species, we would recommend that you use AphiaIDs (a copy of which
+is SpecWoRMs). You can also use the FAO ASFIS list, or both, but we
+would recommend having the AphiaIDs for sure.
 :::
 ::::::
 
 <details>
 
-<summary>Creating a referential table for species - code and queries to ICES</summary>
+<summary>Creating a referential table for species - code and queries to
+ICES</summary>
 
 ```{r tbl-icesVocabspecies}
 #| echo: TRUE
@@ -474,7 +562,10 @@ knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("str
 
 ## Working group (tr_icworkinggroup_wkg)
 
-Species is not enough. Data will be split by working groups. Several working groups working on the same species. There is a table for working group. Proposed table is @tbl-icworkinggroup but need confirmation for WKTRUTTA2.
+Species is not enough. Data will be split by working groups. Several
+working groups working on the same species. There is a table for working
+group. Proposed table is @tbl-icworkinggroup but need confirmation for
+WKTRUTTA2.
 
 :::::: questionbox
 :::: questionbox-header
@@ -485,7 +576,10 @@ QUESTION ICES/ WGTRUTTA/ DIASPARA
 ::::
 
 ::: questionbox-body
-what is the latest working group for WGTRUTTA, I found a WKTRUTTA2 but that is quite old. Do we want to refer to other groups on diadromous fishes there ? The name of the WGEEL is wrong in the referential, needs to reference GFCM... JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
+what is the latest working group for WGTRUTTA, I found a WKTRUTTA2 but
+that is quite old. Do we want to refer to other groups on diadromous
+fishes there ? The name of the WGEEL is wrong in the referential, needs
+to reference GFCM... JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
 :::
 ::::::
 
@@ -563,7 +657,12 @@ knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("str
 
 ## Country (tr_country_cou)
 
-Countries are mostly OK in the wgeel database but we need to add american countries. The shapefiles have been downloaded from https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered from North to South starting from the Baltic and ending in the Mediterranean, with American number being the highest in order.
+Countries are mostly OK in the wgeel database but we need to add
+american countries. The shapefiles have been downloaded from
+https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries
+source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered
+from North to South starting from the Baltic and ending in the
+Mediterranean, with American number being the highest in order.
 
 <details>
 
@@ -707,7 +806,8 @@ dev.off()
 
 ```
 
-![Map of countries in the diaspara DB © [EuroGeographics](https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/)](images/fig-country.png "A planisphere with countries in migdb"){#fig-country}
+![Map of countries in the diaspara DB ©
+[EuroGeographics](https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/)](images/fig-country.png "A planisphere with countries in migdb"){#fig-country}
 
 ## Unit (tr_units_uni)
 
@@ -717,7 +817,10 @@ dev.off()
 
 First we import from wgeel
 
-Then we standarize using ICES codes, it takes a while to scroll through the vocab. Sometimes several vocab are available for the same thing. We used the p06 as the most common source. Hopefully that was the right choices ?
+Then we standarize using ICES codes, it takes a while to scroll through
+the vocab. Sometimes several vocab are available for the same thing. We
+used the p06 as the most common source. Hopefully that was the right
+choices ?
 
 ```{r}
 #| label: unit
@@ -870,11 +973,16 @@ QUESTION ICES: missing values for units, what do we do ?
 ::::
 
 ::: questionbox-body
-What do we do with units without correspondance? These come from FAO (if I remember well). Do we try to search for those in the wgeel database, and then remove if not existing or try to change existing values ?
+What do we do with units without correspondance? These come from FAO (if
+I remember well). Do we try to search for those in the wgeel database,
+and then remove if not existing or try to change existing values ?
 
--   Kg/day there is a kg/hour do we need to change to that type and convert existing series ?
+-   Kg/day there is a kg/hour do we need to change to that type and
+    convert existing series ?
 
--   Nr haul There is a definition of haul in the ICES vocab but it seems very related to sampling box, basket. And it's not the number of haul.
+-   Nr haul There is a definition of haul in the ICES vocab but it seems
+    very related to sampling box, basket. And it's not the number of
+    haul.
 
 -   Before working any further I would like your opinion there.
 :::
@@ -882,17 +990,33 @@ What do we do with units without correspondance? These come from FAO (if I remem
 
 ## Parameters
 
-Parameters are a simple way to reduce the complexity of data. It will correspond to all nimble variables, reduced to their lower level (e.g. 3 dimensional arrays with dimensions \[area, year, stage\] will be translated as many lines with the corresponding values in columns area, year, and stage), and the identifyer of the variable will be used for all the lines necessary to store this dataset. In practise, parameters also correspond to input data, and output data in the model. The parameters will be described by their metadata as illustrated in @fig-metadata
+Parameters are a simple way to reduce the complexity of data. It will
+correspond to all nimble variables, reduced to their lower level (e.g. 3
+dimensional arrays with dimensions \[area, year, stage\] will be
+translated as many lines with the corresponding values in columns area,
+year, and stage), and the identifyer of the variable will be used for
+all the lines necessary to store this dataset. In practise, parameters
+also correspond to input data, and output data in the model. The
+parameters will be described by their metadata as illustrated in
+@fig-metadata
 
-![Mind map of the metadata structure](images\SAM_parm_metadata.png){#fig-metadata}
+![Mind map of the metadata
+structure](images\SAM_parm_metadata.png){#fig-metadata}
 
-We can have a look at the metadata in the analysis done on the WGNAS database [WGNAS description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
+We can have a look at the metadata in the analysis done on the WGNAS
+database [WGNAS
+description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
 
-There is a problem in the "order or the dimensions which need to be aligned. For instance a column can hold year, or age. This is not good. The description could be used within a type [array](https://www.postgresql.org/docs/current/arrays.html). SQL server does not work with array so it's not a good idea to use those.
+There is a problem in the "order or the dimensions which need to be
+aligned. For instance a column can hold year, or age. This is not good.
+The description could be used within a type
+[array](https://www.postgresql.org/docs/current/arrays.html). SQL server
+does not work with array so it's not a good idea to use those.
 
 <details>
 
-<summary>Checking stock codes using icesASD and icesSD packages</summary>
+<summary>Checking stock codes using icesASD and icesSD
+packages</summary>
 
 ```{r tbl-advice}
 #| echo: TRUE
@@ -933,19 +1057,28 @@ The code for creating metadata is listed below
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
 
-Not yet completely sure about this .... Environment (sea, transition ...), age, life stage and complex are in the metadata. But they are also in the main table. To start with, we remove them to reduce complexity and avoid errors. The `complex` will be derived from the spatial structure still in construction
+Not yet completely sure about this .... Environment (sea, transition
+...), age, life stage and complex are in the metadata. But they are also
+in the main table. To start with, we remove them to reduce complexity
+and avoid errors. The `complex` will be derived from the spatial
+structure still in construction
 :::
 
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
 
-As in the diagram, added a category (data type in figure @fig-metadata). The idea is to be able to get quickly all parameters related to a type, e.g. catch, mortality, biomass. Please check and also check definitions.
+As in the diagram, added a category (data type in figure @fig-metadata).
+The idea is to be able to get quickly all parameters related to a type,
+e.g. catch, mortality, biomass. Please check and also check definitions.
 :::
 
 ::: {.callout-note appearance="simple"}
 ## DIASPARA
 
-WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in tr_destination_dest. Note this is just a column in tr_metadata_met not in the main table. Check if it could not simply be removed if the definition of the parameter is clear ?
+WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
+tr_destination_dest. Note this is just a column in tr_metadata_met not
+in the main table. Check if it could not simply be removed if the
+definition of the parameter is clear ?
 :::
 
 ## Object type (tr_objectype_oty)
@@ -967,7 +1100,9 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable
 
 ## Type of parm / data (tr_nimble_nim)
 
-In the salmoglob db, this table (@tbl-nimble) corresponded to both tables status and nimble which most often contained the same information.
+In the salmoglob db, this table (@tbl-nimble) corresponded to both
+tables status and nimble which most often contained the same
+information.
 
 ```{r}
 #| label: tbl-nimble
@@ -983,22 +1118,64 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")%>% knitr::kable() %
 
 ## Version (tr_version_ver)
 
-Currently in the salmoglob metadata there is no information about version. The version number is in the table itself. It seems to correspond to different versions of the same parameter. While currently this information is stored in the `database` and `database_archive` it seems to that metadata should also contain information about historical variables. For instance we create a new variable, so we know when it was introduced. So in addition with the data in the main table I'm adding a version number to metadata, Some variables might get deprecated over time. The year will be the year when the variable was introduced. All variables in this version of the DB in metadata will start with SAL-2024-1, the tr_version_ver should be able to store a version number but currently I need to understand to what it corresponds.
+Currently in the salmoglob metadata there is no information about
+version. The version number is in the table itself. It seems to
+correspond to different versions of the same parameter. While currently
+this information is stored in the `database` and `database_archive` it
+seems to that metadata should also contain information about historical
+variables. For instance we create a new variable, so we know when it was
+introduced. So in addition with the data in the main table I'm adding a
+version number to metadata, Some variables might get deprecated over
+time. The year will be the year when the variable was introduced. All
+variables in this version of the DB in metadata will start with
+SAL-2024-1, the tr_version_ver should be able to store a version number
+but currently I need to understand to what it corresponds.
 
-Note that the version (@tbl-version) contains both reference to the datacall (when data are loaded) and to the advice. The advice might still be null at the time the values will be entered into the database. The version will be handled in inherited tables for WGNAS, WGEEL and WGBAST. Here I'm currently entering the WGNAS data.
+Note that the version (@tbl-version) contains both reference to the
+datacall (when data are loaded) and to the advice. The advice might
+still be null at the time the values will be entered into the database.
+The version will be handled in inherited tables for WGNAS, WGEEL and
+WGBAST. Here I'm currently entering the WGNAS data.
 
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
 :::
 
-Question to WNGAS / Etienne
+Question to WNGAS
 ::::
 
 ::: questionbox-body
-Check that this is correct, original values in the table metadata were "Const_nimble" "Data_nimble" "Output" "other"
+Check that this is correct, original values in the table metadata were
+"Const_nimble" "Data_nimble" "Output" "other"
 :::
 ::::::
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+Answer WGNAS (Pierre-Yves Hernvann)
+::::
+
+::: answerbox-body
+The version number are related to variables, each time they are changed
+a new variable number is created in metadata by the shiny and the date
+is set, so we can keep track of the variables. There is also an
+information on who did the change (not accessible to the public). Pierre
+Yves agrees that saving the database at each working group is probably
+the best way to re-run the model at that stage.
+:::
+::::::
+
+::: {.callout-note appearance="simple"}
+## TODO
+
+The DB will be held in ICES server. Create a procedure to save the
+database at each working group to be able to run past versions of the
+model.
+:::
 
 ```{r }
 #| label: tr_version_ver_insert
@@ -1047,7 +1224,8 @@ Question to WNGAS / ICES
 -   Check there is just one version per year
 -   Provide descriptions of the version of the model
 -   Questions sent to ICES to provide access to historical DOI
--   Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves Hernvann
+-   Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves
+    Hernvann
 :::
 ::::::
 
@@ -1072,7 +1250,11 @@ QUESTION ICES: What is the vocabulary for datacalls
 ::::
 
 ::: questionbox-body
-I would like to access to this table : [datacall (see link in ICES webpage)](https://data.ices.dk/DataCalls/listDataCalls). Currently we see the current year, this is nice, how do we access to historical data, is there a way to get it using a query ? We've found a link for advice or stocks but not data calls.
+I would like to access to this table : [datacall (see link in ICES
+webpage)](https://data.ices.dk/DataCalls/listDataCalls). Currently we
+see the current year, this is nice, how do we access to historical data,
+is there a way to get it using a query ? We've found a link for advice
+or stocks but not data calls.
 :::
 ::::::
 
@@ -1092,12 +1274,15 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")%>% knitr::kable() %
 ::: {.callout-note appearance="simple"}
 ## NOTE
 
-This list is probably incomplete. But the metric can be NULL in case of a number of fish released, not of the above (@tbl-metric) will apply.
+This list is probably incomplete. But the metric can be NULL in case of
+a number of fish released, not of the above (@tbl-metric) will apply.
 :::
 
 ## Category (tr_category_cat)
 
-categories @Tbl-category were in the salmoglob metadata, we have simplified to reduce the number of categories and be able to get for instance all parameters dealing with catch.
+categories @Tbl-category were in the salmoglob metadata, we have
+simplified to reduce the number of categories and be able to get for
+instance all parameters dealing with catch.
 
 ```{r}
 #| label: tbl-category
@@ -1112,7 +1297,9 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")%>% knitr::kable()
 
 ## Destination (tr_destination_dest)
 
-A bit cumbersome this table, the idea is "what becomes of this fish". Different types of landings. But it's just in metatdata and we need need in WGBAST
+A bit cumbersome this table, the idea is "what becomes of this fish".
+Different types of landings. But it's just in metatdata and we need need
+in WGBAST
 
 ```{r}
 #| label: tbl-destination
@@ -1129,7 +1316,8 @@ knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "cond
 ::: {.callout-note appearance="simple"}
 ## NOTE DIASPARA
 
-Here Hilaire say that naming the table "outcome" wasn't ideal so I've followed his suggestion
+Here Hilaire say that naming the table "outcome" wasn't ideal so I've
+followed his suggestion
 :::
 
 ## Metadata (tr_metadata_met)
@@ -1147,7 +1335,10 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable()
 
 ## Area (tr_area_are)
 
-Here I'm trying to build something consistent. I guess only the final result will tell but I have to start somewhere ... A good idea to simploify the structure of the db is to get together marine and continental areas.
+Here I'm trying to build something consistent. I guess only the final
+result will tell but I have to start somewhere ... A good idea to
+simploify the structure of the db is to get together marine and
+continental areas.
 
 ### Continental areas
 
@@ -1306,7 +1497,9 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_level_lev;")%>% knitr::kable() %>
 ::: {.callout-note appearance="simple"}
 ## Note from Hilaire
 
-The working groups might change over time, referencing a working group there is probably not the best. Cédric : Added stockkeylabel, this table is necessary to aggregate data (species is not enough).
+The working groups might change over time, referencing a working group
+there is probably not the best. Cédric : Added stockkeylabel, this table
+is necessary to aggregate data (species is not enough).
 :::
 
 ```{r}
@@ -1536,33 +1729,98 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ## Life stages (tr_lifestage_lfs)
 
-Life stages cannot easily be shared among all species, they are species specific, probably similar between Sea trout and Salmon, but there is a large gap between a leptocephalus and a parr.
+Life stages cannot easily be shared among all species, they are species
+specific, probably similar between Sea trout and Salmon, but there is a
+large gap between a leptocephalus and a parr.
 
-Creating a life stage referential is a challenging issue that will require inputs from the working groups for validation.
+Creating a life stage referential is a challenging issue that will
+require inputs from the working groups for validation.
 
 ### Considerations about the database structure
 
-For life stage, unlike in other referentials, using working group specific life stage would lead to confusion. WGBAST and WGNAS would share the same stages for salmon. So unlike in many other table, the referentials will not use inheritance (see paragraph @sec-hierarchical for more details on inheritance). This means that we will create a table grouping all life stages and then we will only select the relevant ones at working group levels. For instance currently WGEEL does not use the `Egg` or `Parr` stages. It will be listed in the `ref.tr_lifestage_lfs` table but not in the `refeel.tr_lifestage_lfs` table. So the working group referentials, `refnas`, `refbast`, `refeel` ... will have `tr_lifestage_lfs` tables with a foreign key to `ref.tr_lifestage_lfs`, and a subset of values used by the working group.
+For life stage, unlike in other referentials, using working group
+specific life stage would lead to confusion. WGBAST and WGNAS would
+share the same stages for salmon. So unlike in many other table, the
+referentials will not use inheritance (see paragraph @sec-hierarchical
+for more details on inheritance). This means that we will create a table
+grouping all life stages and then we will only select the relevant ones
+at working group levels. For instance currently WGEEL does not use the
+`Egg` or `Parr` stages. It will be listed in the `ref.tr_lifestage_lfs`
+table but not in the `refeel.tr_lifestage_lfs` table. So the working
+group referentials, `refnas`, `refbast`, `refeel` ... will have
+`tr_lifestage_lfs` tables with a foreign key to `ref.tr_lifestage_lfs`,
+and a subset of values used by the working group.
 
 ### The lifestages in working group databases
 
-The creation of life stage is discussed in the issue 16 in git [github link to issue](https://github.com/DIASPARAproject/WP3_migdb/issues/16)
+The creation of life stage is discussed in the issue 16 in git [github
+link to issue](https://github.com/DIASPARAproject/WP3_migdb/issues/16)
 
-Stages use are described in WGNAS metadata [paragraph life stage of the WGNAS description report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#developmental-stage) and WGBAST reports (though for the young fish this concept is mixed with age) [paragraph life stage of the WGBAST description report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgbast_database_description.html#age). So they are not used as a separate column to describe the data. But in the eel database they are and so we will need to add this dimension to the table structure.
+Stages use are described in WGNAS metadata [paragraph life stage of the
+WGNAS description
+report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#developmental-stage)
+and WGBAST reports (though for the young fish this concept is mixed with
+age) [paragraph life stage of the WGBAST description
+report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgbast_database_description.html#age).
+So they are not used as a separate column to describe the data. But in
+the eel database they are and so we will need to add this dimension to
+the table structure.
 
 ::: {.callout-caution appearance="simple"}
-## Adding a stage dimension
+Adding a stage dimension
 
-Currently the stage is used by WGEEL and not by WGNAS or WGBAST landings data. For WGBAST it is used to describe the numbers release from hatchery at various stages. Spatial information, and information about the age are used to split the dataset, not the stage. We have two solutions : 1 / ignore the stage for WGBAST and WGNAS and only have the stage as a new column in the wgeel database when the inherited table is created. 2/ Add it everywhere and populate the column using the metadata (which should not be too hard) but with no practical use in the table since the information is not used currently. Our preference would go for the second because having a single data structure should make the common shiny development more easy, what do you think ?
+Currently the stage is used by WGEEL and not by WGNAS or WGBAST landings
+data. For WGBAST it is used to describe the numbers release from
+hatchery at various stages. Spatial information, and information about
+the age are used to split the dataset, not the stage. We have two
+solutions : 1 / ignore the stage for WGBAST and WGNAS and only have the
+stage as a new column in the wgeel database when the inherited table is
+created. 2/ Add it everywhere and populate the column using the metadata
+(which should not be too hard) but with no practical use in the table
+since the information is not used currently. Our preference would go for
+the second because having a single data structure should make the common
+shiny development more easy, what do you think ?
 :::
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+Answer from Etienne (WGNAS)
+::::
+
+::: answerbox-body
+Yes, we could probably live with an additional maturity column, I don't
+think their is any big issues with this. 
+:::
+::::::
 
 ### Use of lifestages to include other information.
 
-The different steps in the models are identified using spatio temporal units and stages (e.g; post smolt and location at sea) @ices_second_2024, a location and stage to descibe the different steps in the return migration (for instance returning adult in seawater, in freshwater...). Some of the elements added in the stage column are not stage per-se, but elements used to describe the spatio-temporal elements within the life-cycle, for instance the use PFA (pre-fishery-abundance) which correspond to the number at sea of different stages before fishery. To deal with those, we will simplify the stages table, remove elements which are not stages, and still refer to spatio temporal parameters from their definition. Here we are focusing on the stock DB which will group information, but the individual metric database might require more details that the simple adult stage. For this reason, we will add the maturity scale from ICES in the DB.
+The different steps in the models are identified using spatio temporal
+units and stages (e.g; post smolt and location at sea)
+@ices_second_2024, a location and stage to descibe the different steps
+in the return migration (for instance returning adult in seawater, in
+freshwater...). Some of the elements added in the stage column are not
+stage per-se, but elements used to describe the spatio-temporal elements
+within the life-cycle, for instance the use PFA (pre-fishery-abundance)
+which correspond to the number at sea of different stages before
+fishery. To deal with those, we will simplify the stages table, remove
+elements which are not stages, and still refer to spatio temporal
+parameters from their definition. Here we are focusing on the stock DB
+which will group information, but the individual metric database might
+require more details that the simple adult stage. For this reason, we
+will add the maturity scale from ICES in the DB.
 
 ### Adding a bit more complexity with the eel.
 
-In some cases mixture of stages are used. Many fyke net fisheries for eel will not distinguish between yellow and silver eel stage and WGEEL uses the `YS` stage. Some historical trap series did not distinguish between small yellow eels and glass eel, or the glass eel ascending are in a late stage. In that case the `GY`stage is used to count the recruits.
+In some cases mixture of stages are used. Many fyke net fisheries for
+eel will not distinguish between yellow and silver eel stage and WGEEL
+uses the `YS` stage. Some historical trap series did not distinguish
+between small yellow eels and glass eel, or the glass eel ascending are
+in a late stage. In that case the `GY`stage is used to count the
+recruits.
 
 :::::: questionbox
 :::: questionbox-header
@@ -1573,13 +1831,17 @@ QUESTION TO WGEEL
 ::::
 
 ::: questionbox-body
-The new database will have to include a source WILD/HATCHERY/AQUACULTURE shouldn't we use that opportunity to get rid of `OG` (ongrown) and `QG` (quarantine glass eel) which are cumbersome when we try to make simple graphs ?
+The new database will have to include a source WILD/HATCHERY/AQUACULTURE
+shouldn't we use that opportunity to get rid of `OG` (ongrown) and `QG`
+(quarantine glass eel) which are cumbersome when we try to make simple
+graphs ?
 :::
 ::::::
 
 ### Code to create the stage table.
 
-The code for creating `tr_lifestage_lfs` is shown below, it also includes the import of the WGEEL stage table.
+The code for creating `tr_lifestage_lfs` is shown below, it also
+includes the import of the WGEEL stage table.
 
 <details>
 
@@ -1627,13 +1889,16 @@ QUESTION TO ICES
 ::::
 
 ::: questionbox-body
-Does it make sense to use a code outside from its scope (I seems to me that yes). If so can we use the TS_DevStage and add values in it and propose definitions ?
+Does it make sense to use a code outside from its scope (I seems to me
+that yes). If so can we use the TS_DevStage and add values in it and
+propose definitions ?
 :::
 ::::::
 
 ### Importing the lifestages for Salmon.
 
-Some of the definitions come from [Ontology portal](https://bioportal.bioontology.org/ontologies/SALMON).
+Some of the definitions come from [Ontology
+portal](https://bioportal.bioontology.org/ontologies/SALMON).
 
 ```{r import_tr_lifestage_lfs_sal}
 #| echo: TRUE
@@ -1643,6 +1908,8 @@ Some of the definitions come from [Ontology portal](https://bioportal.bioontolog
 #| code-fold: TRUE
 #| code-summary: Code to import stages from WGBAST and WGNAS databases.
 
+
+# below the definition of Smolt, post-smolt and Adult provided by Etienne.
 lfs <- tribble(
   ~lfs_code, ~lfs_name, ~lfs_spe_code, ~lfs_description, 
   ~lfs_icesvalue, ~lfs_icesguid, ~lfs_icestablesource,
@@ -1657,12 +1924,11 @@ lfs <- tribble(
   "P", "Parr", "SAL", 
   "A young salmonid with parr-marks before migration to the sea and after dispersal from the redd. 	http://purl.dataone.org/odo/SALMON_00000649",
   NA, NA, NA,
-  "SM", "Smolt", "SAL", "1) A young salmonid which has developed silvery coloring on its sides, obscuring the parr marks, and which is about to migrate or has just migrated into the sea, 2) to undergo the transformation from parr to smolt.http://purl.dataone.org/odo/SALMON_00000404",
+  "SM", "Smolt", "SAL", "A young salmonid which has undergone the transformation to adapt to salt water, has developed silvery coloring on its sides, obscuring the parr marks, and is about to migrate or has just migrated into the sea.",
   NA, NA, NA,
-  "PS", "Post Smolt", "SAL", "A young salmonid after
-  the smolt freshwater or estuarine migration. [TODO check this]",
+  "PS", "Post Smolt", "SAL", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
   NA, NA, NA,
- "A", "Adult", "SAL", "Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity, for salmon this might refer to fishes during their spawning migration in coastal waters, or spawning adults in freshwater. More details can be given on the maturity of the fish using the maturity scale.", NA, NA, NA
+ "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA
 )
 dbWriteTable(con_diaspara_admin, "temp_lfs", lfs, overwrite = TRUE)
     dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs 
@@ -1742,7 +2008,8 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ## Maturity (ts_maturity_mat)
 
-Working on stages, and looking at the ICES vocab, we have decided to include information on maturity.
+Working on stages, and looking at the ICES vocab, we have decided to
+include information on maturity.
 
 <details>
 
@@ -1753,7 +2020,54 @@ Working on stages, and looking at the ICES vocab, we have decided to include inf
 
 </details>
 
-The information about the stage mixes information on stage and maturity. So here we add a table of maturity following the 6 stage scale of ICES vocab (Table @tbl_tr_maturity_mat).
+The information about the stage mixes information on stage and maturity.
+The use of SMSF vocabulary stage is made mandatory for all countries
+since 2020 and WGBIOP [@ices_wgbiop_2024] has revised the referential
+and emphasized the need of its use for a consistent stock assessment.
+
+In the report the stages are defined as following :
+
+| State | Stage | Possible sub-stages |
+|------------------------|------------------------|------------------------|
+| SI. Sexually immature | A. Immature |  |
+| SM. Sexually mature | B. Developing | Ba. Developing but functionally immature (first-time developer) |
+|  |  | Bb. Developing and functionally mature |
+|  | C. Spawning | Ca. Actively spawning |
+|  |  | Cb. Spawning |
+|  | D. Regressing/Regenerating | Da. Regressing |
+|  |  | Db. Regenerating |
+|  | E. Omitted spawning |  |
+|  | F. Abnormal |  |
+
+: SMSF (WKMATCH 2012 maturity scale revised). Source:
+\[\@ices_wbbiop_2024\].
+
+Of note the following comments by WGBIOP :
+
+-   The substage Ba identifies a sexually mature but functionally
+    immature (virgin developing for the first time) fish which is not
+    going to contribute to the current upcoming spawning season. Either
+    it is uncertain if the fish will make it for the upcoming spawning
+    season as it is a long time to the current upcoming spawning season
+    (i.e. if maturity is assessed 8 months prior to the spawning season
+    it is unsure if the first time developer will be ready to spawn in 8
+    months time), or the time between assessing the maturity stage and
+    the current upcoming spawning season is too short to fully develop
+    the oocytes (i.e. if it takes 6 months to fully develop oocytes from
+    previtellogenic to eggs and a Ba fish is found 3 months prior to the
+    current upcoming spawning season, it will not have enough time to
+    develop the oocytes).
+
+-   the substage Bb identifies a developing and functionally mature
+    (first or repeat spawner!!) fish which, in most of the cases is
+    going to contribute to the current spawning season. This stage has
+    visible oocytes and grainy appearance of the gonads on the
+    macroscopic scale, and vitellogenic oocytes on the histological key.
+
+    Following this report and the comments made by ICES data center the
+    following codes are proposed.
+
+\@ (Table @tbl-tr_maturity_mat).
 
 ```{r import_tr_maturity_mat}
 #| echo: TRUE
@@ -1768,10 +2082,10 @@ maturity <- icesVocab::getCodeList('TS_MATURITY')
 maturity <- maturity |> 
 rename("mat_icesguid"="GUID",  "mat_icesvalue" = "Key", "mat_description" = "Description") |> 
 select ( mat_icesvalue, mat_icesguid, mat_description) |>
-filter(mat_icesvalue %in% c(61,62,63,64,65,66)) |>
+filter(mat_icesvalue %in% c("A","B","Ba","Bb","C","Ca","Cb","D","Da","Db","E", "F")) |>
 mutate(mat_icestablesource = "TS_MATURITY",
-       mat_id = 1:6,
-      mat_code = c("Juvenile", "Maturing", "Spawning", "Spent", "Skip", "Abnormal")) |>
+       mat_id = 1:12,
+      mat_code = mat_icesvalue) |>
 select(mat_id, mat_code, mat_description, mat_icesvalue, mat_icesguid, mat_icestablesource)
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_maturity", maturity, overwrite = TRUE)
@@ -1780,13 +2094,14 @@ DBI::dbWriteTable(con_diaspara_admin, "temp_maturity", maturity, overwrite = TRU
 DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_maturity_mat
 (mat_id, mat_code, mat_description, mat_icesvalue, mat_icesguid, mat_icestablesource)
 SELECT mat_id, mat_code, mat_description, mat_icesvalue, mat_icesguid::uuid, mat_icestablesource
-FROM temp_maturity")
+FROM temp_maturity")# 12
 
 
 DBI::dbExecute(con_diaspara_admin, "DROP table temp_maturity")
 ```
 
-```{r tbl_tr_maturity_mat}
+```{r}
+#| label: tbl-tr_maturity_mat
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
@@ -1799,21 +2114,86 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
+## Habitat type (tr_habitattype_hty)
+
+This table (Table @tbl-habitat_type_vocab) is used in RDBES, and those
+stages are consistent with WGBAST and WGEEL. I remember when creating
+this for WGEEL, we tried to follow the ICES vocab at the time, so it's
+mostly similar except that `C` (coastal) in WGEEL is `MC` in WLTYP and
+freshwater is `F` instead of `FW`. WGBAST separates Marine Open `O`
+(instead of `MO`), Marine coastal `C` (instead of `MC`) and rivers `R`
+(instead of `FW)`. In the report it is said that `S` sea is used when it
+is not possible to distinguish between coastal and marine open, but the
+code is not in the database (If I'm not wrong see [WGBAST database
+description - catch
+habitat](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p5/wgbast_database_description.html#catch-habitat)).
+Other elements in this vocab will not be used (e.g. `TT`, `Beach` ... ).
+Currently the
+[RDBES](https://vocab.ices.dk/?CodeTypeRelID=212&CodeID=249075) uses the
+following codes from `FW  Fresh water`, `MC   Marine water (coast)`,
+`MO Marine water (open sea)`, `MC   Marine water (coast)` and
+`NA  Not applicable`.
+
+```{r tbl-habitat_type_vocab}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| code-fold: TRUE
+#| message: FALSE
+#| tbl-cap: ICES vocabularies for station type
+#| label: tbl-habitat_type_vocab
+
+
+WLTYP <- icesVocab::getCodeList('WLTYP')
+
+# At the present the codetypes target Eggs and Larvae surveys
+# This is a description of scales types using different publications => not for use()
+kable(WLTYP, caption = "WLTYP") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+### Code to create the habitat type table.
+
+The code for creating `tr_habitat_type` is shown below.
+
+<details>
+
+<summary>SQL code to create table `tr_habitat_type` </summary>
+
+``` {.sql include="../SQL/2_ref_tr_habitattype_hty.sql"}
+```
+
+</details>
+
 # ICES areas
 
-Download shapefiles from NAFO =\> create table following ICES_Areas for GUID FAO major fishing area (27, 21, 37, 34, 31) 27 Atlantic, Northeast 21 Atlantic, Northwest 37 Mediterranean and Black Sea 34 Atlantic, Eastern Central 31 Atlantic, Western Central subarea division subdivision
+Download shapefiles from NAFO =\> create table following ICES_Areas for
+GUID FAO major fishing area (27, 21, 37, 34, 31) 27 Atlantic, Northeast
+21 Atlantic, Northwest 37 Mediterranean and Black Sea 34 Atlantic,
+Eastern Central 31 Atlantic, Western Central subarea division
+subdivision
 
 code 27.9.b.2 area_full area_27 9.b.2
 
-source : GFCM geographical subareas https://www.fao.org/gfcm/data/maps/gsas/fr/ https://gfcmsitestorage.blob.core.windows.net/website/5.Data/ArcGIS/GSAs_simplified_updated_division%20(2).zip
+source : GFCM geographical subareas
+https://www.fao.org/gfcm/data/maps/gsas/fr/
+https://gfcmsitestorage.blob.core.windows.net/website/5.Data/ArcGIS/GSAs_simplified_updated_division%20(2).zip
 
-source : NAFO divisions https://www.nafo.int/Data/GIS https://www.nafo.int/Portals/0/GIS/Divisions.zip
+source : NAFO divisions https://www.nafo.int/Data/GIS
+https://www.nafo.int/Portals/0/GIS/Divisions.zip
 
-source : ICES statistical areas https://gis.ices.dk/shapefiles/ICES_areas.zip https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c784a0a3-752f-4b50-b02f-f225f6c815eb
+source : ICES statistical areas
+https://gis.ices.dk/shapefiles/ICES_areas.zip
+https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c784a0a3-752f-4b50-b02f-f225f6c815eb
 
-The rest of the word was somewhere on my computer. Cannot trace the source, it's exaclty the same for NAFO but changed in the med and ICES. For some reasons was not complete in table from wgeel so have to download it again to postgres.
+The rest of the word was somewhere on my computer. Cannot trace the
+source, it's exaclty the same for NAFO but changed in the med and ICES.
+For some reasons was not complete in table from wgeel so have to
+download it again to postgres.
 
-Values for geom have been updated from ICES areas, the new boundaries are different, however, more than the previous ones. The values for Areas and Subareas have not been updated but these are for wide maps so we'll leave it as it is.
+Values for geom have been updated from ICES areas, the new boundaries
+are different, however, more than the previous ones. The values for
+Areas and Subareas have not been updated but these are for wide maps so
+we'll leave it as it is.
 
 ```{r}
 #| label: fishingareas
@@ -1971,7 +2351,8 @@ dev.off()
 
 ```
 
-![Map of ICES fishing areas at Major level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
+![Map of ICES fishing areas at Major level, source NAFO, FAO, ICES,
+GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing areas"){#fig-fishingareas_major}
 
 ```{r fig-fishingareas_subarea}
 #| echo: TRUE
@@ -2011,7 +2392,8 @@ dev.off()
 
 ```
 
-![Map of ICES fishing areas at Subarea level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subarea.png "A planisphere with ocean fishing subareas"){#fig-fishingareas_subarea}
+![Map of ICES fishing areas at Subarea level, source NAFO, FAO, ICES,
+GFCM.](images/fig-fishingareas_subarea.png "A planisphere with ocean fishing subareas"){#fig-fishingareas_subarea}
 
 ```{r fig-fishingareas_division}
 #| echo: TRUE
@@ -2056,7 +2438,8 @@ dev.off()
 
 ```
 
-![Map of ICES fishing areas at division level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_division.png "A planisphere with ocean fishing division"){#fig-fishingareas_division}
+![Map of ICES fishing areas at division level, source NAFO, FAO, ICES,
+GFCM.](images/fig-fishingareas_division.png "A planisphere with ocean fishing division"){#fig-fishingareas_division}
 
 ```{r fig-fishingareas_subdivision}
 #| echo: TRUE
@@ -2100,7 +2483,9 @@ print(g)
 dev.off() 
 ```
 
-![Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
+![Map of ICES fishing areas at subdivision level, source NAFO, FAO,
+ICES,
+GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
 # SCHEMA datnas and refnas
 
@@ -2229,10 +2614,13 @@ dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
 ::: {.callout-note appearance="simple"}
 ## TODO diaspara: Integrate new data from REFNAS
 
-Collect the latest version of the db from Jerome, there are new variables there.
+Collect the latest version of the db from Jerome, there are new
+variables there.
 :::
 
-After integration,, the table of metadata from WGNAS is not changed much, apart from adapting to the new referentials. The table is show in Table @tbl-metadata.
+After integration,, the table of metadata from WGNAS is not changed
+much, apart from adapting to the new referentials. The table is show in
+Table @tbl-metadata.
 
 ```{r}
 #| label: tbl-metadatawgnas
@@ -2254,22 +2642,28 @@ The code for creating `t_stock_sto` is listed below
 
 <details>
 
-<summary>SQL code to create tables (TODO HERE work in progress ....)</summary>
+<summary>SQL code to create tables (TODO HERE work in progress
+....)</summary>
 
 ``` {.sql include="../SQL/4_stock.sql"}
 ```
 
 </details>
 
-While creating the table, we stumbled on some issues (which we have put on the github site for details):
+While creating the table, we stumbled on some issues (which we have put
+on the github site for details):
 
--   [duplicated values in archive DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
+-   [duplicated values in archive
+    DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
 
-Some of the variables in salmoglob have no `year` dimension, this leads to dropping the non null constraint on year. We need to check for possible impact in the eel db.
+Some of the variables in salmoglob have no `year` dimension, this leads
+to dropping the non null constraint on year. We need to check for
+possible impact in the eel db.
 
--   [NULL values allowed for year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
+-   [NULL values allowed for
+    year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
 
-## Import the stock_sto
+## Import the t_stock_sto
 
 ```{r refnas.t_stock_sto}
 #| echo: TRUE
@@ -2290,7 +2684,8 @@ stock <- dbGetQuery(con_salmoglob, "SELECT * FROM database")
 
 # WORK IN PROGRESS....
 
-This document is still in construction ![Structure of the db (still in construction)](images\diaspara-ref.png){#fig-ref}
+This document is still in construction ![Structure of the db (still in
+construction)](images\diaspara-ref.png){#fig-ref}
 
 # Acknowledgements
 

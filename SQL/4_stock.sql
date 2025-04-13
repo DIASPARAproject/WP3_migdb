@@ -1,6 +1,6 @@
 -- before working there should have been these constraints in the salmoglob DB
 
-DBI::dbGetQuery(con_salmoglob, ALTER TABLE "database" 
+ ALTER TABLE "database" 
 ADD CONSTRAINT c_uk_area_varmod_year_location_age UNIQUE  (area, var_mod, "year", "location", age);
 ALTER TABLE "database_archive" ADD CONSTRAINT c_uk_archive_version_area_varmod_year_location_age 
 UNIQUE  ("version", area, var_mod, "year", "location", age);
@@ -9,9 +9,11 @@ UNIQUE  ("version", area, var_mod, "year", "location", age);
 
 SELECT DISTINCT met_nim_code FROM refnas.tr_metadata_met
 JOIN refsalmoglob."database" ON var_mod = met_var
-
 WHERE  met_cat_code ='Other'
 
+
+SELECT * FROM refnas.tr_metadata_met WHERE met_var LIKE '%mu%'
+SELECT DISTINCT met_modelstage FROM refnas.tr_metadata_met
 
 -- This will create the main table to hold the stock data
 -- I'm currenlty putting foreign key to ref but this is just for show because this table
@@ -22,17 +24,18 @@ WHERE  met_cat_code ='Other'
 
 CREATE TABLE dat.t_stock_sto (
   sto_id serial4 NOT NULL,
-  sto_met_var NOT NULL CONSTRAINT fk_met_var FOREIGN KEY REFERENCES "ref".tr_metadata_met(met_var) ,
+  sto_met_var NOT NULL CONSTRAINT fk_sto_met_var FOREIGN KEY REFERENCES "ref".tr_metadata_met(met_var) ,
   sto_year int4 NULL,
   sto_value numeric NULL,
   sto_are_code TEXT NOT NULL 
   CONSTRAINT fk_sto_are_code FOREIGN KEY REFERENCES "ref".tr_area_are(are_code) 
-  ON UPDATE CASCADE ON DELETE CASCADE,
+  ON UPDATE CASCADE ON DELETE RESTRICT,
   -- NOTE : here I'm referencing the code because it's more easy to grasp than a number, but the id is the primary key.
   -- should work stil but requires a unique constraint on code (which we have set).
-  eel_emu_nameshort varchar(20) NOT NULL,
-  eel_cou_code varchar(2) NULL,
-  eel_lfs_code varchar(2) NOT NULL,
+  sto_cou_code varchar(2) NULL
+  CONSTRAINT fk_sto_cou_code FOREIGN KEY REFERENCES "ref".tr_country_cou (cou_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+  sto_lfs_code TEXT NOT NULL CONSTRAINT fk_sto_lfs_code FOREIGN KEY REFERENCES "ref".tr_lifestage_lfs (lfs_code) ON UPDATE CASCADE ON DELETE RESTRICT
   eel_hty_code varchar(2) NULL,
   eel_area_division varchar(254) NULL,
   eel_qal_id int4 NOT NULL,
@@ -56,11 +59,6 @@ CREATE TABLE dat.t_stock_sto (
   CONSTRAINT c_fk_lfs_code FOREIGN KEY (eel_lfs_code) REFERENCES "ref".tr_lifestage_lfs(lfs_code) ON UPDATE CASCADE,
   CONSTRAINT c_fk_qal_id FOREIGN KEY (eel_qal_id) REFERENCES "ref".tr_quality_qal(qal_id) ON UPDATE CASCADE,
   CONSTRAINT c_fk_typ_id FOREIGN KEY (eel_typ_id) REFERENCES "ref".tr_typeseries_typ(typ_id) ON UPDATE CASCADE
-
-
-
-
-
 );
 
 COMMENT ON TABLE dat.t_stock_sto IS 
