@@ -57,8 +57,7 @@ editor: visual
 ::::::
 
 ::: notes
-WGNAS only collects data at the scale of regional units.
-Pre-processing of landings done by the group before integrating
+WGNAS only collects data at the scale of regional units. Pre-processing of landings done by the group before integrating
 :::
 
 ::: footer
@@ -143,13 +142,13 @@ Pre-processing of landings done by the group before integrating
 ![](images/EMUS.png){fig-align="center"}
 :::
 ::::::
+
 # Database development (DIASPARA)
 
-* database for Stock assessment model
-* data will be grouped by regional units
-* data could go into this database as soon as ready
-* different datasets will be used
-
+-   database for Stock assessment model
+-   data will be grouped by regional units
+-   data could go into this database as soon as ready
+-   different datasets will be used
 
 # Potential data inclusion in RDBES {.smaller .scrollable}
 

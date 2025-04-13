@@ -60,7 +60,7 @@ gantt
     section Validation
     WGNAS habitat #22 :active, after alpha, until final
     WGBAST habitat #21 :active, after alpha, until final
-
+    Validation meeting: milestone, valid, 2025-10-15, 3d
     Final meeting   :milestone, final, 2025-12-01, 0d
     WGEEL habitat #23 :active, after v1, until v2
     Release to ICES: active, after v2, until end
@@ -121,12 +121,13 @@ More details here :
     Validate structure with WGEEL: after alpha, until final
     Validate structure with WGBAST: after alpha, until end
     Validate structure with WGTRUTTA: after alpha, until end
+    Validation meeting: milestone, valid, 2025-10-15, 3d
     Final meeting:milestone, final, 2025-12-01, 3d
     ICES Import to ICES db: crit, after final, until v3
 
     section shiny / R
 
-    Export nimble functions WGNAS: current, after final, until 2026-02-01
+    Export nimble functions WGNAS: current, after final, 2026-02-01
 
     V0.0.3 (WGBAST model): milestone, v3, 2026-04-01, 2d
     Propose and adapt changes to shiny apps : current, after v3, until end
