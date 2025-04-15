@@ -29,14 +29,19 @@ CREATE TABLE dat.t_stock_sto (
   sto_value numeric NULL,
   sto_are_code TEXT NOT NULL 
   CONSTRAINT fk_sto_are_code FOREIGN KEY REFERENCES "ref".tr_area_are(are_code) 
-  ON UPDATE CASCADE ON DELETE RESTRICT,
+  ON UPDATE CASCADE ON DELETE CASCADE,
   -- NOTE : here I'm referencing the code because it's more easy to grasp than a number, but the id is the primary key.
   -- should work stil but requires a unique constraint on code (which we have set).
   sto_cou_code varchar(2) NULL
-  CONSTRAINT fk_sto_cou_code FOREIGN KEY REFERENCES "ref".tr_country_cou (cou_code)
-  ON UPDATE CASCADE ON DELETE RESTRICT,
-  sto_lfs_code TEXT NOT NULL CONSTRAINT fk_sto_lfs_code FOREIGN KEY REFERENCES "ref".tr_lifestage_lfs (lfs_code) ON UPDATE CASCADE ON DELETE RESTRICT
-  eel_hty_code varchar(2) NULL,
+  CONSTRAINT fk_sto_cou_code FOREIGN KEY 
+  REFERENCES "ref".tr_country_cou (cou_code)
+  ON UPDATE CASCADE ON DELETE CASCADE,
+  sto_lfs_code TEXT NOT NULL CONSTRAINT fk_sto_lfs_code FOREIGN KEY 
+  REFERENCES "ref".tr_lifestage_lfs (lfs_code) 
+  ON UPDATE CASCADE ON DELETE CASCADE,
+  sto_hty_code varchar(2) NULL CONSTRAINT fk_hty_code FOREIGN KEY (sto_hty_code)
+  REFERENCES "ref".tr_habitattype_hty(hty_code) 
+  ON UPDATE CASCADE ON DELETE CASCADE,
   eel_area_division varchar(254) NULL,
   eel_qal_id int4 NOT NULL,
   eel_qal_comment text NULL,
@@ -55,7 +60,7 @@ CREATE TABLE dat.t_stock_sto (
   CONSTRAINT c_fk_cou_code FOREIGN KEY (eel_cou_code) REFERENCES "ref".tr_country_cou(cou_code),
   CONSTRAINT c_fk_eel_dta_code FOREIGN KEY (eel_dta_code) REFERENCES "ref".tr_dataaccess_dta(dta_code) ON UPDATE CASCADE,
   CONSTRAINT c_fk_emu FOREIGN KEY (eel_emu_nameshort,eel_cou_code) REFERENCES "ref".tr_emu_emu(emu_nameshort,emu_cou_code),
-  CONSTRAINT c_fk_hty_code FOREIGN KEY (eel_hty_code) REFERENCES "ref".tr_habitattype_hty(hty_code) ON UPDATE CASCADE,
+  CONSTRAINT ,
   CONSTRAINT c_fk_lfs_code FOREIGN KEY (eel_lfs_code) REFERENCES "ref".tr_lifestage_lfs(lfs_code) ON UPDATE CASCADE,
   CONSTRAINT c_fk_qal_id FOREIGN KEY (eel_qal_id) REFERENCES "ref".tr_quality_qal(qal_id) ON UPDATE CASCADE,
   CONSTRAINT c_fk_typ_id FOREIGN KEY (eel_typ_id) REFERENCES "ref".tr_typeseries_typ(typ_id) ON UPDATE CASCADE
