@@ -5,7 +5,7 @@
 DROP TABLE IF EXISTS ref.tr_lifestage_lfs CASCADE;
 CREATE TABLE ref.tr_lifestage_lfs (
   lfs_id SERIAL PRIMARY KEY,
-  lfs_code TEXT NOT NULL,
+  lfs_code TEXT NOT NULL UNIQUE,
   lfs_name TEXT NOT NULL,
   lfs_spe_code character varying(3) NOT  NULL,    
   lfs_description TEXT,
@@ -33,5 +33,7 @@ COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_icestablesource IS 'Source table in I
 
 GRANT ALL ON ref.tr_lifestage_lfs TO diaspara_admin;
 GRANT SELECT ON ref.tr_lifestage_lfs TO diaspara_read;
+
+
 
 

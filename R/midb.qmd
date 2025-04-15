@@ -583,9 +583,6 @@ to reference GFCM... JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
 :::
 ::::::
 
-
-
-
 :::::: answerbox
 :::: answerbox-header
 ::: answerbox-icon
@@ -595,10 +592,10 @@ Answer ICES
 ::::
 
 ::: answerbox-body
-There is a vocab for all groups, it's expertgroup. WGTRUTTA is not there but we will add it.
+There is a vocab for all groups, it's expertgroup. WGTRUTTA is not there
+but we will add it.
 :::
 ::::::
-
 
 ```{r}
 #| label: working_group
@@ -2042,7 +2039,8 @@ The use of SMSF vocabulary stage is made mandatory for all countries
 since 2020 and WGBIOP [@ices_wgbiop_2024] has revised the referential
 and emphasized the need of its use for a consistent stock assessment.
 
-In the report the stages are defined as following in [Maturitstage](https://vocab.ices.dk/?CodeTypeRelID=1510&CodeID=197374).
+In the report the stages are defined as following in
+[Maturitstage](https://vocab.ices.dk/?CodeTypeRelID=1510&CodeID=197374).
 
 | State | Stage | Possible sub-stages |
 |------------------------|------------------------|------------------------|
@@ -2083,7 +2081,6 @@ Of note the following comments by WGBIOP :
 
     Following this report and the comments made by ICES data center the
     following codes are proposed (Table @tbl-tr_maturity_mat).
-    
 
 ```{r import_tr_maturity_mat}
 #| echo: TRUE
@@ -2151,7 +2148,6 @@ following codes from `FW  Fresh water`, `MC   Marine water (coast)`,
 `MO Marine water (open sea)`, `MC   Marine water (coast)` and
 `NA  Not applicable`.
 
-
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -2161,7 +2157,12 @@ QUESTION TO ICES (Maria, Joana, Henrik)
 ::::
 
 ::: questionbox-body
-Why has the code `MC` been chosen instead of `C` for RDBES ? What is the rationale for not using the WFD ? Is it for non European countries Eel mostly follows the WFD (in EU countries) as the units should be based on river basins. What should we use there ? Our choice there would be to use `MC`, `MO`, `T` and `FW` and so add `T` to the list of vocabularies used by RDBES, would you agree ?
+Why has the code `MC` been chosen instead of `C` for RDBES ? What is the
+rationale for not using the WFD ? Is it for non European countries Eel
+mostly follows the WFD (in EU countries) as the units should be based on
+river basins. What should we use there ? Our choice there would be to
+use `MC`, `MO`, `T` and `FW` and so add `T` to the list of vocabularies
+used by RDBES, would you agree ?
 :::
 ::::::
 
@@ -2188,7 +2189,7 @@ The code for creating `tr_habitat_type` is shown below.
 
 <details>
 
-<summary>SQL code to create table `tr_habitat_type` </summary>
+<summary>SQL code to create table `tr_habitat_type`</summary>
 
 ``` {.sql include="../SQL/2_ref_tr_habitattype_hty.sql"}
 ```
@@ -2230,9 +2231,7 @@ FROM temp_habitat")# 4
 DBI::dbExecute(con_diaspara_admin, "DROP table temp_habitat")
 ```
 
--   The following table is proposed  (Table @tbl-tr_habitattype_hty).
-
-
+-   The following table is proposed (Table @tbl-tr_habitattype_hty).
 
 ```{r}
 #| label: tbl-tr_habitattype_hty
@@ -2247,15 +2246,13 @@ knitr::kable() %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
 ## Quality (tr_quality_qal)
 
-This code is used by wgeel. Currently the WGNAS uses an archive table, WGEEL
-uses historical data with a different quality ID.
-Both have chosen never to remove any data, I don't think that these procedures,
-handled by shiny app, are compatible with ICES procedures.
-
-
-
+This code is used by wgeel. Currently the WGNAS uses an archive table,
+WGEEL uses historical data with a different quality ID. Both have chosen
+never to remove any data, I don't think that these procedures, handled
+by shiny app, are compatible with ICES procedures.
 
 :::::: questionbox
 :::: questionbox-header
@@ -2266,48 +2263,46 @@ QUESTION TO ICES
 ::::
 
 ::: questionbox-body
-WGNAS uses an archive table for historical data. WGEEL uses a code to "deprecate" 
-old values.
+WGNAS uses an archive table for historical data. WGEEL uses a code to
+"deprecate" old values.
 
-* In practise for WGNAS it means that each time a new row replaces an old one, the
-data is saved in an archive table, with the same structure as the main data table, but
-with the name of the people who have handled the change and the date. The version is 
-replaced with a new number in the `database`table. 
+-   In practise for WGNAS it means that each time a new row replaces an
+    old one, the data is saved in an archive table, with the same
+    structure as the main data table, but with the name of the people
+    who have handled the change and the date. The version is replaced
+    with a new number in the `database`table.
 
-* For WGEEL, all the row are kept in the same table. Historical value get a code
- like 18, ..., 25 which identifies the year that the line was removed. All data 
- submitted to the database are kept, so if during a datacall, a new value is 
- submitted that is a duplicate from an old one, then the user in the shiny 
- has to edit an excel table saying which value he wants to keep. If for
-instance he wants to keep the old value, then the new row will go into the
- database with a qal_id 25 if the change is made in 2025. The table
-  @tbl-tr_quality_qalwgeel is used.
+-   For WGEEL, all the row are kept in the same table. Historical value
+    get a code like 18, ..., 25 which identifies the year that the line
+    was removed. All data submitted to the database are kept, so if
+    during a datacall, a new value is submitted that is a duplicate from
+    an old one, then the user in the shiny has to edit an excel table
+    saying which value he wants to keep. If for instance he wants to
+    keep the old value, then the new row will go into the database with
+    a qal_id 25 if the change is made in 2025. The table
+    @tbl-tr_quality_qalwgeel is used.
 
 How do you work in ICES to keep historical data ?
 :::
 ::::::
 
+Table tr_quality_qal used by the wgeel {# tbl-tr_quality_qalwgeel}
 
-Table tr_quality_qal used by the wgeel
-
-|qal_id|qal_level|qal_text|
-|------|---------|--------|
-|1|good quality|the data passed the quality checks of the wgeel|
-|2|modified|The wgeel has modified that data|
-|4|warnings|The data is used by the wgeel, but there are warnings on its quality (see comments)|
-|0|missing|missing data|
-|3|bad quality|The data has been judged of too poor quality to be used by the wgeel, it is not used|
-|18|discarded_wgeel_2018|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2018|
-|19|discarded_wgeel_2019|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2019|
-|20|discarded_wgeel_2020|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2020|
-|21|discarded_wgeel_2021|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2021|
-|-21|discarded 2021 biom mort|This data has either been removed from the database in favour of new data, this has been done systematically in 2021 for biomass and mortality types|
-|22|discarded_wgeel_2022|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2022|
-|23|discarded_wgeel 2023|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2023|
-|24|discarded_wgeel 2024|This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2024|
-
-
-
+| qal_id | qal_level | qal_text |
+|-------------------|----------------------------|-------------------------|
+| 1 | good quality | the data passed the quality checks of the wgeel |
+| 2 | modified | The wgeel has modified that data |
+| 4 | warnings | The data is used by the wgeel, but there are warnings on its quality (see comments) |
+| 0 | missing | missing data |
+| 3 | bad quality | The data has been judged of too poor quality to be used by the wgeel, it is not used |
+| 18 | discarded_wgeel_2018 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2018 |
+| 19 | discarded_wgeel_2019 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2019 |
+| 20 | discarded_wgeel_2020 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2020 |
+| 21 | discarded_wgeel_2021 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2021 |
+| -21 | discarded 2021 biom mort | This data has either been removed from the database in favour of new data, this has been done systematically in 2021 for biomass and mortality types |
+| 22 | discarded_wgeel_2022 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2022 |
+| 23 | discarded_wgeel 2023 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2023 |
+| 24 | discarded_wgeel 2024 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2024 |
 
 ### Code to create the table.
 
@@ -2315,51 +2310,37 @@ The code for creating `tr_quality_qal` is shown below.
 
 <details>
 
-<summary>SQL code to create table `tr_quality_qal` </summary>
+<summary>SQL code to create table `tr_quality_qal`</summary>
 
 ``` {.sql include="../SQL/2_ref_tr_quality_qal.sql"}
 ```
 
 </details>
 
-### Import the habitat type
+### Import the quality code
 
-The codes are imported in Table @tbl-tr_habitattype_hty.
+The codes are imported in Table @tbl-tr_quality_qal
 
-```{r import_tr_habitat_type}
+```{r import_tr_quality_qal}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import habitat from ICES. 
-
-habitat <- icesVocab::getCodeList('WLTYP')
-
-habitat <- habitat |> 
-rename("hty_icesguid"="GUID",  "hty_icesvalue" = "Key", "hty_description" = "Description") |> 
-select ( hty_icesvalue, hty_icesguid, hty_description) |>
-filter(hty_icesvalue %in% c("MC","MO","FW","T")) |>
-mutate(hty_icestablesource = "TS_habitat",
-       hty_id = 1:4,
-      hty_code = hty_icesvalue) |>
-select(hty_id, hty_code, hty_description, hty_icesvalue, hty_icesguid, hty_icestablesource)
-
-DBI::dbWriteTable(con_diaspara_admin, "temp_habitat", habitat, overwrite = TRUE)
+#| code-summary: Code to import quality from WGEEL. 
 
 
-DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_habitattype_hty
-(hty_id, hty_code, hty_description, hty_icesvalue, hty_icesguid, hty_icestablesource)
-SELECT hty_id, hty_code, hty_description, hty_icesvalue, hty_icesguid::uuid, hty_icestablesource
-FROM temp_habitat")# 4
+
+dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal WHERE lfs_spe_code ='ANG';")
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_quality_qal 
+SELECT *
+FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 
-DBI::dbExecute(con_diaspara_admin, "DROP table temp_habitat")
+
 ```
 
--   The following table is proposed  (Table @tbl-tr_habitattype_hty).
-
-
+-   The following table is proposed (Table @tbl-tr_habitattype_hty).
 
 ```{r}
 #| label: tbl-tr_habitattype_hty
@@ -2374,16 +2355,17 @@ knitr::kable() %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
 # ICES areas
 
-We have create entries in the table `tr_fishingarea_fia for
-FAO major fishing area (27, 21, 37, 34, 31).
+We have create entries in the table \`tr_fishingarea_fia for FAO major
+fishing area (27, 21, 37, 34, 31).
 
-* 27 Atlantic, Northeast
-* 21 Atlantic, Northwest 
-* 37 Mediterranean and Black Sea 
-* 34 Atlantic Eastern Central 
-* 31 Atlantic, Western Central 
+-   27 Atlantic, Northeast
+-   21 Atlantic, Northwest
+-   37 Mediterranean and Black Sea
+-   34 Atlantic Eastern Central
+-   31 Atlantic, Western Central
 
 source : GFCM geographical subareas
 https://www.fao.org/gfcm/data/maps/gsas/fr/
@@ -2402,9 +2384,9 @@ For some reasons was not complete in table from wgeel so have to
 download it again to postgres.
 
 Values for geom have been updated from ICES areas, the new boundaries
-are different, however, there are more than the previous ones. The values for
-Areas and Subareas have not been updated but these are for wide maps so
-we'll leave it as it is.
+are different, however, there are more than the previous ones. The
+values for Areas and Subareas have not been updated but these are for
+wide maps so we'll leave it as it is.
 
 ```{r}
 #| label: fishingareas
