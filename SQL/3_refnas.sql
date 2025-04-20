@@ -146,7 +146,7 @@ COMMENT ON COLUMN refnas.tr_metadata_met.met_deprecated
 IS'Is the variable still used ?';
 
 
-GRANT ALL ON refnas.tr_metadata_met TO diaspara_admin;
+ALTER TABLE refnas.tr_metadata_met OWNER TO diaspara_admin;
 GRANT SELECT ON refnas.tr_metadata_met TO diaspara_read;
 
 

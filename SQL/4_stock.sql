@@ -45,6 +45,8 @@ CREATE TABLE dat.t_stock_sto (
   CONSTRAINT fk_sto_lfs_code_sto_spe_code FOREIGN KEY (sto_lfs_code, sto_spe_code)
     REFERENCES "ref".tr_lifestage_lfs (lfs_code, lfs_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
+   sto_add_code fk_sto_add_code FOREIGN KEY (sto_add_code) 
+   REFERENCES "ref".tg_additional_add (add_code),   
   sto_hty_code VARCHAR(2) NULL, 
   CONSTRAINT fk_hty_code FOREIGN KEY (sto_hty_code)
     REFERENCES "ref".tr_habitattype_hty(hty_code) 
@@ -81,7 +83,7 @@ CREATE TABLE dat.t_stock_sto (
   -- CONSTRAINT ck_removed_typid CHECK (((COALESCE(eel_qal_id, 1) > 5) OR (eel_typ_id <> ALL (ARRAY[12, 7, 5])))),
 );
 
--- TODO : there should be a trigger to insert the date on daughter tables
+
 
 COMMENT ON TABLE dat.t_stock_sto IS 
 'Table including the stock data from the different schema, dateel, datnas.... This table should be empty,
@@ -116,9 +118,12 @@ COMMENT ON COLUMN dat.t_stock_sto.sto_dta_code IS 'Access to data, default is ''
 COMMENT ON COLUMN dat.t_stock_sto.sto_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 
+ALTER TABLE dat.t_stock_sto OWNER TO diaspara_admin;
+GRANT SELECT ON dat.t_stock_sto  TO diaspara_read;
+
 
 -- trigger on date
-DROP FUNCTION datawg.update_eel_last_update();
+DROP FUNCTION dat.update_sto_datelastupdate;
 CREATE OR REPLACE FUNCTION dat.update_sto_datelastupdate()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -129,7 +134,7 @@ BEGIN
 END;
 $function$
 ;
-
+ALTER FUNCTION dat.update_sto_datelastupdate() OWNER TO diaspara_admin;
 
 CREATE TRIGGER update_sto_datelastupdate BEFORE
 INSERT

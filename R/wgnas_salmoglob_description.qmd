@@ -61,11 +61,13 @@ con_salmoglob = dbConnect(Postgres(), dbname=cred$dbnamesalmo,host=cred$host,por
 When loading the first lines of the db, it really looks as following :
 
 ```{r tbl-databasedescription}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: 'Structure of the WGNAS main database'
+#| #| code-fold: TRUE
+#| code-summary: Code to load the first lines
 database10 <- DBI::dbGetQuery(con_salmoglob, 'SELECT * FROM public.database limit 20')
 knitr::kable(database10) %>% kable_styling(bootstrap_options = c("striped","hover", "condensed"))
 ```
@@ -88,7 +90,7 @@ From (@rivot_hierarchical_2021) :
 > * 11 SU from NE CSG, indexed by r= 15, ..., 25: 15 = Iceland North-East, 16 = Sweden, 17 =  Norway South-East, 18 = Norway South-West, 19 = Norway Middle, 20 = Norway North, 21 =  Finland, 22 = Russia Kola Barents, 23 = Russia Kola White Sea, 24 = Russia Arkhangelsk Karelia  and 25 = Russia River Pechora.  SU are defined on the basis of freshwater areas. All salmon within a SU are assumed to have the  same demographic parameters and to undertake a similar migration route at sea. Note that  Germany and Spain (SE CSG) are not considered at this stage because no complete series of data  are provided to ICES WGNAS by these two jurisdictions.
 
 ```{r tbl-areatypes}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -97,6 +99,8 @@ From (@rivot_hierarchical_2021) :
 #|   - Fisheries
 #|   - Countries
 #|   - Source area
+#| code-fold: TRUE
+#| code-summary: Code to find different values in column area
 area <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT area FROM public.database')
 knitr::kable(area[grep("fishery",area$area),,drop=FALSE], caption = "Area corresponding to fisheries", row.names=FALSE)
 knitr::kable(area[grep("coun",area$area),,drop=FALSE], caption = "Area corresponding to countries", row.names=FALSE)
@@ -107,27 +111,30 @@ The latter table (@Tbl-areatypes-3) is by default, so Atlantic, NEC and NAC are 
 
 # Location
 
-## Locations corresponding to fisheries
+## To what do the location correspond : fisheries, area, something else.... 
 
 ```{r location}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Locations
 #| tbl-subcap: 
 #|   - Location corresponding to fisheries
+#|   - Location corresponding to area
 #|   - These one are neither fishery nor area
-#|   - Location corresponding to 
 #| label: tbl-locations
+#| code-fold: TRUE
+#| code-summary: Code to analyse the data in location
 location <- DBI::dbGetQuery(con_salmoglob, 'SELECT DISTINCT location FROM public.database')
 knitr::kable(location[grep("fishe",tolower(location$location)),,drop=FALSE],  row.names=FALSE)
-location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
-  area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
-knitr::kable(location_biz, caption = , row.names=FALSE)  
 location_area <- data.frame("location"=intersect(location[!grepl("fishe",location$location),],
   area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
 knitr::kable(location_area, row.names=FALSE)
+location_biz <- data.frame("location"=setdiff(location[!grepl("fishe",tolower(location$location)),],
+  area[!grepl("coun",area$area) & !grepl("fishery",area$area),]))
+knitr::kable(location_biz, caption = , row.names=FALSE)  
+
 ```
 
 Here we search for locations related to fisheries. 
@@ -147,14 +154,49 @@ Here we search for locations related to fisheries.
 
 ## Locations corresponding to fisheries
 
+The following entries corresponding to fishery in column location can be dropped.
+
+```{r }
+#| label: TRUE
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: code to list location distinct parm
+distinct_age_parm <- DBI::dbGetQuery(con_salmoglob, 
+  "WITH t1 AS (
+  SELECT location, 
+  var_mod 
+  FROM public.database 
+  group by location, var_mod 
+  order by location, var_mod ),
+  t2 AS (
+  SELECT location as location2, 
+  var_mod as var_mod2
+  FROM public.database 
+  group by location, var_mod 
+  order by location, var_mod)
+  SELECT location, location2, var_mod from t1 JOIN t2 on t1.var_mod= t2.var_mod2 
+  where location!=location2
+  ")
+knitr::kable(distinct_age_parm, caption = "Variables using more than 1 location (e.g. where the column location is of use.)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
+Only omega is used in the location column, the rest should be in
+metadata.
+
+## Locations corresponding to something else than fisheries
 ```{r param_biz}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| results: 'asis'
 #| tbl-cap: List of parameters corresponding to neither fishery nor area (corresponding to weird table...).
 #| label: tbl-weirdparameters
+#| code-fold: TRUE
+#| code-summary: code to list the parameters with location not being area nor fishery
 
 for (i in 1 : nrow(location_biz)){
   location_bizi <- location_biz$location[i]
@@ -167,11 +209,12 @@ print(kable(var_biz[,,drop=FALSE], row.names=FALSE))
 
 Some values have been deprecated and are present in the database archive but not in the main database.
 ``` {r db_comparaison}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-
+#| code-fold: TRUE
+#| code-summary: Code to find what is only in database_archive.
 database <- DBI::dbGetQuery(con_salmoglob, "SELECT * FROM public.database")
 database_archive <- DBI::dbGetQuery(con_salmoglob, "SELECT * FROM public.database_archive")
 
@@ -190,14 +233,16 @@ for (col in cols) {
 
 
 
+
 ``` {r check_parameter_location}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Number of locations per model variables
 #| label: tbl-varmodcount
-
+#| code-fold: TRUE
+#| code-summary: Code to get the number of location per model variable
 result <- database %>%
   group_by(var_mod) %>%
   summarise(location_count = n_distinct(location))
@@ -207,12 +252,12 @@ knitr::kable(result) %>% kable_styling(bootstrap_options = c("striped", "hover",
 So in the end, only omega has 25 locations, and in this case the location corresponds to area.
 This means we can get rid of the location column. For `omega` we can keep it,; so we can add a column with a foreign key to area in the parameters table where priors will be stored.
 
-# Sea age
+# Age
 
 Salmon mature at various sea ages, typically returning to freshwater to spawn after one to three years at sea, but also sometimes at older sea ages; this varies widely between populations. Those salmon that return after one year at sea are referred to as one-sea-winter (`1SW`) salmon, or grilse, with older fish categorised as `2SW, 3SW`, etc. In practice, however, for management purposes these older sea age fish are typically aggregated and collectively referred to as multi-sea-winter (`MSW`) salmon. The sea age when salmon become sexually mature depends on genetics as well as growing conditions in the sea, and possibly freshwater, although the precise proximate factors initiating homeward migration are unknown (Hansen and Quinn, 1998). The sea age of Atlantic salmon is important in the context of stock definition since these different groups of fish have different migration routes, return at different times and are differentially exploited in fisheries. Thus, for example, it is only potential `MSW` salmon that are exploited in the distant water salmon fishery that operates off the west coast of Greenland [@ICES2021_wgnas_stock_annex].
 
 ``` {r check_age}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -223,6 +268,8 @@ Salmon mature at various sea ages, typically returning to freshwater to spawn af
 #|   - Number age data categorized by age, n is the number of lines in the db
 #|   - Variables using more than 1 age (e.g. from which the age cannot be derived from the variable itself.)
 #| label: tbl-agecheck
+#| code-fold: TRUE
+#| code-summary: Code to describe the content of age column
 
 
 summary_age <- DBI::dbGetQuery(con_salmoglob, 
@@ -253,6 +300,28 @@ distinct_age_parm <- DBI::dbGetQuery(con_salmoglob,
 knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g. from which the age cannot be derived from the variable itself.)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+
+Only the following parameters need a dimension with age.
+
+``` {r check_age}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: parameters with more than one age in the db
+#| label: tbl-agecheck2
+#| code-fold: TRUE
+#| code-summary: extract parameters with more than one age
+
+
+more_than_one_age <- DBI::dbGetQuery(con_salmoglob, 
+  ' WITH uk AS (SELECT DISTINCT age, var_mod FROM DATABASE),
+ W AS (SELECT *, count (*) OVER (PARTITION BY var_mod) AS n FROM uk)
+ SELECT * FROM W  WHERE n> 1')
+knitr::kable(more_than_one_age, caption = "Parameters with more than one age") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
 :::{.callout-note appearance="simple"}
 ## NOTE
   Only `eggs, p_smolt, p_smolt_pr` and `prop_female` need an age, the other is contained in the name of the variable.
@@ -278,19 +347,20 @@ knitr::kable(distinct_age_parm, caption = "Variables using more than 1 age (e.g.
 # Developmental stage
 
 ``` {r check_maturity_metadata}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Number of lines with lifestage in the metadata table
 #| label: tbl-lifestagemeta
+#| code-fold: TRUE
+#| code-summary: Code to extract count per life stage in metadata
 
 
 summary_lifestage_metadata <- DBI::dbGetQuery(con_salmoglob, 
   'SELECT count(*) as  n,  life_stage FROM public.metadata group by life_stage')%>% arrange(life_stage)
 knitr::kable(summary_lifestage_metadata, format = "markdown") %>%
- kable_material(c("striped", "hover")) |>
-  kbl() 
+ kable_material(c("striped", "hover")) 
 ``` 
 
 :::{.callout-note appearance="simple"}
@@ -344,7 +414,7 @@ QUESTION TO ICES
 The metric are linked with coefficients, they don't need to be stored in the main db
 
 ``` {r check_metric}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -353,6 +423,8 @@ The metric are linked with coefficients, they don't need to be stored in the mai
 #|   - Number of lines with metric in the database table
 #|   - Number of lines with metric in the metadata table
 #| label: tbl-metricoverview
+#| code-fold: TRUE
+#| code-summary: Code to describe the metrics
 
 
 summary_metric <- DBI::dbGetQuery(con_salmoglob, 
@@ -373,7 +445,7 @@ knitr::kable(summary_metric,
  the metric in database are different :
 
 ``` {r check_metric_correspondence}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -382,7 +454,8 @@ knitr::kable(summary_metric,
 #|   - This row has a problem
 #|   - Variables with correspondence pb for metric between the metadata and the database table
 #| label: tbl-datametadatacheck
-
+#| code-fold: TRUE
+#| code-summary: Code to join metadata and metrics and find correspondence problems
 # this query didn't return as expected
  pb <- DBI::dbGetQuery(con_salmoglob, 
   "SELECT database.var_mod, 
@@ -427,7 +500,7 @@ DBI::dbGetQuery(con_salmoglob,
 ```
 Details on values inserted in the DB are described in subtables from table @tbl-globaldata2.
 ``` {r tbl-globaldata2}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -445,6 +518,8 @@ Details on values inserted in the DB are described in subtables from table @tbl-
 #|   - life_stage	
 #|   - complex	
 #|   - ages 
+#| code-fold: TRUE
+#| code-summary: Code to get all unique values from metadata
 
 DBI::dbGetQuery(con_salmoglob, 
   "SELECT DISTINCT type_object FROM metadata") %>%
@@ -521,7 +596,7 @@ but this date time has several values both in the latest db and in the archive,
 see below : (Table @tbl-version).
 
 ``` {r check_version}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
@@ -530,7 +605,8 @@ see below : (Table @tbl-version).
 #|   - version.
 #|   - Year of data in date_time, both in database, and in database archive.
 #| label: tbl-version
-
+#| code-fold: TRUE
+#| code-summary: Code to get version
 # this query didn't return as expected
  version <- DBI::dbGetQuery(con_salmoglob, 
   "WITH maxyear AS (SELECT count(*) as N, version, 

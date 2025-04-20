@@ -2319,7 +2319,8 @@ The code for creating `tr_quality_qal` is shown below.
 
 ### Import the quality code
 
-The codes are imported in Table @tbl-tr_quality_qal
+The codes are imported in Table @tbl-tr_quality_qal using the following
+code :
 
 ```{r import_tr_quality_qal}
 #| echo: TRUE
@@ -2331,30 +2332,93 @@ The codes are imported in Table @tbl-tr_quality_qal
 
 
 
-dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal WHERE lfs_spe_code ='ANG';")
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_quality_qal 
-SELECT *
-FROM refwgeel.tr_lifestage_lfs ;") # 8
-
-
+dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal;")
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_quality_qal (qal_code, qal_description, qal_definition, qal_kept)
+SELECT qal_id, qal_level, qal_text, qal_kept FROM refwgeel.tr_quality_qal ;")
+# 13
+# changing one definition linked to wgeel
+dbExecute(con_diaspara_admin, "UPDATE ref.tr_quality_qal set qal_definition = 'the data passed the quality checks and is considered as good quality' WHERE qal_code = 1")
+# This one only causes problems.... Remove.
+dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_quality_qal WHERE qal_code = 0")
 
 ```
 
--   The following table is proposed (Table @tbl-tr_habitattype_hty).
-
 ```{r}
-#| label: tbl-tr_habitattype_hty
+#| label: tbl-tr_quality_qal
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| tbl-cap: Table of habitat types
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") %>% 
+#| tbl-cap: Table of quality
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") %>% 
 knitr::kable() %>% 
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+## Age tr_age_age
+
+
+The code for creating `tr_age_age` (Table @tb-tr_age_age) is shown below.
+
+<details>
+
+<summary>SQL code to create table `tr_age_age`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_age_age.sql"}
+```
+
+</details>
+
+```{r}
+#| label: tbl-tr_age_age
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Table of age
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_age_age;") %>% 
+knitr::kable() %>% 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+## Fisheries tr_fishery_fiy
+
+
+The code for creating `tr_fishery_fiy` (Table @tb-tr_age_age) is shown below.
+
+<details>
+
+<summary>SQL code to create table `tr_fishery_fiy`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_fishery_fiy.sql"}
+```
+
+</details>
+
+```{r}
+#| label: tbl-tr_fishery_fiy
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Table of age
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_fishery_fiy;") %>% 
+knitr::kable() %>% 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Additional column tg_additional_add
+
+This table should contain the 
+
+
+
+
 
 # ICES areas
 
@@ -2802,6 +2866,7 @@ FROM tr_metadata_met_temp")
 
 dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
 
+
 ```
 
 ::: {.callout-note appearance="simple"}
@@ -2831,14 +2896,31 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met limit 10;")%>% kn
 
 For data we first need to create the table.
 
-The code for creating `t_stock_sto` is listed below
+The code for creating `t_stock_sto` is listed below, this table is
+created for all working groups, it should not have any lines, only get
+those from inheritance from schema datnas, datang, datbast...
 
 <details>
 
-<summary>SQL code to create tables (TODO HERE work in progress
-....)</summary>
+<summary>SQL code to create tables</summary>
 
 ``` {.sql include="../SQL/4_stock.sql"}
+```
+
+</details>
+
+The same table `t_stock_sto` is created in `datnas`. It is inherited, so
+this means that all the column are coming from `dat.t_stock_sto` but we
+have to recreate all the constraints, as constraints are never
+inherited. Two additional check constraint are created, the value for
+species will always be `SAL` and the value for wkg (expert group) will
+always be `WGNAS`.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/5_datnas.sql"}
 ```
 
 </details>
@@ -2857,6 +2939,18 @@ possible impact in the eel db.
     year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
 
 ## Import the t_stock_sto
+
+There are a couple of issues to be fixed.
+
+The year column does not always contain year. In fact the database that
+we have created is not suited to store transfer matrix where the
+dimensions have area x area. We only have one area column.
+
+This will be for parameter `omega` [see location paragraph in WGNAS
+database
+description](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#location).
+
+We need to store those in an additional table.
 
 ```{r refnas.t_stock_sto}
 #| echo: TRUE

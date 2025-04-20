@@ -108,4 +108,9 @@ SELECT version()
 SELECT * FROM database WHERE YEAR IS NULL; -- 905 lines
 
 
-SELECT * FROM 
+SELECT * FROM DATABASE WHERE var_mod = 'mu_N1_pr'
+SELECT * FROM DATABASE WHERE var_mod = 'omega'
+
+ WITH uk AS (SELECT DISTINCT age, var_mod FROM DATABASE),
+ W AS (SELECT *, count (*) OVER (PARTITION BY var_mod) AS n FROM uk)
+ SELECT * FROM W  WHERE n> 1
