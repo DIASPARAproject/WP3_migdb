@@ -44,9 +44,7 @@ CREATE TABLE dat.t_stock_sto (
   sto_lfs_code TEXT NOT NULL,
   CONSTRAINT fk_sto_lfs_code_sto_spe_code FOREIGN KEY (sto_lfs_code, sto_spe_code)
     REFERENCES "ref".tr_lifestage_lfs (lfs_code, lfs_spe_code) 
-    ON UPDATE CASCADE ON DELETE RESTRICT,
-   sto_add_code fk_sto_add_code FOREIGN KEY (sto_add_code) 
-   REFERENCES "ref".tg_additional_add (add_code),   
+    ON UPDATE CASCADE ON DELETE RESTRICT,  
   sto_hty_code VARCHAR(2) NULL, 
   CONSTRAINT fk_hty_code FOREIGN KEY (sto_hty_code)
     REFERENCES "ref".tr_habitattype_hty(hty_code) 
@@ -75,8 +73,8 @@ CREATE TABLE dat.t_stock_sto (
   REFERENCES "ref".tr_icworkinggroup_wkg(wkg_code)
   ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT c_uk_sto_id_sto_wkg_code UNIQUE (sto_id, sto_wkg_code),
-  CONSTRAINT ck_notnull_value_and_qal_code CHECK ((((sto_qal_code IS NULL) AND (sto_value IS NOT NULL)) OR 
-  ((sto_qal_code IS NOT NULL) AND (sto_value IS NULL))))
+  CONSTRAINT ck_notnull_value_and_mis_code CHECK ((((sto_mis_code IS NULL) AND (sto_value IS NOT NULL)) OR 
+  ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL))))
   -- We removed qual_id = 0
   -- CONSTRAINT ck_qal_id_and_missvalue CHECK (((eel_missvaluequal IS NULL) OR (eel_qal_id <> 0))),
   -- TODO CHECK LATER HOW TO DEAL WITH DEPRECATED

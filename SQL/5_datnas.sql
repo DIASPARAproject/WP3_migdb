@@ -5,6 +5,9 @@
 
 DROP TABLE IF EXISTS datnas.t_stock_sto;
 CREATE TABLE datnas.t_stock_sto (
+   sto_add_code TEXT NULL,
+   CONSTRAINT fk_sto_add_code FOREIGN KEY (sto_add_code) 
+   REFERENCES "refnas".tg_additional_add (add_code), 
   CONSTRAINT fk_sto_met_var_met_spe_code
     FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES "ref".tr_metadata_met(met_var,met_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -48,6 +51,8 @@ ALTER TABLE datnas.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='S
 ALTER TABLE datnas.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGNAS';
 ALTER TABLE datnas.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGNAS');
 
+
+
 ALTER TABLE datnas.t_stock_sto OWNER TO diaspara_admin;
 GRANT ALL ON TABLE datnas.t_stock_sto TO diaspara_read;
 
@@ -88,3 +93,27 @@ references table tr_missvalueqal_mis, should be null if value is provided (can''
 COMMENT ON COLUMN datnas.t_stock_sto.sto_dta_code IS 'Access to data, default is ''Public''';
 COMMENT ON COLUMN datnas.t_stock_sto.sto_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
+COMMENT ON COLUMN datnas.t_stock_sto.sto_add_code IS 'Additional code in the extra dimension of the table, corresponds to area or age,
+collated in table tg_additional_add';
+
+
+-- trigger on date
+DROP FUNCTION datnas.update_sto_datelastupdate;
+CREATE OR REPLACE FUNCTION datnas.update_sto_datelastupdate()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    NEW.sto_datelastupdate = now()::date;
+    RETURN NEW; 
+END;
+$function$
+;
+ALTER FUNCTION dat.update_sto_datelastupdate() OWNER TO diaspara_admin;
+
+CREATE TRIGGER update_sto_datelastupdate BEFORE
+INSERT
+    OR
+UPDATE
+    ON
+    datnas.t_stock_sto FOR EACH ROW EXECUTE FUNCTION datnas.update_sto_datelastupdate();

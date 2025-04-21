@@ -160,6 +160,7 @@ load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
+cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
                            dbname = cred$dbnamediaspara,
                            host = cred$host,
@@ -1820,7 +1821,11 @@ freshwater...). Some of the elements added in the stage column are not
 stage per-se, but elements used to describe the spatio-temporal elements
 within the life-cycle, for instance the use PFA (pre-fishery-abundance)
 which correspond to the number at sea of different stages before
-fishery. To deal with those, we will simplify the stages table, remove
+fishery. Note that this parameter is no longer used, that is, it's in the metadata
+but the variable in metadata are no longer in the database (this stands for
+logN4, N4, logit_theta4, tau_theta4, theta4). 
+To deal with these spatio temporal elements that are not stage, 
+we will simplify the stages table, remove
 elements which are not stages, and still refer to spatio temporal
 parameters from their definition. Here we are focusing on the stock DB
 which will group information, but the individual metric database might
@@ -1942,20 +1947,23 @@ lfs <- tribble(
   NA, NA, NA,
   "PS", "Post Smolt", "SAL", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
   NA, NA, NA,
- "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA
+ "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
+  "AL", "All stages", "SAL", "All life stages are concerned.", NA, NA, NA,
+ "_", "No life stage", "SAL", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
 )
 dbWriteTable(con_diaspara_admin, "temp_lfs", lfs, overwrite = TRUE)
-    dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs 
+dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_lifestage_lfs;")#24
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs 
     ( lfs_code, lfs_name, lfs_spe_code, lfs_description, lfs_icesvalue, lfs_icesguid, lfs_icestablesource)
     SELECT 
      lfs_code, 
-    lfs_name, 
-    lfs_spe_code,
-    lfs_description,
-    lfs_icesvalue, 
-    lfs_icesguid::uuid, 
-    lfs_icestablesource
-    FROM temp_lfs;")
+     lfs_name, 
+     lfs_spe_code,
+     lfs_description,
+     lfs_icesvalue, 
+     lfs_icesguid::uuid, 
+     lfs_icestablesource
+     FROM temp_lfs;")
 dbExecute(con_diaspara_admin, "DROP TABLE temp_lfs")
 
 ```
@@ -2966,7 +2974,15 @@ We need to store those in an additional table.
 
 stock <- dbGetQuery(con_salmoglob, "SELECT * FROM database")
 
-# TODO HERE .....
+dbWriteTable(con_diaspara,  "temp_stock", stock)
+dbExecute(con_diaspara,"INSERT INTO datnas.t_stock_sto
+(sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code)
+SELECT 
+nextval('dat.t_stock_sto_sto_id_seq'::regclass) 
+, var_mod
+'', 0, 'SAL'::character varying, 0, '', '', '', '', '', 0, '', '', '', '', 'Public'::text, 'WGNAS'::text
+FROM refsamoglob.database
+;
 ```
 
 # WORK IN PROGRESS....
