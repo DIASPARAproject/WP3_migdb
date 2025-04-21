@@ -1524,7 +1524,14 @@ is necessary to aggregate data (species is not enough).
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Geographic areas
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_area_are;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT are_id,
+   are_are_id,
+   are_code,
+   are_lev_code,
+   are_wkg_code,
+   are_ismarine FROM ref.tr_area_are;")%>%
+  knitr::kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2392,33 +2399,7 @@ knitr::kable() %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
-## Fisheries tr_fishery_fiy
 
-
-The code for creating `tr_fishery_fiy` (Table @tb-tr_age_age) is shown below.
-
-<details>
-
-<summary>SQL code to create table `tr_fishery_fiy`</summary>
-
-``` {.sql include="../SQL/2_ref_tr_fishery_fiy.sql"}
-```
-
-</details>
-
-```{r}
-#| label: tbl-tr_fishery_fiy
-#| echo: TRUE
-#| eval: TRUE
-#| warning: FALSE
-#| message: FALSE
-#| code-fold: TRUE
-#| tbl-cap: Table of age
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_fishery_fiy;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-```
 
 ## Additional column tg_additional_add
 
@@ -2912,7 +2893,7 @@ those from inheritance from schema datnas, datang, datbast...
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/4_stock.sql"}
+``` {.sql include="../SQL/4_dat.t_stock_sto.sql"}
 ```
 
 </details>
@@ -2928,7 +2909,7 @@ always be `WGNAS`.
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/5_datnas.sql"}
+``` {.sql include="../SQL/5_datnas.t_stock_sto.sql"}
 ```
 
 </details>
@@ -2941,14 +2922,12 @@ on the github site for details):
 
 Some of the variables in salmoglob have no `year` dimension, this leads
 to dropping the non null constraint on year. We need to check for
-possible impact in the eel db.
-
--   [NULL values allowed for
+possible impact in the eel db see issue #14 : [NULL values allowed for
     year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
 
-## Import the t_stock_sto
+## Table of grouping for area and age : datnas.tg_additional_add 
 
-There are a couple of issues to be fixed.
+Before doing the import of t_stock_sto are a couple of issues to be fixed.
 
 The year column does not always contain year. In fact the database that
 we have created is not suited to store transfer matrix where the
@@ -2958,7 +2937,38 @@ This will be for parameter `omega` [see location paragraph in WGNAS
 database
 description](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#location).
 
-We need to store those in an additional table.
+Another problem is the age column. When looking at the analysis [see age in WGNAS
+database description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#age)
+
+Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age.
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/4_tg_additional_add.sql"}
+```
+
+</details>
+
+
+```{r}
+#| label: tbl-tg_additional_add
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Content of the refnas additional table
+
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.tg_additional_add;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+
+## Import the t_stock_sto
+
 
 ```{r refnas.t_stock_sto}
 #| echo: TRUE
@@ -2969,21 +2979,67 @@ We need to store those in an additional table.
 #| code-summary: Code to import salmoglob main db into the new database.
 
 
-# TODO create tr_area_are
-# tr_metadata_met
 
-stock <- dbGetQuery(con_salmoglob, "SELECT * FROM database")
-
-dbWriteTable(con_diaspara,  "temp_stock", stock)
-dbExecute(con_diaspara,"INSERT INTO datnas.t_stock_sto
-(sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code)
+dbExecute(con_diaspara,"ALTER SEQUENCE dat.t_stock_sto_sto_id_seq RESTART WITH 1;")
+dbExecute(con_diaspara_admin,"DELETE FROM datnas.t_stock_sto;")
+dbExecute(con_diaspara_admin,"INSERT INTO datnas.t_stock_sto
+(sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, 
+sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, 
+sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, 
+sto_dta_code, sto_wkg_code,sto_add_code)
 SELECT 
-nextval('dat.t_stock_sto_sto_id_seq'::regclass) 
-, var_mod
-'', 0, 'SAL'::character varying, 0, '', '', '', '', '', 0, '', '', '', '', 'Public'::text, 'WGNAS'::text
-FROM refsamoglob.database
-;
+nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
+, d.var_mod AS sto_met_var
+, d.year AS sto_year
+, 'SAL' AS  sto_spe_code
+, d.value AS sto_value
+, d.area AS sto_are_code
+, NULL AS sto_cou_code -- OK can be NULL
+, CASE WHEN m.life_stage = 'Eggs' THEN 'E'
+    WHEN m.life_stage = 'Adult' THEN 'A'
+    WHEN m.life_stage = 'Multiple' THEN 'AL'
+    WHEN m.life_stage = 'Adults' THEN 'A'
+    WHEN m.life_stage = 'Smolts' THEN 'SM'
+    WHEN m.life_stage = 'Non mature' THEN 'PS' -- IS THAT RIGHT ?
+    WHEN m.life_stage = 'PFA' THEN 'PS' -- No VALUES
+    WHEN m.life_stage = 'Spawners' THEN 'A' -- No values
+    WHEN m.life_stage = '_' THEN '_'
+   ELSE 'TROUBLE' END AS sto_lfs_code 
+, NULL AS sto_hty_code
+, NULL AS sto_fia_code -- fishing area
+, 1 AS sto_qal_code -- see later TO INSERT deprecated values
+, NULL AS sto_qal_comment 
+, NULL AS sto_comment
+, date(d.date_time) AS sto_datelastupdate
+, NULL AS sto_mis_code
+, 'Public' AS sto_dta_code
+, 'WGNAS' AS sto_wkg_code
+, CASE WHEN d.var_mod IN ('eggs','p_smolt', 'p_smolt_pr', 'prop_female') THEN d.age
+       WHEN d.var_mod IN ('omega') THEN d.LOCATION
+       END AS sto_add_code
+FROM refsalmoglob."database" d JOIN
+refsalmoglob.metadata m ON m.var_mod = d.var_mod; ")# 45076
 ```
+
+## structure of the table refnas.t_stock_sto
+
+
+```{r}
+#| label: tbl-datnas.t_stock_sto
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Content of the refnas t_stock_sto table
+
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")%>% 
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+
 
 # WORK IN PROGRESS....
 

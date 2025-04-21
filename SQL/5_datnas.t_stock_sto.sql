@@ -7,40 +7,40 @@ DROP TABLE IF EXISTS datnas.t_stock_sto;
 CREATE TABLE datnas.t_stock_sto (
    sto_add_code TEXT NULL,
    CONSTRAINT fk_sto_add_code FOREIGN KEY (sto_add_code) 
-   REFERENCES "refnas".tg_additional_add (add_code), 
+   REFERENCES refnas.tg_additional_add (add_code), 
   CONSTRAINT fk_sto_met_var_met_spe_code
-    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES "ref".tr_metadata_met(met_var,met_spe_code) 
+    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES refnas.tr_metadata_met(met_var,met_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_are_code FOREIGN KEY (sto_are_code)
-    REFERENCES "ref".tr_area_are (are_code) 
+    REFERENCES refnas.tr_area_are (are_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_cou_code FOREIGN KEY (sto_cou_code)
-    REFERENCES "ref".tr_country_cou (cou_code)
+    REFERENCES ref.tr_country_cou (cou_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_lfs_code_sto_spe_code FOREIGN KEY (sto_lfs_code, sto_spe_code)
-    REFERENCES "ref".tr_lifestage_lfs (lfs_code, lfs_spe_code) 
+    REFERENCES ref.tr_lifestage_lfs (lfs_code, lfs_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_hty_code FOREIGN KEY (sto_hty_code)
-    REFERENCES "ref".tr_habitattype_hty(hty_code) 
+    REFERENCES ref.tr_habitattype_hty(hty_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_fia_code FOREIGN KEY(sto_fia_code)
-    REFERENCES "ref".tr_fishingarea_fia(fia_code)
+    REFERENCES ref.tr_fishingarea_fia(fia_code)
     ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT fk_sto_qal_code FOREIGN KEY (sto_qal_code)
-    REFERENCES "ref".tr_quality_qal(qal_code)
+    REFERENCES ref.tr_quality_qal(qal_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_mis_code FOREIGN KEY (sto_mis_code)
-  REFERENCES "ref".tr_missvalueqal_mis (mis_code)
+  REFERENCES ref.tr_missvalueqal_mis (mis_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_dta_code FOREIGN KEY (sto_dta_code)
-  REFERENCES "ref".tr_dataaccess_dta(dta_code) 
+  REFERENCES ref.tr_dataaccess_dta(dta_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT fk_sto_wkg_code  FOREIGN KEY (sto_wkg_code)
-  REFERENCES "ref".tr_icworkinggroup_wkg(wkg_code)
+  REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
   ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT c_uk_sto_id_sto_wkg_code UNIQUE (sto_id, sto_wkg_code),
-  CONSTRAINT ck_notnull_value_and_qal_code CHECK ((((sto_qal_code IS NULL) AND (sto_value IS NOT NULL)) OR 
-  ((sto_qal_code IS NOT NULL) AND (sto_value IS NULL))))
+  CONSTRAINT ck_notnull_value_and_mis_code CHECK ((((sto_mis_code IS NULL) AND (sto_value IS NOT NULL)) OR 
+  ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL))))
 )
 inherits (dat.t_stock_sto) ;
 
@@ -98,7 +98,7 @@ collated in table tg_additional_add';
 
 
 -- trigger on date
-DROP FUNCTION datnas.update_sto_datelastupdate;
+DROP FUNCTION IF EXISTS datnas.update_sto_datelastupdate;
 CREATE OR REPLACE FUNCTION datnas.update_sto_datelastupdate()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -109,7 +109,7 @@ BEGIN
 END;
 $function$
 ;
-ALTER FUNCTION dat.update_sto_datelastupdate() OWNER TO diaspara_admin;
+ALTER FUNCTION datnas.update_sto_datelastupdate() OWNER TO diaspara_admin;
 
 CREATE TRIGGER update_sto_datelastupdate BEFORE
 INSERT
