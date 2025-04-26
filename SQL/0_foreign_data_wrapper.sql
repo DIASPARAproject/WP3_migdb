@@ -27,6 +27,14 @@ IMPORT FOREIGN SCHEMA ref
   
 GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;
 
+CREATE SCHEMA datwgeel;
+IMPORT FOREIGN SCHEMA datawg    
+    FROM SERVER wgeel_data_wrapper
+    INTO datwgeel;
+  
+  
+GRANT ALL PRIVILEGES ON SCHEMA datwgeel TO diaspara_admin;
+
 
 CREATE SCHEMA refsalmoglob;
 IMPORT FOREIGN SCHEMA public    
