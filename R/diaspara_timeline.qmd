@@ -13,16 +13,15 @@ editor: visual
 include-after-body: "footer.html"
 ---
 
-
 ## Habitat DB
 
 The habitat DB also corresponds to some of the dictionaries created for the stock DB.
 
-More details here : 
+More details here :
 
 [github timeline](https://github.com/orgs/DIASPARAproject/projects/4/views/2)
 
-[issues](https://github.com/DIASPARAproject/WP3_habitat/issues) 
+[issues](https://github.com/DIASPARAproject/WP3_habitat/issues)
 
 [main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8/rep5.html)
 
@@ -66,21 +65,17 @@ gantt
     Release to ICES: active, after v2, until end
 
     End projet   :milestone, end, 2026-06-01, 0d
-    ```
-
-
+```
 
 # Stock DB
 
-This is the main database where we wish to put all unified data, details on the data
-structure coming out but still need validation from ICES.
+This is the main database where we wish to put all unified data, details on the data structure coming out but still need validation from ICES.
 
-
-More details here : 
+More details here :
 
 [github timeline](https://github.com/orgs/DIASPARAproject/projects/4/views/6)
 
-[issues](https://github.com/DIASPARAproject/WP3_migdb/issues) 
+[issues](https://github.com/DIASPARAproject/WP3_migdb/issues)
 
 [main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/rep4.html)
 
@@ -134,13 +129,9 @@ More details here :
     WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
 ```
 
-
 # Metrics DB
 
-This database is part of the previous DB, using the same vocab, but the data
-structure is different. There is already a mapping by ICES of the data structure.
-The DB is currently in WGEEL (series + sampling) and we've release excel sheets
-to call for LHT with WP2.
+This database is part of the previous DB, using the same vocab, but the data structure is different. There is already a mapping by ICES of the data structure. The DB is currently in WGEEL (series + sampling) and we've release excel sheets to call for LHT with WP2.
 
 ```{mermaid}
 gantt
