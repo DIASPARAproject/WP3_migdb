@@ -28,23 +28,23 @@ include-after-body: "footer.html"
 
 Aside the main db report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. In the project these correspond to LHT, but it's more, the data should also correspond to the time series and the sampling db developped by WGEEL. The two latter data structure (series and sampling) are very similar and they both hold very similar group metrics and individual metrics.
 
- The first was developed initially to store data about the series used in recruitment. In practise it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
-Finally, on can link individual metrics. The individual metrics are all detailed for one fish. And they concern metrics like size, weight, sex, but also can hold data about quality, contamination. So these are in essence the Life History traits analysed by WP2 in DIASPARA  (Figure @fig-series_diagram_wgeel - in pink).
+ The first was developed initially to store data about the series used in recruitment. In practice, it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
+Finally, we can link individual metrics. The individual metrics are all detailed for one fish. And they concern metrics like size, weight, sex, but also can hold data about quality, contamination. So these are in essence the Life History traits analysed by WP2 in DIASPARA  (Figure @fig-series_diagram_wgeel - in pink).
 
 ![Diagram for series](images/series_diagram_wgeel.png "A sql diagram of the relations of tables for series"){#fig-series_diagram_wgeel}
 
-The second type of data was developed to hold the data collected for DCF. These can be metrics collected from sampling by the fishermen, data coming from the analysis of electrofishing data, or other experimental sampling that are not reported as series. In practise the two structures for series and sampling are very close, the only difference is that there is no annual number linked to the sampling data, and that they are not linked to a stage in the first table, so the stage is added in the fish table.
+The second type of data was developed to hold the data collected for DCF. These can be metrics collected from sampling by the fishermen, data coming from the analysis of electrofishing data, or other experimental sampling that are not reported as series. Currently the two structures for series and sampling are very close, the only difference is that there is no annual number linked to the sampling data, and that they are not linked to a stage in the first table, so the stage is added in the fish table.
 The difference in table structure is illustrated below in tables highlighted in yellow (Figure @fig-sampling_diagram_wgeel).
 
 ![Diagram for sampling](images/sampling_diagram_wgeel.png "A sql diagram of the relations of tables for sampling"){#fig-sampling_diagram_wgeel}
 
-This database development has several objectives :
+The database development highlighted in the current report has several objectives :
 
 * The first objective is to join the two database to simplify the database development and handling of data.
 
 * The second objective is to use the new referentials created for the migdb database.
 
-* The third objective is to import data from WP2, the excel sheets have been created in february 2025 and will already (in March) require some adpatation as the database evolves, for instance the referential of stages is no longer in line with the templates.
+* The third objective is to import data from WP2, the excel sheets have been created in february 2025 and will already (in March) require some adaptation as the database evolves, for instance the referential of stages is no longer in line with the templates.
 
 * The fourth objective is to adapt the ICES eel format creating during the first quarter of 2025 for eel, to integrate data with DATSU. During discussions with ICES, it was decided to postpone the integration of wgeel database in DATSU as this will require an adaptation of the shiny scripts of data integration.
 
