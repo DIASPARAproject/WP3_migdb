@@ -2401,12 +2401,6 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
-## Additional column tg_additional_add
-
-This table should contain the 
-
-
-
 
 
 # ICES areas
