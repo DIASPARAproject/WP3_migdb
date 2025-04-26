@@ -116,11 +116,12 @@ SELECT * FROM DATABASE WHERE var_mod = 'omega'
  SELECT * FROM W  WHERE n> 1
  
  ALTER SEQUENCE dat.t_stock_sto_sto_id_seq RESTART WITH 1;
+ DELETE FROM datnas.t_stock_sto;
  INSERT INTO datnas.t_stock_sto
 (sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, 
 sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, 
 sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, 
-sto_dta_code, sto_wkg_code)
+sto_dta_code, sto_wkg_code,sto_add_code)
 SELECT 
 nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
 , d.var_mod AS sto_met_var
@@ -135,7 +136,8 @@ nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
     WHEN m.life_stage = 'Adults' THEN 'A'
     WHEN m.life_stage = 'Smolts' THEN 'SM'
     WHEN m.life_stage = 'Non mature' THEN 'PS' -- IS THAT RIGHT ?
-    WHEN m.life_stage = 'PFA' THEN 'PS' -- No values
+    WHEN m.life_stage = 'PFA' THEN 'PS' -- No VALUES
+    WHEN m.life_stage = 'Spawners' THEN 'A' -- No values
     WHEN m.life_stage = '_' THEN '_'
    ELSE 'TROUBLE' END AS sto_lfs_code 
 , NULL AS sto_hty_code
@@ -147,8 +149,11 @@ nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
 , NULL AS sto_mis_code
 , 'Public' AS sto_dta_code
 , 'WGNAS' AS sto_wkg_code
+, CASE WHEN d.var_mod IN ('eggs','p_smolt', 'p_smolt_pr', 'prop_female') THEN d.age
+       WHEN d.var_mod IN ('omega') THEN d.LOCATION
+       END AS sto_add_code
 FROM refsalmoglob."database" d JOIN
-refsalmoglob.metadata m ON m.var_mod = d.var_mod
+refsalmoglob.metadata m ON m.var_mod = d.var_mod; --45076
 
 
 SELECT *
@@ -158,4 +163,9 @@ refsalmoglob.metadata m ON m.var_mod = d.var_mod
 
 SELECT * FROM refsalmoglob.metadata WHERE life_stage='PFA'
 
-SELECT * FROM refsalmoglob.DATABASE WHERE var_mod = 'logN4'
+SELECT * FROM refsalmoglob.DATABASE WHERE var_mod = 'logN4';
+
+SELECT * FROM refsalmoglob.DATABASE WHERE var_mod = 'omega';
+
+
+SELECT * FROM refnas.tr_metadata_met WHERE met_var = 'log_C5_NAC_2_lbnf_oth_sd'
