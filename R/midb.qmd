@@ -1819,7 +1819,7 @@ think their is any big issues with this. 
 :::
 ::::::
 
-### Use of lifestages to include other information.
+### Use of lifestages to include other information
 
 The different steps in the models are identified using spatio temporal
 units and stages (e.g; post smolt and location at sea)
@@ -1840,7 +1840,7 @@ which will group information, but the individual metric database might
 require more details that the simple adult stage. For this reason, we
 will add the maturity scale from ICES in the DB.
 
-### Adding a bit more complexity with the eel.
+### Adding a bit more complexity with the eel
 
 In some cases mixture of stages are used. Many fyke net fisheries for
 eel will not distinguish between yellow and silver eel stage and WGEEL
@@ -1865,7 +1865,7 @@ graphs ?
 :::
 ::::::
 
-### Code to create the stage table.
+### Code to create the stage table
 
 The code for creating `tr_lifestage_lfs` is shown below, it also
 includes the import of the WGEEL stage table.
@@ -1879,7 +1879,7 @@ includes the import of the WGEEL stage table.
 
 </details>
 
-### Existing stages in ICES dictionaries.
+### Existing stages in ICES dictionaries
 
 ```{r icesVocabstages}
 #| echo: TRUE
@@ -1922,7 +1922,7 @@ propose definitions ?
 :::
 ::::::
 
-### Importing the lifestages for Salmon.
+### Importing the lifestages for Salmon
 
 Some of the definitions come from [Ontology
 portal](https://bioportal.bioontology.org/ontologies/SALMON).
@@ -1976,7 +1976,7 @@ dbExecute(con_diaspara_admin, "DROP TABLE temp_lfs")
 
 ```
 
-### Import lifestages for eel.
+### Import lifestages for eel
 
 ```{r import_tr_lifestage_lfs_eel}
 #| echo: TRUE
@@ -1994,7 +1994,7 @@ FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 ```
 
-### Import lifestages for trutta.
+### Import lifestages for trutta
 
 ```{r import_tr_lifestage_lfs_trutta}
 #| echo: TRUE
@@ -2320,7 +2320,7 @@ Table tr_quality_qal used by the wgeel {# tbl-tr_quality_qalwgeel}
 | 23 | discarded_wgeel 2023 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2023 |
 | 24 | discarded_wgeel 2024 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2024 |
 
-### Code to create the table.
+### Code to create the table
 
 The code for creating `tr_quality_qal` is shown below.
 
@@ -2373,7 +2373,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
-## Age tr_age_age
+## Age (tr_age_age)
 
 
 The code for creating `tr_age_age` (Table @tb-tr_age_age) is shown below.
@@ -2401,7 +2401,73 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
+## Sex (tr_sex_sex)
+ 
+ There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) see Table @tbl-vocabsex.
+ 
+```{r icesVocabsex}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| code-fold: TRUE
+#| message: FALSE
+#| tbl-cap: ICES vocabularies for sex
+#| label: tbl-vocabsex
 
+
+TS_SEXCO <- icesVocab::getCodeList('SEXCO')
+kable(TS_SEXCO, caption = "TS_SEXCO") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+<details>
+
+<summary>SQL code to create table `tr_sex_sex`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_sex_sex.sql"}
+``` 
+ 
+```{r import_tr_sex_sex}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import sex codes from ICES. 
+
+sex <- icesVocab::getCodeList('SEXCO')
+
+sex <- sex |> 
+rename("sex_icesguid"="GUID",  "sex_icesvalue" = "Key", "sex_description" = "Description") |> 
+select ( sex_icesvalue, sex_icesguid, sex_description) |>
+mutate(sex_icestablesource = "SEXCO",
+       sex_id = 1:7,
+      sex_code = sex_icesvalue) |>
+select(sex_id, sex_code, sex_description, sex_icesvalue, sex_icesguid, sex_icestablesource)
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_sex", sex, overwrite = TRUE)
+
+
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_sex_sex
+(sex_id, sex_code, sex_description, sex_icesvalue, sex_icesguid, sex_icestablesource)
+SELECT sex_id, sex_code, sex_description, sex_icesvalue, sex_icesguid::uuid, sex_icestablesource
+FROM temp_sex")# 4
+
+
+DBI::dbExecute(con_diaspara_admin, "DROP table temp_sex")
+```
+```{r}
+#| label: tbl-tr_sex_sex
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Table of sex
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_sex_sex;") %>% 
+knitr::kable() %>% 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
 
 
 # ICES areas
