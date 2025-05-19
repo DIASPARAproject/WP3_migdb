@@ -60,9 +60,11 @@ load_library("skimr")
 
 ## Regional site spatio-temporal units (table general information)
 ```{r read_db1}
-#| echo: FALSE
+#| echo: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to read excel files.
 
 # note I have created 3 named regions in the excel to load the data
 general_information <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Short BioEcological Template_DIASPARA.xlsx"), namedRegion = "general_information")
@@ -72,12 +74,13 @@ individual_data <- openxlsx::read.xlsx(file.path(datawd, "WGTRUTTA Short BioEcol
 ```
 
 ```{r general_information}
-#| echo: FALSE
+#| echo: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: General information table metadata in the WGTRUTTA DB
 #| label: tbl-general_information
-
+#| code-fold: TRUE
+#| code-summary: Code to read excel files.
 kable(general_information) %>%
     kable_styling(bootstrap_options = c("striped", "hover"))
 
@@ -97,8 +100,22 @@ Site n° is the primary key
 QUESTION WGTRUTTA: River basin
 ::::
 ::::{.questionbox-body}
-Do you have specific frame for this, like in the Baltic, not all basins have Sea Trouts, so how do we proceed there ? Would there be regional units (quite large) like those of WGNAS or do you intend this to be specific river codes (which we intend to provide) soon in WP3.1
-Note if we provide the code you can link it and hopefully get the river name for the referential
+Do you have specific frame for this, like in the Baltic, not all basins have Sea Trouts, so how do we proceed there ? Would there be regional units (quite large) like those of WGNAS or do you intend this to be specific river codes (which we intend to provide) soon in WP3.1.
+Note you might want to have a look at how we plan to handle [hierarchies](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/midb.html#fig-area_hierarchy) theoretically, and practically the integration of river basins in this [report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8/habitatdb.html)
+
+::::
+:::
+
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Answer (Iain Malcolm)
+::::
+::::{.answerbox-body}
+I suspect we would plan to use the spatial data and catchment codes provided by Andrew and Phil from their rivers datasets. We would snap electrofishing point data to lines and extract the relevant spatial data and covariates. We may also incorporate regional groups as some sort of mrf smoother, like we have used in Scotland for characterising large scale correlated smoothed patters not identified by covariates. We haven’t defined any of this yet.
+In terms of species distribution we intend to take the spatial dataset provided by Andrew / Phil, make this available as an online GIS and ask members to populate barriers and (where known) sea trout distribution. This is one of the work packages.   
 ::::
 :::
 
@@ -112,6 +129,7 @@ QUESTION WGTRUTTA: River ID
 If you have a referential why do you need the country ? Because of the country providing the data and these will come as separate lines ?
 ::::
 :::
+
 
 
 :::{.questionbox}
@@ -156,6 +174,16 @@ In combination with the EDMO codes, we have this [list of ‘roles’](https://v
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Answer (Iain Malcolm)
+::::
+::::{.answerbox-body}
+Not sure what you mean here. We will need to record the organisation providing the data, contact details, data references (in the case of published DOI datasets) and any constraints on data use. We need to explore issues around data license agreements before we ask people for data.
+::::
+:::
 
 
 :::{.questionbox}
@@ -169,6 +197,22 @@ Would you agree that if the database is built, a query to detailed table should 
 ::::
 :::
 
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Answer (Iain Malcolm)
+::::
+::::{.answerbox-body}
+Not sure what you mean here. However, I think information on observations, years and data timespan can be generates from the data themselves.
+> DIASPARA : Yes this is what we meant there. That this kind of information should be contained in the database already.
+::::
+:::
+
+
+
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -176,7 +220,7 @@ Would you agree that if the database is built, a query to detailed table should 
 QUESTION WGTRUTTA: comments
 ::::
 ::::{.questionbox-body}
-This information should be more specific ? We had this in WGEEL and have now to do additional datacalls to qualify the data in a harmonised way among series. Would you agree to have several columns there ?
+This information should be more specific ? We had this in WGEEL and have now to do additional datacalls to qualify the data in a harmonized way among series. Would you agree to have several columns there ?
 ::::
 :::
 
@@ -286,7 +330,7 @@ label = "popsample table | <f0> \<population_id\>|
 <f1> \<popsample_id\> |
 year |
 season |
-omments |
+comments |
 other occuring salmonids"
 ];
    
@@ -395,6 +439,18 @@ Won't the year and season attibutes be provided by the dates ?
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+I would think so. That is how I would do it.
+::::
+:::
+
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -406,6 +462,20 @@ What is the definition of a site. Site is the lowest level in the basin / river 
 ::::
 :::
 
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+In the case of the juvenile electrofishing work I would consider I site to be a unique sampling location that extends over a specified distance and area. I would characterise sites using point locations. A site could extend over multiple “habitats” depending on how these are defined.
+::::
+:::
+
+
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -413,9 +483,23 @@ What is the definition of a site. Site is the lowest level in the basin / river 
 QUESTION WGTRUTTA: site and habitats
 ::::
 ::::{.questionbox-body}
-It seems that a population is related to a site. Will there be simple
+It seems that a population is related to a site. Will there be simple relations between site and populations or will there be situations where for given site you will have several populations ?
 ::::
 :::
+
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+Again, I’m not sure exactly what is being asked here. However, there will be many instances where you have multiple SiteVisits to a Site, with a different population record each time
+> DIASPARA : OK, same site, different records.... So the schema works. Sorry our question was not clear.
+::::
+:::
+
 
 :::{.questionbox}
 ::::{.questionbox-header}
@@ -429,6 +513,18 @@ Shouldn't it be related to an upper level ?
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+I would think that any designation on data availability should be at the SiteVisit level or a higher level e.g. Campaign or Organisation. In the Marine Directorate databases we have Campaigns and Projects that identify coherent pieces of work. This is likely to be useful for understanding data and could be used to identify data availability as well?
+::::
+:::
+
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -439,6 +535,31 @@ QUESTION WGTRUTTA: tag
 Can there be several tag per fish ?
 ::::
 :::
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+Not sure if we would use this for the juvenile work. However, in the Marine Directorate databases we can store several different tags for each individual fish e.g. Floy and micro tag.
+::::
+:::
+
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+For the purposes of WGTRUTTA work going forwards we may not store raw data (measurements of individual fish) for the juvenile work, but we will want to store counts (and possible mean size) for each combinations of species, lifestage, age, pass (sweep). I think it unlikely that we will be able to get individual fish data from the countries involved in the case of EF data.
+> DIASPARA. OK. Then we need to add sweep in the population table. Note that WGEEL does collect individual data, and most is coming from electrofishing operations. You might want to have a look a the individual metrics database when it's created. I guess if it works for salmon it could be easily translated to WGTRUTTA.
+::::
+:::
+
 
 ```{dot}
 # Individual data
@@ -582,6 +703,19 @@ The main problem is to relate this information to site. What is a site ? Is it l
 ::::
 :::
 
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+I suspect the problem is that the definition of site varies depending on the data being stored (e.g. traps vs. electrofishing sites). In the Marine Directorate database we store site data as points with a spatial extent noted. The point is the downstream end. An extent field then indicates how far upstream the site extends.
+For the juvenile work we are likely to snap points (electrofishing sites) to lines on the digital river network and extract spatial habitat data based on a distance weighted average of up and downstream nodes.
+::::
+:::
+
+
 :::{.questionbox}
 ::::{.questionbox-header}
 ::::{.questionbox-icon}
@@ -592,6 +726,18 @@ QUESTION WGTRUTTA: what is a site ?
 There is  an information about the year season and month.
 Can there really be information about multiple years ? How do you relate that to month and season ? Do you expect to fill one or the other column ?
 Do you expect to have chronicles of habitat measures ? If it's the case would it be possible to simply use a date here ? 
+::::
+:::
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+If the habitat is measured on each visit then yes, this is a time varying SiteVisit table e.g. wetted width, length etc may vary between years for a given starting point (Site).
+In the Marine Directorate database we have a Site table (static information) and a Site Visit table (Time varying records) associated with particular dates.
 ::::
 :::
 
@@ -611,6 +757,18 @@ data.frame(column = macroscale_information %>% colnames()) %>%
 ```
 
 To my understanding, the macroscale information will be collected in a gis table of river segments. There will be several gis, possibly with segments coverage that will be different from the portion of habitat described at site level. This table will carry out the macroscale information and be used to transfer it.
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+This looks like site level data to me. It isn’t going to be time varying
+This will be the critical data that we use to describe habitat for forthcoming juvenile work, extracted from the Andrew and Phil Digital River Network
+:::
+
 
 ## Reach level habitat
 
@@ -634,6 +792,17 @@ QUESTION WGTRUTTA: what is a reach ?
 ::::{.questionbox-body}
 Could the reach level habitat be characterized as a point geometry or is it a segment ?
 How do you relate reach and sites ?
+::::
+:::
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+QUESTION WGTRUTTA: what is a reach ?
+::::
+::::{.questionbox-body}
+Looks like this is time varying, collected on each SiteVisit. Should be in a Site Visit table
 ::::
 :::
 
@@ -982,3 +1151,32 @@ popgroupmetrics:f1 -> datatypegroup
 }
 ```
 **graph: ** A temptative table format for the WGTRUTTA datacall template.   
+
+
+
+
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+For WGTRUTTA moving forwards we are envisaging the need to record fish counts by electrofishing pass (sweep) and potentially also some methodological metadata on the collection method and the Teams collecting the data. This is to properly model the capture probability  Modelling capture probability of Atlantic salmon (Salmo salar) from a diverse national electrofishing dataset: Implications for the estimation of abundance - ScienceDirect
+> OK that's clear, I guess this is for the electrofishing database.
+::::
+:::
+
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+It looks like you are identifying that the current table includes information on VisitID (i.e. the specific sampling site visit). In the Marine Directorate databases we have different tables for the individual fish data / counts, the Site table (location information) and Site Visit (dates, times, site measurements etc).
+> DIASPARA Yes agreed electrofishing data will be structured like this.
+::::
+:::

@@ -478,6 +478,22 @@ would recommend having the AphiaIDs for sure.
 :::
 ::::::
 
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+ANSWER WGTRUTTA : Iain
+::::
+
+::: answerbox-body
+I would suggest the common name for Salmo Trutta should just be trout (as you normally can’t differentiate migratory and resident forms of the juveniles).
+In our database we also have a field “salmonid” for circumstances where people electrofish very early in the year and it isn’t readily possible to separate trout and salmon fry.
+:::
+::::::
+
+
 <details>
 
 <summary>Creating a referential table for species - code and queries to
@@ -2020,6 +2036,20 @@ FROM refwgeel.tr_lifestage_lfs ;") # 8
  
 
 ```
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+WGTRUTTA Comment (Iain Malcolm)
+::::
+::::{.answerbox-body}
+In terms of stage, we would need alevin, fry (YoY, 0+), parr (>0+). In the Marine Directorate database lifestage is called “field recorded lifestage” to separate from lifestage derived from ageing by scale reading.
+> DIASPARA : OK this seems to fit to our current vocabulary. For scale reading we have prepared a different field
+> in the individual metric database. It will not be used in the stock database.
+::::
+:::
+
+
 
 ### Content of the tr_lifestage_lfs table
 
@@ -2302,7 +2332,7 @@ How do you work in ICES to keep historical data ?
 :::
 ::::::
 
-Table tr_quality_qal used by the wgeel {# tbl-tr_quality_qalwgeel}
+Table tr_quality_qal used by the wgeel {#tbl-tr_quality_qalwgeel}
 
 | qal_id | qal_level | qal_text |
 |-------------------|----------------------------|-------------------------|
@@ -2376,7 +2406,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ## Age (tr_age_age)
 
 
-The code for creating `tr_age_age` (Table @tb-tr_age_age) is shown below.
+The code for creating `tr_age_age` (Table @tbl-tr_age_age) is shown below.
 
 <details>
 
@@ -2400,6 +2430,23 @@ knitr::kable() %>%
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+ANSWER WGTRUTTA : Iain 
+::::
+
+::: answerbox-body
+Are the ages obtained from scale reading? In our Marine Directorate database we are careful to separate scale read ages from “guessed age” derived from sizes or field derived - observed (e.g. fry = 0+).
+If these are not clearly recorded in different areas of the database, is there somewhere to store information on the protocols? In MD database we store information on projects / campaigns (describe why and how data collected) and also protocols applied at SiteVisit level.
+The general definition looks OK. Although, when you store adults, how do you record more complex patterns e.g. 3SW with a spawning mark after year 2? In MD database all this is recorded on the “Scale Record” that links to individual fish.
+> DIASPARA
+:::
+::::::
+
 
 ## Sex (tr_sex_sex)
  
