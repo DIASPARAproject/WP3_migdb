@@ -1,15 +1,13 @@
-/*
- * 
- *  NOTE BELOW I'M NOT SPENDING TOO MUCH TIME ON THE CONSTRAINT
- *  AS THIS TABLE IS COMING FROM ICES.
- */
 
 
 CREATE TABLE "ref"."StationDictionary"(
-"StationDefinition" TEXT NOT NULL,
-"HeaderRecord" TEXT NOT NULL,
-"Station_Code" INTEGER PRIMARY KEY ,
+"Definition" TEXT NOT NULL DEFAULT 'Station',
+"HeaderRecord" TEXT NOT NULL 'Record',
+"Station_Code" INTEGER PRIMARY KEY,
 "Station_Country" TEXT NOT NULL,
+FOREIGN KEY fk_station_country ("Station_Country")
+REFERENCES ref.tr_country_cou(cou_code)
+ON UPDATE CASCADE ON DELETE CASCADE, -- possible problem here AS I don't have ALL the countries...
 "Station_Name" CHARACTER VARYING (50) NOT NULL,
 "Station_LongName" CHARACTER VARYING (50) NULL,
 "Station_ActiveFromDate" CHARACTER VARYING (10) NOT NULL,
@@ -44,25 +42,46 @@ FOREIGN KEY "Station_DataType" REFERENCES
 "ref"."Station_DTYPE"("Key")
 ON UPDATE CASCADE ON DELETE CASCADE,
 "Station_WLTYP" TEXT,
-
+FOREIGN KEY "Station_WLTYP" 
+REFERENCES "ref"."WLTYP"("Key")
+ON UPDATE CASCADE ON DELETE CASCADE,
 "Station_MSTAT" TEXT,
+FOREIGN KEY ("Station_MSTAT") 
+REFERENCES "ref"."Station_WLTYP"("Key")
+ON UPDATE CASCADE ON DELETE CASCADE,
 "Station_Notes" TEXT,
 "Station_Deprecated" TEXT
+FOREIGN KEY ("Station_Deprecated") 
+REFERENCES "ref"."Deprecated"("Key")
+ON UPDATE CASCADE ON DELETE CASCADE,
 );
 
+-- Not sure I'll ever need that one .....
 
 CREATE TABLE "ref"."Relation"(
-"Relation",
-"Header/Record",
-"Relation_Code",
-"Relation_Country",
-"Relation_Name",
-"Relation_ActiveFromDate",
-"Relation_RelatedCode",
-"Relation_RelatedCountry",
-"Relation_RelatedName",
-"Relation_RelatedActiveFromDate",
-"Relation_RelationType")
+"Definiton" TEXT NOT NULL DEFAULT 'Relation',
+"HeaderRecord" TEXT  NOT NULL DEFAULT 'Record',
+"Relation_Code" INTEGER NOT NULL,
+CONSTRAINT fk_relation_code FOREIGN KEY ("Relation_Code")
+REFERENCES "ref"."StationDictionary"("Station_Code") 
+ON UPDATE CASCADE ON DELETE CASCADE,
+"Relation_Country" TEXT NOT NULL,
+FOREIGN KEY fk_relation_country ("Relation_Country")
+REFERENCES ref.tr_country_cou(cou_code)
+ON UPDATE CASCADE ON DELETE CASCADE,
+"Relation_Name" CHARACTER VARYING(50) NOT NULL,
+"Relation_ActiveFromDate" CHARACTER VARYING(10) NOT NULL,
+"Relation_RelatedCode" INTEGER NOT NULL,
+CONSTRAINT fk_relation_relatedCode FOREIGN KEY ("Relation_RelatedCode")
+REFERENCES "ref"."StationDictionary"("Station_Code") 
+ON UPDATE CASCADE ON DELETE CASCADE,
+"Relation_RelatedCountry" TEXT NOT NULL,
+FOREIGN KEY fk_relation_related_country ("Relation_RelatedCountry")
+REFERENCES ref.tr_country_cou(cou_code)
+ON UPDATE CASCADE ON DELETE CASCADE,
+"Relation_RelatedName" CHARACTER VARYING(50) NOT NULL,
+"Relation_RelatedActiveFromDate" CHARACTER VARYING (10) NOT NULL,
+"Relation_RelationType" TEXT) NOT NULL;
 
 
 

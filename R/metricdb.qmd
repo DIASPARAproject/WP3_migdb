@@ -62,8 +62,312 @@ Once done a beta version probably not completely adapted will be released.
 [milestone metric DB beta version](https://github.com/DIASPARAproject/WP3_migdb/milestone/6)
 
 
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") # clean_names
+cred <- read_yaml("../credentials.yml")
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$userdiaspara,
+                           password = cred$passworddiaspara)
+con_diaspara_admin <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+con_salmoglob <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamesalmo,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+
+
+
+
+```
+## station
+
+To include the station, we need two tables, the fist one is the Station dictionary
+and the second is the relation Dictionary (which relates two stations together).
+
+### SemanticRelation
+
+
+```{r tbl-icesVocabRelation}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import relation.
+#| tbl-cap: Semantic relation
+
+
+SemanticRelation <- getCodeList("SemanticRelation")
+knitr::kable(SemanticRelation) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "SemanticRelation", PRGOV)
+dbExecute(con_diaspara, 'ALTER TABLE "SemanticRelation" SET SCHEMA ref;') 
+  
+```
+
+### PRGOV
+```{r tbl-icesPRGOV}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import PRGOV.
+#| tbl-cap: Program Governance for the Station Dictionary
+
+
+PRGOV <- getCodeList("PRGOV")
+knitr::kable(PRGOV) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "PRGOV", PRGOV)
+dbExecute(con_diaspara, 'ALTER TABLE "PRGOV" SET SCHEMA ref;') 
+```
+
+### EDMO
+
+```{r tbl-icesEDMO}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import EDMO.
+#| tbl-cap: European Directory of Marine Organisations (EDMO)
+
+
+EDMO <- getCodeList("EDMO")
+knitr::kable(EDMO) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "EDMO", EDMO)
+dbExecute(con_diaspara, 'ALTER TABLE "EDMO" SET SCHEMA ref;')   
+```
+
+### PURPM
+
+```{r tbl-icesPURPM}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import PURPM.
+#| tbl-cap: Purpose of Monitoring
+
+
+PURPM <- getCodeList("PURPM")
+knitr::kable(PURPM) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "PURPM", PURPM)
+dbExecute(con_diaspara, 'ALTER TABLE "PURPM" SET SCHEMA ref;')   
+```
+
+### DTYPE
+
+```{r tbl-icesStation_DTYPE}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import icesStation_DTYPE.
+#| tbl-cap: Station dictionary data type
+
+
+Station_DTYPE <- getCodeList("Station_DTYPE")
+knitr::kable(Station_DTYPE) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "Station_DTYPE", Station_DTYPE)
+dbExecute(con_diaspara, 'ALTER TABLE "Station_DTYPE" SET SCHEMA ref;')   
+```
+
+### WLTYP
+
+```{r tbl-icesStation_WLTYP}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import ices WLTYP.
+#| tbl-cap: Water and Land Station Type
+
+
+WLTYP <- getCodeList("WLTYP")
+knitr::kable(WLTYP) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "WLTYP", WLTYP)
+dbExecute(con_diaspara, 'ALTER TABLE "WLTYP" SET SCHEMA ref;')   
+```
+
+### MSTAT
+
+```{r tbl-icesStation_MSTAT}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import ices MSTAT.
+#| tbl-cap: Type of monitoring station
+
+
+MSTAT <- getCodeList("MSTAT")
+knitr::kable(MSTAT) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "MSTAT", MSTAT)
+dbExecute(con_diaspara, 'ALTER TABLE "MSTAT" SET SCHEMA ref;')   
+```
+
+
+### Deprecated
+
+
+```{r tbl-icesStation_Deprecated}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import ices Deprecated.
+#| tbl-cap: Deprecated
+
+
+Deprecated <- getCodeList("Deprecated")
+knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbWriteTable(con_diaspara, "Deprecated", Deprecated)
+dbExecute(con_diaspara, 'ALTER TABLE "Deprecated" SET SCHEMA ref;')   
+```
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_01_create_StationDictionary.sql"}
+```
+
+</details>
+
+## Creating series referential ref.ref_tr_seriesvocab_svc
+
+Series are created in ref. It's a vocabulary.
+They might be linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
+of an interannual sampling scheme for migratory fishes.
+It will be created a an UUID (unique by construction) and a code also unique.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_00_create_ref_tr_seriesvocab_svc.sql"}
+```
+
+</details>
+
+## Creating series main table dat.t_series_ser
+
+
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_10_create_dat_t_series_ser.sql"}
+```
+
+</details>
+
+This table is inherited so the table created in dat will be empty, and will
+only receive data by inheritance. It can be considered as a view for ICES (no 
+inheritance in SQL server).
+
+Since this table is inherited the wkg needs to be included. One table will be created
+per working group. These tables will be collated together.
+Most details information about metadata will be in the metadata tables, either
+to describe annual sampling or to describe individual metric collection.
+
+Monitoring stations (including fixed stations) that are used for recurring sampling or data collection are managed via the Station Code Request Application in ICES [@ices_vocab_2024].
+This table will reference monitoring station but it might be NULL, as some sampling 
+designs or data collection, for instance for the DCF, are not related to a station.
+
+
+:::::: questionbox
+:::: questionbox-header
+::: questionbox-icon
+:::
+
+QUESTION ICES (Cédric via Teams meeting)
+::::
+
+::: questionbox-body
+The ser_id might in some cases correspond to a fixed station but not only. For this reason 
+the station is referenced here but another code will be created to reference the
+sampling collection. Is this OK ?
+:::
+::::::
+
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+ANSWER ICES : Maria (20/05/2025)
+::::
+
+::: answerbox-body
+Yes this makes sense,  I would advise 
+to use both the stations and a unique identifier at the top. Using UUID will help
+unicity there. It's not clear if it needs to 
+be a vocabulary. 
+There is a procedure to integrate stations, but for this we will probably do a bulk import.
+:::
+::::::
+
+
+
+
+
+
+
+
+The detailed workflow on code requests from ICES can be viewed in the ICES Vocabularies and Codes data flow schematic, available in ICES publications.
+
+
+
 
 # Import data from WGEEL (TODO)
+
 
 If this works then the rest should follow smoothly
 [git issue #25 Import data from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
