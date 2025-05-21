@@ -46,9 +46,9 @@ The database development highlighted in the current report has several objective
 
 * The third objective is to import data from WP2, the excel sheets have been created in february 2025 and will already (in March) require some adaptation as the database evolves, for instance the referential of stages is no longer in line with the templates.
 
-* The fourth objective is to adapt the ICES eel format creating during the first quarter of 2025 for eel, to integrate data with DATSU. During discussions with ICES, it was decided to postpone the integration of wgeel database in DATSU as this will require an adaptation of the shiny scripts of data integration.
+* The fourth objective is to hand over this database, along with the migdb to ICES, for integration in ICES database ecosystem, and use of DATSU in datacall.
 
-* The fifth objective is to hand over this database, along with the migdb to ICES, for integration in ICES database ecosystem.
+* The fifth objective is to adapt the shiny scripts of data integration.
 
 # Creating the database structure from WGEEL (TODO)
 
@@ -115,7 +115,7 @@ con_salmoglob <- dbConnect(Postgres(),
 
 
 ```
-## station
+## Station
 
 To include the station, we need two tables, the fist one is the Station dictionary
 and the second is the relation Dictionary (which relates two stations together).
