@@ -115,15 +115,30 @@ con_salmoglob <- dbConnect(Postgres(),
 
 
 ```
+
 ## Station
 
 To include the station, we need two tables, the fist one is the Station dictionary
 and the second is the relation Dictionary (which relates two stations together).
+Now these tables in turn rely on some vocabs from ICES which we are loading
+straight as they are in our template database.
 
 ### SemanticRelation
 
 
 ```{r tbl-icesVocabRelation}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show SemanticRelation.
+#| tbl-cap: Semantic relation
+SemanticRelation <- getCodeList("SemanticRelation")
+knitr::kable(SemanticRelation) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbExecute(con_diaspara, 'ALTER TABLE "SemanticRelation" SET SCHEMA ref;')  
+```
+```{r icesVocabRelation}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -131,17 +146,28 @@ and the second is the relation Dictionary (which relates two stations together).
 #| code-fold: TRUE
 #| code-summary: Code to import relation.
 #| tbl-cap: Semantic relation
-
-
-SemanticRelation <- getCodeList("SemanticRelation")
-knitr::kable(SemanticRelation) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "SemanticRelation", PRGOV)
 dbExecute(con_diaspara, 'ALTER TABLE "SemanticRelation" SET SCHEMA ref;') 
-  
+dbExecute(con_diaspara, 'ALTER TABLE ref."SemanticRelation" ADD CONSTRAINT semanticrelation_pkey PRIMARY KEY ("Key");') 
+
 ```
 
 ### PRGOV
 ```{r tbl-icesPRGOV}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show PRGOV.
+#| tbl-cap: Program Governance for the Station Dictionary
+
+
+PRGOV <- getCodeList("PRGOV")
+knitr::kable(PRGOV) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r icesPRGOV}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -149,17 +175,28 @@ dbExecute(con_diaspara, 'ALTER TABLE "SemanticRelation" SET SCHEMA ref;')
 #| code-fold: TRUE
 #| code-summary: Code to import PRGOV.
 #| tbl-cap: Program Governance for the Station Dictionary
-
-
-PRGOV <- getCodeList("PRGOV")
-knitr::kable(PRGOV) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "PRGOV", PRGOV)
 dbExecute(con_diaspara, 'ALTER TABLE "PRGOV" SET SCHEMA ref;') 
+dbExecute(con_diaspara, 'ALTER TABLE ref."PRGOV" ADD CONSTRAINT prgov_pkey PRIMARY KEY ("Key");') 
 ```
 
 ### EDMO
 
 ```{r tbl-icesEDMO}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show EDMO.
+#| tbl-cap: European Directory of Marine Organisations (EDMO)
+
+
+EDMO <- getCodeList("EDMO")
+knitr::kable(EDMO) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r icesEDMO}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -168,16 +205,28 @@ dbExecute(con_diaspara, 'ALTER TABLE "PRGOV" SET SCHEMA ref;')
 #| code-summary: Code to import EDMO.
 #| tbl-cap: European Directory of Marine Organisations (EDMO)
 
-
-EDMO <- getCodeList("EDMO")
-knitr::kable(EDMO) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "EDMO", EDMO)
-dbExecute(con_diaspara, 'ALTER TABLE "EDMO" SET SCHEMA ref;')   
+dbExecute(con_diaspara, 'ALTER TABLE "EDMO" SET SCHEMA ref;')  
+dbExecute(con_diaspara, 'ALTER TABLE ref."EDMO" ADD CONSTRAINT edmo_pkey PRIMARY KEY ("Key");')  
 ```
 
 ### PURPM
 
 ```{r tbl-icesPURPM}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show PURPM.
+#| tbl-cap: Purpose of Monitoring
+
+
+PURPM <- getCodeList("PURPM")
+knitr::kable(PURPM) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r icesPURPM}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -185,17 +234,26 @@ dbExecute(con_diaspara, 'ALTER TABLE "EDMO" SET SCHEMA ref;')
 #| code-fold: TRUE
 #| code-summary: Code to import PURPM.
 #| tbl-cap: Purpose of Monitoring
-
-
-PURPM <- getCodeList("PURPM")
-knitr::kable(PURPM) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "PURPM", PURPM)
-dbExecute(con_diaspara, 'ALTER TABLE "PURPM" SET SCHEMA ref;')   
+dbExecute(con_diaspara, 'ALTER TABLE "PURPM" SET SCHEMA ref;')
+dbExecute(con_diaspara, 'ALTER TABLE ref."PURPM" ADD CONSTRAINT purm_pkey PRIMARY KEY ("Key");')    
 ```
 
 ### DTYPE
 
 ```{r tbl-icesStation_DTYPE}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show icesStation_DTYPE.
+#| tbl-cap: Station dictionary data type
+Station_DTYPE <- getCodeList("Station_DTYPE")
+knitr::kable(Station_DTYPE) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r icesStation_DTYPE}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -204,16 +262,25 @@ dbExecute(con_diaspara, 'ALTER TABLE "PURPM" SET SCHEMA ref;')
 #| code-summary: Code to import icesStation_DTYPE.
 #| tbl-cap: Station dictionary data type
 
-
-Station_DTYPE <- getCodeList("Station_DTYPE")
-knitr::kable(Station_DTYPE) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "Station_DTYPE", Station_DTYPE)
-dbExecute(con_diaspara, 'ALTER TABLE "Station_DTYPE" SET SCHEMA ref;')   
+dbExecute(con_diaspara, 'ALTER TABLE "Station_DTYPE" SET SCHEMA ref;')  
+dbExecute(con_diaspara, 'ALTER TABLE ref."Station_DTYPE" ADD CONSTRAINT station_dtype_pkey PRIMARY KEY ("Key");') 
 ```
 
 ### WLTYP
 
 ```{r tbl-icesStation_WLTYP}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show ices WLTYP.
+#| tbl-cap: Water and Land Station Type
+WLTYP <- getCodeList("WLTYP")
+knitr::kable(WLTYP) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+```{r icesStation_WLTYP}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -222,16 +289,30 @@ dbExecute(con_diaspara, 'ALTER TABLE "Station_DTYPE" SET SCHEMA ref;')
 #| code-summary: Code to import ices WLTYP.
 #| tbl-cap: Water and Land Station Type
 
-
-WLTYP <- getCodeList("WLTYP")
-knitr::kable(WLTYP) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbExecute(con_diaspara, 'DROP TABLE IF EXISTS ref."WLTYP";')
+WLTYP$Key[is.na(WLTYP$Key)] <- "NA"
 dbWriteTable(con_diaspara, "WLTYP", WLTYP)
-dbExecute(con_diaspara, 'ALTER TABLE "WLTYP" SET SCHEMA ref;')   
+dbExecute(con_diaspara, 'ALTER TABLE "WLTYP" SET SCHEMA ref;') 
+dbExecute(con_diaspara, 'ALTER TABLE ref."WLTYP" ADD CONSTRAINT wltype_pkey PRIMARY KEY ("Key");')   
 ```
 
 ### MSTAT
 
 ```{r tbl-icesStation_MSTAT}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show ices MSTAT.
+#| tbl-cap: Type of monitoring station
+
+
+MSTAT <- getCodeList("MSTAT")
+knitr::kable(MSTAT) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r icesStation_MSTAT}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -239,12 +320,8 @@ dbExecute(con_diaspara, 'ALTER TABLE "WLTYP" SET SCHEMA ref;')
 #| code-fold: TRUE
 #| code-summary: Code to import ices MSTAT.
 #| tbl-cap: Type of monitoring station
-
-
-MSTAT <- getCodeList("MSTAT")
-knitr::kable(MSTAT) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "MSTAT", MSTAT)
-dbExecute(con_diaspara, 'ALTER TABLE "MSTAT" SET SCHEMA ref;')   
+dbExecute(con_diaspara, 'ALTER TABLE ref."MSTAT" ADD CONSTRAINT mstat_pkey PRIMARY KEY ("Key");')   
 ```
 
 
@@ -253,18 +330,26 @@ dbExecute(con_diaspara, 'ALTER TABLE "MSTAT" SET SCHEMA ref;')
 
 ```{r tbl-icesStation_Deprecated}
 #| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show ices Deprecated.
+#| tbl-cap: Deprecated
+Deprecated <- getCodeList("Deprecated")
+knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+```{r icesStation_Deprecated}
+#| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import ices Deprecated.
 #| tbl-cap: Deprecated
-
-
-Deprecated <- getCodeList("Deprecated")
-knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "Deprecated", Deprecated)
-dbExecute(con_diaspara, 'ALTER TABLE "Deprecated" SET SCHEMA ref;')   
+dbExecute(con_diaspara, 'ALTER TABLE "Deprecated" SET SCHEMA ref;') 
+dbExecute(con_diaspara, 'ALTER TABLE ref."Deprecated" ADD CONSTRAINT deprecated_pkey PRIMARY KEY ("Key");')    
 ```
 
 
@@ -277,7 +362,167 @@ dbExecute(con_diaspara, 'ALTER TABLE "Deprecated" SET SCHEMA ref;')
 
 </details>
 
-## Creating series referential ref.ref_tr_seriesvocab_svc
+## series table t_series_ser
+
+```{dot}
+//| label: fig-schema_diaspara
+//| fig-cap: Simplified structure of the metric database. The time series table, start with an identifier (at the bottom) which correspond to a station or a regional monitoring program. The series contains the main attributes, including geometry, species stage ... This table is empty and filled by inheritance (---> arrows).The actual data are in the schema corresponding to each working group (pink and green).
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];	
+    vocab [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.vocab</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id (uuid) <br align="left"/>
+        ser_code (text)  </td> </tr> 
+       </table>> 
+       shape = Msquare];
+    ts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.series</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id <br align="left"/>
+        ...    </td> </tr> 
+       </table>> 
+       shape = record];
+    metts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.metadata-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       ...     </td> </tr> 
+       </table>> 
+       shape = folder];
+
+   ann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year  <br align="left"/>  
+       ...   </td> </tr> 
+       </table>> 
+       shape = record];   
+   metann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.metadata-annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year start <br align="left"/>
+       year end  <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = folder];   
+   groupmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year   <br align="left"/>
+       mean size <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   fish [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.fish</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       fi_id   <br align="left"/>
+       x   <br align="left"/>
+       y   <br align="left"/>
+       date <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   indmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       fi_id  <br align="left"/>
+       metric_id  <br align="left"/>
+       value  <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = record];
+   metrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.metric</b> </td> </tr>
+       <tr> <td align="left">     
+       metric_id (length, weight..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record];             
+   tseel [fillcolor="pink"
+       label="dateel.series"
+       shape = table];   
+   mettseel [fillcolor="pink"
+       label="dateel.metadata-series"
+       shape = folder];
+   anneel [fillcolor="pink"
+       label="dat.annual-series"
+       shape = record]; 
+   metanneel [fillcolor="pink"
+       label= "dateel.metadata-annual-series"     
+       shape = folder]; 
+   groupmetricseel [fillcolor="pink"
+       label="dateel.groupmetrics"
+       shape = record];  
+   indmetricseel [fillcolor="pink"
+       label="dateel.indmetrics"
+       shape = record]; 
+   fisheel [fillcolor="pink"
+       label="dateel.fish"
+       shape = record];        
+   tsnas [fillcolor="limegreen"
+       label="datnas.series"
+       shape = table];   
+   mettsnas [fillcolor="limegreen"
+       label="datnas.metadata-series"
+       shape = folder];
+   indmetricsnas [fillcolor="limegreen"
+       label="datnas.indmetrics"
+       shape = record]; 
+   fishnas [fillcolor="limegreen"
+       label="datnas.fish"
+       shape = record]; 
+
+  metts  -> ts -> vocab [label = "1:1"]
+  groupmetrics -> ann -> ts [label = "n:1"]
+  metann -> ann [label = "n:1"]
+  indmetrics -> fish -> ts [label = "n:1"]
+  indmetrics -> metrics
+
+  groupmetricseel -> metanneel [label = "n:1"]
+  metanneel -> anneel [label = "n:1"]
+  anneel -> tseel [label = "n:1"]
+  mettseel -> tseel ->  vocab [label = "1:1"]
+  indmetricseel -> fisheel -> tseel  [label = "n:1"]
+  
+
+  mettsnas -> tsnas ->  vocab [label = "1:1"]
+  indmetricsnas -> fishnas -> tsnas  [label = "n:1"]
+
+  groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
+  indmetricseel -> indmetrics [label="inherits", style="dashed"]
+  indmetricsnas -> indmetrics [label="inherits", style="dashed"]
+  fisheel -> fish [label="inherits", style="dashed"]
+  fishnas -> fish [label="inherits", style="dashed"] 
+  anneel -> ann [ label="inherits", style="dashed"]
+  metanneel -> metann [label="inherits", style="dashed"]
+  tseel -> ts [ label="inherits", style="dashed"]
+  tsnas -> ts [ label="inherits", style="dashed"]
+  mettseel -> metts [label="inherits", style="dashed"]
+  mettsnas -> metts [ label="inherits", style="dashed"]
+
+  // make the same rank
+
+  {rank = same; tseel;tsnas}
+}
+```
+
+### Creating series referential ref.ref_tr_seriesvocab_svc
 
 Series are created in ref. It's a vocabulary.
 They might be linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
@@ -293,9 +538,15 @@ It will be created a an UUID (unique by construction) and a code also unique.
 
 </details>
 
+
+:::{.callout-note appearance="simple"}
+## QUESTION to DIASPARA
+There will be a need to harmonize the codes? Already those coming from
+sampling, series and salmon are different. See sql comment for ser_code
+above.
+:::
+
 ## Creating series main table dat.t_series_ser
-
-
 
 
 <details>
@@ -357,19 +608,9 @@ There is a procedure to integrate stations, but for this we will probably do a b
 
 
 
-
-
-
-
-The detailed workflow on code requests from ICES can be viewed in the ICES Vocabularies and Codes data flow schematic, available in ICES publications.
-
-
-
-
 # Import data from WGEEL (TODO)
 
-
-If this works then the rest should follow smoothly
+[TODO] Link the ccm wso_id to the hydroshed db identifiers of the basins to get the best fit from tr_area_are.
 [git issue #25 Import data from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
 
 The release date for that one is :
@@ -379,9 +620,6 @@ The release date for that one is :
 So the metric release will be after wgeel, but hopefully some of the work will be started and this can be discussed during wgeel.
 
 # Import data from WP2 (TODO)
-
-
-# Adapt to ICES format (TODO)
 
 
 # Import to ICES

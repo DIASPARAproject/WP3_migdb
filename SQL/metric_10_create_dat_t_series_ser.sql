@@ -1,10 +1,10 @@
 -- DROP TABLE dat.t_series_ser;
 
 CREATE TABLE dat.t_series_ser (
-  ser_svc_id uuid ,
+  ser_svc_id uuid PRIMARY KEY,
   CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_code)
   REFERENCES ref.tr_seriesvocab_svc (svc_id) 
-  ON UPDATE CASCADE ON DELETE RESTRICT,  
+  ON UPDATE CASCADE ON DELETE CASCADE,  
   CONSTRAINT t_series_ser_pkey PRIMARY KEY (ser_svc_id),
   ser_code text NOT NULL,
   CONSTRAINT uk_ser_code UNIQUE,
@@ -28,9 +28,14 @@ CREATE TABLE dat.t_series_ser (
   ser_ver_code TEXT NOT NULL,
   CONSTRAINT fk_ser_ver_code FOREIGN KEY (ser_ver_code)
   REFERENCES ref.tr_version_ver(ver_code),
+  ser_cou_code TEXT NOT NULL,
+  CONSTRAINT fk_ser_cou_code FOREIGN KEY (ser_cou_code)
+  REFERENCES ref.tr_country_cou(cou_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
   geom geometry NULL,
   ser_x NUMERIC NULL,
-  ser_y NUMERIC NULL);
+  ser_y NUMERIC NULL,
+  ser_last_update DATE);
   
 
 COMMENT ON TABLE dat.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
@@ -45,9 +50,11 @@ COMMENT ON COLUMN dat.t_series_ser.ser_lfs_code  IS 'Life stage see tr_lifestage
 both lfs_code, and lfs_spe_code (as two species can have the same lifestage code. The lifestage can be NULL but it should correspond to the main lifestage targeted by the series;';
 COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
-COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';';
+COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
+COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS 'Country code ISO 3166 (two letter code)';
 COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column';
 COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Longitude, EPSG 4326';
+COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Latitude, EPSG 4326';
 COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Latitude, EPSG 4326';
 GRANT ALL ON ref.t_series_ser TO diaspara_admin;
 GRANT SELECT ON ref.t_series_ser TO diaspara_read; 
