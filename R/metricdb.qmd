@@ -91,7 +91,6 @@ load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
-cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
                            dbname = cred$dbnamediaspara,
                            host = cred$host,
@@ -339,18 +338,11 @@ dbExecute(con_diaspara, 'ALTER TABLE ref."MSTAT" ADD CONSTRAINT mstat_pkey PRIMA
 Deprecated <- getCodeList("Deprecated")
 knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
-```{r icesStation_Deprecated}
-#| echo: TRUE
-#| eval: FALSE
-#| warning: FALSE
-#| message: FALSE
-#| code-fold: TRUE
-#| code-summary: Code to import ices Deprecated.
-#| tbl-cap: Deprecated
-dbWriteTable(con_diaspara, "Deprecated", Deprecated)
-dbExecute(con_diaspara, 'ALTER TABLE "Deprecated" SET SCHEMA ref;') 
-dbExecute(con_diaspara, 'ALTER TABLE ref."Deprecated" ADD CONSTRAINT deprecated_pkey PRIMARY KEY ("Key");')    
-```
+
+
+The station are loaded into a table that will not be
+exactly like ICES's since I cannot load the full tables, and don't want to replicate the full complexity of stations. For instance currently station 1000 has several parents for "Station_DTYPE" which I agregate like EW~EU~NU~CW,
+ in my table. But the vocab is here.
 
 
 <details>
@@ -361,6 +353,71 @@ dbExecute(con_diaspara, 'ALTER TABLE ref."Deprecated" ADD CONSTRAINT deprecated_
 ```
 
 </details>
+
+
+We have to do some fixes see (issue 27)[https://github.com/ices-tools-prod/icesVocab/issues/27] and remove nearly all the constraints, including the length of 50 for stationNames.
+The following chunk creates a vocab with 14086 stations.
+
+
+```{r ices_Station}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import station
+
+
+source("R/utilities/vocab_station_helper.R")
+st0 <- icesVocab::getCodeList(code_type ="Station")
+ll <- mapply(get_station_detail, st0$Key, SIMPLIFY = FALSE)
+station <- bind_rows(ll)
+
+
+station <- station[station$Station_Name != 'TestBulkUload1',]
+dbWriteTable(con_diaspara_admin, "temp_station", station)
+
+dbExecute(con_diaspara_admin,'INSERT INTO "ref"."StationDictionary"
+("Definition", 
+"HeaderRecord", 
+"Station_Code",
+ "Station_Country",
+ "Station_Name",
+ "Station_LongName", 
+"Station_ActiveFromDate", 
+"Station_ActiveUntilDate",
+ "Station_ProgramGovernance",
+ "Station_StationGovernance", 
+"Station_PURPM",
+ "Station_DataType",
+ "Station_WLTYP",
+ "Station_MSTAT", 
+"Station_Notes", 
+"Station_Deprecated")
+SELECT
+"Definition", 
+"HeaderRecord", 
+"Station_Code"::INTEGER,
+ "Station_Country",
+ "Station_Name",
+ "Station_LongName", 
+"Station_ActiveFromDate", 
+"Station_ActiveUntilDate",
+ "Station_ProgramGovernance",
+ "Station_StationGovernance", 
+"Station_PURPM",
+ "Station_DataType",
+ "Station_WLTYP",
+ "Station_MSTAT", 
+"Station_Notes", 
+"Station_Deprecated" 
+ FROM temp_station') #14086
+ dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
+  
+```
+
+
+
 
 ## series table t_series_ser
 
