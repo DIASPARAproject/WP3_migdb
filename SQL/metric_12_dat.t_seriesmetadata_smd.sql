@@ -2,28 +2,29 @@
 
 CREATE TABLE dat.t_seriesmetadata_sem (
  sem_svc_id uuid PRIMARY KEY,
- CONSTRAINT fk_ser_svc_id FOREIGN KEY (smq_svc_code)
+ CONSTRAINT fk_sem_svc_id FOREIGN KEY (sem_svc_code)
     REFERENCES ref.tr_seriesvocab_svc (svc_id) 
     ON UPDATE CASCADE ON DELETE CASCADE,  
+ CONSTRAIN uk_sem_svc_id UNIQUE (sem_svc_id) ,
  sem_description TEXT NULL,
  sem_qal_id int4 NULL,
  sem_qal_comment TEXT NULL,
- sem_station int4 NULL,
- CONSTRAINT fk_sem_station FOREIGN KEY (sem_station)
-  REFERENCES  ref."StationDictionary"("Station_Code")
-  ON UPDATE CASCADE ON DELETE CASCADE,
  sem_uni_code varchar(20) NULL,
   CONSTRAINT fk_sem_uni_code FOREIGN KEY(sem_uni_code)
-  REFERENCES "ref".tr_unit_uni(uni_code)
+  REFERENCES ref.tr_unit_uni(uni_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
   sem_hty_code varchar(2) NULL,
   CONSTRAINT fk_sem_hty_code FOREIGN KEY(sem_hty_code)
-  REFERENCES "ref".tr_habitattype_hty
+  REFERENCES ref.tr_habitattype_hty
   ON UPDATE CASCADE ON DELETE RESTRICT,
   sem_locationdescription text NULL,
+  sem_are_code TEXT NULL,
+  CONSTRAINT c_fk_sem_are_code FOREIGN KEY (sem_are_code)
+  REFERENCES ref.tr_area_are(are_code)
+  ON UPDATE CASCADE ON DELETE CASCADE,
   sem_sam_id int4 NULL,
   sem_ccm_wso_id _int4 NULL, 
-  sem_distanceseakm numeric NULL,
+  sem_distanceseakm numeric NULL)
 
   
   

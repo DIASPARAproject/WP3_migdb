@@ -31,7 +31,7 @@ CREATE TABLE dateel.t_series_ser (
 ) inherits (dat.t_series_ser);
 
 -- In the wgeel schema the default is WGEEL
-ALTER TABLE (dateel.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGEEL');  
+ALTER TABLE dateel.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGEEL';  
 
 COMMENT ON TABLE dateel.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
 It can correspond to time series data or individual metrics collection or both. This table is inherited from dat ';
