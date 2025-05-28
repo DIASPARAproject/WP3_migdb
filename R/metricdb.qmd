@@ -268,7 +268,12 @@ con_salmoglob <- dbConnect(Postgres(),
                            port = cred$port,
                            user = cred$usersalmo,
                            password = cred$passwordsalmo)
-
+con_diaspara_distant <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamedistant,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$userdistant,
+                           password = cred$passworddistant)
 
 
 
@@ -627,24 +632,31 @@ This table is the same as in wgnas, it is inherited from ref.
 #| code-fold: TRUE
 #| code-summary: Code to insert values into the tr_version_ver table
 
-#sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
-#sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
- 
-dbget
 
+ 
+# get the latest version from the server
+ver <- dbGetQuery(con_diaspara_distant, "select * from ref.tr_datasource_dts")
+save(ver, file= "data/tr_datasource_dts.Rdata")
+ver <- ver[ver$dts_datasource != 'test',]
+dc <- ver[grepl("dc", ver$dts_datasource), "dts_datasource"]
+dcyear <- as.integer(lapply(strsplit(dc,"_"), function(X)X[2]))
+wgeel <- ver[grepl("wgeel", ver$dts_datasource), "dts_datasource"]
+wgeelyear <- as.integer(lapply(strsplit(wgeel,"_"), function(X)X[2]))
 tr_version_ver <- data.frame(
-ver_code = paste0("SAL-",2020:2024,"-1"),
-ver_year = 2020:2024,
-ver_spe_code = "SAL",
-ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
-ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
+ver_code = paste0(rep("ANG-", 11),c(wgeelyear, dcyear, 2025),c("-1","-2",rep("-1", 9))),
+ver_year = c(wgeelyear, dcyear, 2025),
+ver_spe_code = "ANG",
+ver_datacalldoi=c(rep(NA, 9), 
+"https://doi.org/10.17895/ices.pub.25816738.v2",
+"https://doi.org/10.17895/ices.pub.25816738.v2"), 
+ver_stockkeylabel =c("ele"), # sugested by Hilaire. 
 # TODO FIND other DOI (mail sent to ICES)
-ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
-ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
+ver_version=c(1,2,rep(1,9)), # TODO WGNAS check that there is just one version per year
+ver_description=ver$dts_description) # TODO WGNAS provide model description
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
 overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
  DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 
@@ -655,14 +667,14 @@ dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM t
 
 
 ```{r}
-#| label: tbl-version
+#| label: tbl-version-refeel
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Version
 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_version_ver;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
