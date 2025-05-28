@@ -269,10 +269,10 @@ CREATE SCHEMA dat;
 ALTER SCHEMA dat OWNER TO diaspara_admin;
 COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance';
 
-DROP SCHEMA IF EXISTS datang CASCADE;
-CREATE SCHEMA datang;
-ALTER SCHEMA datang OWNER TO diaspara_admin;
-COMMENT ON SCHEMA datang IS 'SCHEMA for WGEEL';
+DROP SCHEMA IF EXISTS dateel CASCADE;
+CREATE SCHEMA dateel;
+ALTER SCHEMA dateel OWNER TO diaspara_admin;
+COMMENT ON SCHEMA dateel IS 'SCHEMA for WGEEL';
 
 DROP SCHEMA IF EXISTS datnas CASCADE;
 CREATE SCHEMA datnas;
@@ -440,7 +440,7 @@ and inherited tables comming from the different schema.
 The first thing is to create a referential table for species. Anyways,
 we searched a bit for other species, even if we don't plan to start
 storing data on Alosa and Lamprey it's good to prepare the database.
-There are no code in ICES vocal for **Alosa alosa**, **Alosa fallax**,
+There are no code in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 **Petromyzon marinus**, **Lampetra fluviatilis**.
 
 Note Cédric : Thinking later about this, I chose to get rid of `ELE` and
@@ -3145,6 +3145,12 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")%>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+# Import from WGEEL
+
+## refeel.tr_version_ver
+
+
 
 
 

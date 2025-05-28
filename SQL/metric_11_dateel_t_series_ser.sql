@@ -1,10 +1,12 @@
+
+
 CREATE TABLE dateel.t_series_ser (
- CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_code)
+ CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_id)
   REFERENCES ref.tr_seriesvocab_svc (svc_id) 
   ON UPDATE CASCADE ON DELETE RESTRICT,  
-  CONSTRAINT t_series_ser_pkey PRIMARY KEY (ser_svc_id),
-  CONSTRAINT uk_ser_code UNIQUE,
-  CONSTRAINT uk_ser_code UNIQUE,
+  CONSTRAINT uk_ser_svc_id UNIQUE (ser_svc_id),
+  CONSTRAINT uk_ser_code UNIQUE (ser_code),
+  CONSTRAINT uk_ser_name UNIQUE (ser_name),
   CONSTRAINT fk_ser_spe_code FOREIGN KEY (ser_spe_code) 
     REFERENCES ref.tr_species_spe(spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT ,
@@ -15,13 +17,18 @@ CREATE TABLE dateel.t_series_ser (
     REFERENCES ref.tr_area_are (are_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_ser_wkg_code  FOREIGN KEY (ser_wkg_code)
-   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code),
-  CONSTRAINT fk_ser_wkg_code  FOREIGN KEY (ser_wkg_code)
-    REFERENCES ref.tr_icworkinggroup_wkg(wkg_code),
+   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
+       ON UPDATE CASCADE ON DELETE RESTRICT,   
   CONSTRAINT fk_ser_ver_code FOREIGN KEY (ser_ver_code)
-  REFERENCES refeel.tr_version_ver(ver_code),
-) inherits (ref.t_series_ser)
-);
+  REFERENCES refeel.tr_version_ver(ver_code)
+      ON UPDATE CASCADE ON DELETE RESTRICT,  
+    CONSTRAINT fk_ser_cou_code FOREIGN KEY (ser_cou_code)
+  REFERENCES ref.tr_country_cou(cou_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_station_code FOREIGN KEY (ser_station_code) 
+  REFERENCES "ref"."StationDictionary" ("Station_Code")
+  ON UPDATE CASCADE ON DELETE CASCADE
+) inherits (dat.t_series_ser);
 
 -- In the wgeel schema the default is WGEEL
 ALTER TABLE (dateel.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGEEL');  
@@ -38,11 +45,11 @@ both lfs_code, and lfs_spe_code (as two species can have the same lifestage code
 COMMENT ON COLUMN dateel.t_series_ser.ser_wkg_code IS 'Code of the working group, one of
 WGEEL';
 COMMENT ON COLUMN dateel.t_series_ser.ser_ver_code IS 'Version of the data usually corresponding to the data call e.g. dc_2020, wgeel_2016, wkemp_2025';
-COMMENT ON COLUMN dateel.t_series_ser.geom IS 'Series geometry c'Version codeolumn';
+COMMENT ON COLUMN dateel.t_series_ser.geom IS 'Series geometry column';
 COMMENT ON COLUMN dateel.t_series_ser.ser_x IS 'Longitude, EPSG 4326';
 COMMENT ON COLUMN dateel.t_series_ser.ser_x IS 'Latitude, EPSG 4326';
-GRANT ALL ON ref.t_series_ser TO diaspara_admin;
-GRANT SELECT ON ref.t_series_ser TO diaspara_read; 
+GRANT ALL ON dateel.t_series_ser TO diaspara_admin;
+GRANT SELECT ON dateel.t_series_ser TO diaspara_read; 
 
 
  

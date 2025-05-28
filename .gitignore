@@ -112,6 +112,7 @@ R/manage_database2.R
 
 R/data/country_sf.Rdata
 R/data/tr_species_spe_temp.Rdata
+R/data/station.Rdata
 R/midb.rmarkdown
 R/data/fishing_areas_division.Rdata
 R/data/fishing_areas_major.Rdata

@@ -1,15 +1,19 @@
--- DROP TABLE dat.t_series_ser;
+--DROP TABLE IF EXISTS dat.t_series_ser;
 
 CREATE TABLE dat.t_series_ser (
   ser_svc_id uuid PRIMARY KEY,
-  CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_code)
+  CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_id)
   REFERENCES ref.tr_seriesvocab_svc (svc_id) 
   ON UPDATE CASCADE ON DELETE CASCADE,  
-  CONSTRAINT t_series_ser_pkey PRIMARY KEY (ser_svc_id),
+  CONSTRAINT uk_ser_svc_id UNIQUE (ser_svc_id),
   ser_code text NOT NULL,
-  CONSTRAINT uk_ser_code UNIQUE,
+  CONSTRAINT uk_ser_code UNIQUE (ser_code),
+  ser_station_code INTEGER NULL,
+  CONSTRAINT fk_station_code FOREIGN KEY (ser_station_code) 
+  REFERENCES "ref"."StationDictionary" ("Station_Code")
+  ON UPDATE CASCADE ON DELETE CASCADE,
   ser_name text NULL,
-  CONSTRAINT uk_ser_code UNIQUE,
+  CONSTRAINT uk_ser_name UNIQUE (ser_name),
   ser_spe_code TEXT NULL,
   CONSTRAINT fk_ser_spe_code FOREIGN KEY (ser_spe_code) 
   REFERENCES "ref".tr_species_spe(spe_code) 
@@ -35,7 +39,7 @@ CREATE TABLE dat.t_series_ser (
   geom geometry NULL,
   ser_x NUMERIC NULL,
   ser_y NUMERIC NULL,
-  ser_last_update DATE);
+  ser_datelastupdate DATE);
   
 
 COMMENT ON TABLE dat.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
@@ -52,10 +56,10 @@ COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS 'Code of the working group, o
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
 COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS 'Country code ISO 3166 (two letter code)';
-COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column';
+COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326';
 COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Longitude, EPSG 4326';
-COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Latitude, EPSG 4326';
-COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Latitude, EPSG 4326';
-GRANT ALL ON ref.t_series_ser TO diaspara_admin;
-GRANT SELECT ON ref.t_series_ser TO diaspara_read; 
+COMMENT ON COLUMN dat.t_series_ser.ser_y IS 'Latitude, EPSG 4326';
+COMMENT ON COLUMN dat.t_series_ser.ser_datelastupdate IS 'Last modification in the series, from a trigger';
+GRANT ALL ON dat.t_series_ser TO diaspara_admin;
+GRANT SELECT ON dat.t_series_ser TO diaspara_read; 
 

@@ -62,6 +62,165 @@ Once done a beta version probably not completely adapted will be released.
 [milestone metric DB beta version](https://github.com/DIASPARAproject/WP3_migdb/milestone/6)
 
 
+
+```{dot}
+//| label: fig-schema_diaspara
+//| fig-cap: Simplified structure of the metric database. The time series table, start with an identifier (at the bottom) which correspond to a station or a regional monitoring program. The series contains the main attributes, including geometry, species stage ... This table is empty and filled by inheritance (---> arrows).The actual data are in the schema corresponding to each working group (pink and green).
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];	
+    vocab [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.vocab</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id (uuid) <br align="left"/>
+        ser_code (text)  </td> </tr> 
+       </table>> 
+       shape = Msquare];
+    ts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.series</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id <br align="left"/>
+        ...    </td> </tr> 
+       </table>> 
+       shape = record];
+    metts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.metadata-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       ...     </td> </tr> 
+       </table>> 
+       shape = folder];
+
+   ann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year  <br align="left"/>  
+       ...   </td> </tr> 
+       </table>> 
+       shape = record];   
+   metann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.metadata-annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year start <br align="left"/>
+       year end  <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = folder];   
+   groupmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year   <br align="left"/>
+       mean size <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   fish [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.fish</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       fi_id   <br align="left"/>
+       x   <br align="left"/>
+       y   <br align="left"/>
+       date <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   indmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       fi_id  <br align="left"/>
+       metric_id  <br align="left"/>
+       value  <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = record];
+   metrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.metric</b> </td> </tr>
+       <tr> <td align="left">     
+       metric_id (length, weight..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record];             
+   tseel [fillcolor="pink"
+       label="dateel.series"
+       shape = table];   
+   mettseel [fillcolor="pink"
+       label="dateel.metadata-series"
+       shape = folder];
+   anneel [fillcolor="pink"
+       label="dat.annual-series"
+       shape = record]; 
+   metanneel [fillcolor="pink"
+       label= "dateel.metadata-annual-series"     
+       shape = folder]; 
+   groupmetricseel [fillcolor="pink"
+       label="dateel.groupmetrics"
+       shape = record];  
+   indmetricseel [fillcolor="pink"
+       label="dateel.indmetrics"
+       shape = record]; 
+   fisheel [fillcolor="pink"
+       label="dateel.fish"
+       shape = record];        
+   tsnas [fillcolor="limegreen"
+       label="datnas.series"
+       shape = table];   
+   mettsnas [fillcolor="limegreen"
+       label="datnas.metadata-series"
+       shape = folder];
+   indmetricsnas [fillcolor="limegreen"
+       label="datnas.indmetrics"
+       shape = record]; 
+   fishnas [fillcolor="limegreen"
+       label="datnas.fish"
+       shape = record]; 
+
+  metts  -> ts -> vocab [label = "1:1"]
+  groupmetrics -> ann -> ts [label = "n:1"]
+  metann -> ann [label = "n:1"]
+  indmetrics -> fish -> ts [label = "n:1"]
+  indmetrics -> metrics
+
+  groupmetricseel -> metanneel [label = "n:1"]
+  metanneel -> anneel [label = "n:1"]
+  anneel -> tseel [label = "n:1"]
+  mettseel -> tseel ->  vocab [label = "1:1"]
+  indmetricseel -> fisheel -> tseel  [label = "n:1"]
+  
+
+  mettsnas -> tsnas ->  vocab [label = "1:1"]
+  indmetricsnas -> fishnas -> tsnas  [label = "n:1"]
+
+  groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
+  indmetricseel -> indmetrics [label="inherits", style="dashed"]
+  indmetricsnas -> indmetrics [label="inherits", style="dashed"]
+  fisheel -> fish [label="inherits", style="dashed"]
+  fishnas -> fish [label="inherits", style="dashed"] 
+  anneel -> ann [ label="inherits", style="dashed"]
+  metanneel -> metann [label="inherits", style="dashed"]
+  tseel -> ts [ label="inherits", style="dashed"]
+  tsnas -> ts [ label="inherits", style="dashed"]
+  mettseel -> metts [label="inherits", style="dashed"]
+  mettsnas -> metts [ label="inherits", style="dashed"]
+
+  // make the same rank
+
+  {rank = same; tseel;tsnas}
+}
+```
+
 ```{r init}
 #| echo: FALSE
 #| warning: FALSE
@@ -339,6 +498,32 @@ Deprecated <- getCodeList("Deprecated")
 knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+### Creating series referential ref.ref_tr_seriesvocab_svc
+
+Series are created in ref. It's a vocabulary.
+They might be linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
+of an interannual sampling scheme for migratory fishes.
+It will be created a an UUID (unique by construction) and a code also unique.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_00_ref_tr_seriesvocab_svc.sql"}
+```
+
+</details>
+
+
+:::{.callout-note appearance="simple"}
+## QUESTION to DIASPARA
+There will be a need to harmonize the codes? Already those coming from
+sampling, series and salmon are different. See sql comment for ser_code
+above.
+:::
+
+
+## Creating the station table
 
 The station are loaded into a table that will not be
 exactly like ICES's since I cannot load the full tables, and don't want to replicate the full complexity of stations. For instance currently station 1000 has several parents for "Station_DTYPE" which I agregate like EW~EU~NU~CW,
@@ -349,7 +534,7 @@ exactly like ICES's since I cannot load the full tables, and don't want to repli
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_01_create_StationDictionary.sql"}
+``` {.sql include="../SQL/metric_01_StationDictionary.sql"}
 ```
 
 </details>
@@ -367,14 +552,16 @@ The following chunk creates a vocab with 14086 stations.
 #| code-fold: TRUE
 #| code-summary: Code to import station
 
+# tested 28/05/2025
 
-source("R/utilities/vocab_station_helper.R")
+source("utilities/vocab_station_helper.R")
 st0 <- icesVocab::getCodeList(code_type ="Station")
 ll <- mapply(get_station_detail, st0$Key, SIMPLIFY = FALSE)
 station <- bind_rows(ll)
 
 
 station <- station[station$Station_Name != 'TestBulkUload1',]
+save(station, file = "data/station.Rdata")
 dbWriteTable(con_diaspara_admin, "temp_station", station)
 
 dbExecute(con_diaspara_admin,'INSERT INTO "ref"."StationDictionary"
@@ -417,191 +604,72 @@ SELECT
 ```
 
 
-
-
-## series table t_series_ser
-
-```{dot}
-//| label: fig-schema_diaspara
-//| fig-cap: Simplified structure of the metric database. The time series table, start with an identifier (at the bottom) which correspond to a station or a regional monitoring program. The series contains the main attributes, including geometry, species stage ... This table is empty and filled by inheritance (---> arrows).The actual data are in the schema corresponding to each working group (pink and green).
-digraph schema {
-	rankdir=TB;
-	size="8,5"
-    node [style=filled, fillcolor=gray, shape = record];	
-    vocab [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>ref.vocab</b> </td> </tr>
-       <tr> <td align="left">
-        ser_id (uuid) <br align="left"/>
-        ser_code (text)  </td> </tr> 
-       </table>> 
-       shape = Msquare];
-    ts [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.series</b> </td> </tr>
-       <tr> <td align="left">
-        ser_id <br align="left"/>
-        ...    </td> </tr> 
-       </table>> 
-       shape = record];
-    metts [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.metadata-series</b> </td> </tr>
-       <tr> <td align="left">
-       ser_id  <br align="left"/>
-       ...     </td> </tr> 
-       </table>> 
-       shape = folder];
-
-   ann [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.annual-series</b> </td> </tr>
-       <tr> <td align="left">
-       ser_id  <br align="left"/>
-       year  <br align="left"/>  
-       ...   </td> </tr> 
-       </table>> 
-       shape = record];   
-   metann [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.metadata-annual-series</b> </td> </tr>
-       <tr> <td align="left">
-       ser_id  <br align="left"/>
-       year start <br align="left"/>
-       year end  <br align="left"/>
-       ... </td> </tr> 
-       </table>> 
-       shape = folder];   
-   groupmetrics [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
-       <tr> <td align="left">
-       ser_id  <br align="left"/>
-       year   <br align="left"/>
-       mean size <br align="left"/>
-       ... </td> </tr> 
-       </table>> 
-       shape = record];
-   fish [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.fish</b> </td> </tr>
-       <tr> <td align="left">
-       ser_id  <br align="left"/>
-       fi_id   <br align="left"/>
-       x   <br align="left"/>
-       y   <br align="left"/>
-       date <br align="left"/>
-       ... </td> </tr> 
-       </table>> 
-       shape = record];
-   indmetrics [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
-       <tr> <td align="left">
-       fi_id  <br align="left"/>
-       metric_id  <br align="left"/>
-       value  <br align="left"/> </td> </tr> 
-       </table>> 
-       shape = record];
-   metrics [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>ref.metric</b> </td> </tr>
-       <tr> <td align="left">     
-       metric_id (length, weight..)  <br align="left"/>
-        </td> </tr> 
-       </table>> 
-       shape = record];             
-   tseel [fillcolor="pink"
-       label="dateel.series"
-       shape = table];   
-   mettseel [fillcolor="pink"
-       label="dateel.metadata-series"
-       shape = folder];
-   anneel [fillcolor="pink"
-       label="dat.annual-series"
-       shape = record]; 
-   metanneel [fillcolor="pink"
-       label= "dateel.metadata-annual-series"     
-       shape = folder]; 
-   groupmetricseel [fillcolor="pink"
-       label="dateel.groupmetrics"
-       shape = record];  
-   indmetricseel [fillcolor="pink"
-       label="dateel.indmetrics"
-       shape = record]; 
-   fisheel [fillcolor="pink"
-       label="dateel.fish"
-       shape = record];        
-   tsnas [fillcolor="limegreen"
-       label="datnas.series"
-       shape = table];   
-   mettsnas [fillcolor="limegreen"
-       label="datnas.metadata-series"
-       shape = folder];
-   indmetricsnas [fillcolor="limegreen"
-       label="datnas.indmetrics"
-       shape = record]; 
-   fishnas [fillcolor="limegreen"
-       label="datnas.fish"
-       shape = record]; 
-
-  metts  -> ts -> vocab [label = "1:1"]
-  groupmetrics -> ann -> ts [label = "n:1"]
-  metann -> ann [label = "n:1"]
-  indmetrics -> fish -> ts [label = "n:1"]
-  indmetrics -> metrics
-
-  groupmetricseel -> metanneel [label = "n:1"]
-  metanneel -> anneel [label = "n:1"]
-  anneel -> tseel [label = "n:1"]
-  mettseel -> tseel ->  vocab [label = "1:1"]
-  indmetricseel -> fisheel -> tseel  [label = "n:1"]
-  
-
-  mettsnas -> tsnas ->  vocab [label = "1:1"]
-  indmetricsnas -> fishnas -> tsnas  [label = "n:1"]
-
-  groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
-  indmetricseel -> indmetrics [label="inherits", style="dashed"]
-  indmetricsnas -> indmetrics [label="inherits", style="dashed"]
-  fisheel -> fish [label="inherits", style="dashed"]
-  fishnas -> fish [label="inherits", style="dashed"] 
-  anneel -> ann [ label="inherits", style="dashed"]
-  metanneel -> metann [label="inherits", style="dashed"]
-  tseel -> ts [ label="inherits", style="dashed"]
-  tsnas -> ts [ label="inherits", style="dashed"]
-  mettseel -> metts [label="inherits", style="dashed"]
-  mettsnas -> metts [ label="inherits", style="dashed"]
-
-  // make the same rank
-
-  {rank = same; tseel;tsnas}
-}
-```
-
-### Creating series referential ref.ref_tr_seriesvocab_svc
-
-Series are created in ref. It's a vocabulary.
-They might be linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
-of an interannual sampling scheme for migratory fishes.
-It will be created a an UUID (unique by construction) and a code also unique.
+## Creating the version table refeel.tr_version_ver
 
 <details>
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_00_create_ref_tr_seriesvocab_svc.sql"}
+``` {.sql include="../SQL/metric_02_refeel_tr_version_ver.sql"}
 ```
 
 </details>
 
 
-:::{.callout-note appearance="simple"}
-## QUESTION to DIASPARA
-There will be a need to harmonize the codes? Already those coming from
-sampling, series and salmon are different. See sql comment for ser_code
-above.
-:::
+This table is the same as in wgnas, it is inherited from ref.
+
+```{r }
+#| label: refeel_tr_version_ver_insert
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to insert values into the tr_version_ver table
+
+#sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
+#sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
+ 
+dbget
+
+tr_version_ver <- data.frame(
+ver_code = paste0("SAL-",2020:2024,"-1"),
+ver_year = 2020:2024,
+ver_spe_code = "SAL",
+ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
+# TODO FIND other DOI (mail sent to ICES)
+ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
+ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
+overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+
+
+# TODO eel and wgbast
+#"ele.2737.nea","sal.27.22–31",
+
+```
+
+
+```{r}
+#| label: tbl-version
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Version
+
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## series table t_series_ser
+
+
+
 
 ## Creating series main table dat.t_series_ser
 
@@ -610,7 +678,7 @@ above.
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_10_create_dat_t_series_ser.sql"}
+``` {.sql include="../SQL/metric_10_dat_t_series_ser.sql"}
 ```
 
 </details>
@@ -663,7 +731,17 @@ There is a procedure to integrate stations, but for this we will probably do a b
 ::::::
 
 
+## Creating inherited table dateel.t_series_ser
 
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_11_dateel_t_series_ser.sql"}
+```
+
+</details>
 
 # Import data from WGEEL (TODO)
 
