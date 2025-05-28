@@ -11,20 +11,20 @@ CREATE TABLE "ref"."StationDictionary"(
 "HeaderRecord" TEXT NOT NULL DEFAULT 'Record',
 "Station_Code" INTEGER PRIMARY KEY,
 "Station_Country" TEXT NOT NULL,
-CONSTRAINT  fk_station_country 
-FOREIGN KEY ("Station_Country")
-REFERENCES ref.tr_country_cou(cou_code)
-ON UPDATE CASCADE ON DELETE CASCADE, -- possible problem here AS I don't have ALL the countries...
+--CONSTRAINT  fk_station_country 
+--FOREIGN KEY ("Station_Country")
+--REFERENCES ref.tr_country_cou(cou_code)
+--ON UPDATE CASCADE ON DELETE CASCADE, -- possible problem here AS I don't have ALL the countries...
 "Station_Name" TEXT NOT NULL,
 "Station_LongName" TEXT NULL,
 "Station_ActiveFromDate" CHARACTER VARYING (10) NULL, -- CHANGE I don't have that FROM the API
 "Station_ActiveUntilDate" CHARACTER VARYING (10) NULL,
-"Station_ProgramGovernance" TEXT NOT NULL,
+"Station_ProgramGovernance" TEXT  NULL,
 --CONSTRAINT fk_station_programgovernance
 --FOREIGN KEY ("Station_ProgramGovernance") 
 --REFERENCES "ref"."PRGOV"("Key") 
 --ON UPDATE CASCADE ON DELETE CASCADE,
-"Station_StationGovernance" TEXT NOT NULL,
+"Station_StationGovernance" TEXT  NULL,
 --CONSTRAINT fk_station_stationgovernance 
 --FOREIGN KEY ("Station_StationGovernance") 
 --REFERENCES "ref"."EDMO"("Key") 
@@ -94,6 +94,5 @@ ON UPDATE CASCADE ON DELETE CASCADE,
 "Relation_RelatedName" CHARACTER VARYING(50) NOT NULL,
 "Relation_RelatedActiveFromDate" CHARACTER VARYING (10) NOT NULL,
 "Relation_RelationType" TEXT NOT NULL);
-
 
 
