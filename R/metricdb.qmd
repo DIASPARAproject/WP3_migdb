@@ -268,7 +268,7 @@ con_salmoglob <- dbConnect(Postgres(),
                            port = cred$port,
                            user = cred$usersalmo,
                            password = cred$passwordsalmo)
-con_diaspara_distant <- dbConnect(Postgres(), 
+con_wgeel_distant <- dbConnect(Postgres(), 
                            dbname = cred$dbnamedistant,
                            host = cred$hostdistant,
                            port = cred$port,
@@ -456,7 +456,8 @@ dbExecute(con_diaspara, 'DROP TABLE IF EXISTS ref."WLTYP";')
 WLTYP$Key[is.na(WLTYP$Key)] <- "NA"
 dbWriteTable(con_diaspara, "WLTYP", WLTYP)
 dbExecute(con_diaspara, 'ALTER TABLE "WLTYP" SET SCHEMA ref;') 
-dbExecute(con_diaspara, 'ALTER TABLE ref."WLTYP" ADD CONSTRAINT wltype_pkey PRIMARY KEY ("Key");')   
+dbExecute(con_diaspara, 'ALTER TABLE ref."WLTYP" ADD CONSTRAINT wltype_pkey PRIMARY KEY ("Key");') 
+
 ```
 
 ### MSTAT
@@ -635,7 +636,7 @@ This table is the same as in wgnas, it is inherited from ref.
 
  
 # get the latest version from the server
-ver <- dbGetQuery(con_diaspara_distant, "select * from ref.tr_datasource_dts")
+ver <- dbGetQuery(con_wgeel_distant, "select * from ref.tr_datasource_dts")
 save(ver, file= "data/tr_datasource_dts.Rdata")
 ver <- ver[ver$dts_datasource != 'test',]
 dc <- ver[grepl("dc", ver$dts_datasource), "dts_datasource"]
@@ -751,6 +752,31 @@ There is a procedure to integrate stations, but for this we will probably do a b
 <summary>SQL code to create tables</summary>
 
 ``` {.sql include="../SQL/metric_11_dateel_t_series_ser.sql"}
+```
+
+</details>
+
+## Creating table dat.t_seriesmetadata_smd
+
+
+This table holds the metadata at the series level.
+A description spans a limited amount of year from
+date_begin to date_end. If the series description still hold the date_end is null.
+
+ <details>
+
+<summary>SQL code to create table</summary>
+
+``` {.sql include="../SQL/metric_12_dat.t_seriesmetadata_smd.sql"}
+```
+
+</details>
+
+<details>
+
+<summary>SQL code to create inherited table</summary>
+
+``` {.sql include="../SQL/metric_13_dateel.t_seriesmetadata_smd"}
 ```
 
 </details>

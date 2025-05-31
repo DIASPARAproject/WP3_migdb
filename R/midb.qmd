@@ -91,45 +91,45 @@ database is created with postgres.
 **Some rules**
 
 -   By default values will be capitalised for the first letter e.g.
-    `Public` for the code in dataaccess.
+`Public` for the code in dataaccess.
 
 -   Code ELE, ANG, TRT are capitalized, as are the working group names
-    WGEEL, WGNAS, or country codes.
+WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
 
 -   All integer used for primary keys are called `id` all text used for
-    primary keys are called `code`, the text is always called
-    `description`.
+primary keys are called `code`, the text is always called
+`description`.
 
 -   All tables end with a 3 letter summary which allows to identify the
-    source of one column so the table dataaccess will be called
-    `tr_dataaccess_dta`. And the column for code will be named
+source of one column so the table dataaccess will be called
+`tr_dataaccess_dta`. And the column for code will be named
 
 -   Referential tables or dictionaries are called `tr_`(sometable),
-    tables build in conjuction from other tables and not in the
-    dictionaries are called `t_`(sometable).
+tables build in conjuction from other tables and not in the
+dictionaries are called `t_`(sometable).
 
 -   Foreign key are used instead of check constrainst as check
-    constraint might not ensure the integrity of data after their
-    integration (only when new rows are created or modified).
+constraint might not ensure the integrity of data after their
+integration (only when new rows are created or modified).
 
 -   Foreign key are name `fk_columnname` where the column name is the
-    name in the table
+name in the table
 
 -   Primary keys are names `tablename_pkey` (with the constraint
-    possibly referering to more than one column).
+possibly referering to more than one column).
 
 -   Other constraints are check constraints `ck_columnname` and unique
-    contraints `uk_columnname`
+contraints `uk_columnname`
 
 -   All tables and column have a definition, we will ask the working
-    groups to check those.
+groups to check those.
 
 -   Column and table name are ALWAYS LOWERCASE, the underscore is only
-    used to separate type of table and table shortcode t_table_abc. In
-    column is separates table code abc_def_code (table abc will
-    reference the column def_code in table def).
+used to separate type of table and table shortcode t_table_abc. In
+column is separates table code abc_def_code (table abc will
+reference the column def_code in table def).
 
 ```{r init}
 #| echo: FALSE
@@ -139,11 +139,11 @@ database is created with postgres.
 
 #if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
-setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "D:/DIASPARA/wgbast"
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
-setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
 }
 source("utilities/load_library.R")
 load_library("tidyverse")
@@ -162,23 +162,30 @@ load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
 cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamediaspara,
-                           host = cred$host,
-                           port = cred$port,
-                           user = cred$userdiaspara,
-                           password = cred$passworddiaspara)
+                          dbname = cred$dbnamediaspara,
+                          host = cred$host,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
 con_diaspara_admin <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamediaspara,
-                           host = cred$host,
-                           port = cred$port,
-                           user = cred$usersalmo,
-                           password = cred$passwordsalmo)
+                                dbname = cred$dbnamediaspara,
+                                host = cred$host,
+                                port = cred$port,
+                                user = cred$usersalmo,
+                                password = cred$passwordsalmo)
 con_salmoglob <- dbConnect(Postgres(), 
                            dbname = cred$dbnamesalmo,
                            host = cred$host,
                            port = cred$port,
                            user = cred$usersalmo,
                            password = cred$passwordsalmo)
+con_wgeel_distant <- dbConnect(Postgres(), 
+                               dbname = cred$dbnamedistant,
+                               host = cred$hostdistant,
+                               port = cred$port,
+                               user = cred$userdistant,
+                               password = cred$passworddistant)
+
 
 
 
@@ -249,7 +256,7 @@ dbExecute(con_diaspara_admin,"IMPORT FOREIGN SCHEMA ref
 
 dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein :-)'"))    
 dbExecute(con_diaspara_admin,
-"GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
+          "GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
 
 ```
 
@@ -304,117 +311,117 @@ for wgbast and wgtrutta.
 //| label: fig-schema_diaspara
 //| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
 digraph schema {
-	rankdir=TB;
-	size="8,5"
-    node [style=filled, fillcolor=gray, shape = record];
-	ref [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>ref</b> </td> </tr>
-       <tr> <td align="left">
-        tr_species_spe <br align="left"/>
-        tr_country_cou <br align="left"/>
-        tr_icworkinggroup_wkg <br align="left"/>
-        tr_version_ver <br align="left"/>
-        tr_metric_mtr <br align="left"/>
-        tr_category_cat <br align="left"/>
-        tr_destination_dest <br align="left"/>
-        tr_metadata_met <br align="left"/>
-        tr_area_are <br align="left"/> </td> </tr> 
-       </table>> 
-       shape = cylinder]; 
-    refeel [fillcolor="pink"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>refeel</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];
-    dateel [fillcolor="pink"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dateel</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];
-    refbast [fillcolor="purple"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>refbast</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];
-    datbast [fillcolor="purple"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>datbast</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];
-    refnas [fillcolor="limegreen"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>refnas</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];
-    datnas [fillcolor="limegreen"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>datnas</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];   
-    reftrutta [fillcolor="tan1"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>reftrutta</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];
-    dattrutta [fillcolor="tan1"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dattrutta</b> </td> </tr>
-       <tr> <td align="left">
-         <br align="left"/>
-         <br align="left"/>
-            </td> </tr> 
-       </table>> 
-       shape = cylinder];   
-    reftrutta;
-    refwgeel;  # this in an archive
-    
+rankdir=TB;
+size="8,5"
+node [style=filled, fillcolor=gray, shape = record];
+ref [fillcolor="gray"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>ref</b> </td> </tr>
+<tr> <td align="left">
+tr_species_spe <br align="left"/>
+tr_country_cou <br align="left"/>
+tr_icworkinggroup_wkg <br align="left"/>
+tr_version_ver <br align="left"/>
+tr_metric_mtr <br align="left"/>
+tr_category_cat <br align="left"/>
+tr_destination_dest <br align="left"/>
+tr_metadata_met <br align="left"/>
+tr_area_are <br align="left"/> </td> </tr> 
+</table>> 
+shape = cylinder]; 
+refeel [fillcolor="pink"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>refeel</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];
+dateel [fillcolor="pink"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>dateel</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];
+refbast [fillcolor="purple"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>refbast</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];
+datbast [fillcolor="purple"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>datbast</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];
+refnas [fillcolor="limegreen"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>refnas</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];
+datnas [fillcolor="limegreen"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>datnas</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];   
+reftrutta [fillcolor="tan1"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>reftrutta</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];
+dattrutta [fillcolor="tan1"
+label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+<tr> <td> <b>dattrutta</b> </td> </tr>
+<tr> <td align="left">
+<br align="left"/>
+<br align="left"/>
+</td> </tr> 
+</table>> 
+shape = cylinder];   
+reftrutta;
+refwgeel;  # this in an archive
 
-	refeel -> ref 
-	refbast -> ref;
-	refnas -> ref 
-  reftrutta -> ref
-  dateel -> ref
-  datnas -> ref
-  datbast -> ref
-  dattrutta -> ref
-  dateel -> refeel
-  datnas -> refnas
-  dattrutta -> reftrutta
-  datbast  -> refbast
 
-  refwgeel -> ref [style="dashed"]
-  refwgeel -> refeel [style="dashed"]
-  salmoglob -> ref [style="dashed"]
-  salmoglob -> refnas [style="dashed"]
+refeel -> ref 
+refbast -> ref;
+refnas -> ref 
+reftrutta -> ref
+dateel -> ref
+datnas -> ref
+datbast -> ref
+dattrutta -> ref
+dateel -> refeel
+datnas -> refnas
+dattrutta -> reftrutta
+datbast  -> refbast
+
+refwgeel -> ref [style="dashed"]
+refwgeel -> refeel [style="dashed"]
+salmoglob -> ref [style="dashed"]
+salmoglob -> refnas [style="dashed"]
 
 }
 ```
@@ -519,26 +526,26 @@ bind_rows(
   ele <- getCodeDetail("IC_Species","ELE")$detail,
   sal <- getCodeDetail("IC_Species","SAL")$detail,
   trs <- getCodeDetail("IC_Species","TRS")$detail) %>%
-knitr::kable(caption = "Codes for migratory species in ICES, no code found for other species (Lamprey, Alosa ...)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable(caption = "Codes for migratory species in ICES, no code found for other species (Lamprey, Alosa ...)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
-  species_list <- tibble(
-    spe_code = c("SAL", "ANG", "TRT", "ALA", "ALF", "PET", "LAM"),
-    spe_icspecieskey = c("SAL", "ELE", "TRT", NA,NA,NA,NA),
-    spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
-    spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
-  )
-  tr_species_spe_temp <- species_list %>%
-    rowwise() %>%
-    mutate(
-      spe_codeaphia = findAphia(spe_scientificname, latin = TRUE)
-    ) %>%
-    ungroup()
-  save(tr_species_spe_temp, file = "data/tr_species_spe_temp.Rdata")
+    species_list <- tibble(
+      spe_code = c("SAL", "ANG", "TRT", "ALA", "ALF", "PET", "LAM"),
+      spe_icspecieskey = c("SAL", "ELE", "TRT", NA,NA,NA,NA),
+      spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
+      spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
+    )
+    tr_species_spe_temp <- species_list %>%
+      rowwise() %>%
+      mutate(
+        spe_codeaphia = findAphia(spe_scientificname, latin = TRUE)
+      ) %>%
+      ungroup()
+    save(tr_species_spe_temp, file = "data/tr_species_spe_temp.Rdata")
   }
-  knitr::kable(tr_species_spe_temp) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-  
+knitr::kable(tr_species_spe_temp) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
 ```
 
 ```{r}
@@ -624,9 +631,9 @@ but we will add it.
 #| code-summary: Code to create reference table for working groups 
 
 dbExecute(con_diaspara_admin,
-"DROP TABLE IF EXISTS ref.tr_icworkinggroup_wkg CASCADE;")
+          "DROP TABLE IF EXISTS ref.tr_icworkinggroup_wkg CASCADE;")
 dbExecute(con_diaspara_admin,
-"CREATE TABLE ref.tr_icworkinggroup_wkg (
+          "CREATE TABLE ref.tr_icworkinggroup_wkg (
 wkg_code TEXT PRIMARY KEY,
 wkg_description TEXT,
 wkg_icesguid uuid,
@@ -737,7 +744,7 @@ dbExecute(con_diaspara_admin, "ALTER TABLE ref.tr_country_cou
 
 
 dbExecute(con_diaspara_admin,
-"INSERT INTO ref.tr_country_cou ( cou_code,
+          "INSERT INTO ref.tr_country_cou ( cou_code,
     cou_country,    
     cou_iso3code,
     geom, 
@@ -752,7 +759,7 @@ WHERE \"CNTR_ID\" IN ('GL', 'CA', 'US');") #3
 
 # Svalbard et Jan Mayen	SJM	NO Territory	
 dbExecute(con_diaspara_admin,
-"INSERT INTO ref.tr_country_cou ( cou_code,
+          "INSERT INTO ref.tr_country_cou ( cou_code,
     cou_country,    
     cou_iso3code,
     geom, 
@@ -766,7 +773,7 @@ FROM  area.\"ref-countries-2024-01m-4326\"
 WHERE \"CNTR_ID\" IN ('SJ');") #3
 
 dbExecute(con_diaspara_admin,
-"UPDATE ref.tr_country_cou 
+          "UPDATE ref.tr_country_cou 
 SET geom = nuts.geom  
 FROM  area.\"ref-countries-2024-01m-4326\" nuts 
 WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
@@ -801,11 +808,11 @@ knitr::kable(tr_country_cou) %>% kable_styling(bootstrap_options = c("striped", 
 #| fig-cap: Map of countries in the diaspara DB &copy; [EuroGeographics](https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/)
 
 if (file.exists("data/country_sf.Rdata")) load("data/country_sf.Rdata") else {
-country_sf <- sf::st_read(con_diaspara,
-                          query = "SELECT cou_code, ST_MakeValid(geom) 
+  country_sf <- sf::st_read(con_diaspara,
+                            query = "SELECT cou_code, ST_MakeValid(geom) 
                           from ref.tr_country_cou") %>%
-  sf::st_transform(4326) 
-save(country_sf, file="data/country_sf.Rdata")
+    sf::st_transform(4326) 
+  save(country_sf, file="data/country_sf.Rdata")
 }
 #see here : https://stackoverflow.com/questions/70756215/
 #plot-geodata-on-the-globe-perspective-in-r
@@ -864,7 +871,7 @@ choices ?
 dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_units_uni CASCADE;")
 
 dbExecute(con_diaspara_admin,
-"CREATE TABLE ref.tr_units_uni (
+          "CREATE TABLE ref.tr_units_uni (
 	uni_code varchar(20) NOT NULL,
 	uni_description text NOT NULL,
   uni_icesvalue character varying(4),  
@@ -932,7 +939,7 @@ set uni_icesguid = \"GUID\"::uuid
 dbExecute(con_diaspara_admin, "DROP TABLE tempuni;")
 
 dbExecute(con_diaspara_admin,
-"UPDATE ref.tr_units_uni set uni_icestablesource = 'p06' where uni_icesvalue 
+          "UPDATE ref.tr_units_uni set uni_icestablesource = 'p06' where uni_icesvalue 
 IS NOT NULL AND
 uni_icestablesource IS NULL;") # 16
 
@@ -969,10 +976,10 @@ dbExecute(con_diaspara_admin, "COMMENT ON COLUMN ref.tr_units_uni.uni_icesvalue 
 'ICES code standard from the British Oceanographic Data Centre (p06) or MUNIT 
 table.';") 
 dbExecute(con_diaspara_admin, 
-"COMMENT ON COLUMN ref.tr_units_uni.uni_icestablesource IS 
+          "COMMENT ON COLUMN ref.tr_units_uni.uni_icestablesource IS 
 'Table source in ICES.';") 
 dbExecute(con_diaspara_admin, 
-"COMMENT ON COLUMN ref.tr_units_uni.uni_icesguid IS 
+          "COMMENT ON COLUMN ref.tr_units_uni.uni_icesguid IS 
 'GUID, type https://vocab.ices.dk/?codetypeguid=<guidcode> to get access to the 
 vocab in ICES.';") 
 dbExecute(con_diaspara_admin, "GRANT ALL ON TABLE ref.tr_units_uni 
@@ -1009,11 +1016,11 @@ I remember well). Do we try to search for those in the wgeel database,
 and then remove if not existing or try to change existing values ?
 
 -   Kg/day there is a kg/hour do we need to change to that type and
-    convert existing series ?
+convert existing series ?
 
 -   Nr haul There is a definition of haul in the ICES vocab but it seems
-    very related to sampling box, basket. And it's not the number of
-    haul.
+very related to sampling box, basket. And it's not the number of
+haul.
 
 -   Before working any further I would like your opinion there.
 :::
@@ -1219,23 +1226,23 @@ model.
 
 #sd <-do.call(rbind,mapply(icesSD::getSD, year= 2020:2024, SIMPLIFY=FALSE))
 #sd[grepl('Working Group on North Atlantic Salmon',sd$ExpertGroupDescription),]
- 
+
 
 
 tr_version_ver <- data.frame(
-ver_code = paste0("SAL-",2020:2024,"-1"),
-ver_year = 2020:2024,
-ver_spe_code = "SAL",
-ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
-ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
-# TODO FIND other DOI (mail sent to ICES)
-ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
-ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
+  ver_code = paste0("SAL-",2020:2024,"-1"),
+  ver_year = 2020:2024,
+  ver_spe_code = "SAL",
+  ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+  ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
+  # TODO FIND other DOI (mail sent to ICES)
+  ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
+  ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
-overwrite = TRUE)
+                  overwrite = TRUE)
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
- DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 
 # TODO eel and wgbast
@@ -1256,7 +1263,7 @@ Question to WNGAS / ICES
 -   Provide descriptions of the version of the model
 -   Questions sent to ICES to provide access to historical DOI
 -   Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves
-    Hernvann
+Hernvann
 :::
 ::::::
 
@@ -1340,7 +1347,7 @@ in WGBAST
 #| message: FALSE
 #| tbl-cap: category of parameters
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") %>% 
-knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1384,50 +1391,50 @@ continental areas.
 
 
 dbExecute(con_diaspara_admin,
-"DROP TABLE IF EXISTS ref.tr_level_lev CASCADE;")
+          "DROP TABLE IF EXISTS ref.tr_level_lev CASCADE;")
 
 dbExecute(con_diaspara_admin,
-"CREATE TABLE ref.tr_level_lev(
+          "CREATE TABLE ref.tr_level_lev(
    lev_code TEXT PRIMARY KEY,
    lev_description TEXT  
 );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Panpopulation',
   'This is the highest geographic level for assessement.'  
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Complex',
   'Corresponds to large sublevels at which the Panpopulation is assessed, e.g.
   NAC NEC for WGNAST, Gulf of Bothnia for WGBAST, Mediterranean for WGEEL.'  
   );")
 
-  dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+dbExecute(con_diaspara_admin,
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Stock',
   'Correspond to stock units for which advices are provided in ICES, this can be the level of the panpopulation,
   or another level e.g. .'  
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Country',
   'Corresponds to one or more units, but in almost all stocks
   this level is relevant to split data.'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Assessment_unit',
   'Corresponds to an assessment unit in the Baltic sea, and area for  
   WGNAS, and EMU for WGEEL.'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Regional',
   'Corresponds to subunits of stock assessment units or 
   basins grouping several river. Although it is not used yet for
@@ -1436,38 +1443,38 @@ dbExecute(con_diaspara_admin,
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'River',
   'One river is a unit corresponding practically almost always to a watershed.'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'river_section',
   'Section of river, only a part of a basin, for instance to separate between
   wild and mixed river category in the Baltic.'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Major',
   'Major fishing areas from ICES.'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Subarea',
   'Subarea from ICES, FAO and NAFO'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Division',
   'Division from ICES, GFCM and NAFO'
   );")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_level_lev VALUES( 
+          "INSERT INTO ref.tr_level_lev VALUES( 
   'Subdivision',
   'Subdivision level from ICES, GFCM and NAFO'
   );")
@@ -1483,9 +1490,9 @@ dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_level_lev
 
 
 dbExecute(con_diaspara_admin,
-"DROP TABLE IF EXISTS ref.tr_area_are CASCADE;")
+          "DROP TABLE IF EXISTS ref.tr_area_are CASCADE;")
 dbExecute(con_diaspara_admin,
-"CREATE TABLE ref.tr_area_are (
+          "CREATE TABLE ref.tr_area_are (
    are_id INTEGER PRIMARY KEY,
    are_are_id INTEGER,
    are_code  TEXT,
@@ -1558,106 +1565,106 @@ dbGetQuery(con_diaspara, "SELECT are_id,
 
 
 digraph {
-    compound=true;
-    newrank=true;
+compound=true;
+newrank=true;
 
-    subgraph clusterA {
-      label = Panpopulation
-      style=full
-      color=black
-      center=true
+subgraph clusterA {
+label = Panpopulation
+style=full
+color=black
+center=true
 
-      subgraph clusterB {
-        label = Complex
-        style=dashed
-        color=black
-        center=true
+subgraph clusterB {
+label = Complex
+style=dashed
+color=black
+center=true
 
-              subgraph clusterC {
-              label = Stock
-              style=dashed
-              color=black
-              center=true
-    
-                subgraph clusterD {
-                  label = Country
-                  style=dashed
-                  color=firebrick
-                  fontcolor=firebrick
-                  center=true
+subgraph clusterC {
+label = Stock
+style=dashed
+color=black
+center=true
 
-                  subgraph clusterE {
-                    label = Assessment_unit
-                    style=full
-                    color=green 
-                    fontcolor=green
-                    
-                      subgraph clusterF {
-                        label = Regional;
-                        style=dashed
-                        color=green4
-                        fontcolor=green4
-                        
-                          subgraph clusterG {
-                            label = River
-                            style=dashed
-                            color=green3
-                            fontcolor=green3
-                            
-                                subgraph clusterH {
-                                        label = River_section
-                                        style=dashed
-                                        color=green2
-                                        fontcolor=green2
-                                            section [
-                                                label=data,
-                                                shape=box, 
-                                                style =invis
-                                                ]
-                                }
-                          }
-                      }
-                  }
-                }
-              }
-        subgraph clusterZ{
-          label=Major
-          style=dashed
-          color=royalblue4
-          fontcolor=royalblue4
-          
-                subgraph clusterY{
-                    label=Subareas
-                    style=dashed
-                    color=royalblue3
-                    fontcolor=royalblue3
-                    
-                        subgraph clusterX{
-                            label=Division
-                            style=dashed
-                            color=royalblue2
-                            fontcolor=royalblue2
-                            
-                                subgraph clusterW{
-                                    label=Sudivision
-                                    style=full
-                                    color=royalblue1
-                                    fontcolor=royalblue1
-                                    
-                                       subgraph clusterV{
-                                           label=Unit
-                                            style=dashed
-                                            color=deepskyblue
-                                            fontcolor=deepskyblue
-                                            
-                                                Fishing [
-                                                    style=invis]
-                                       }
-                                }
-                        }
-                }            
-        }          
-      }}}
+subgraph clusterD {
+label = Country
+style=dashed
+color=firebrick
+fontcolor=firebrick
+center=true
+
+subgraph clusterE {
+label = Assessment_unit
+style=full
+color=green 
+fontcolor=green
+
+subgraph clusterF {
+label = Regional;
+style=dashed
+color=green4
+fontcolor=green4
+
+subgraph clusterG {
+label = River
+style=dashed
+color=green3
+fontcolor=green3
+
+subgraph clusterH {
+label = River_section
+style=dashed
+color=green2
+fontcolor=green2
+section [
+label=data,
+shape=box, 
+style =invis
+]
+}
+}
+}
+}
+}
+}
+subgraph clusterZ{
+label=Major
+style=dashed
+color=royalblue4
+fontcolor=royalblue4
+
+subgraph clusterY{
+label=Subareas
+style=dashed
+color=royalblue3
+fontcolor=royalblue3
+
+subgraph clusterX{
+label=Division
+style=dashed
+color=royalblue2
+fontcolor=royalblue2
+
+subgraph clusterW{
+label=Sudivision
+style=full
+color=royalblue1
+fontcolor=royalblue1
+
+subgraph clusterV{
+label=Unit
+style=dashed
+color=deepskyblue
+fontcolor=deepskyblue
+
+Fishing [
+style=invis]
+}
+}
+}
+}            
+}          
+}}}
 ```
 
 ## Data access (tr_dataaccess_dta)
@@ -1675,20 +1682,20 @@ Type of data Public, or Restricted
 
 
 dbExecute(con_diaspara_admin,
-"DROP TABLE IF EXISTS ref.tr_dataaccess_dta CASCADE;")
+          "DROP TABLE IF EXISTS ref.tr_dataaccess_dta CASCADE;")
 
 dbExecute(con_diaspara_admin,
-"CREATE TABLE ref.tr_dataaccess_dta(
+          "CREATE TABLE ref.tr_dataaccess_dta(
    dta_code TEXT PRIMARY KEY,
    dta_description TEXT  
 );")
 
 
 tr_dataaccess_dta <- dbGetQuery(con_diaspara_admin, 
-"SELECT * FROM refwgeel.tr_dataaccess_dta")
+                                "SELECT * FROM refwgeel.tr_dataaccess_dta")
 
 dbExecute(con_diaspara_admin,
-  "INSERT INTO ref.tr_dataaccess_dta 
+          "INSERT INTO ref.tr_dataaccess_dta 
   SELECT * FROM refwgeel.tr_dataaccess_dta
   ;")#2
 
@@ -1717,28 +1724,28 @@ This comes from wgeel.
 
 
 dbExecute(con_diaspara_admin,
-"DROP TABLE IF EXISTS ref.tr_missvalueqal_mis CASCADE;")
+          "DROP TABLE IF EXISTS ref.tr_missvalueqal_mis CASCADE;")
 
 dbExecute(con_diaspara_admin,
-"CREATE TABLE ref.tr_missvalueqal_mis(
+          "CREATE TABLE ref.tr_missvalueqal_mis(
    mis_code TEXT PRIMARY KEY,
    mis_description TEXT NOT NULL,  
    mis_definition TEXT);")
 
 dbExecute(con_diaspara_admin,
-"INSERT INTO ref.tr_missvalueqal_mis 
+          "INSERT INTO ref.tr_missvalueqal_mis 
 SELECT
 'NR',
 'Not reported',	
 'Data or activity exist but numbers are not reported to authorities (for example for commercial confidentiality reasons).';")
 dbExecute(con_diaspara_admin,
-"INSERT INTO ref.tr_missvalueqal_mis 
+          "INSERT INTO ref.tr_missvalueqal_mis 
 SELECT
 'NC',	
 'Not collected',	
 'Activity / habitat exists but data are not collected by authorities (for example where a fishery exists but the catch data are not collected at the relevant level or at all).';")
 dbExecute(con_diaspara_admin,
-"INSERT INTO ref.tr_missvalueqal_mis 
+          "INSERT INTO ref.tr_missvalueqal_mis 
 SELECT
 'NP',	
 'Not pertinent',
@@ -1761,8 +1768,8 @@ IS 'Table showing the qualification when value is missing, NC, NP, NR.';")
 #| message: FALSE
 #| tbl-cap: Code for missing values
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_missvalueqal_mis;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1971,9 +1978,9 @@ lfs <- tribble(
   NA, NA, NA,
   "PS", "Post Smolt", "SAL", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
   NA, NA, NA,
- "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
+  "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
   "AL", "All stages", "SAL", "All life stages are concerned.", NA, NA, NA,
- "_", "No life stage", "SAL", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
+  "_", "No life stage", "SAL", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
 )
 dbWriteTable(con_diaspara_admin, "temp_lfs", lfs, overwrite = TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_lifestage_lfs;")#24
@@ -2022,7 +2029,7 @@ FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 
 
-  dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs 
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs 
     (lfs_code, lfs_name, lfs_spe_code, lfs_description, lfs_icesvalue, lfs_icesguid, lfs_icestablesource)
     SELECT 
     lfs_code, 
@@ -2033,7 +2040,7 @@ FROM refwgeel.tr_lifestage_lfs ;") # 8
     lfs_icesguid::uuid, 
     lfs_icestablesource
     FROM ref.tr_lifestage_lfs WHERE lfs_spe_code = 'SAL';")
- 
+
 
 ```
 :::{.answerbox}
@@ -2061,8 +2068,8 @@ In terms of stage, we would need alevin, fry (YoY, 0+), parr (>0+). In the Marin
 #| code-fold: TRUE
 #| tbl-cap: Code for missing values
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2106,27 +2113,27 @@ Table SMSF (WKMATCH 2012 maturity scale revised). Source:
 Of note the following comments by WGBIOP :
 
 -   The substage Ba identifies a sexually mature but functionally
-    immature (virgin developing for the first time) fish which is not
-    going to contribute to the current upcoming spawning season. Either
-    it is uncertain if the fish will make it for the upcoming spawning
-    season as it is a long time to the current upcoming spawning season
-    (i.e. if maturity is assessed 8 months prior to the spawning season
-    it is unsure if the first time developer will be ready to spawn in 8
-    months time), or the time between assessing the maturity stage and
-    the current upcoming spawning season is too short to fully develop
-    the oocytes (i.e. if it takes 6 months to fully develop oocytes from
-    previtellogenic to eggs and a Ba fish is found 3 months prior to the
-    current upcoming spawning season, it will not have enough time to
-    develop the oocytes).
+immature (virgin developing for the first time) fish which is not
+going to contribute to the current upcoming spawning season. Either
+it is uncertain if the fish will make it for the upcoming spawning
+season as it is a long time to the current upcoming spawning season
+(i.e. if maturity is assessed 8 months prior to the spawning season
+it is unsure if the first time developer will be ready to spawn in 8
+months time), or the time between assessing the maturity stage and
+the current upcoming spawning season is too short to fully develop
+the oocytes (i.e. if it takes 6 months to fully develop oocytes from
+previtellogenic to eggs and a Ba fish is found 3 months prior to the
+current upcoming spawning season, it will not have enough time to
+develop the oocytes).
 
 -   the substage Bb identifies a developing and functionally mature
-    (first or repeat spawner!!) fish which, in most of the cases is
-    going to contribute to the current spawning season. This stage has
-    visible oocytes and grainy appearance of the gonads on the
-    macroscopic scale, and vitellogenic oocytes on the histological key.
+(first or repeat spawner!!) fish which, in most of the cases is
+going to contribute to the current spawning season. This stage has
+visible oocytes and grainy appearance of the gonads on the
+macroscopic scale, and vitellogenic oocytes on the histological key.
 
-    Following this report and the comments made by ICES data center the
-    following codes are proposed (Table @tbl-tr_maturity_mat).
+Following this report and the comments made by ICES data center the
+following codes are proposed (Table @tbl-tr_maturity_mat).
 
 ```{r import_tr_maturity_mat}
 #| echo: TRUE
@@ -2139,13 +2146,13 @@ Of note the following comments by WGBIOP :
 maturity <- icesVocab::getCodeList('TS_MATURITY')
 
 maturity <- maturity |> 
-rename("mat_icesguid"="GUID",  "mat_icesvalue" = "Key", "mat_description" = "Description") |> 
-select ( mat_icesvalue, mat_icesguid, mat_description) |>
-filter(mat_icesvalue %in% c("A","B","Ba","Bb","C","Ca","Cb","D","Da","Db","E", "F")) |>
-mutate(mat_icestablesource = "TS_MATURITY",
-       mat_id = 1:12,
-      mat_code = mat_icesvalue) |>
-select(mat_id, mat_code, mat_description, mat_icesvalue, mat_icesguid, mat_icestablesource)
+  rename("mat_icesguid"="GUID",  "mat_icesvalue" = "Key", "mat_description" = "Description") |> 
+  select ( mat_icesvalue, mat_icesguid, mat_description) |>
+  filter(mat_icesvalue %in% c("A","B","Ba","Bb","C","Ca","Cb","D","Da","Db","E", "F")) |>
+  mutate(mat_icestablesource = "TS_MATURITY",
+         mat_id = 1:12,
+         mat_code = mat_icesvalue) |>
+  select(mat_id, mat_code, mat_description, mat_icesvalue, mat_icesguid, mat_icestablesource)
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_maturity", maturity, overwrite = TRUE)
 
@@ -2168,8 +2175,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_maturity")
 #| code-fold: TRUE
 #| tbl-cap: Table of maturity codes
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_maturity_mat;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2257,13 +2264,13 @@ The codes are imported in Table @tbl-tr_habitattype_hty.
 habitat <- icesVocab::getCodeList('WLTYP')
 
 habitat <- habitat |> 
-rename("hty_icesguid"="GUID",  "hty_icesvalue" = "Key", "hty_description" = "Description") |> 
-select ( hty_icesvalue, hty_icesguid, hty_description) |>
-filter(hty_icesvalue %in% c("MC","MO","FW","T")) |>
-mutate(hty_icestablesource = "TS_habitat",
-       hty_id = 1:4,
-      hty_code = hty_icesvalue) |>
-select(hty_id, hty_code, hty_description, hty_icesvalue, hty_icesguid, hty_icestablesource)
+  rename("hty_icesguid"="GUID",  "hty_icesvalue" = "Key", "hty_description" = "Description") |> 
+  select ( hty_icesvalue, hty_icesguid, hty_description) |>
+  filter(hty_icesvalue %in% c("MC","MO","FW","T")) |>
+  mutate(hty_icestablesource = "TS_habitat",
+         hty_id = 1:4,
+         hty_code = hty_icesvalue) |>
+  select(hty_id, hty_code, hty_description, hty_icesvalue, hty_icesguid, hty_icestablesource)
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_habitat", habitat, overwrite = TRUE)
 
@@ -2288,8 +2295,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_habitat")
 #| code-fold: TRUE
 #| tbl-cap: Table of habitat types
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2313,20 +2320,20 @@ WGNAS uses an archive table for historical data. WGEEL uses a code to
 "deprecate" old values.
 
 -   In practise for WGNAS it means that each time a new row replaces an
-    old one, the data is saved in an archive table, with the same
-    structure as the main data table, but with the name of the people
-    who have handled the change and the date. The version is replaced
-    with a new number in the `database`table.
+old one, the data is saved in an archive table, with the same
+structure as the main data table, but with the name of the people
+who have handled the change and the date. The version is replaced
+with a new number in the `database`table.
 
 -   For WGEEL, all the row are kept in the same table. Historical value
-    get a code like 18, ..., 25 which identifies the year that the line
-    was removed. All data submitted to the database are kept, so if
-    during a datacall, a new value is submitted that is a duplicate from
-    an old one, then the user in the shiny has to edit an excel table
-    saying which value he wants to keep. If for instance he wants to
-    keep the old value, then the new row will go into the database with
-    a qal_id 25 if the change is made in 2025. The table
-    @tbl-tr_quality_qalwgeel is used.
+get a code like 18, ..., 25 which identifies the year that the line
+was removed. All data submitted to the database are kept, so if
+during a datacall, a new value is submitted that is a duplicate from
+an old one, then the user in the shiny has to edit an excel table
+saying which value he wants to keep. If for instance he wants to
+keep the old value, then the new row will go into the database with
+a qal_id 25 if the change is made in 2025. The table
+@tbl-tr_quality_qalwgeel is used.
 
 How do you work in ICES to keep historical data ?
 :::
@@ -2398,8 +2405,8 @@ dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_quality_qal WHERE qal_code = 0
 #| code-fold: TRUE
 #| tbl-cap: Table of quality
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2426,8 +2433,8 @@ The code for creating `tr_age_age` (Table @tbl-tr_age_age) is shown below.
 #| code-fold: TRUE
 #| tbl-cap: Table of age
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_age_age;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2449,9 +2456,9 @@ The general definition looks OK. Although, when you store adults, how do you rec
 
 
 ## Sex (tr_sex_sex)
- 
- There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) see Table @tbl-vocabsex.
- 
+
+There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) see Table @tbl-vocabsex.
+
 ```{r icesVocabsex}
 #| echo: TRUE
 #| eval: TRUE
@@ -2471,8 +2478,10 @@ kable(TS_SEXCO, caption = "TS_SEXCO") %>% kable_styling(bootstrap_options = c("s
 <summary>SQL code to create table `tr_sex_sex`</summary>
 
 ``` {.sql include="../SQL/2_ref_tr_sex_sex.sql"}
-``` 
- 
+```
+
+</details>
+
 ```{r import_tr_sex_sex}
 #| echo: TRUE
 #| eval: FALSE
@@ -2484,12 +2493,12 @@ kable(TS_SEXCO, caption = "TS_SEXCO") %>% kable_styling(bootstrap_options = c("s
 sex <- icesVocab::getCodeList('SEXCO')
 
 sex <- sex |> 
-rename("sex_icesguid"="GUID",  "sex_icesvalue" = "Key", "sex_description" = "Description") |> 
-select ( sex_icesvalue, sex_icesguid, sex_description) |>
-mutate(sex_icestablesource = "SEXCO",
-       sex_id = 1:7,
-      sex_code = sex_icesvalue) |>
-select(sex_id, sex_code, sex_description, sex_icesvalue, sex_icesguid, sex_icestablesource)
+  rename("sex_icesguid"="GUID",  "sex_icesvalue" = "Key", "sex_description" = "Description") |> 
+  select ( sex_icesvalue, sex_icesguid, sex_description) |>
+  mutate(sex_icestablesource = "SEXCO",
+         sex_id = 1:7,
+         sex_code = sex_icesvalue) |>
+  select(sex_id, sex_code, sex_description, sex_icesvalue, sex_icesguid, sex_icestablesource)
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_sex", sex, overwrite = TRUE)
 
@@ -2511,10 +2520,72 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_sex")
 #| code-fold: TRUE
 #| tbl-cap: Table of sex
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_sex_sex;") %>% 
-knitr::kable() %>% 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+## Gear (tr_gear_gea)
+
+The gears dictionnary is set by FAO and used in EU 
+[link](https://www.europarl.europa.eu/RegData/etudes/STUD/2024/759320/IPOL_STU(2024)759320_EN.pdf). There is a gear dictionary in ICES but it's used to describe the type of
+engine on experimental trawling surveys.
+There might be a need to include more passive engine like trap and fishways.
+
+<details>
+
+<summary>SQL code to create table `tr_gear_gea`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_gear_gea.sql"}
+```
+
+</details>
+
+```{r import_tr_gear_gea}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import gear codes from WGEEL 
+
+gea <- dbGetQuery(con_wgeel_distant, "SELECT * FROM ref.tr_gear_gea")
+
+gea <- gea |> 
+  rename("gea_code"="gea_issscfg_code",  "gea_description" = "gea_name_en") |> 
+  select(-gea_id) |>
+  arrange(gea_code) |>
+  mutate(gea_icestablesource = NA,
+         gea_icesvalue = NA,
+         gea_icesguid = as.character(NA),
+         gea_id = 1:nrow(gea)
+  ) |>
+  select(gea_id, gea_code, gea_description, gea_icesvalue, gea_icesguid, gea_icestablesource)
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_gear", gea, overwrite = TRUE)
+
+
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_gear_gea
+(gea_id, gea_code, gea_description, gea_icesvalue, gea_icesguid, gea_icestablesource)
+SELECT gea_id, gea_code, gea_description, gea_icesvalue, gea_icesguid::uuid, gea_icestablesource
+FROM temp_gear")# 60
+
+
+DBI::dbExecute(con_diaspara_admin, "DROP table temp_gear")
+```
+```{r}
+#| label: tbl-tr_gear_gea
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Table of gears
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_gear_gea;") %>% 
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
 
 
 # ICES areas
@@ -2561,7 +2632,7 @@ wide maps so we'll leave it as it is.
 dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_fishingarea_fia 
 CASCADE;")
 dbExecute(con_diaspara_admin,
-"
+          "
   CREATE TABLE ref.tr_fishingarea_fia
   (  
     fia_level TEXT,
@@ -2664,14 +2735,14 @@ world <- ne_countries(scale = "small", returnclass = "sf")
 
 
 if (file.exists("data/fishingareas_major.Rdata")) 
-load("data/fishingareas_major.Rdata") else {
-fishing_areas_major <- sf::st_read(con_diaspara,
-                          query = "SELECT fia_code, ST_MakeValid(geom) 
+  load("data/fishingareas_major.Rdata") else {
+    fishing_areas_major <- sf::st_read(con_diaspara,
+                                       query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
                           WHERE fia_level = 'Major'") %>%
-  sf::st_transform(4326) 
-save(fishing_areas_major, file="data/fishing_areas_major.Rdata")
-}
+      sf::st_transform(4326) 
+    save(fishing_areas_major, file="data/fishing_areas_major.Rdata")
+  }
 load("data/country_sf.Rdata")
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
@@ -2694,9 +2765,9 @@ g <- ggplot() +
   geom_sf(data = world, fill="black", color="grey20") + 
   geom_sf(data= country_sf2 , fill= "grey10",color="grey30")  +
   theme_void()
-  #scale_fill_discrete(guide = "none") +
+#scale_fill_discrete(guide = "none") +
 
-  
+
 # this part is used to avoid long computations
 png(filename="images/fig-fishingareas_major.png",width=600, height=600, res=300, bg="transparent")
 print(g)
@@ -2718,12 +2789,12 @@ GFCM.](images/fig-fishingareas_major.png "A planisphere with ocean major fishing
 #| fig-cap: Map of ICES fishing areas at Subarea level, source NAFO, FAO, ICES, GFCM.
 
 if (file.exists("data/fishingareas_subarea.Rdata")) load("data/fishingareas_subarea.Rdata") else {
-fishing_areas_subarea <- sf::st_read(con_diaspara,
-                          query = "SELECT fia_code, ST_MakeValid(geom) 
+  fishing_areas_subarea <- sf::st_read(con_diaspara,
+                                       query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
                           WHERE fia_level = 'Subarea'") %>%
-  sf::st_transform(4326) 
-save(fishing_areas_subarea, file="data/fishing_areas_subarea.Rdata")
+    sf::st_transform(4326) 
+  save(fishing_areas_subarea, file="data/fishing_areas_subarea.Rdata")
 }
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
@@ -2759,12 +2830,12 @@ GFCM.](images/fig-fishingareas_subarea.png "A planisphere with ocean fishing sub
 #| fig-cap: Map of ICES fishing areas at Division level, source NAFO, FAO, ICES, GFCM.
 
 if (file.exists("data/fishingareas_division.Rdata")) load("data/fishingareas_division.Rdata") else {
-fishing_areas_division <- sf::st_read(con_diaspara,
-                          query = "SELECT fia_code, ST_MakeValid(geom) 
+  fishing_areas_division <- sf::st_read(con_diaspara,
+                                        query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
                           WHERE fia_level = 'Division'") %>%
-  sf::st_transform(4326) 
-save(fishing_areas_division, file="data/fishing_areas_division.Rdata")
+    sf::st_transform(4326) 
+  save(fishing_areas_division, file="data/fishing_areas_division.Rdata")
 }
 
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
@@ -2773,7 +2844,7 @@ crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 ocean <- sf::st_point(x = c(0,0)) %>%
   sf::st_buffer(dist = 6371000) %>%
   sf::st_sfc(crs = crs_string)
-  
+
 area_sf2 <-  fishing_areas_division %>% 
   sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
   sf::st_transform(crs = crs_string) 
@@ -2805,12 +2876,12 @@ GFCM.](images/fig-fishingareas_division.png "A planisphere with ocean fishing di
 #| fig-cap: Map of ICES fishing areas at subdivision level, source NAFO, FAO, ICES, GFCM.
 
 if (file.exists("data/fishingareas_subdivision.Rdata")) load("data/fishingareas_subdivision.Rdata") else {
-fishing_areas_subdivision <- sf::st_read(con_diaspara,
-                          query = "SELECT fia_code, ST_MakeValid(geom) 
+  fishing_areas_subdivision <- sf::st_read(con_diaspara,
+                                           query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
                           WHERE fia_level = 'Subdivision'") %>%
-  sf::st_transform(4326) 
-save(fishing_areas_subdivision, file="data/fishing_areas_subdivision.Rdata")
+    sf::st_transform(4326) 
+  save(fishing_areas_subdivision, file="data/fishing_areas_subdivision.Rdata")
 }
 
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
@@ -2819,7 +2890,7 @@ crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 ocean <- sf::st_point(x = c(0,0)) %>%
   sf::st_buffer(dist = 6371000) %>%
   sf::st_sfc(crs = crs_string)
-  
+
 area_sf2 <-  fishing_areas_subdivision %>% 
   sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
   sf::st_transform(crs = crs_string) 
@@ -2877,67 +2948,67 @@ clipr::write_clip(colnames(res))
 # dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
 
 tr_metadata_met <-
-    data.frame(
-        met_var = metadata$var_mod,
-        met_spe_code = "SAL",
-        met_wkg_code = "WGNAS",
-        met_ver_code = "SAL-2024-1", # no data on version in metadata
-        met_oty_code = metadata$type_object,
-         met_nim_code =  case_when(
-            "Data_nimble"== metadata$nimble ~ "Data",
-            "Const_nimble" == metadata$nimble ~ "Parameter constant",
-            "Output" == metadata$nimble ~ "Output",
-            "other" == metadata$nimble ~ "Other",
-            .default = NA),
-        met_dim = paste0(
-            "{", metadata$dim1, ",",
-            replace_na(metadata$dim2, 0), ",",
-            replace_na(metadata$dim3, 0), "}"
-        ),
-        met_dimname = paste0(
-            "{'", metadata$name_dim1, "',",
-            ifelse(metadata$name_dim2 == "", "NULL", paste0("'", metadata$name_dim2, "'")), ",",
-            ifelse(metadata$name_dim3 == "", "NULL", paste0("'", metadata$name_dim3, "'")), "}"
-        ),
-        met_modelstage = metadata$model_stage,
-        met_type = metadata$type,
-        met_location = metadata$locations,
-        met_fishery = metadata$fishery,
-        met_mtr_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
-            metadata$metric == "Coefficient of variation" ~ "CV",
-            .default = metadata$metric
-        ),
-        met_des_code = NA,
-        met_uni_code = NA, # (TODO)
-        met_cat_code = case_when(
-            grepl("Origin distribution in sea catches", metadata$type) ~ "Other",
-            grepl("catch", metadata$type) ~ "Catch",
-            grepl("harvest rates", metadata$type) ~ "Mortality",
-            grepl("Survival rate", metadata$type) ~ "Mortality",
-            grepl("Returns", metadata$type) ~ "Count",
-            grepl("Fecundity", metadata$type) ~ "Life trait",
-            grepl("Sex ratio", metadata$type) ~ "Life trait",
-            grepl("Maturation rate", metadata$type) ~ "Life trait",
-            grepl("Proportion", metadata$type) ~ "Other",
-            grepl("Stocking", metadata$type) ~ "Count",
-            grepl("Smolt age structure", metadata$type) ~ "Life trait",
-            grepl("Time spent", metadata$type) ~ "Life trait",
-            grepl("Conservation limits", metadata$type) ~ "Conservation limit",
-            grepl("Abundance", metadata$type) ~ "Count",
-            grepl("Demographic transitions", metadata$type) ~ "Other",
-            grepl("year", metadata$type) ~ "Other",
-            grepl("Number of SU", metadata$type) ~ "Other",
-            grepl("Prior", metadata$type) ~ "Other",
-            grepl("Number of SU", metadata$type) ~ "Other",
-            .default = NA
-        ),
-        met_definition = metadata$definition,
-        met_deprecated = NA
-        
-    )
+  data.frame(
+    met_var = metadata$var_mod,
+    met_spe_code = "SAL",
+    met_wkg_code = "WGNAS",
+    met_ver_code = "SAL-2024-1", # no data on version in metadata
+    met_oty_code = metadata$type_object,
+    met_nim_code =  case_when(
+      "Data_nimble"== metadata$nimble ~ "Data",
+      "Const_nimble" == metadata$nimble ~ "Parameter constant",
+      "Output" == metadata$nimble ~ "Output",
+      "other" == metadata$nimble ~ "Other",
+      .default = NA),
+    met_dim = paste0(
+      "{", metadata$dim1, ",",
+      replace_na(metadata$dim2, 0), ",",
+      replace_na(metadata$dim3, 0), "}"
+    ),
+    met_dimname = paste0(
+      "{'", metadata$name_dim1, "',",
+      ifelse(metadata$name_dim2 == "", "NULL", paste0("'", metadata$name_dim2, "'")), ",",
+      ifelse(metadata$name_dim3 == "", "NULL", paste0("'", metadata$name_dim3, "'")), "}"
+    ),
+    met_modelstage = metadata$model_stage,
+    met_type = metadata$type,
+    met_location = metadata$locations,
+    met_fishery = metadata$fishery,
+    met_mtr_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
+                             metadata$metric == "Coefficient of variation" ~ "CV",
+                             .default = metadata$metric
+    ),
+    met_des_code = NA,
+    met_uni_code = NA, # (TODO)
+    met_cat_code = case_when(
+      grepl("Origin distribution in sea catches", metadata$type) ~ "Other",
+      grepl("catch", metadata$type) ~ "Catch",
+      grepl("harvest rates", metadata$type) ~ "Mortality",
+      grepl("Survival rate", metadata$type) ~ "Mortality",
+      grepl("Returns", metadata$type) ~ "Count",
+      grepl("Fecundity", metadata$type) ~ "Life trait",
+      grepl("Sex ratio", metadata$type) ~ "Life trait",
+      grepl("Maturation rate", metadata$type) ~ "Life trait",
+      grepl("Proportion", metadata$type) ~ "Other",
+      grepl("Stocking", metadata$type) ~ "Count",
+      grepl("Smolt age structure", metadata$type) ~ "Life trait",
+      grepl("Time spent", metadata$type) ~ "Life trait",
+      grepl("Conservation limits", metadata$type) ~ "Conservation limit",
+      grepl("Abundance", metadata$type) ~ "Count",
+      grepl("Demographic transitions", metadata$type) ~ "Other",
+      grepl("year", metadata$type) ~ "Other",
+      grepl("Number of SU", metadata$type) ~ "Other",
+      grepl("Prior", metadata$type) ~ "Other",
+      grepl("Number of SU", metadata$type) ~ "Other",
+      .default = NA
+    ),
+    met_definition = metadata$definition,
+    met_deprecated = NA
+    
+  )
 
 res <- dbWriteTable(con_diaspara_admin, "tr_metadata_met_temp", 
-tr_metadata_met, overwrite = TRUE)
+                    tr_metadata_met, overwrite = TRUE)
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met 
 SELECT 
  met_var,
@@ -3026,12 +3097,12 @@ While creating the table, we stumbled on some issues (which we have put
 on the github site for details):
 
 -   [duplicated values in archive
-    DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
+DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
 
 Some of the variables in salmoglob have no `year` dimension, this leads
 to dropping the non null constraint on year. We need to check for
 possible impact in the eel db see issue #14 : [NULL values allowed for
-    year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
+year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
 
 ## Table of grouping for area and age : datnas.tg_additional_add 
 

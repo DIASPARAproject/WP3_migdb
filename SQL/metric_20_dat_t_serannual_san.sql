@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS dat.t_serannual_san;
+DROP TABLE IF EXISTS dat.t_serannual_san CASCADE;
 CREATE TABLE dat.t_serannual_san (
 san_svc_id UUID,
 CONSTRAINT fk_san_svc_id FOREIGN KEY (san_svc_id)
@@ -8,6 +8,7 @@ san_id SERIAL NOT NULL,
 CONSTRAINT c_uk_san_id UNIQUE (san_id, san_wkg_code),
 san_value NUMERIC NULL,
 san_year INTEGER NOT NULL,
+CONSTRAINT uk_san_year_svc UNIQUE(san_year, san_svc_id),
 san_comment TEXT NULL, 
 san_effort NUMERIC NULL,
 san_datelastupdate DATE NOT NULL,

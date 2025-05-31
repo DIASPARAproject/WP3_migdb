@@ -1,4 +1,4 @@
---DROP TABLE IF EXISTS dat.t_series_ser;
+--DROP TABLE IF EXISTS dat.t_series_ser CASCADE;
 
 CREATE TABLE dat.t_series_ser (
   ser_svc_id uuid PRIMARY KEY,
@@ -32,19 +32,46 @@ CREATE TABLE dat.t_series_ser (
   ser_ver_code TEXT NOT NULL,
   CONSTRAINT fk_ser_ver_code FOREIGN KEY (ser_ver_code)
   REFERENCES ref.tr_version_ver(ver_code),
+  /*  
   ser_cou_code TEXT NOT NULL,
   CONSTRAINT fk_ser_cou_code FOREIGN KEY (ser_cou_code)
   REFERENCES ref.tr_country_cou(cou_code)
-  ON UPDATE CASCADE ON DELETE RESTRICT,
+  ON UPDATE CASCADE ON DELETE RESTRICT,/
+  */
   geom geometry NULL,
+  /*
   ser_x NUMERIC NULL,
   ser_y NUMERIC NULL,
+  */
+  ser_description TEXT NULL,
+  ser_locationdescription TEXT NULL,
+  ser_hty_code TEXT NULL,
+  CONSTRAINT fk_ser_hty_code FOREIGN KEY(ser_hty_code)
+  REFERENCES ref.tr_habitattype_hty (hty_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+  ser_gea_code TEXT NULL,
+  CONSTRAINT fk_ser_gea_code FOREIGN KEY (ser_gea_code)
+  REFERENCES ref.tr_gear_gea(gea_code)
+  ON UPDATE CASCADE ON DELETE CASCADE,
+  ser_ccm_wso_id _INT4 NULL, 
+  ser_distanceseakm numeric NULL,
+  ser_stocking boolean,
+  ser_stockingcomment TEXT,
+  ser_annual_effort_uni_code varchar(20) NULL,
+  CONSTRAINT fk_ser_annual_effort_uni_code FOREIGN KEY(ser_annual_effort_uni_code)
+  REFERENCES ref.tr_units_uni(uni_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,  
+  ser_protocol TEXT,
+  ser_samplingstrategy TEXT,
   ser_datelastupdate DATE);
   
 
 COMMENT ON TABLE dat.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
 It can correspond to time series data or individual metrics collection or both. This table is inherited. It means that the data in ref is fed by
 the content of the tables in refeel, refnas, refbast... ';
+COMMENT ON COLUMN dat.t_series_ser.ser_station_code IS
+'Station code see StationDictionary, this table contains elements about monitoring purpose (PURMP), stationGovernance, ProgramGovernance, 
+station_activefromdate, stationactiveuntildate, latitude, latituderange, longitude, longituderange, MSAT ';
 COMMENT ON COLUMN dat.t_series_ser.ser_svc_id IS 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
 COMMENT ON COLUMN dat.t_series_ser.ser_code IS 'Code of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_name IS 'Name of the series';
@@ -55,11 +82,22 @@ both lfs_code, and lfs_spe_code (as two species can have the same lifestage code
 COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
-COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS 'Country code ISO 3166 (two letter code)';
-COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326';
-COMMENT ON COLUMN dat.t_series_ser.ser_x IS 'Longitude, EPSG 4326';
-COMMENT ON COLUMN dat.t_series_ser.ser_y IS 'Latitude, EPSG 4326';
+COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326, can be more detailed than the geometry for station';
 COMMENT ON COLUMN dat.t_series_ser.ser_datelastupdate IS 'Last modification in the series, from a trigger';
+
+COMMENT ON COLUMN dat.t_series_ser.ser_description IS 'Sem description should comply with column svc_description in the vocabulary. Quick concise description of the series. Should include species, stage targeted, location and gear. e.g. Glass eel monitoring in the Vilaine estuary (France) with a trapping ladder.';
+COMMENT ON COLUMN dat.t_series_ser.ser_hty_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), T (Transitional water), FW (Freshwater), null accepted';
+COMMENT ON COLUMN dat.t_series_ser.ser_are_code IS 'Code of the area, areas are geographical sector most often corresponding to stock units, see tr_area_are.';
+COMMENT ON COLUMN dat.t_series_ser.ser_gea_code IS 'Code of the gear used, see tr_gear_gea';
+COMMENT ON COLUMN dat.t_series_ser.ser_ccm_wso_id IS 'Code of the main catchment in the CCM database, are_code can be used also.';
+COMMENT ON COLUMN dat.t_series_ser.ser_distanceseakm IS 'Distance to the sea, the centroid of the different sites can be used if a series is made of several stations.';
+COMMENT ON COLUMN dat.t_series_ser.ser_stocking IS 'Boolean, Is there restocking (for eel) or artifical reproduction in the river / basin, affecting the series ? ';
+COMMENT ON COLUMN dat.t_series_ser.ser_stockingcomment IS 'Comment on stocking';
+COMMENT ON COLUMN dat.t_series_ser.ser_protocol IS 'Describe sampling protocol';
+
+
 GRANT ALL ON dat.t_series_ser TO diaspara_admin;
 GRANT SELECT ON dat.t_series_ser TO diaspara_read; 
+
+-- TODO 
 

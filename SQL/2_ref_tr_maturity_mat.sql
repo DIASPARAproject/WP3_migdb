@@ -17,7 +17,7 @@ COMMENT ON COLUMN ref.tr_maturity_mat.mat_code IS 'The code of maturity stage';
 COMMENT ON COLUMN ref.tr_maturity_mat.mat_description IS 'Definition of the maturity stage';
 COMMENT ON COLUMN ref.tr_maturity_mat.mat_icesvalue IS 'Code (Key) of the maturity in ICES db';
 COMMENT ON COLUMN ref.tr_maturity_mat.mat_icesguid IS 'UUID (guid) of ICES, you can access by pasting ';
-
+COMMENT ON COLUMN ref.tr_maturity_mat.mat_icestablesource IS 'Source table in ICES';
 GRANT ALL ON ref.tr_maturity_mat TO diaspara_admin;
 GRANT SELECT ON ref.tr_maturity_mat TO diaspara_read;
 
