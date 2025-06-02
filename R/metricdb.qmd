@@ -97,7 +97,7 @@ digraph schema {
        shape = record];
     metts [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.metadata-series</b> </td> </tr>
+       <tr> <td> <b> ?? dat.metadata-series ??</b> </td> </tr>
        <tr> <td align="left">
        ser_id  <br align="left"/>
        ...     </td> </tr> 
@@ -292,7 +292,7 @@ straight as they are in our template database.
 #| tbl-cap: Semantic relation
 SemanticRelation <- getCodeList("SemanticRelation")
 knitr::kable(SemanticRelation) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-dbExecute(con_diaspara, 'ALTER TABLE "SemanticRelation" SET SCHEMA ref;')  
+
 ```
 ```{r icesVocabRelation}
 #| echo: TRUE
@@ -316,7 +316,7 @@ dbExecute(con_diaspara, 'ALTER TABLE ref."SemanticRelation" ADD CONSTRAINT seman
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to show PRGOV.
-#| tbl-cap: Program Governance for the Station Dictionary
+#| tbl-cap: Program Governance for the Station Dictionary (10 first lines)
 
 
 PRGOV <- getCodeList("PRGOV")
@@ -348,8 +348,8 @@ dbExecute(con_diaspara, 'ALTER TABLE ref."PRGOV" ADD CONSTRAINT prgov_pkey PRIMA
 #| tbl-cap: European Directory of Marine Organisations (EDMO)
 
 
-EDMO <- getCodeList("EDMO")
-knitr::kable(EDMO) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+EDMO <- getCodeList("EDMO") %>% slice_head(n=10)  %>%
+knitr::kable()  %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ```{r icesEDMO}
@@ -736,6 +736,21 @@ There is a procedure to integrate stations, but for this we will probably do a b
 :::
 ::::::
 
+:::{.callout-note appearance="simple"}
+## QUESTION to DIASPARA
+I this that many of our series, and many of BAST or NAS would be related to fishways.
+Shouldn't we need a fishway / fishway monitoring device vocab there ?
+:::
+
+:::{.callout-note appearance="simple"}
+## QUESTION to WKEELDATA
+Currently everything is in the same table, but it could be split by period
+following exactly the station work. 
+A description would then spans a limited amount of year from
+date_begin to date_end. If the series description still hold the date_end is null.
+If so we need to decide what fields could change over time (if any)
+:::
+
 
 ## Creating inherited table dateel.t_series_ser
 
@@ -749,30 +764,38 @@ There is a procedure to integrate stations, but for this we will probably do a b
 
 </details>
 
-## Creating table dat.t_seriesmetadata_smd
+## Creating  table dat.t_series_ser
 
-
-This table holds the metadata at the series level.
-A description spans a limited amount of year from
-date_begin to date_end. If the series description still hold the date_end is null.
-
- <details>
-
-<summary>SQL code to create table</summary>
-
-``` {.sql include="../SQL/metric_12_dat.t_seriesmetadata_smd.sql"}
-```
-
-</details>
 
 <details>
 
-<summary>SQL code to create inherited table</summary>
+<summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_13_dateel.t_seriesmetadata_smd"}
+``` {.sql include="../SQL/metric_20_dat_t_serannual_san.sql"}
 ```
 
 </details>
+
+
+## Creating inherited table dat.t_seriesannual_san
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_20_dateel_t_serannual_san.sql"}
+```
+
+</details>
+
+## Creating group metrics (TODO)
+
+[TODO] 
+
+## Creating ind metrics (TODO)
+
+[TODO] 
 
 # Import data from WGEEL (TODO)
 

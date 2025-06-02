@@ -1,0 +1,462 @@
+---
+title: "DIASPARA : Proposed change in the database structure "
+subtitle: " A short introduction"
+author: "Cédric Briand, Jani Helminen"
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/title_slide.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo.png
+footer: "DIASPARA -ICES WKEELDATA meeting"
+format: 
+  revealjs :
+    speakernotes:
+      displayNotes: true
+    slide-number: false  
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+OBJECTIVES
+
+We intend to build a common database structure (same referentials several DB to store)
+
+Data from models at the scale of the management unit (WGEEL, WGNAS, WGBAST)
+
+Continental habitat in support of ICES (e.g. landings in continental habitats) (WGEEL, WGNAS, WGBAST, WGTRUTTA)
+
+Individual and group metrics, series of data
+
+DB for dams/migration obstacles
+
+DB of Electrofishing
+
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") # clean_names
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$userdiaspara,
+                           password = cred$passworddiaspara)
+con_diaspara_admin <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+con_salmoglob <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamesalmo,
+                           host = cred$host,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+con_wgeel_distant <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamedistant,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$userdistant,
+                           password = cred$passworddistant)
+
+
+
+```
+
+
+# General structure of the DB
+
+```{dot}
+digraph DatabaseRelations {
+    node [shape=cylinder, style=filled];
+
+    ref [fillcolor=lightblue, shape = square];
+    RDBES [fillcolor=lightgreen];
+    Model_DB [fillcolor=lightgreen];
+    Metrics_Series [fillcolor=lightgreen];
+    E_fishing [fillcolor=lightyellow];
+    Dam_DB [fillcolor=lightyellow];
+    Regional_models[fillcolor=pink, shape = rectangle]
+    RDBES  -> ref;
+    Model_DB  -> ref;
+    Metrics_Series -> ref;
+    E_fishing -> Regional_models [style=dashed, label="model", color =purple];
+    Dam_DB -> Regional_models  [style=dashed, label="model", color =purple];
+    Regional_models ->  Model_DB [style=dashed, label="TAF", color =tan]
+    Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
+}
+```
+
+
+
+
+
+DATA AND REFERENTIALS
+
+
+
+
+# GENERAL STRUCTURE OF Metric DB
+
+## Series
+
+:::::: columns
+:::: column
+::: incremental
+-   developped to store recruitment data
+
+-   t_series_ser
+
+-   t_dataseries_das
+
+-   group metrics
+
+-  Individual metrics
+:::
+::::
+
+::: column
+![Diagram for series](images/series_diagram_wgeel.png "A sql diagram of the relations of tables for series"){fig-align="center"}
+:::
+::::::
+
+::: notes
+
+:::
+
+::: footer
+:::
+
+## Sampling
+
+:::::: columns
+:::: column
+::: incremental
+
+-   DCF DATA (sampling, electrofishing, other data not series)
+
+-   t_samplinginfo_sai
+
+-    (No annual data)
+
+-   group metrics
+
+-  Individual metrics
+:::
+::::
+
+::: column
+![Diagram for sampling](images/sampling_diagram_wgeel.png "A sql diagram of the relations of tables for sampling"){#fig-sampling_diagram_wgeel}
+:::
+::::::
+
+::: notes
+
+:::
+
+::: footer
+:::
+
+
+## Proposed simplified data structure
+
+```{dot}
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];	
+    vocab [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.vocab</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id (uuid) <br align="left"/>
+        ser_code (text)  </td> </tr> 
+       </table>> 
+       shape = Msquare];
+    stationDictionary [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.StationDictionary</b> </td> </tr>
+       <tr> <td align="left">
+        sta_code (integer)  <br align="left"/>
+        sta_activefromdate date <br align="left"/>
+        sta_activeuntildate date </td> </tr> 
+       </table>> 
+       shape = Msquare];
+    ts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.series</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id <br align="left"/>
+        ...    </td> </tr> 
+       </table>> 
+       shape = record];
+    metts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.metadata-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       ...     </td> </tr> 
+       </table>> 
+       shape = folder];
+   ann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year  <br align="left"/>  
+       ...   </td> </tr> 
+       </table>> 
+       shape = record];    
+   groupmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year   <br align="left"/>
+       mean size <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   fish [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.fish</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       fi_id   <br align="left"/>
+       x   <br align="left"/>
+       y   <br align="left"/>
+       date <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   indmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       fi_id  <br align="left"/>
+       metric_id  <br align="left"/>
+       value  <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = record];
+   metrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.metric</b> </td> </tr>
+       <tr> <td align="left">     
+       metric_id (length, weight..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record];             
+   tseel [fillcolor="pink"
+       label="dateel.series"
+       shape = table];   
+   mettseel [fillcolor="pink"
+       label="dateel.metadata-series"
+       shape = folder];
+   anneel [fillcolor="pink"
+       label="dat.annual-series"
+       shape = record]; 
+   groupmetricseel [fillcolor="pink"
+       label="dateel.groupmetrics"
+       shape = record];  
+   indmetricseel [fillcolor="pink"
+       label="dateel.indmetrics"
+       shape = record]; 
+   fisheel [fillcolor="pink"
+       label="dateel.fish"
+       shape = record];        
+   tsnas [fillcolor="limegreen"
+       label="datnas.series"
+       shape = table];   
+   mettsnas [fillcolor="limegreen"
+       label="datnas.metadata-series"
+       shape = folder];
+   indmetricsnas [fillcolor="limegreen"
+       label="datnas.indmetrics"
+       shape = record]; 
+   fishnas [fillcolor="limegreen"
+       label="datnas.fish"
+       shape = record]; 
+
+  metts  -> ts -> vocab [label = "1:1"]
+  metts -> stationDictionary  [label = "1:1"]
+  groupmetrics -> ann -> ts [label = "n:1"]
+  indmetrics -> fish -> ts [label = "n:1"]
+  indmetrics -> metrics
+
+  groupmetricseel -> metanneel [label = "n:1"]
+  anneel -> tseel [label = "n:1"]
+  mettseel -> tseel ->  vocab [label = "1:1"]
+  indmetricseel -> fisheel -> tseel  [label = "n:1"]
+  
+
+  mettsnas -> tsnas ->  vocab [label = "1:1"]
+  indmetricsnas -> fishnas -> tsnas  [label = "n:1"]
+
+  groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
+  indmetricseel -> indmetrics [label="inherits", style="dashed"]
+  indmetricsnas -> indmetrics [label="inherits", style="dashed"]
+  fisheel -> fish [label="inherits", style="dashed"]
+  fishnas -> fish [label="inherits", style="dashed"] 
+  anneel -> ann [ label="inherits", style="dashed"]
+  tseel -> ts [ label="inherits", style="dashed"]
+  tsnas -> ts [ label="inherits", style="dashed", labelOverlay="15%"]
+  mettseel -> metts [label="inherits", style="dashed"]
+  mettsnas -> metts [ label="inherits", style="dashed"]
+
+  // make the same rank
+
+  {rank = same; tseel;tsnas}
+}
+```
+
+
+## Series Vocab
+
+svc_id
+svc_code
+svc_description
+
+
+
+## Station
+
+
+:::::: columns
+:::: column
+Definition
+HeaderRecord
+Station_Code
+Station_Country
+Station_Name
+Station_LongName
+Station_ActiveFromDate
+Station_ActiveUntilDate
+Station_ProgramGovernance
+Station_StationGovernance
+Station_PURPM
+::::
+
+::: column
+Station_Latitude
+Station_LatitudeRange
+Station_Longitude
+Station_LongitudeRange
+Station_Geometry
+Station_DataType
+Station_WLTYP
+Station_MSTAT
+Station_Notes
+Station_Deprecated
+:::
+::::::
+
+## Relation
+
+
+* Definiton
+* HeaderRecord
+* Relation_Code
+* Relation_Country
+* Relation_Name
+* Relation_ActiveFromDate
+* Relation_RelatedCode
+* Relation_RelatedCountry
+* Relation_RelatedName
+* Relation_RelatedActiveFromDate
+* Relation_RelationType
+
+
+## Series
+
+
+:::::: columns
+:::: column
+* ser_svc_id
+* ser_code
+* ser_station_code
+* ser_name
+* ser_spe_code
+* ser_lfs_code
+* ser_are_code
+* ser_wkg_code
+* ser_ver_code
+* geom
+::::
+
+:::: column
+
+ser_description
+ser_locationdescription
+ser_hty_code
+ser_gea_code
+ser_ccm_wso_id
+ser_distanceseakm
+ser_stocking
+ser_stockingcomment
+ser_annual_effort_uni_code
+ser_protocol
+ser_samplingstrategy
+ser_datelastupdate
+::::
+::::::
+
+
+
+## Annual
+
+
+* san_svc_id
+* san_id
+* san_value
+* san_year
+* san_comment
+* san_effort
+* san_datelastupdate
+* san_qal_id
+* san_qal_comment
+* san_wkg_code
+* san_ver_code
