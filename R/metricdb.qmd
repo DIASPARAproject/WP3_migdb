@@ -78,6 +78,15 @@ digraph schema {
         ser_code (text)  </td> </tr> 
        </table>> 
        shape = Msquare];
+    stationDictionary [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.StationDictionary</b> </td> </tr>
+       <tr> <td align="left">
+        sta_code (integer)  <br align="left"/>
+        sta_activefromdate date <br align="left"/>
+        sta_activeuntildate date </td> </tr> 
+       </table>> 
+       shape = Msquare];
     ts [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>dat.series</b> </td> </tr>
@@ -94,7 +103,6 @@ digraph schema {
        ...     </td> </tr> 
        </table>> 
        shape = folder];
-
    ann [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>dat.annual-series</b> </td> </tr>
@@ -103,17 +111,7 @@ digraph schema {
        year  <br align="left"/>  
        ...   </td> </tr> 
        </table>> 
-       shape = record];   
-   metann [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.metadata-annual-series</b> </td> </tr>
-       <tr> <td align="left">
-       ser_id  <br align="left"/>
-       year start <br align="left"/>
-       year end  <br align="left"/>
-       ... </td> </tr> 
-       </table>> 
-       shape = folder];   
+       shape = record];    
    groupmetrics [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
@@ -162,9 +160,6 @@ digraph schema {
    anneel [fillcolor="pink"
        label="dat.annual-series"
        shape = record]; 
-   metanneel [fillcolor="pink"
-       label= "dateel.metadata-annual-series"     
-       shape = folder]; 
    groupmetricseel [fillcolor="pink"
        label="dateel.groupmetrics"
        shape = record];  
@@ -188,13 +183,12 @@ digraph schema {
        shape = record]; 
 
   metts  -> ts -> vocab [label = "1:1"]
+  metts -> stationDictionary  [label = "1:1"]
   groupmetrics -> ann -> ts [label = "n:1"]
-  metann -> ann [label = "n:1"]
   indmetrics -> fish -> ts [label = "n:1"]
   indmetrics -> metrics
 
   groupmetricseel -> metanneel [label = "n:1"]
-  metanneel -> anneel [label = "n:1"]
   anneel -> tseel [label = "n:1"]
   mettseel -> tseel ->  vocab [label = "1:1"]
   indmetricseel -> fisheel -> tseel  [label = "n:1"]
@@ -209,9 +203,8 @@ digraph schema {
   fisheel -> fish [label="inherits", style="dashed"]
   fishnas -> fish [label="inherits", style="dashed"] 
   anneel -> ann [ label="inherits", style="dashed"]
-  metanneel -> metann [label="inherits", style="dashed"]
   tseel -> ts [ label="inherits", style="dashed"]
-  tsnas -> ts [ label="inherits", style="dashed"]
+  tsnas -> ts [ label="inherits", style="dashed", labelOverlay="15%"]
   mettseel -> metts [label="inherits", style="dashed"]
   mettsnas -> metts [ label="inherits", style="dashed"]
 
