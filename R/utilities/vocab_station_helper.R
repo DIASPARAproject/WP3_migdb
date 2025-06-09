@@ -1,52 +1,13 @@
-#' Get all parents from a vocab object returned by icesVocab::getCodeDetail
-#' compatibility version 1.2.0
-#' @param st. an object returned by getCodeDetail
-#' @return A vector with unique key of parents
-#' @examples
-#' \dontrun{
-#' tt <- icesVocab::getCodeDetail("Station", 1000)
-#' getlistparent(st. = tt, key. = "ISO_3166")
-#' # [1] "Station_DTYPE" "PURPM"         "Datasets"      "ISO_3166"
-#' # [5] "WLTYP"         "PRGOV"         "EDMO"
-#' }
-#' @export
-getparent <- function(st.) {
-  unique(st.$parents$code_types$Key)
-}
-
-#' Get a vector of values for each parent
-#' compatibility version 1.2.0
-#' @param st. an object returned by getCodeDetail
-#' @param parent_key the parent key returned by getparents()
-#' @return A vector of parent values
-#' @examples
-#' \dontrun{
-#' tt <- icesVocab::getCodeDetail("Station", 1000)
-#' parent_key <- getparent(tt)
-#' getlistparent(st. = tt, parent_key. = "ISO_3166") # FI
-#' getlistparent(st. = tt, parent_key. = "Station_DTYPE") # EW~EU~NU~CW
-#' }
-#' @export
-getlistparent <- function(st., parent_key.) {
-  pos <- which(st.$parents$code_types$Key == parent_key.)
-  values <- st.$parents$codes[pos, "Key"]
-  if (length(values) > 1) values <- paste0(values, collapse = "~")
-  return(values)
-}
-
 #' Get a dataset of the stations in a form suitable for import
-#' note currently I cannot return fields AciveFromDate, ActiveUntilldate,
-#' latitude ... notes.
 #' @param .code The code of the station
 #' @return A table with station values partly filled in
 #' @examples
 #' \dontrun{
 #' tt <- icesVocab::getCodeDetail("Station", 1000)
-#' parent_key <- getparent(tt)
-#' getlistparent(st. = tt, parent_key. = "ISO_3166") # FI
-#' getlistparent(st. = tt, parent_key. = "Station_DTYPE") # EW~EU~NU~CW
+#' getListParents(st. = tt, parent_key. = "ISO_3166") # FI
+#' getListParents(st. = tt, parent_key. = "Station_DTYPE") # EW~EU~NU~CW
 #' }
-get_station_detail <- function(.code) {
+getStationDetail <- function(.code) {
   st <- icesVocab::getCodeDetail(code_type = "Station", code = .code)
   # getlistparent(st, "Station_DTYPE") # "CS~ES~PB~ZB"
   pa <- c("PURPM", "WLTYP", "ISO_3166", "EDMO", "Station_DTYPE", "PRGOV")

@@ -2540,6 +2540,7 @@ There might be a need to include more passive engine like trap and fishways.
 
 </details>
 
+
 ```{r import_tr_gear_gea}
 #| echo: TRUE
 #| eval: FALSE
@@ -2586,7 +2587,23 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_gear_gea;") %>%
 
 ```
 
+:::{.callout-tip appearance="simple"}
+## Other dictionaries in ICES
+The [geartype](https://vocab.ices.dk/?codetypeguid=6f65b819-57ca-4904-a961-2d55699008d5)
+which corresponds to metier 4 is sourced by the DCF and maintained by
+the JRC (contact can be provided by ICES). 
+The Sampler type [SMTYP](https://vocab.ices.dk/?codetypeguid=e034756c-999a-40cb-8b4e-e44229a4a9b6)
+provides a dictionary of the scientific gear used in monitoring, this one can be updated 
+:::
 
+:::{.callout-tip appearance="simple"}
+## Other source of definition (if needed)
+ Method used to monitor eel in the mediterranean are referenced in detail in this 
+ [report](https://openknowledge.fao.org/handle/20.500.14283/cc7252en).
+:::
+
+
+ 
 
 # ICES areas
 

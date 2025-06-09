@@ -352,6 +352,13 @@ EDMO <- getCodeList("EDMO") %>% slice_head(n=10)  %>%
 knitr::kable()  %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+:::{.callout-tip appearance="simple"}
+## Addings institutions to the EDMO
+To request a new EDMO an organisation needs to send an email to info@maris.nl
+:::
+
+
+
 ```{r icesEDMO}
 #| echo: TRUE
 #| eval: FALSE
@@ -389,7 +396,6 @@ knitr::kable(PURPM) %>% kable_styling(bootstrap_options = c("striped", "hover", 
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import PURPM.
-#| tbl-cap: Purpose of Monitoring
 dbWriteTable(con_diaspara, "PURPM", PURPM)
 dbExecute(con_diaspara, 'ALTER TABLE "PURPM" SET SCHEMA ref;')
 dbExecute(con_diaspara, 'ALTER TABLE ref."PURPM" ADD CONSTRAINT purm_pkey PRIMARY KEY ("Key");')    
@@ -416,7 +422,6 @@ knitr::kable(Station_DTYPE) %>% kable_styling(bootstrap_options = c("striped", "
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import icesStation_DTYPE.
-#| tbl-cap: Station dictionary data type
 
 dbWriteTable(con_diaspara, "Station_DTYPE", Station_DTYPE)
 dbExecute(con_diaspara, 'ALTER TABLE "Station_DTYPE" SET SCHEMA ref;')  
@@ -443,7 +448,6 @@ knitr::kable(WLTYP) %>% kable_styling(bootstrap_options = c("striped", "hover", 
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import ices WLTYP.
-#| tbl-cap: Water and Land Station Type
 
 dbExecute(con_diaspara, 'DROP TABLE IF EXISTS ref."WLTYP";')
 WLTYP$Key[is.na(WLTYP$Key)] <- "NA"
@@ -476,7 +480,6 @@ knitr::kable(MSTAT) %>% kable_styling(bootstrap_options = c("striped", "hover", 
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import ices MSTAT.
-#| tbl-cap: Type of monitoring station
 dbWriteTable(con_diaspara, "MSTAT", MSTAT)
 dbExecute(con_diaspara, 'ALTER TABLE ref."MSTAT" ADD CONSTRAINT mstat_pkey PRIMARY KEY ("Key");')   
 ```
@@ -496,6 +499,147 @@ dbExecute(con_diaspara, 'ALTER TABLE ref."MSTAT" ADD CONSTRAINT mstat_pkey PRIMA
 Deprecated <- getCodeList("Deprecated")
 knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+
+## Habitat
+
+THe habitat database is managed by [EIONET](http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/)
+Habitats directive Art. 17 reporting in year 2018.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_03_ref_tr_habitat_hab.sql"}
+```
+
+</details>
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+ICES / DIASPARA is this enough ?
+::::
+::::{.questionbox-body}
+The idea was to have estuaries and lagoons, but rivers are associated with vegetation, 
+So I'm not sure if this vocab is enough ?
+::::
+:::
+
+
+```{r habitat}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import habitat from eionet.
+
+
+# Load required libraries
+library(XML)
+
+# Parse the XML file downloaded from https://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/codelist
+xml_file <- "R/data/habitats.xml"  # Replace with your actual file path
+#file.exists("R/data/habitats.xml")
+xml_data <- xmlParse(xml_file)
+
+# Extract all <value> nodes
+values <- getNodeSet(xml_data, "//value")
+
+# Extract relevant data into a data frame
+extract_info <- function(node) {
+  id <- xmlGetAttr(node, "id")
+  code <- gsub("http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/", x= id,replacement = "")
+  label <- xmlValue(node[["label"]])
+  defintion <- xmlValue(node[["defintion"]])
+  status_node <- getNodeSet(node, ".//status/label")[[1]]
+  status <- xmlValue(status_node)
+  return(data.frame(id = id, code = code, label = label,status = status, stringsAsFactors = FALSE))
+}
+
+habitat <- do.call(rbind, lapply(values, extract_info))
+habitat <- habitat[c(1:32,77:84,125:142),]
+
+# Save the data frame as an RData file
+save(habitat, file = "habitat_art_17_2018.RData")
+# load(file = "habitat_art_17_2018.RData")
+dbExecute(con_diaspara, 'DELETE FROM ref.tr_habitat_hab;')
+
+dbWriteTable(con_diaspara, "habitat_temp", habitat)
+
+dbExecute(con_diaspara, 'INSERT INTO "ref".tr_habitat_hab SELECT code, label, id, NULL, NULL, NULL FROM habitat_temp;') #58
+dbExecute(con_diaspara, "DROP TABLE habitat_temp")#0
+ 
+```
+
+```{r tbl-habitat}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show habitat table (to be imported in ICES vocab).
+#| tbl-cap: Habitat table ?
+
+habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
+knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+## Fishway type ref.tr_fishway_fiw
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_04_ref_tr_fishway_fiw.sql"}
+```
+
+</details>
+
+
+```{r tbl-fishway}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fishway table (to be imported in ICES vocab).
+#| tbl-cap: Fishway vocab proposed to ICES.
+
+habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
+knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+## Fish migration monitoring  ref.tr_monitoring_mon
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_05_ref_tr_monitoring_mon.sql"}
+```
+
+</details>
+
+
+```{r tbl-monitoring}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fishway table (to be imported in ICES vocab).
+#| tbl-cap: Fishway vocab proposed to ICES.
+
+habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
+knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
+
 
 ### Creating series referential ref.ref_tr_seriesvocab_svc
 
@@ -553,16 +697,21 @@ The following chunk creates a vocab with 14086 stations.
 
 # tested 28/05/2025
 
-source("utilities/vocab_station_helper.R")
-st0 <- icesVocab::getCodeList(code_type ="Station")
-ll <- mapply(get_station_detail, st0$Key, SIMPLIFY = FALSE)
-station <- bind_rows(ll)
+library(icesStation)
+system.time(
+station <- getListStation())
+u#tilisateur     syst�me      �coul� 
+ #    268.09        9.06     1402.47 
+save(station, file = "data/station.Rdata")
+# load(file = "data/station.Rdata")
+initcap <- function(X) paste0(substring(X,1,1),tolower(substring(X,2, length(X))))
 
 
 station <- station[station$Station_Name != 'TestBulkUload1',]
-save(station, file = "data/station.Rdata")
-dbWriteTable(con_diaspara_admin, "temp_station", station)
+station$Station_Deprecated<- initcap(as.character(station$Station_Deprecated))
 
+dbWriteTable(con_diaspara_admin, "temp_station", station, overwrite = TRUE)
+dbExecute(con_diaspara_admin,'DELETE FROM "ref"."StationDictionary"')
 dbExecute(con_diaspara_admin,'INSERT INTO "ref"."StationDictionary"
 ("Definition", 
 "HeaderRecord", 
@@ -764,7 +913,7 @@ If so we need to decide what fields could change over time (if any)
 
 </details>
 
-## Creating  table dat.t_series_ser
+## Creating  table dat.t_serannual_san
 
 
 <details>
@@ -777,7 +926,7 @@ If so we need to decide what fields could change over time (if any)
 </details>
 
 
-## Creating inherited table dat.t_seriesannual_san
+## Creating inherited table dateel.t_seriesannual_san
 
 
 <details>
@@ -788,6 +937,48 @@ If so we need to decide what fields could change over time (if any)
 ```
 
 </details>
+
+
+## Creating table dat.tj_seriesstation_ses
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_12_dat.tj_seriesstation_ses.sql"}
+```
+
+</details>
+
+
+## Creating inherited table dateel.tj_seriesstation_ses
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_13_dateel.tj_seriesstation_ses.sql"}
+```
+
+</details>
+
+# Creating one table that should only resided in wgeel datasets
+
+## Creating table dateel.t_recruitmentmetadata_met
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_13_dateel.t_recruitmentmetadata_met.sql"}
+```
+
+</details>
+
+
+
 
 ## Creating group metrics (TODO)
 

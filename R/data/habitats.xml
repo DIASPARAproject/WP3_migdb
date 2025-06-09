@@ -1,0 +1,4224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codelist xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://inspire.ec.europa.eu/draft-schemas/registry/0.3/codelist.xsd" id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+<status id="http://inspire.ec.europa.eu/registry/status/submitted">
+<label xml:lang="en">Submitted</label></status>
+<extensibility id="http://inspire.ec.europa.eu/registry/extensibility/none">
+<label xml:lang="en">None</label></extensibility>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<containeditems>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabAll">
+<label xml:lang="en">All habitats</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenAbyssal">
+<label xml:lang="en">Abyssal</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenAll">
+<label xml:lang="en">All benthic habitats</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenBathyalLowRock">
+<label xml:lang="en">Lower bathyal rock and biogenic reef</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenBathyalLowSed">
+<label xml:lang="en">Lower bathyal sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenBathyalUpReef">
+<label xml:lang="en">Upper bathyal rock and biogenic reef</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenBathyalUpSed">
+<label xml:lang="en">Upper bathyal sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenCircalitCoarSed">
+<label xml:lang="en">Circalittoral coarse sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenCircalitMud">
+<label xml:lang="en">Circalittoral mud</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenCircalitMxdSed">
+<label xml:lang="en">Circalittoral mixed sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenCircalitRock">
+<label xml:lang="en">Circalittoral rock and biogenic reef</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenCircalitSand">
+<label xml:lang="en">Circalittoral sand</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenInfralitCoarSed">
+<label xml:lang="en">Infralittoral coarse sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenInfralitMud">
+<label xml:lang="en">Infralittoral mud</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenInfralitMxdSed">
+<label xml:lang="en">Infralittoral mixed sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenInfralitRock">
+<label xml:lang="en">Infralittoral rock and biogenic reef</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenInfralitSand">
+<label xml:lang="en">Infralittoral sand</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenLitRock">
+<label xml:lang="en">Littoral rock and biogenic reef</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenLitSed">
+<label xml:lang="en">Littoral sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenOffshCoarSed">
+<label xml:lang="en">Offshore circalittoral coarse sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenOffshMud">
+<label xml:lang="en">Offshore circalittoral mud</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenOffshMxdSed">
+<label xml:lang="en">Offshore circalittoral mixed sediment</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenOffshRock">
+<label xml:lang="en">Offshore circalittoral rock and biogenic reef</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenOffshSand">
+<label xml:lang="en">Offshore circalittoral sand</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabBenOther">
+<label xml:lang="en">Other benthic habitats</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabOther">
+<label xml:lang="en">Other habitats</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabPelagAll">
+<label xml:lang="en">All pelagic habitats</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabPelagCoastal">
+<label xml:lang="en">Coastal</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabPelagOcean">
+<label xml:lang="en">Oceanic/beyond shelf</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabPelagOther">
+<label xml:lang="en">Other pelagic habitats</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabPelagShelf">
+<label xml:lang="en">Shelf</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/HabPelagVarSalinity">
+<label xml:lang="en">Variable salinity</label>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/21A0">
+<label xml:lang="en">Machairs (* in Ireland)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10047</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/31A0">
+<label xml:lang="en">Transylvanian hot-spring lotus beds</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10241</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/32A0">
+<label xml:lang="en">Tufa cascades of karstic rivers in the Dinaric Alps</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10274</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/40A0">
+<label xml:lang="en">Subcontinental peri-Pannonic scrub</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10242</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/40B0">
+<label xml:lang="en">Rhodope Potentilla fruticosa thickets</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10261</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/40C0">
+<label xml:lang="en">Ponto-Sarmatic deciduous thickets</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10262</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/62A0">
+<label xml:lang="en">Eastern sub-Mediterranean dry grasslands (Scorzoneratalia villosae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10244</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/62B0">
+<label xml:lang="en">Serpentinophilous grasslands of Cyprus</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10245</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/62C0">
+<label xml:lang="en">Ponto-Sarmatic steppes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10263</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/62D0">
+<label xml:lang="en">Oro-Moesian acidophilous grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10264</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91A0">
+<label xml:lang="en">Old sessile oak woods with Ilex and Blechnum in the British Isles</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10194</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91AA">
+<label xml:lang="en">Eastern white oak woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10270</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91B0">
+<label xml:lang="en">Thermophilous Fraxinus angustifolia woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10195</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91BA">
+<label xml:lang="en">Moesian silver fir forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10271</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91C0">
+<label xml:lang="en">Caledonian forest</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10196</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91CA">
+<label xml:lang="en">Rhodopide and Balkan Range Scots pine forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10272</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91D0">
+<label xml:lang="en">Bog woodland</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10197</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91E0">
+<label xml:lang="en">Alluvial forests with Alnus glutinosa and Fraxinus excelsior (Alno-Padion, Alnion incanae, Salicion albae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10198</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91F0">
+<label xml:lang="en">Riparian mixed forests of Quercus robur, Ulmus laevis and Ulmus minor, Fraxinus excelsior or Fraxinus angustifolia, along the great rivers (Ulmenion minoris)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10199</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91G0">
+<label xml:lang="en">Pannonic woods with Quercus petraea and Carpinus betulus</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10200</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91H0">
+<label xml:lang="en">Pannonian woods with Quercus pubescens</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10201</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91I0">
+<label xml:lang="en">Euro-Siberian steppic woods with Quercus spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10202</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91J0">
+<label xml:lang="en">Taxus baccata woods of the British Isles</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10203</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91K0">
+<label xml:lang="en">Illyrian Fagus sylvatica forests (Aremonio-Fagion)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10247</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91L0">
+<label xml:lang="en">Illyrian oak-hornbeam forests (Erythronio-Carpinion)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10248</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91M0">
+<label xml:lang="en">Pannonian-Balkanic turkey oak-sessile oak forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10249</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91N0">
+<label xml:lang="en">Pannonic inland sand dune thicket (Junipero-Populetum albae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10250</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91P0">
+<label xml:lang="en">Holy Cross fir forests (Abietetum polonicum)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10251</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91Q0">
+<label xml:lang="en">Western Carpathian calcicolous Pinus sylvestris forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10252</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91R0">
+<label xml:lang="en">Dinaric dolomite Scots pine forests (Genisto januensis-Pinetum)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10253</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91S0">
+<label xml:lang="en">Western Pontic beech forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10265</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91T0">
+<label xml:lang="en">Central European lichen Scots pine forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10254</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91U0">
+<label xml:lang="en">Sarmatic steppe pine forest</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10255</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91V0">
+<label xml:lang="en">Dacian Beech forests (Symphyto-Fagion)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10256</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91W0">
+<label xml:lang="en">Moesian beech forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10266</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91X0">
+<label xml:lang="en">Dobrogean beech forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10267</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91Y0">
+<label xml:lang="en">Dacian oak &amp; hornbeam forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10268</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/91Z0">
+<label xml:lang="en">Moesian silver lime woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10269</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/92A0">
+<label xml:lang="en">Salix alba and Populus alba galleries</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10214</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/92B0">
+<label xml:lang="en">Riparian formations on intermittent Mediterranean water courses with Rhododendron ponticum, Salix and others</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10215</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/92C0">
+<label xml:lang="en">Platanus orientalis and Liquidambar orientalis woods (Platanion orientalis)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10216</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/92D0">
+<label xml:lang="en">Southern riparian galleries and thickets (Nerio-Tamaricetea and Securinegion tinctoriae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10217</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/93A0">
+<label xml:lang="en">Woodlands with Quercus infectoria (Anagyro foetidae-Quercetum infectoriae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10258</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/95A0">
+<label xml:lang="en">High oro-Mediterranean pine forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10260</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1110">
+<label xml:lang="en">Sandbanks which are slightly covered by sea water all the time</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10003</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1120">
+<label xml:lang="en">Posidonia beds (Posidonion oceanicae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10004</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1130">
+<label xml:lang="en">Estuaries</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10005</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1140">
+<label xml:lang="en">Mudflats and sandflats not covered by seawater at low tide</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10006</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1150">
+<label xml:lang="en">Coastal lagoons</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10007</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1160">
+<label xml:lang="en">Large shallow inlets and bays</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10008</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1170">
+<label xml:lang="en">Reefs</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10009</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1180">
+<label xml:lang="en">Submarine structures made by leaking gases</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10010</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1210">
+<label xml:lang="en">Annual vegetation of drift lines</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10012</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1220">
+<label xml:lang="en">Perennial vegetation of stony banks</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10013</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1230">
+<label xml:lang="en">Vegetated sea cliffs of the Atlantic and Baltic Coasts</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10014</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1240">
+<label xml:lang="en">Vegetated sea cliffs of the Mediterranean coasts with endemic Limonium spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10015</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1250">
+<label xml:lang="en">Vegetated sea cliffs with endemic flora of the Macaronesian coasts</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10016</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1310">
+<label xml:lang="en">Salicornia and other annuals colonizing mud and sand</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10018</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1320">
+<label xml:lang="en">Spartina swards (Spartinion maritimae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10019</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1330">
+<label xml:lang="en">Atlantic salt meadows (Glauco-Puccinellietalia maritimae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10020</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1340">
+<label xml:lang="en">Inland salt meadows</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10021</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1410">
+<label xml:lang="en">Mediterranean salt meadows (Juncetalia maritimi)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10023</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1420">
+<label xml:lang="en">Mediterranean and thermo-Atlantic halophilous scrubs (Sarcocornetea fruticosi)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10024</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1430">
+<label xml:lang="en">Halo-nitrophilous scrubs (Pegano-Salsoletea)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10025</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1510">
+<label xml:lang="en">Mediterranean salt steppes (Limonietalia)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10027</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1520">
+<label xml:lang="en">Iberian gypsum vegetation (Gypsophiletalia)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10028</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1530">
+<label xml:lang="en">Pannonic salt steppes and salt marshes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10029</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1610">
+<label xml:lang="en">Baltic esker islands with sandy, rocky and shingle beach vegetation and sublittoral vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10031</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1620">
+<label xml:lang="en">Boreal Baltic islets and small islands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10032</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1630">
+<label xml:lang="en">Boreal Baltic coastal meadows</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10033</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1640">
+<label xml:lang="en">Boreal Baltic sandy beaches with perennial vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10034</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/1650">
+<label xml:lang="en">Boreal Baltic narrow inlets</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10035</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2110">
+<label xml:lang="en">Embryonic shifting dunes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10038</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2120">
+<label xml:lang="en">Shifting dunes along the shoreline with Ammophila arenaria ("white dunes")</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10039</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2130">
+<label xml:lang="en">Fixed coastal dunes with herbaceous vegetation ("grey dunes")</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10040</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2140">
+<label xml:lang="en">Decalcified fixed dunes with Empetrum nigrum</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10041</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2150">
+<label xml:lang="en">Atlantic decalcified fixed dunes (Calluno-Ulicetea)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10042</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2160">
+<label xml:lang="en">Dunes with Hippophae rhamnoides</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10043</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2170">
+<label xml:lang="en">Dunes with Salix repens ssp. argentea (Salicion arenariae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10044</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2180">
+<label xml:lang="en">Wooded dunes of the Atlantic, Continental and Boreal region</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10045</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2190">
+<label xml:lang="en">Humid dune slacks</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10046</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2210">
+<label xml:lang="en">Crucianellion maritimae fixed beach dunes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10049</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2220">
+<label xml:lang="en">Dunes with Euphorbia terracina</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10050</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2230">
+<label xml:lang="en">Malcolmietalia dune grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10051</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2240">
+<label xml:lang="en">Brachypodietalia dune grasslands with annuals</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10052</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2250">
+<label xml:lang="en">Coastal dunes with Juniperus spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10053</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2260">
+<label xml:lang="en">Cisto-Lavenduletalia dune sclerophyllous scrubs</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10054</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2270">
+<label xml:lang="en">Wooded dunes with Pinus pinea and/or Pinus pinaster</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10055</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2310">
+<label xml:lang="en">Dry sand heaths with Calluna and Genista</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10057</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2320">
+<label xml:lang="en">Dry sand heaths with Calluna and Empetrum nigrum</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10058</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2330">
+<label xml:lang="en">Inland dunes with open Corynephorus and Agrostis grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10059</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/2340">
+<label xml:lang="en">Pannonic inland dunes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10060</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3110">
+<label xml:lang="en">Oligotrophic waters containing very few minerals of sandy plains (Littorelletalia uniflorae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10063</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3120">
+<label xml:lang="en">Oligotrophic waters containing very few minerals generally on sandy soils of the West Mediterranean, with Isoetes spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10064</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3130">
+<label xml:lang="en">Oligotrophic to mesotrophic standing waters with vegetation of the Littorelletea uniflorae and/or of the Iso�to-Nanojuncetea</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10065</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3140">
+<label xml:lang="en">Hard oligo-mesotrophic waters with benthic vegetation of Chara spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10066</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3150">
+<label xml:lang="en">Natural eutrophic lakes with Magnopotamion or Hydrocharition - type vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10067</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3160">
+<label xml:lang="en">Natural dystrophic lakes and ponds</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10068</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3170">
+<label xml:lang="en">Mediterranean temporary ponds</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10069</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3180">
+<label xml:lang="en">Turloughs</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10070</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3190">
+<label xml:lang="en">Lakes of gypsum karst</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10240</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3210">
+<label xml:lang="en">Fennoscandian natural rivers</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10072</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3220">
+<label xml:lang="en">Alpine rivers and the herbaceous vegetation along their banks</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10073</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3230">
+<label xml:lang="en">Alpine rivers and their ligneous vegetation with Myricaria germanica</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10074</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3240">
+<label xml:lang="en">Alpine rivers and their ligneous vegetation with Salix elaeagnos</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10075</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3250">
+<label xml:lang="en">Constantly flowing Mediterranean rivers with Glaucium flavum</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10076</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3260">
+<label xml:lang="en">Water courses of plain to montane levels with the Ranunculion fluitantis and Callitricho-Batrachion vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10077</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3270">
+<label xml:lang="en">Rivers with muddy banks with Chenopodion rubri p.p. and Bidention p.p. vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10078</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3280">
+<label xml:lang="en">Constantly flowing Mediterranean rivers with Paspalo-Agrostidion species and hanging curtains of Salix and Populus alba</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10079</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/3290">
+<label xml:lang="en">Intermittently flowing Mediterranean rivers of the Paspalo-Agrostidion</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10080</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4010">
+<label xml:lang="en">Northern Atlantic wet heaths with Erica tetralix</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10082</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4020">
+<label xml:lang="en">Temperate Atlantic wet heaths with Erica ciliaris and Erica tetralix</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10083</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4030">
+<label xml:lang="en">European dry heaths</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10084</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4040">
+<label xml:lang="en">Dry Atlantic coastal heaths with Erica vagans</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10085</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4050">
+<label xml:lang="en">Endemic macaronesian heaths</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10086</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4060">
+<label xml:lang="en">Alpine and Boreal heaths</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10087</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4070">
+<label xml:lang="en">Bushes with Pinus mugo and Rhododendron hirsutum (Mugo-Rhododendretum hirsuti)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10088</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4080">
+<label xml:lang="en">Sub-Arctic Salix spp. scrub</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10089</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/4090">
+<label xml:lang="en">Endemic oro-Mediterranean heaths with gorse</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10090</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5110">
+<label xml:lang="en">Stable xerothermophilous formations with Buxus sempervirens on rock slopes (Berberidion p.p.)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10093</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5120">
+<label xml:lang="en">Mountain Cytisus purgans formations</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10094</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5130">
+<label xml:lang="en">Juniperus communis formations on heaths or calcareous grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10095</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5140">
+<label xml:lang="en">Cistus palhinhae formations on maritime wet heaths</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10096</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5210">
+<label xml:lang="en">Arborescent matorral with Juniperus spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10097</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5220">
+<label xml:lang="en">Arborescent matorral with Zyziphus</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10098</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5230">
+<label xml:lang="en">Arborescent matorral with Laurus nobilis</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10099</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5310">
+<label xml:lang="en">Laurus nobilis thickets</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10100</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5320">
+<label xml:lang="en">Low formations of Euphorbia close to cliffs</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10103</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5330">
+<label xml:lang="en">Thermo-Mediterranean and pre-desert scrub</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10104</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5410">
+<label xml:lang="en">West Mediterranean clifftop phryganas (Astragalo-Plantaginetum subulatae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10106</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5420">
+<label xml:lang="en">Sarcopoterium spinosum phryganas</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10107</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/5430">
+<label xml:lang="en">Endemic phryganas of the Euphorbio-Verbascion</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10108</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6110">
+<label xml:lang="en">Rupicolous calcareous or basophilic grasslands of the Alysso-Sedion albi</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10111</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6120">
+<label xml:lang="en">Xeric sand calcareous grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10112</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6130">
+<label xml:lang="en">Calaminarian grasslands of the Violetalia calaminariae</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10113</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6140">
+<label xml:lang="en">Siliceous Pyrenean Festuca eskia grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10114</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6150">
+<label xml:lang="en">Siliceous alpine and boreal grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10115</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6160">
+<label xml:lang="en">Oro-Iberian Festuca indigesta grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10116</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6170">
+<label xml:lang="en">Alpine and subalpine calcareous grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10117</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6180">
+<label xml:lang="en">Macaronesian mesophile grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10118</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6190">
+<label xml:lang="en">Rupicolous pannonic grasslands (Stipo-Festucetalia pallentis)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10243</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6210">
+<label xml:lang="en">Semi-natural dry grasslands and scrubland facies on calcareous substrates (Festuco-Brometalia) (* important orchid sites)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10120</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6220">
+<label xml:lang="en">Pseudo-steppe with grasses and annuals of the Thero-Brachypodietea</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10121</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6230">
+<label xml:lang="en">Species-rich Nardus grasslands, on siliceous substrates in mountain areas (and submountain areas, in Continental Europe)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10122</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6240">
+<label xml:lang="en">Sub-Pannonic steppic grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10123</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6250">
+<label xml:lang="en">Pannonic loess steppic grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10124</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6260">
+<label xml:lang="en">Pannonic sand steppes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10125</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6270">
+<label xml:lang="en">Fennoscandian lowland species-rich dry to mesic grasslands</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10126</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6280">
+<label xml:lang="en">Nordic alvar and precambrian calcareous flatrocks</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10127</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6310">
+<label xml:lang="en">Dehesas with evergreen Quercus spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10129</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6410">
+<label xml:lang="en">Molinia meadows on calcareous, peaty or clayey-silt-laden soils (Molinion caeruleae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10131</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6420">
+<label xml:lang="en">Mediterranean tall humid grasslands of the Molinio-Holoschoenion</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10132</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6430">
+<label xml:lang="en">Hydrophilous tall herb fringe communities of plains and of the montane to alpine levels</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10133</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6440">
+<label xml:lang="en">Alluvial meadows of river valleys of the Cnidion dubii</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10134</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6450">
+<label xml:lang="en">Northern boreal alluvial meadows</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10135</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6460">
+<label xml:lang="en">Peat grasslands of Troodos</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10246</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6510">
+<label xml:lang="en">Lowland hay meadows (Alopecurus pratensis, Sanguisorba officinalis)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10137</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6520">
+<label xml:lang="en">Mountain hay meadows</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10138</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6530">
+<label xml:lang="en">Fennoscandian wooded meadows</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10139</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/6540">
+<label xml:lang="en">Sub-Mediterranean grasslands of the Molinio-Hordeion secalini</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10275</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7110">
+<label xml:lang="en">Active raised bogs</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10142</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7120">
+<label xml:lang="en">Degraded raised bogs still capable of natural regeneration</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10143</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7130">
+<label xml:lang="en">Blanket bogs (* if active bog)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10144</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7140">
+<label xml:lang="en">Transition mires and quaking bogs</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10145</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7150">
+<label xml:lang="en">Depressions on peat substrates of the Rhynchosporion</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10146</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7160">
+<label xml:lang="en">Fennoscandian mineral-rich springs and springfens</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10147</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7210">
+<label xml:lang="en">Calcareous fens with Cladium mariscus and species of the Caricion davallianae</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10149</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7220">
+<label xml:lang="en">Petrifying springs with tufa formation (Cratoneurion)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10150</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7230">
+<label xml:lang="en">Alkaline fens</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10151</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7240">
+<label xml:lang="en">Alpine pioneer formations of Caricion bicoloris-atrofuscae</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10152</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7310">
+<label xml:lang="en">Aapa mires</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10154</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/7320">
+<label xml:lang="en">Palsa mires</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10155</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8110">
+<label xml:lang="en">Siliceous scree of the montane to snow levels (Androsacetalia alpinae and Galeopsietalia ladani)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10158</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8120">
+<label xml:lang="en">Calcareous and calcshist screes of the montane to alpine levels (Thlaspietea rotundifolii)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10159</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8130">
+<label xml:lang="en">Western Mediterranean and thermophilous scree</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10160</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8140">
+<label xml:lang="en">Eastern Mediterranean screes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10161</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8150">
+<label xml:lang="en">Medio-European upland siliceous screes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10162</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8160">
+<label xml:lang="en">Medio-European calcareous scree of hill and montane levels</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10163</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8210">
+<label xml:lang="en">Calcareous rocky slopes with chasmophytic vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10165</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8220">
+<label xml:lang="en">Siliceous rocky slopes with chasmophytic vegetation</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10166</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8230">
+<label xml:lang="en">Siliceous rock with pioneer vegetation of the Sedo-Scleranthion or of the Sedo albi-Veronicion dillenii</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10167</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8240">
+<label xml:lang="en">Limestone pavements</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10168</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8310">
+<label xml:lang="en">Caves not open to the public</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10170</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8320">
+<label xml:lang="en">Fields of lava and natural excavations</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10171</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8330">
+<label xml:lang="en">Submerged or partially submerged sea caves</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10172</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/8340">
+<label xml:lang="en">Permanent glaciers</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10173</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9010">
+<label xml:lang="en">Western Ta�ga</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10176</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9020">
+<label xml:lang="en">Fennoscandian hemiboreal natural old broad-leaved deciduous forests (Quercus, Tilia, Acer, Fraxinus or Ulmus) rich in epiphytes</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10177</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9030">
+<label xml:lang="en">Natural forests of primary succession stages of landupheaval coast</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10178</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9040">
+<label xml:lang="en">Nordic subalpine/subarctic forests with Betula pubescens ssp. czerepanovii</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10179</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9050">
+<label xml:lang="en">Fennoscandian herb-rich forests with Picea abies</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10180</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9060">
+<label xml:lang="en">Coniferous forests on, or connected to, glaciofluvial eskers</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10181</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9070">
+<label xml:lang="en">Fennoscandian wooded pastures</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10182</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9080">
+<label xml:lang="en">Fennoscandian deciduous swamp woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10183</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9110">
+<label xml:lang="en">Luzulo-Fagetum beech forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10185</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9120">
+<label xml:lang="en">Atlantic acidophilous beech forests with Ilex and sometimes also Taxus in the shrublayer (Quercion robori-petraeae or Ilici-Fagenion)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10186</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9130">
+<label xml:lang="en">Asperulo-Fagetum beech forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10187</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9140">
+<label xml:lang="en">Medio-European subalpine beech woods with Acer and Rumex arifolius</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10188</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9150">
+<label xml:lang="en">Medio-European limestone beech forests of the Cephalanthero-Fagion</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10189</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9160">
+<label xml:lang="en">Sub-Atlantic and medio-European oak or oak-hornbeam forests of the Carpinion betuli</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10190</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9170">
+<label xml:lang="en">Galio-Carpinetum oak-hornbeam forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10191</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9180">
+<label xml:lang="en">Tilio-Acerion forests of slopes, screes and ravines</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10192</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9190">
+<label xml:lang="en">Old acidophilous oak woods with Quercus robur on sandy plains</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10193</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9210">
+<label xml:lang="en">Apennine beech forests with Taxus and Ilex</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10205</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9220">
+<label xml:lang="en">Apennine beech forests with Abies alba and beech forests with Abies nebrodensis</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10206</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9230">
+<label xml:lang="en">Galicio-Portuguese oak woods with Quercus robur and Quercus pyrenaica</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10207</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9240">
+<label xml:lang="en">Quercus faginea and Quercus canariensis Iberian woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10208</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9250">
+<label xml:lang="en">Quercus trojana woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10209</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9260">
+<label xml:lang="en">Castanea sativa woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10210</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9270">
+<label xml:lang="en">Hellenic beech forests with Abies borisii-regis</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10211</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9280">
+<label xml:lang="en">Quercus frainetto woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10212</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9290">
+<label xml:lang="en">Cupressus forests (Acero-Cupression)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10213</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9310">
+<label xml:lang="en">Aegean Quercus brachyphylla woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10219</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9320">
+<label xml:lang="en">Olea and Ceratonia forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10220</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9330">
+<label xml:lang="en">Quercus suber forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10221</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9340">
+<label xml:lang="en">Quercus ilex and Quercus rotundifolia forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10222</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9350">
+<label xml:lang="en">Quercus macrolepis forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10223</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9360">
+<label xml:lang="en">Macaronesian laurel forests (Laurus, Ocotea)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10224</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9370">
+<label xml:lang="en">Palm groves of Phoenix</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10225</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9380">
+<label xml:lang="en">Forests of Ilex aquifolium</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10226</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9390">
+<label xml:lang="en">Scrub and low forest vegetation with Quercus alnifolia</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10257</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9410">
+<label xml:lang="en">Acidophilous Picea forests of the montane to alpine levels (Vaccinio-Piceetea)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10228</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9420">
+<label xml:lang="en">Alpine Larix decidua and/or Pinus cembra forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10229</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9430">
+<label xml:lang="en">Subalpine and montane Pinus uncinata forests (* if on gypsum or limestone)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10230</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9510">
+<label xml:lang="en">Southern Apennine Abies alba forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10232</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9520">
+<label xml:lang="en">Abies pinsapo forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10233</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9530">
+<label xml:lang="en">(Sub-) Mediterranean pine forests with endemic black pines</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10234</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9540">
+<label xml:lang="en">Mediterranean pine forests with endemic Mesogean pines</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10235</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9550">
+<label xml:lang="en">Canarian endemic pine forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10236</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9560">
+<label xml:lang="en">Endemic forests with Juniperus spp.</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10237</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9570">
+<label xml:lang="en">Tetraclinis articulata forests</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10238</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9580">
+<label xml:lang="en">Mediterranean Taxus baccata woods</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10239</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+<value id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/9590">
+<label xml:lang="en">Cedrus brevifolia forests (Cedrosetum brevifoliae)</label>
+<definition xml:lang="en">http://eunis.eea.europa.eu/habitats/10259</definition>
+<status id="http://inspire.ec.europa.eu/registry/status/valid">
+<label xml:lang="en">Valid</label>
+</status>
+<register id="http://dd.eionet.europa.eu/vocabularies">
+<label xml:lang="en">Data Dictionary Vocabularies</label>
+<registry id="http://dd.eionet.europa.eu">
+<label xml:lang="en">Eionet Data Dictionary</label>
+</registry>
+</register>
+<codelist id="http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats">
+<label xml:lang="en">Codelist of habitat types</label>
+</codelist>
+</value>
+</containeditems>
+</codelist>
