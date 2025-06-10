@@ -242,6 +242,7 @@ load_library("DBI")
 load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
+load_library("uuid")
 cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
                            dbname = cred$dbnamediaspara,
@@ -912,6 +913,175 @@ If so we need to decide what fields could change over time (if any)
 ```
 
 </details>
+
+
+## Import t_series_ser from wgeel
+
+```{r refeel.t_series_ser_import}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to to refeel.tr_series_ser
+
+ser <- dbGetQuery(con_wgeel_distant, "SELECT ser.*, gea_issscfg_code FROM datawg.t_series_ser ser JOIN ref.tr_gear_gea on gea_id = ser_sam_gear;
+")
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_series_ser")
+clipr::write_clip(colnames(res))
+
+# temporarily remove area constraint
+
+dbExecute(con_diaspara_admin, "ALTER TABLE dateel.t_series_ser drop constraint 
+fk_ser_are_code")
+dbExecute(con_diaspara_admin, "ALTER TABLE dateel.t_series_ser ALTER COLUMN  
+ser_are_code DROP NOT NULL")
+dbExecute(con_diaspara_admin, "ALTER TABLE dateel.t_series_ser ALTER COLUMN  
+ser_cou_code DROP NOT NULL")
+dbExecute(con_diaspara_admin, "ALTER TABLE dateel.t_series_ser DROP CONSTRAINT uk_ser_name")
+
+t_series_ser <-
+  data.frame(
+   "ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
+   "ser_code" = ser$ser_nameshort,
+    "ser_name"  = ser$ser_namelong,
+   "ser_spe_code" = "ANG",
+   "ser_lfs_code" = ser$ser_lfs_code,
+   "ser_are_code" = ser$ser_emu_nameshort,
+   "ser_wkg_code" = "WGEEL",
+   "ser_ver_code" = case_when(ser$ser_dts_datasource =="dc_2019" ~ "ANG-2019-1",
+                              ser$ser_dts_datasource =="dc_2021" ~ "ANG-2021-1",
+                              ser$ser_dts_datasource =="dc_2022" ~ "ANG-2022-1",
+                              ser$ser_dts_datasource =="dc_2023" ~ "ANG-2023-1",
+                              ser$ser_dts_datasource =="dc_2024" ~ "ANG-2024-1",
+                              .default = "ANG-2018-1"),
+   "ser_cou_code" = ser$ser_cou_code,
+   "ser_hab_code" = NA,
+   "ser_gea_code" = ser$gea_issscfg_code,
+   "ser_fiw_code" = NA,
+   "ser_mon_code" = NA,
+   "ser_uni_code" = ser$ser_uni_code,
+   "ser_effort_uni_code" = ser$ser_effort_uni_code,
+   "ser_description" = ser$ser_comment,
+    "ser_locationdescription" = ser$ser_locationdescription,
+    "ser_wltyp_code" = case_when(ser$ser_hty_code == "T" ~ "T",
+                                 ser$ser_hty_code == "C" ~ "MC",
+                                 ser$ser_hty_code == "F" ~ "FW",
+                                 ser$ser_hty_code == "MO" ~ "MO"),
+    "ser_stocking" = ser$ser_restocking,
+    "ser_stockingcomment" = NA,
+    "ser_protocol" = ser$ser_method,
+    "ser_samplingstrategy" = NA,
+    "ser_datarightsholder" = NA,
+    "ser_datelastupdate" = '2025-06-09',
+    "geom" = ser$geom    
+  )
+
+res <- dbWriteTable(con_diaspara_admin, "t_series_ser_temp", 
+                    t_series_ser, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM  dateel.t_series_ser;")
+dbExecute(con_diaspara_admin, "INSERT INTO dateel.t_series_ser 
+SELECT 
+ ser_id::uuid,
+ ser_code,
+ ser_name,
+ ser_spe_code,
+ ser_lfs_code,
+ ser_are_code,
+ ser_wkg_code,
+ ser_ver_code,
+ ser_cou_code,
+ ser_hab_code,
+ ser_gea_code,
+ ser_fiw_code,
+ ser_mon_code,
+ ser_uni_code,
+ ser_effort_uni_code,
+ ser_description,
+ ser_locationdescription,
+ ser_wltyp_code,
+ ser_stocking,
+ ser_stockingcomment,
+ ser_protocol,
+ ser_samplingstrategy,
+ ser_datarightsholder,
+ ser_datelastupdate::date,
+ geom
+FROM t_series_ser_temp") # 279 
+
+sai <- dbGetQuery(con_wgeel_distant, "SELECT sai.* FROM datawg.t_samplinginfo_sai sai;
+")
+
+t_series_ser2 <-
+  data.frame(
+   "ser_id" = uuid::UUIDgenerate(n=nrow(sai)),
+   "ser_code" = sai$sai_id,
+    "ser_name"  = sai$sai_name,
+   "ser_spe_code" = "ANG",
+   "ser_lfs_code" = NA,
+   "ser_are_code" = NA, # TODO sai_emu_nameshort sai_area_division
+   "ser_wkg_code" = "WGEEL",
+   "ser_ver_code" = case_when(sai$sai_dts_datasource =="dc_2019" ~ "ANG-2019-1",
+                              sai$sai_dts_datasource =="dc_2021" ~ "ANG-2021-1",
+                              sai$sai_dts_datasource =="dc_2022" ~ "ANG-2022-1",
+                              sai$sai_dts_datasource =="dc_2023" ~ "ANG-2023-1",
+                              sai$sai_dts_datasource =="dc_2024" ~ "ANG-2024-1",
+                              .default = "ANG-2018-1"),
+   "ser_cou_code" = sai$sai_cou_code,
+   "ser_hab_code" = NA,
+   "ser_gea_code" = NA,
+   "ser_fiw_code" = NA,
+   "ser_mon_code" = NA,
+   "ser_uni_code" = NA,
+   "ser_effort_uni_code" = NA,
+   "ser_description" = sai$sai_comment,
+    "ser_locationdescription" = NA,
+    "ser_wltyp_code" = case_when(sai$sai_hty_code == "T" ~ "T",
+                                 sai$sai_hty_code == "C" ~ "MC",
+                                 sai$sai_hty_code == "F" ~ "FW",
+                                 sai$sai_hty_code == "MO" ~ "MO"),
+    "ser_stocking" = NA,
+    "ser_stockingcomment" = NA,
+    "ser_protocol" = sai$sai_protocol,
+    "ser_samplingstrategy" = sai$sai_samplingstrategy,
+    "ser_datarightsholder" = NA,
+    "ser_datelastupdate" = sai$sai_lastupdate,
+    "geom" = NA # no geom in this table  
+  )
+
+res <- dbWriteTable(con_diaspara_admin, "t_series_ser_temp2", 
+                    t_series_ser2, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO dateel.t_series_ser 
+SELECT 
+ ser_id::uuid,
+ ser_code,
+ ser_name,
+ ser_spe_code,
+ ser_lfs_code,
+ ser_are_code,
+ ser_wkg_code,
+ ser_ver_code,
+ ser_cou_code,
+ ser_hab_code,
+ ser_gea_code,
+ ser_fiw_code,
+ ser_mon_code,
+ ser_uni_code,
+ ser_effort_uni_code,
+ ser_description,
+ ser_locationdescription,
+ ser_wltyp_code,
+ ser_stocking,
+ ser_stockingcomment,
+ ser_protocol,
+ ser_samplingstrategy,
+ ser_datarightsholder,
+ ser_datelastupdate::date,
+ NULL
+FROM t_series_ser_temp2") # 252 
+
+```
 
 ## Creating  table dat.t_serannual_san
 

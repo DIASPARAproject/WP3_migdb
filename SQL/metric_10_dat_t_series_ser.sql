@@ -1,15 +1,11 @@
 --DROP TABLE IF EXISTS dat.t_series_ser CASCADE;
 
 CREATE TABLE dat.t_series_ser (
-  ser_svc_id uuid PRIMARY KEY,
-  CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_id)
-  REFERENCES ref.tr_seriesvocab_svc (svc_id) 
-  ON UPDATE CASCADE ON DELETE CASCADE,  
-  CONSTRAINT uk_ser_svc_id UNIQUE (ser_svc_id),
+  ser_id uuid PRIMARY KEY,
   ser_code text NOT NULL,
   CONSTRAINT uk_ser_code UNIQUE (ser_code),
   ser_name TEXT NOT NULL,
-  CONSTRAINT uk_ser_name UNIQUE (ser_name),
+  --CONSTRAINT uk_ser_name UNIQUE (ser_name),
   ser_spe_code TEXT NULL,
   CONSTRAINT fk_ser_spe_code FOREIGN KEY (ser_spe_code) 
   REFERENCES "ref".tr_species_spe(spe_code) 
@@ -74,7 +70,7 @@ COMMENT ON TABLE dat.t_series_ser IS 'Table of time series, or sampling data ide
 It can correspond to time series data or individual metrics collection or both. This table is inherited. It means that the data in ref is fed by
 the content of the tables in refeel, refnas, refbast... Note this table is joined to  StationDictionary, which contains elements about monitoring purpose (PURMP), stationGovernance, ProgramGovernance, 
 station_activefromdate, stationactiveuntildate, latitude, latituderange, longitude, longituderange, MSAT. Check that the table content is consistent';
-COMMENT ON COLUMN dat.t_series_ser.ser_svc_id IS 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
+COMMENT ON COLUMN dat.t_series_ser.ser_id IS 'UUID, identifier of the series, primary key';
 COMMENT ON COLUMN dat.t_series_ser.ser_code IS 'Code of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_name IS 'Name of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS 'Species, one of SAL, ELE, TRT, ALA, ALF, SLP, RLP  ... references ref.tr_species_spe, the species can be null but

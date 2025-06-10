@@ -1,9 +1,6 @@
 DROP TABLE IF EXISTS dateel.t_series_ser;
-CREATE TABLE dateel.t_series_ser (
-  CONSTRAINT fk_ser_svc_id FOREIGN KEY (ser_svc_id)
-   REFERENCES ref.tr_seriesvocab_svc (svc_id) 
-   ON UPDATE CASCADE ON DELETE RESTRICT,  
-  CONSTRAINT uk_ser_svc_id UNIQUE (ser_svc_id),
+CREATE TABLE dateel.t_series_ser ( 
+  CONSTRAINT pk_ser_id PRIMARY KEY (ser_id),
   CONSTRAINT uk_ser_code UNIQUE (ser_code),
   CONSTRAINT uk_ser_name UNIQUE (ser_name),
   CONSTRAINT fk_ser_spe_code FOREIGN KEY (ser_spe_code) 
@@ -49,7 +46,7 @@ ALTER TABLE dateel.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGEEL';
 
 COMMENT ON TABLE dateel.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
 It can correspond to time series data or individual metrics collection or both. This table is inherited from dat ';
-COMMENT ON COLUMN dat.t_series_ser.ser_svc_id IS 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
+COMMENT ON COLUMN dat.t_series_ser.ser_id IS 'UUID, identifier of the series, primary key';
 COMMENT ON COLUMN dat.t_series_ser.ser_code IS 'Code of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_name IS 'Name of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS 'Species, one of SAL, ELE, TRT, ALA, ALF, SLP, RLP  ... references ref.tr_species_spe, the species can be null but
