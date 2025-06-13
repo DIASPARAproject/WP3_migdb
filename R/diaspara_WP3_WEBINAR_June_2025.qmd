@@ -31,6 +31,50 @@ background-transition: fade
 editor: visual
 ---
 
+# Welcome to WP3 webinar/workshop!
+
+WP3 is about databases
+
+::::::: columns
+::: {.column .incremental width="25%"}
+## Habitat database
+- The habitat DB also corresponds to some of the dictionaries created for the stock DB.
+- including migration obstacles
+-   TODAYS TOPIC IS THIS
+:::
+
+::: {.column .incremental width="25%"}
+## Stock database
+-    This is the main database where we wish to put all unified data, details on the data structure coming out but still need validation from ICES.
+:::
+
+::: {.column .incremental width="25%"}
+## Metrics database  
+-   This database is part of the previous DB, using the same vocab, but the data structure is different. There is already a mapping by ICES of the data structure. The DB is currently in WGEEL (series + sampling) and we’ve release excel sheets to call for LHT with WP2.
+:::
+
+::: {.column .incremental width="25%"}
+## Electrofishing database
+
+-   
+:::
+:::::::
+
+# Everything is online
+
+Github timeline issues progress
+
+Diaspara website active updates https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
+
+![](images/clipboard-437899665.png)
+
+:::::
+
+# Common format for salmon, trout, and eel + other diad species
+
+
+
+
 # INTRODUCTION
 
 Why would we need another another database ?
@@ -42,7 +86,7 @@ Why would we need another another database ?
 :::
 
 ::: {.column .incremental width="50%"}
--   Integrating each database in ICES databases would take a lot of resources.
+-   Integrating each database separately in ICES databases would take a lot of resources.
 
 -   FAIR (Findability, Accessibility, Interoperability, Reusability).
 
@@ -305,6 +349,21 @@ digraph {
 -   Data call using DATSU 2027
 
 -   We need contacts
+
+## NEED TO SHOW
+
+Need to show: We have different dictionaries that are being produced. This will be PART of the dictionary at ICES: monitoring, stages, everything. AREA is part of vocab (In fact they already have some, but we will need to merge it
+
+## TIMELINE
+
+-   Link to the timeline:
+-   DIAGRAM
+
+## Today, we will focus on the habitat database
+
+-   Link to the timeline:
+-   DIAGRAM
+-   June to September: Integrating WGEEL data -WGEEL as test group (because we can complain to ourselves)
 
 ## Thank you!
 
