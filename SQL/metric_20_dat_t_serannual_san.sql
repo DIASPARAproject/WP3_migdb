@@ -1,14 +1,14 @@
 DROP TABLE IF EXISTS dat.t_serannual_san CASCADE;
 CREATE TABLE dat.t_serannual_san (
-san_svc_id UUID,
-CONSTRAINT fk_san_svc_id FOREIGN KEY (san_svc_id)
-  REFERENCES ref.tr_seriesvocab_svc (svc_id) 
+san_ser_id UUID,
+CONSTRAINT fk_san_ser_id FOREIGN KEY (san_ser_id)
+  REFERENCES dat.t_series_ser (ser_id) 
   ON UPDATE CASCADE ON DELETE CASCADE, 
 san_id SERIAL NOT NULL,
 CONSTRAINT c_uk_san_id UNIQUE (san_id, san_wkg_code),
 san_value NUMERIC NULL,
 san_year INTEGER NOT NULL,
-CONSTRAINT uk_san_year_svc UNIQUE(san_year, san_svc_id),
+CONSTRAINT uk_san_year_svc UNIQUE(san_year, san_ser_id),
 san_comment TEXT NULL, 
 san_effort NUMERIC NULL,
 san_datelastupdate DATE NOT NULL,
@@ -27,7 +27,7 @@ REFERENCES ref.tr_version_ver(ver_code)
 COMMENT ON TABLE dat.t_serannual_san IS 'Table of annual abundance data for series in dat.t_series_ser, these are recruitment or silver eel run data.  This table is inherited. It means that the data in dat is fed by
 the content of the tables in datfeel, datnas, datbast ';
 
-COMMENT ON COLUMN dat.t_serannual_san.san_svc_id IS 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
+COMMENT ON COLUMN dat.t_serannual_san.san_ser_id IS 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
 COMMENT ON COLUMN dat.t_serannual_san.san_id IS 'INTEGER, autoincremented, unique for one working group';
 COMMENT ON COLUMN dat.t_serannual_san.san_year IS 'Year of monitoring, note that for some of the series this corresponds to the main migration season, 
 For glass eel, months from september y-1 to august y should be denoted year y / For silver eel, months from june y to may y+1 should be denoted year y / For yellow eels, use the calendar year), see the series metadata for more details.';

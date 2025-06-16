@@ -609,7 +609,7 @@ knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover"
 #| code-summary: Code to show fishway table (to be imported in ICES vocab).
 #| tbl-cap: Fishway vocab proposed to ICES.
 
-habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
+habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_fishway_fiw;")
 knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
@@ -635,35 +635,19 @@ knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover"
 #| code-summary: Code to show fishway table (to be imported in ICES vocab).
 #| tbl-cap: Fishway vocab proposed to ICES.
 
-habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
+habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_monitoring_mon;")
 knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
 
+Series are linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
 
-### Creating series referential ref.ref_tr_seriesvocab_svc
-
-Series are created in ref. It's a vocabulary.
-They might be linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
-of an interannual sampling scheme for migratory fishes.
-It will be created a an UUID (unique by construction) and a code also unique.
-
-<details>
-
-<summary>SQL code to create tables</summary>
-
-``` {.sql include="../SQL/metric_00_ref_tr_seriesvocab_svc.sql"}
-```
-
-</details>
 
 
 :::{.callout-note appearance="simple"}
 ## QUESTION to DIASPARA
-There will be a need to harmonize the codes? Already those coming from
-sampling, series and salmon are different. See sql comment for ser_code
-above.
+Do we want a vocabulary there ? We started with, and removed it.
 :::
 
 
@@ -925,7 +909,7 @@ If so we need to decide what fields could change over time (if any)
 #| code-fold: TRUE
 #| code-summary: Code to import to to refeel.tr_series_ser
 
-ser <- dbGetQuery(con_wgeel_distant, "SELECT ser.*, gea_issscfg_code FROM datawg.t_series_ser ser JOIN ref.tr_gear_gea on gea_id = ser_sam_gear;
+ser <- dbGetQuery(con_wgeel_distant, "SELECT ser.*, gea_issscfg_code FROM datawg.t_series_ser ser LEFT JOIN ref.tr_gear_gea on gea_id = ser_sam_gear;
 ")
 
 res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_series_ser")
@@ -1008,7 +992,7 @@ SELECT
  ser_datarightsholder,
  ser_datelastupdate::date,
  geom
-FROM t_series_ser_temp") # 279 
+FROM t_series_ser_temp") # 294 
 
 sai <- dbGetQuery(con_wgeel_distant, "SELECT sai.* FROM datawg.t_samplinginfo_sai sai;
 ")
@@ -1103,10 +1087,85 @@ FROM t_series_ser_temp2") # 252
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_20_dateel_t_serannual_san.sql"}
+``` {.sql include="../SQL/metric_21_dateel_t_serannual_san.sql"}
 ```
 
 </details>
+
+
+## Import dateel.t_serannual_ser from datawg.t_dataseries_das WGEEL
+
+
+```{r dateel.t_serannual_ser}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to refeel.t_serannual_ser
+
+das0 <- dbGetQuery(con_wgeel_distant, "SELECT * FROM datawg.t_dataseries_das;
+")
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_serannual_san")
+clipr::write_clip(colnames(res))
+
+das0$das_dts_datasource[is.na(das0$das_dts_datasource)] <- "ANG-2016"
+das0$das_dts_datasource <- paste0(gsub(pattern = "dc_", replacement = "ANG-", x= das0$das_dts_datasource), "-1")
+das0$das_qal_id[is.na(das0$das_qal_id)] <- 1
+
+nrow(das0) # 6523
+das0 <- das0 |> filter(das0$das_qal_id <5)
+nrow(das0) # 6402
+
+ser <-  dbGetQuery(con_diaspara, "SELECT ser_id, ser_code FROM dateel.t_series_ser")
+ser0 <- dbGetQuery(con_wgeel_distant, "SELECT ser_id, ser_nameshort as ser_code FROM datawg.t_series_ser ser;")
+
+# adding ser_code to the series.
+das <- das0 |> rename(ser_id = das_ser_id) |>
+  inner_join(ser0) |> select(-ser_id) |> 
+  inner_join(ser)
+nrow(das) #6523
+
+t_serannual_san_temp <-
+  data.frame(
+    "san_ser_id" = das$ser_id,
+    "san_id" = das$das_id,
+    "san_value"=das$das_value,
+    "san_year" = das$das_year,
+    "san_comment" = das$das_comment,
+    "san_effort" = das$das_effort,
+    "san_datelastupdate" = das$das_last_update,
+    "san_qal_id" = das$das_qal_id,
+    "san_qal_comment" = das$das_qal_comment,
+    "san_wkg_code" = "WGEEL",
+    "san_ver_code" = das$das_dts_datasource)
+
+
+res <- dbWriteTable(con_diaspara_admin, "t_serannual_san_temp", 
+                    t_serannual_san_temp, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM  dateel.t_serannual_san;")
+dbExecute(con_diaspara_admin, "INSERT INTO dateel.t_serannual_san 
+SELECT 
+    san_ser_id::uuid,
+    san_id,
+    san_value,
+    san_year,
+    san_comment,
+    san_effort,
+    san_datelastupdate,
+    san_qal_id,
+    san_qal_comment,
+    san_wkg_code,
+    san_ver_code 
+FROM t_serannual_san_temp") # 6402
+
+
+
+ 
+
+``` 
+
 
 
 ## Creating table dat.tj_seriesstation_ses
@@ -1138,11 +1197,18 @@ FROM t_series_ser_temp2") # 252
 
 ## Creating table dateel.t_recruitmentmetadata_met
 
+The code was developped during [WKEELDATA6](https://doi.org/10.17895/ices.pub.29290463)
+Currently the table is not intended to be held in the db
+There is still work to be done on the area referential for eel (starting summer 2025).
+Some referentials are coming from the old db (emu, sampling type), and 
+is currently not transfered.
+
+
 <details>
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_13_dateel.t_recruitmentmetadata_met.sql"}
+``` {.sql include="../SQL/metric_14_dateel_t_recruitmentmetadata_met.sql"}
 ```
 
 </details>
@@ -1152,7 +1218,7 @@ FROM t_series_ser_temp2") # 252
 
 ## Creating group metrics (TODO)
 
-[TODO] 
+
 
 ## Creating ind metrics (TODO)
 
