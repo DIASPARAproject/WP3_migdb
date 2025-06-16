@@ -41,30 +41,44 @@ gantt
     start   :milestone, start, 2024-06-01, 0d
     Needs of ICES expert working groups #8 :done, 2024-06-01, until init
     Discuss interoperability and storage with ICES and GFM #9 :done, 2024-11-01, until init
-    Initial meeting   :milestone, init, 2024-11-25, 3d
+    Initial meeting   :milestone, init, 2024-11-25, 0d
     Analyse spatial structure :done, 2024-12-01, 5w
     WP2 Analysis of eel data :active, after init, until v1
-    section GIS DB
- 
     Get all data from different species  #6 :done, 2024-09-01, 7M
     Populate the DB using Hydro Atlas data  #7 :done, 2024-09-01, 7M
-    Populate DB using EU hydro #26 :active, 2025-02-01, 6M 
-    Export format Arrow & postgres #11 :active, 2025-02-01, until alpha
-    Beta release (basins)   :milestone, beta, 2025-03-15, 3d
-    Alpha release (hierarchy WGBAST)   :milestone, alpha, 2025-06-15, 3d
-    v 0.0.1 (rivers hierarchy WGNAS)   :milestone, v1, 2025-09-15, 3d
-    v 0.0.2 (eel)   :milestone, v2, 2026-03-01, 0d
+    Export format Arrow & postgres #11 :done, 2025-02-01, until alpha
+    Alpha release (basins)   :milestone, alpha, 2025-03-15, 3d
+
+    section Salmon 
 
 
-    section Validation
-    WGNAS habitat #22 :active, after alpha, until final
-    WGBAST habitat #21 :active, after alpha, until final
-    Validation meeting: milestone, valid, 2025-10-15, 3d
+
+    WGNAS habitat #22 :active, after alpha, until beta
+    WGBAST habitat #21 :active, after alpha, until beta
+    Beta0 release (hierarchy WGBAST+WGNAS)   :milestone, beta, 2025-06-15, 0d
+    Beta1 release (names WGBAST+WGNAS)   :milestone, beta, 2025-06-30, 3d
+    WGNAS validation :active, after beta, until beta2
+    WGBAST validation :active, after beta, until beta2
+    v 0.0.1 (WGNAS+WGBAST+WGEEL)   :milestone, v1,  2025-10-25, 0d
+
+    section Eel
+
+    Validation meeting: milestone, valid, 2025-06-17, 0d
+
+    WGEEL habitat #23 :active, after beta, until beta2
+    Beta2 release (WGEEL) :milestone, beta2, 2025-09-20, 0d
+    WGEEL validation :active, after beta2, until v1
+    v 0.0.1 (WGNAS+WGBAST+WGEEL)   :milestone, v1,  2025-10-25, 0d
+
+    Section ICES 
+
+    Release to ICES: active, after v1, until end
     Final meeting   :milestone, final, 2025-12-01, 0d
-    WGEEL habitat #23 :active, after v1, until v2
-    Release to ICES: active, after v2, until end
-
     End projet   :milestone, end, 2026-06-01, 0d
+
+    section EU hydro
+
+     Populate DB using EU hydro #26 :active, 2025-02-01, 6M 
 ```
 
 # Stock DB
@@ -145,32 +159,38 @@ gantt
 
     section Buid DB
     Beta version vocab (stockDB): milestone, betastock, 2025-06-01, 2d
-    Write simplied structure using WGEEL :crit, after betastock, until beta
-    Beta version (Metrics): milestone, beta, 2025-08-01, 2d
+    Write simplied structure using WGEEL :done, after betastock, until alpha
+    Alpha version (Metrics): milestone, alpha, 2025-06-15, 0d
 
+    section Eel
 
-    section Import
+    Test Import data WGEEL : after alpha, until beta
+    Beta version (Metrics): milestone, beta, 2025-06-28, 0d  
+    WGEEL data integration : 2025-09-08, 7d 
+    HABITAT DB beta2 release (WGEEL) :milestone, beta2, 2025-09-20, 0d
+    WGEEL  :  2025-09-29, 10d
+    WGEEL DB 2025: milestone, wgeel, 2025-10-06, 0d
+    Import data WGEEL : crit,  after wgeel, until v1
+    v 0.0.1 version (Metrics): milestone, v1, 2025-10-30, 0d
+    Final meeting: milestone, final, 2025-11-05, 3d
+    WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
 
-    Import data WGEEL : after beta, until alpha
-    Alpha version (Metrics): milestone, alpha, 2025-11-15, 2d
-    Final meeting:milestone, final, 2025-12-01, 3d
-    Import data WP2  : current, 2026-01-01, until end
+    section Salmon / Trutta
 
-    
+    Import data WP2  : current, after final, until end
+    Validate structure with WGNAS: after final, until end
+    Validate structure with WGBAST: after final, until end
+    Validate structure with WGTRUTTA: after final, until end
 
-    section validate
+    section ICES
 
+    Data exchange format: crit, after alpha, 1M
     Database structure with ICES: crit, after alpha, 1M
-    Validate structure with WGNAS: after alpha, until end
-    Validate structure with WGEEL: after alpha, until end
-    Validate structure with WGBAST: after alpha, until end
-    Validate structure with WGTRUTTA: after alpha, until end
-
     ICES Import to ICES db: crit, after final, until end
+    Create datacall WGEEL ... : crit, after end, 3M
 
     section shiny / R
 
-    WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
     Propose and adapt changes to shiny apps ... : crit, 2026-03-01, 6M
-    Create datacall WGEEL ... : crit, after end, 3M
+
 ```
