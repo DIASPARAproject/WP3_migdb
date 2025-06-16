@@ -1,5 +1,5 @@
 ---
-title: "Diaspara WP3 & WGBAST meeting 2025"
+title: "Diaspara WP3, 2025"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
 filters:
@@ -35,45 +35,17 @@ editor: visual
 
 WP3 is about databases
 
-::::::: columns
-::: {.column .incremental width="25%"}
-## Habitat database
-- The habitat DB also corresponds to some of the dictionaries created for the stock DB.
-- including migration obstacles
--   TODAYS TOPIC IS THIS
-:::
+ASK QUESTIONS IN THE CHAT
 
-::: {.column .incremental width="25%"}
-## Stock database
--    This is the main database where we wish to put all unified data, details on the data structure coming out but still need validation from ICES.
-:::
+Send us email: questions / feedback - we will add it on Github as an issue
 
-::: {.column .incremental width="25%"}
-## Metrics database  
--   This database is part of the previous DB, using the same vocab, but the data structure is different. There is already a mapping by ICES of the data structure. The DB is currently in WGEEL (series + sampling) and we’ve release excel sheets to call for LHT with WP2.
-:::
+# Frame: how are we working
 
-::: {.column .incremental width="25%"}
-## Electrofishing database
+Stock database: picture showing referentials (Cedric will sennd) Data from the different working groups
 
--   
-:::
-:::::::
+Example from the metric database example how it will be linked to different database
 
-# Everything is online
-
-Github timeline issues progress
-
-Diaspara website active updates https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
-
-![](images/clipboard-437899665.png)
-
-:::::
-
-# Common format for salmon, trout, and eel + other diad species
-
-
-
+Finally : we are working on the Vocab of habitat So the other databases are usingi this!
 
 # INTRODUCTION
 
@@ -95,6 +67,34 @@ Why would we need another another database ?
 -   Use of DATSU (quality insurance and checking procedures for data call).
 :::
 :::::
+
+# Four databases
+
+::::::: columns
+::: {.column .incremental width="25%"}
+-   HABITAT DATABASE
+-   The habitat DB also corresponds to some of the dictionaries created for the stock DB.
+-   including migration obstacles
+-   TODAYS TOPIC IS THIS
+:::
+
+::: {.column .incremental width="25%"}
+-   STOCK DATABASE
+-   This is the main database where we wish to put all unified data, details on the data structure coming out but still need validation from ICES.
+:::
+
+::: {.column .incremental width="25%"}
+-   METRICS DATABASE
+-   This database is part of the previous DB, using the same vocab, but the data structure is different. There is already a mapping by ICES of the data structure. The DB is currently in WGEEL (series + sampling) and we’ve release excel sheets to call for LHT with WP2.
+:::
+
+::: {.column .incremental width="25%"}
+-   ELECTROFISHING DATABASE
+-   Including freshwater data
+:::
+:::::::
+
+# Common format for salmon, trout, and eel + other diad species
 
 # OBJECTIVES
 
@@ -350,6 +350,16 @@ digraph {
 
 -   We need contacts
 
+# Everything is online
+
+Github timeline issues progress
+
+Diaspara website active updates https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
+
+![](images/clipboard-437899665.png)
+
+:::::
+
 ## NEED TO SHOW
 
 Need to show: We have different dictionaries that are being produced. This will be PART of the dictionary at ICES: monitoring, stages, everything. AREA is part of vocab (In fact they already have some, but we will need to merge it
@@ -358,6 +368,7 @@ Need to show: We have different dictionaries that are being produced. This will 
 
 -   Link to the timeline:
 -   DIAGRAM
+-   CEDRIC WILL SEND A SLDE ABOUT THIS
 
 ## Today, we will focus on the habitat database
 
