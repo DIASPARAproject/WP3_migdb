@@ -1,5 +1,5 @@
 ---
-title: "Diaspara WP3 & WGBAST meeting 2025"
+title: "Diaspara WP3, 2025"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
 filters:
@@ -9,8 +9,8 @@ title-slide-attributes:
   data-background-image: images/diaspara_background.png
   data-background-size: stretch
   data-background-opacity: "0.5"
-logo: images/diaspara_participants_logo.png
-footer: "DIASPARA WP3"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
 format: 
   revealjs :
     self-contained: true
@@ -31,6 +31,22 @@ background-transition: fade
 editor: visual
 ---
 
+# Welcome to WP3 webinar/workshop!
+
+WP3 is about databases
+
+ASK QUESTIONS IN THE CHAT
+
+Send us email: questions / feedback - we will add it on Github as an issue
+
+# Frame: how are we working
+
+Stock database: picture showing referentials (Cedric will sennd) Data from the different working groups
+
+Example from the metric database example how it will be linked to different database
+
+Finally : we are working on the Vocab of habitat So the other databases are usingi this!
+
 # INTRODUCTION
 
 Why would we need another another database ?
@@ -42,7 +58,7 @@ Why would we need another another database ?
 :::
 
 ::: {.column .incremental width="50%"}
--   Integrating each database in ICES databases would take a lot of resources.
+-   Integrating each database separately in ICES databases would take a lot of resources.
 
 -   FAIR (Findability, Accessibility, Interoperability, Reusability).
 
@@ -51,6 +67,34 @@ Why would we need another another database ?
 -   Use of DATSU (quality insurance and checking procedures for data call).
 :::
 :::::
+
+# Four databases
+
+::::::: columns
+::: {.column .incremental width="25%"}
+-   HABITAT DATABASE
+-   The habitat DB also corresponds to some of the dictionaries created for the stock DB.
+-   including migration obstacles
+-   TODAYS TOPIC IS THIS
+:::
+
+::: {.column .incremental width="25%"}
+-   STOCK DATABASE
+-   This is the main database where we wish to put all unified data, details on the data structure coming out but still need validation from ICES.
+:::
+
+::: {.column .incremental width="25%"}
+-   METRICS DATABASE
+-   This database is part of the previous DB, using the same vocab, but the data structure is different. There is already a mapping by ICES of the data structure. The DB is currently in WGEEL (series + sampling) and we’ve release excel sheets to call for LHT with WP2.
+:::
+
+::: {.column .incremental width="25%"}
+-   ELECTROFISHING DATABASE
+-   Including freshwater data
+:::
+:::::::
+
+# Common format for salmon, trout, and eel + other diad species
 
 # OBJECTIVES
 
@@ -305,6 +349,34 @@ digraph {
 -   Data call using DATSU 2027
 
 -   We need contacts
+
+# Everything is online
+
+Github timeline issues progress
+
+Diaspara website active updates https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
+
+![](images/clipboard-437899665.png)
+
+:::::
+
+## NEED TO SHOW
+
+Need to show: We have different dictionaries that are being produced. This will be PART of the dictionary at ICES: monitoring, stages, everything. AREA is part of vocab (In fact they already have some, but we will need to merge it
+
+## TIMELINE
+
+-   Link to the timeline:
+-   DIAGRAM
+-   CEDRIC WILL SEND A SLDE ABOUT THIS
+-   Show also Git timeline
+-   Dont worry we will get into this
+
+## Today, we will focus on the habitat database
+
+-   Link to the timeline:
+-   DIAGRAM
+-   June to September: Integrating WGEEL data -WGEEL as test group (because we can complain to ourselves)
 
 ## Thank you!
 

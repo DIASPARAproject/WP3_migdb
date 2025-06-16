@@ -1,0 +1,97 @@
+---
+title: "Diaspara WP3, 2025"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
+format: 
+  revealjs :
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+# Habitat
+
+WP3 is about databases
+
+## General structure of the habitat data
+
+## What is marine coastal, what is marine open, etc
+
+## WGBAST ang WGNAS
+
+-   JULES
+-   We ask if it is okay how we have done the split etc!?
+
+## WGEEL
+
+-   examples (Cedric)
+
+-   Split, examples. e.g. gulf of bothnia
+
+-   
+
+    ```         
+    EMU split - should they still follow WFD areas
+    ```
+
+-   How do we split the sea in a consistent way: We could show examples: showing different countries (Germany, PL, Estonia) how they handle the limitations, how could we unify this consistently
+
+## WGTRUTTA
+
+-   examples (Cedric)
+-   For WGTRUTTA: theyre using an app to do a manual edition of the basins using periclis software, they also have this big database structure where they want to gather information on the population. Think of something how we could work with them! (Check their presentation)
+-   work that has been done by Andrew
+-   Flow!
+-   More discussions on how to incorporate the WGTRUTTA work
+
+## Other migratory species
+
+DIADSEA. Future collaboration opportunities
+
+![](images/clipboard-4112571689.png){width="468"}
+
+![](images/clipboard-4003305238.png){width="505"}
+
+## Opinions?
+
+-   Validate spatial structure
+-   the structure might be different for different species
+-   Starting from wide area to lower level: question how do we split
+
+## Thank you!
+
+Last hour (and more if needed) open for discussion
+
+We want to have people go into the WG and come back with it
+
+emails:
+
+Webpage!
+
+## Feedback
+
+Webinar questions: we will collate and add answers to the HTML
+
+SHOW TIMELINES! Habitat first, then REMIND THERE IS OTHERS TOO
