@@ -9,8 +9,8 @@ title-slide-attributes:
   data-background-image: images/diaspara_background.png
   data-background-size: stretch
   data-background-opacity: "0.5"
-logo: images/diaspara_participants_logo.png
-footer: "DIASPARA WP3"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
 format: 
   revealjs :
     self-contained: true
