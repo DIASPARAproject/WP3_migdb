@@ -9,8 +9,8 @@ title-slide-attributes:
   data-background-image: images/diaspara_background.png
   data-background-size: stretch
   data-background-opacity: "0.5"
-logo: images/diaspara_participants_logo_withEUlogo.png
-footer: ""
+logo: images/diaspara_participants_logo.png
+footer: "DIASPARA WP3"
 format: 
   revealjs :
     self-contained: true
@@ -368,7 +368,7 @@ Need to show: We have different dictionaries that are being produced. This will 
 
 -   Link to the timeline:
 -   DIAGRAM
--   CEDRIC WILL SEND A SLDE ABOUT THIS
+-   CEDRIC WILL SEND A SLDE ABOUT THIS-
 -   Show also Git timeline
 -   Dont worry we will get into this
 
