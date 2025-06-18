@@ -31,21 +31,22 @@ background-transition: fade
 editor: visual
 ---
 
-# Welcome to WP3 webinar/workshop!
+# Welcome to WP3 (DATABASES) webinar/workshop!
 
-WP3 is about databases
+::::: columns
+::: {.column .incremental width="50%"}
+-   Overall presentation first
+-   Then focus on "Habitat" data
+:::
 
-ASK QUESTIONS IN THE CHAT
-
-Send us email: questions / feedback - we will add it on Github as an issue
-
-# Frame: how are we working
-
-Stock database: picture showing referentials (Cedric will sennd) Data from the different working groups
-
-Example from the metric database example how it will be linked to different database
-
-Finally : we are working on the Vocab of habitat So the other databases are usingi this!
+::: {.column .incremental width="50%"}
+-   Ask questions in the chat
+-   Discussion after
+-   We will also add questions and answers to Diaspara website
+-   Github issues
+-   Email
+:::
+:::::
 
 # INTRODUCTION
 
@@ -55,16 +56,27 @@ Why would we need another another database ?
 ::: {.column .incremental width="50%"}
 -   WGEEL, WGBAST and WGNAS (+WGTRUTTA) have each developed their own databases.
 -   These need to be maintained in the long term.
+-   Other diadromous species in the future?
 :::
 
 ::: {.column .incremental width="50%"}
 -   Integrating each database separately in ICES databases would take a lot of resources.
+-   Easier and more reasonable to create AND host
+-   Great collaboration with ICES Data Center
+:::
+:::::
 
+# Frameworks for assessment
+
+::::: columns
+::: {.column .incremental width="50%"}
 -   FAIR (Findability, Accessibility, Interoperability, Reusability).
-
 -   Use of TAF (Transparent assessment Framework).
-
 -   Use of DATSU (quality insurance and checking procedures for data call).
+:::
+
+::: {.column width="50%"}
+![](images/bycexample.JPG)
 :::
 :::::
 
@@ -72,43 +84,58 @@ Why would we need another another database ?
 
 ::::::: columns
 ::: {.column .incremental width="25%"}
--   HABITAT DATABASE
+**STOCK DATABASE**
+
+-   This is the main database
+-   All unified data
+-   Data from models etc.
+-   Details on the data structure coming
+-   Validation from ICES
+:::
+
+::: {.column .incremental width="25%"}
+**METRICS DATABASE**
+
+-   Benefiting from the DBEEL, using similar vocab (series + sampling)
+-   There is already a mapping by ICES of the data structure.
+-   Excel sheets to call for LHT with WP2.
+:::
+
+::: {.column .incremental width="25%"}
+**ELECTROFISHING DATABASE**
+
+-   Link to Habitat database
+-   Catch in freshwater data
+-   Work in the autumn
+:::
+
+::: {.column .incremental width="25%"}
+**HABITAT DATABASE**
+
+-   Vocab. of habitat: other databases are using this
 -   The habitat DB also corresponds to some of the dictionaries created for the stock DB.
--   including migration obstacles
--   TODAYS TOPIC IS THIS
-:::
-
-::: {.column .incremental width="25%"}
--   STOCK DATABASE
--   This is the main database where we wish to put all unified data, details on the data structure coming out but still need validation from ICES.
-:::
-
-::: {.column .incremental width="25%"}
--   METRICS DATABASE
--   This database is part of the previous DB, using the same vocab, but the data structure is different. There is already a mapping by ICES of the data structure. The DB is currently in WGEEL (series + sampling) and we’ve release excel sheets to call for LHT with WP2.
-:::
-
-::: {.column .incremental width="25%"}
--   ELECTROFISHING DATABASE
--   Including freshwater data
+-   Later: including migration obstacles
 :::
 :::::::
 
-# Common format for salmon, trout, and eel + other diad species
+# Important to remember!
 
-# OBJECTIVES
+-   We are producing different dictionaries
+-   These will be used at ICES (for *everything*)
+-   AREA (Habitat) is part of the vocabulary
 
-We intend to build a common database structure (same referentials several DB to store)
+# Everything is online
 
--   Data from models at the scale of the management unit (WGEEL, WGNAS, WGBAST)
+::::: columns
+::: {.column .incremental width="50%"}
+-   Github timeline issues progress
+-   <https://diaspara.bordeaux-aquitaine.inrae.fr/>
+:::
 
--   Continental habitat in support of ICES (e.g. landings in continental habitats) (WGEEL, WGNAS, WGBAST, WGTRUTTA)
-
--   Individual and group metrics, series of data
-
--   DB for dams/migration obstacles
-
--   DB of Electrofishing
+::: {.column .incremental width="50%"}
+![](images/clipboard-3215351918.png)
+:::
+:::::
 
 # General structure of the DB
 
@@ -133,11 +160,12 @@ digraph DatabaseRelations {
 }
 ```
 
-# DATA AND REFERENTIALS
+
+# Referentials
 
 ```{dot}
-//| label: fig-schema_diaspara
-//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
+
+
 digraph schema {
 	rankdir=TB;
 	size="8,5"
@@ -254,134 +282,40 @@ digraph schema {
 }
 ```
 
-# GENERAL STRUCTURE OF THE HABITAT DB
-
-```{dot}
-digraph {
-    //rankdir=TB; // Top-to-bottom orientation
-    compound=true;
-    newrank=true;
-    A [label="Celtic Seas", shape=box];
-    B [label="Greater North Sea", shape=box];
-    C [label="Baltic", shape=box];
-    D [label="FR", shape=ellipse];
-    E [label="ES", shape=ellipse];
-    F [label="SE", shape=ellipse];
-    G [label="Hydroshed | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-    H [label="EU-Hydro | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-    L [label="National | Topo | Habitat | Eel | Salmon | Trout", shape=box];
-
-    subgraph clusterA {
-      label = "Hydroshed, EU-Hydro";
-      style=dashed;
-      color=black;
-      A;
-      B;
-      C;
-    }
-
-    subgraph clusterB {
-      label = "Country, regions, EMU, ICES divisions, Stock Units";
-      style=dashed;
-      color=black;
-      D;
-      E;
-      F;
-    }
-
-    
-    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
-    E -> G,H [ltail=clusterB];
-
-    I [label="Salmon River / Stock units", shape=box];
-    J [label="Fishing areas", shape=box];
-    K [label="EMU (Eel Managment Unit)", shape=box];
-
-
-    {rank=same;D;E;F;}
-    {rank=same;A;B;C;I;J;K}
-    {rank=same;G;H;L;} 
-
-    subgraph clusterC {
-      label = "";
-      style=dashed;
-      color=black;
-      I;
-      J;
-      K;
-    }
-
-    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
-    //L -> H [style=invis]
-}
-
-```
-
-## Splitting per ICES Ecoregion
-
-![All Catchments corresponding to ICES ecoregions, source of the catchments hydrosheds.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
-
-## Summary - Benefits for the WG
+# Summary - Benefits for the WG's
 
 -   Work with ICES tools (DATSU, DB, data calls)
 -   Data calls using Shiny / Datsu
--   DB manager (at ICES?) can handle all migratory species
+-   DB manager at ICES can handle all migratory species
 -   One shiny instead of two / three
 -   People moving between WGs know the data & Inter-WG Collaboration
--   Direct access to WGBAST-\> modeling
 -   Potential for spatial models: available habitat, scenarios, etc.
--   Please contact us, read our reports and let us know. We'll be giving a presentation of the WP3 package work soon. <https://projets_eabx.pages.mia.inra.fr/diaspara/workpackage3.html>
-
-## FUTURE WORK
-
--   Habitat DB beta version release in ZENODO https://zenodo.org/records/14726599
-
--   Relase hierarchy in the Baltic before this summer
-
--   Vocab of the rivers for you to check and work with us this summer
-
--   Release stock DB this summer
-
--   Integrate excel data (young fish + landings)
-
--   Import to database from Nimble variables using R code from WGNAS
-
--   Data call using DATSU 2027
-
--   We need contacts
-
-# Everything is online
-
-Github timeline issues progress
-
-Diaspara website active updates https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
-
-![](images/clipboard-437899665.png)
-
-:::::
-
-## NEED TO SHOW
-
-Need to show: We have different dictionaries that are being produced. This will be PART of the dictionary at ICES: monitoring, stages, everything. AREA is part of vocab (In fact they already have some, but we will need to merge it
 
 ## TIMELINE
 
--   Link to the timeline:
--   DIAGRAM
--   CEDRIC WILL SEND A SLDE ABOUT THIS
--   Show also Git timeline
--   Dont worry we will get into this
+::::: columns
+::: {.column width="50%"}
+-   Link to the timeline: https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html 
+-   (Dont worry we will get into this later) 
+:::
+
+::: {.column .incremental width="50%"}
+-   Habitat DB beta version release in ZENODO https://zenodo.org/records/14726599
+-   Dictionaries and all work: more releases in the summer, comments from the users wanted
+-   June to September: Integrating WGEEL data -WGEEL as test group (because we can complain to ourselves)
+-   Data call using DATSU in 2026 (Eel) 2027 (Salmon)
+:::
+:::::
+
 
 ## Today, we will focus on the habitat database
 
--   Link to the timeline:
--   DIAGRAM
--   June to September: Integrating WGEEL data -WGEEL as test group (because we can complain to ourselves)
-
-## Thank you!
+Thank you!
 
 :::: columns
 ::: {.column .incremental width="40%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-547729593.png)
 :::
+https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html  
+
 ::::

@@ -1,5 +1,5 @@
 ---
-title: "Diaspara WP3, 2025"
+title: "Diaspara WP3, HABITAT presentation 2025"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
 filters:
@@ -31,13 +31,72 @@ background-transition: fade
 editor: visual
 ---
 
-# Habitat
-
-WP3 is about databases
-
 ## General structure of the habitat data
 
-## What is marine coastal, what is marine open, etc
+```{dot}
+digraph {
+    //rankdir=TB; // Top-to-bottom orientation
+    compound=true;
+    newrank=true;
+    A [label="Celtic Seas", shape=box];
+    B [label="Greater North Sea", shape=box];
+    C [label="Baltic", shape=box];
+    D [label="FR", shape=ellipse];
+    E [label="ES", shape=ellipse];
+    F [label="SE", shape=ellipse];
+    G [label="Hydroshed | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    H [label="EU-Hydro | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+    L [label="National | Topo | Habitat | Eel | Salmon | Trout", shape=box];
+
+    subgraph clusterA {
+      label = "Hydroshed, EU-Hydro";
+      style=dashed;
+      color=black;
+      A;
+      B;
+      C;
+    }
+
+    subgraph clusterB {
+      label = "Country, regions, EMU, ICES divisions, Stock Units";
+      style=dashed;
+      color=black;
+      D;
+      E;
+      F;
+    }
+
+    
+    B -> E [ltail=clusterA,lhead=clusterB,minlen=2];
+    E -> G,H [ltail=clusterB];
+
+    I [label="Salmon River / Stock units", shape=box];
+    J [label="Fishing areas", shape=box];
+    K [label="EMU (Eel Managment Unit)", shape=box];
+
+
+    {rank=same;D;E;F;}
+    {rank=same;A;B;C;I;J;K}
+    {rank=same;G;H;L;} 
+
+    subgraph clusterC {
+      label = "";
+      style=dashed;
+      color=black;
+      I;
+      J;
+      K;
+    }
+
+    K -> A [ltail=clusterC,lhead=clusterA,minlen=4];
+    //L -> H [style=invis]
+}
+
+```
+
+## Splitting per ICES Ecoregion
+
+![All Catchments corresponding to ICES ecoregions, source of the catchments hydrosheds.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
 
 ## WGBAST ang WGNAS
 
@@ -49,13 +108,7 @@ WP3 is about databases
 -   examples (Cedric)
 
 -   Split, examples. e.g. gulf of bothnia
-
--   
-
-    ```         
-    EMU split - should they still follow WFD areas
-    ```
-
+-   EMU split: should they still follow WFD areas
 -   How do we split the sea in a consistent way: We could show examples: showing different countries (Germany, PL, Estonia) how they handle the limitations, how could we unify this consistently
 
 ## WGTRUTTA
@@ -66,32 +119,41 @@ WP3 is about databases
 -   Flow!
 -   More discussions on how to incorporate the WGTRUTTA work
 
-## Other migratory species
+# Other migratory species
 
-DIADSEA. Future collaboration opportunities
+Future collaboration opportunities, e.g., DIADSEA, DIADES.
 
-![](images/clipboard-4112571689.png){width="468"}
-
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-4112571689.png){width="505"}
+:::
+::: {.column .incremental width="50%"}
 ![](images/clipboard-4003305238.png){width="505"}
+:::
+:::::
 
-## Opinions?
+# Opinions
 
 -   Validate spatial structure
 -   the structure might be different for different species
--   Starting from wide area to lower level: question how do we split
+-   Starting from wide area to lower level. The question is: how do we split
+-   Definitions at WG's: What is marine coastal, what is marine open, etc.
+
+# Timelines
+
+https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
 
 ## Thank you!
 
-Last hour (and more if needed) open for discussion
+We want a lot of feedback!
+From you, your working groups, etc.
 
-We want to have people go into the WG and come back with it
+"Cédric Briand" <cedric.briand@eaux-et-vilaine.bzh>
+"Jules Oliviero" <jules.oliviero@inrae.fr>
+"Jani Helminen" <jani.helminen@luke.fi>
 
-emails:
+Webinar questions: we will collate and add answers to the HTML (on webpage)
 
-Webpage!
+# Last hour (and more if needed) open for discussion
 
-## Feedback
 
-Webinar questions: we will collate and add answers to the HTML
-
-SHOW TIMELINES! Habitat first, then REMIND THERE IS OTHERS TOO
