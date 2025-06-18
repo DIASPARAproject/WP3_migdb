@@ -202,10 +202,11 @@ Would you agree that if the database is built, a query to detailed table should 
 ::::{.answerbox-header}
 ::::{.answerbox-icon}
 ::::
-WGTRUTTA Answer (Iain Malcolm)
+WGTRUTTA Answer (Iain Malcolm)12000000000/40
 ::::
 ::::{.answerbox-body}
 Not sure what you mean here. However, I think information on observations, years and data timespan can be generates from the data themselves.
+
 > DIASPARA : Yes this is what we meant there. That this kind of information should be contained in the database already.
 ::::
 :::
@@ -767,6 +768,7 @@ WGTRUTTA Comment (Iain Malcolm)
 ::::{.answerbox-body}
 This looks like site level data to me. It isn’t going to be time varying
 This will be the critical data that we use to describe habitat for forthcoming juvenile work, extracted from the Andrew and Phil Digital River Network
+::::
 :::
 
 
@@ -1164,7 +1166,8 @@ WGTRUTTA Comment (Iain Malcolm)
 ::::
 ::::{.answerbox-body}
 For WGTRUTTA moving forwards we are envisaging the need to record fish counts by electrofishing pass (sweep) and potentially also some methodological metadata on the collection method and the Teams collecting the data. This is to properly model the capture probability  Modelling capture probability of Atlantic salmon (Salmo salar) from a diverse national electrofishing dataset: Implications for the estimation of abundance - ScienceDirect
-> OK that's clear, I guess this is for the electrofishing database.
+
+> DIASPARA : OK that's clear, I guess this is for the electrofishing database.
 ::::
 :::
 
@@ -1177,6 +1180,7 @@ WGTRUTTA Comment (Iain Malcolm)
 ::::
 ::::{.answerbox-body}
 It looks like you are identifying that the current table includes information on VisitID (i.e. the specific sampling site visit). In the Marine Directorate databases we have different tables for the individual fish data / counts, the Site table (location information) and Site Visit (dates, times, site measurements etc).
+
 > DIASPARA Yes agreed electrofishing data will be structured like this.
 ::::
 :::

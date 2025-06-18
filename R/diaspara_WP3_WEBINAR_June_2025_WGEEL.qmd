@@ -1,0 +1,631 @@
+---
+title: "Diaspara WP3, 2025"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
+format: 
+  revealjs :
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+# 
+
+## WGEEL
+
+```{dot}
+//| label: fig-area_hierarchy_eel
+
+digraph {
+    compound=true;
+    newrank=true;
+    rankdir="LR";
+
+    subgraph clusterZ {
+      label = Stock
+      style=full
+      color=black
+      center=true
+
+      subgraph clusterA {
+        label = "Inland Stock"
+        style=full
+        color=green
+        fontcolor=green
+        center=true
+
+        subgraph clusterB {
+        label = Assessment_unit
+        style=full
+        color=green3
+        fontcolor=green3
+        center=true
+
+          subgraph clusterC {
+          label = River
+          style=full
+          color=green2
+          fontcolor=green2
+          center=true
+                
+            subgraph clusterD {
+            label = River_section
+            style=full
+            color=green1
+            fontcolor=green1
+              section [
+              label=data,
+              shape=box, 
+              style =invis
+              ]  
+            }
+          }
+        }
+ 
+        subgraph clusterE{
+        label=Country
+        style=dashed
+        color=firebrick
+        fontcolor=firebrick
+        center=true
+        
+            subgraph clusterK{
+          label=EMU
+          style=dashed
+          color=firebrick2
+          fontcolor=firebrick2
+            Fishing [
+            style=invis
+            ]
+          }
+        }
+      }
+
+      subgraph clusterF {
+      label = "Marine Stock"
+      style=full
+      color=royalblue4
+      fontcolor=royalblue4
+      center=true
+
+        subgraph clusterG {
+        label = Subarea
+        style=full
+        color=royalblue3
+        fontcolor=royalblue3
+        center=true
+
+          subgraph clusterH {
+          label = Division
+          style=full
+          color=royalblue2
+          fontcolor=royalblue2
+          center=true
+                
+            subgraph clusterI {
+            label = Assessment_unit
+            style=full
+            color=royalblue
+            fontcolor=royalblue
+              here [
+              label=data,
+              shape=box, 
+              style =invis
+              ]  
+            }
+          }
+        }   
+      }
+    }
+    section -> Fishing -> here [style=invis];
+}
+         
+```
+
+# DETAILS OF PROBLEMS / Work
+
+-   Sample case for Germany, Spain, the Netherlands.
+
+-   Integration of transitional habitats within Marine.
+
+-   Consistency of basins vs Marine (example Spain).
+
+-   Grouping of WISE units in the wider model ?
+
+## WGTRUTTA : habitat referential
+
+::: {.callout-tip appearance="simple"}
+## Sampling could be consistent with Basin / segment id hydroshed db.
+
+The following structure shows a simplified version of the relation between site id and wider level.
+:::
+
+```{dot}
+//| fig-cap: Habitat db structure.
+
+digraph G {
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+graph [
+rankdir = "LR"
+]  ;
+node [
+fontsize = "16"
+shape = "record"
+];
+edge [ ];
+subgraph global {
+label = "general information";
+style=dashed;
+color=black;
+cluster=true;
+"sampling" [
+label = "sampling table | <f0> sampling id | <f1> \<site id\> | <f2> country |  method | protocol |comment | public status"
+shape = "record"
+style=filled,
+fillcolor=chocolate
+];
+"site" [
+label = "site table | <f0> \<site id\> | <f1> \<river id\> | geom"
+shape = "record"
+];
+
+"river" [
+label = "river table | <f0> \<river id\> | <f1> \<basin id\> | geom"
+shape = "record"
+];
+
+"basin" [
+label = "basin table |<f0> \<basin id\> | geom"
+shape = "record"
+];
+
+"country" [
+label = "country table | <f0> \<country id\> "
+shape = "record"
+];
+   
+sampling:f1 -> site:f0 ;
+site:f1 -> river:f0;
+river:f1 -> basin:f0 ;
+sampling:f2 -> country:f0;
+
+
+  }
+}
+```
+
+## WGTRUTTA : basin edition (Andrew)
+
+::: {.callout-tip appearance="simple"}
+## Further work on the EU hydro.
+
+There is a lot more precise information on flow, we are waiting for your input.
+:::
+
+## WGTRUTTA : electrofishing
+
+-   We still need to work on proposing a DB
+-   The current structure of the schema is described here.
+
+```{dot}
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];	
+       stationDictionary [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.StationDictionary</b> </td> </tr>
+       <tr> <td align="left">
+        sta_code (integer)  <br align="left"/>
+        sta_activefromdate date <br align="left"/>
+        sta_activeuntildate date </td> </tr> 
+       </table>> 
+       shape = Msquare];
+    ts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.series</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id <br align="left"/>
+        ...    </td> </tr> 
+       </table>> 
+       shape = record];
+    metts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b> ?? dat.metadata-series ??</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       ...     </td> </tr> 
+       </table>> 
+       shape = folder];
+   ann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year  <br align="left"/>  
+       ...   </td> </tr> 
+       </table>> 
+       shape = record];    
+   groupmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year   <br align="left"/>
+       mean size <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   fish [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.fish</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       fi_id   <br align="left"/>
+       x   <br align="left"/>
+       y   <br align="left"/>
+       date <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   indmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       fi_id  <br align="left"/>
+       metric_id  <br align="left"/>
+       value  <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = record];
+   metrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.metric</b> </td> </tr>
+       <tr> <td align="left">     
+       metric_id (length, weight..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record];             
+   tseel [fillcolor="pink"
+       label="dateel.series"
+       shape = table];   
+   mettseel [fillcolor="pink"
+       label="dateel.metadata-series"
+       shape = folder];
+   anneel [fillcolor="pink"
+       label="dat.annual-series"
+       shape = record]; 
+   groupmetricseel [fillcolor="pink"
+       label="dateel.groupmetrics"
+       shape = record];  
+   indmetricseel [fillcolor="pink"
+       label="dateel.indmetrics"
+       shape = record]; 
+   fisheel [fillcolor="pink"
+       label="dateel.fish"
+       shape = record];        
+   tstrutta [fillcolor="limegreen"
+       label="dattrutta.series"
+       shape = table];   
+   mettstrutta [fillcolor="limegreen"
+       label="dattrutta.metadata-series"
+       shape = folder];
+   indmetricstrutta [fillcolor="limegreen"
+       label="dattrutta.indmetrics"
+       shape = record]; 
+   fishtrutta [fillcolor="limegreen"
+       label="dattrutta.fish"
+       shape = record]; 
+
+  metts  -> ts [label = "1:1"]
+  metts -> stationDictionary  [label = "1:1"]
+  groupmetrics -> ann -> ts [label = "n:1"]
+  indmetrics -> fish -> ts [label = "n:1"]
+  indmetrics -> metrics
+
+  groupmetricseel -> metanneel [label = "n:1"]
+  anneel -> tseel [label = "n:1"]
+  mettseel -> tseel [label = "1:1"]
+  indmetricseel -> fisheel -> tseel  [label = "n:1"]
+  
+
+  mettstrutta -> tstrutta [label = "1:1"]
+  indmetricstrutta -> fishtrutta -> tstrutta  [label = "n:1"]
+
+  groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
+  indmetricseel -> indmetrics [label="inherits", style="dashed"]
+  indmetricstrutta -> indmetrics [label="inherits", style="dashed"]
+  fisheel -> fish [label="inherits", style="dashed"]
+  fishtrutta -> fish [label="inherits", style="dashed"] 
+  anneel -> ann [ label="inherits", style="dashed"]
+  tseel -> ts [ label="inherits", style="dashed"]
+  tstrutta -> ts [ label="inherits", style="dashed", labelOverlay="15%"]
+  mettseel -> metts [label="inherits", style="dashed"]
+  mettstrutta -> metts [ label="inherits", style="dashed"]
+
+  // make the same rank
+
+  {rank = same; tseel;tstrutta}
+}
+```
+
+## WGTRUTTA : electrofishing
+
+-   A simple solution would be to integrate the site it in group or individual metrics.
+
+```{dot}
+digraph schema {
+	rankdir=TB;
+	size="8,5"
+    node [style=filled, fillcolor=gray, shape = record];	
+      
+    ts [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.series</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id <br align="left"/>
+        ...    </td> </tr> 
+       </table>> 
+       shape = record];
+      site [fillcolor="cyan"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.site</b> </td> </tr>
+       <tr> <td align="left">
+        ser_id <br align="left"/>
+        ...    </td> </tr> 
+       </table>> 
+       shape = record];
+   ann [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.annual-series</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       site_id  <br align="left"/>
+       year  <br align="left"/>  
+       ...   </td> </tr> 
+       </table>> 
+       shape = record];    
+   groupmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       year   <br align="left"/>
+       mean size <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   fish [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.fish</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       site_id  <br align="left"/>
+       fi_id   <br align="left"/>
+       x   <br align="left"/>
+       y   <br align="left"/>
+       date <br align="left"/>
+       ... </td> </tr> 
+       </table>> 
+       shape = record];
+   indmetrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
+       <tr> <td align="left">
+       fi_id  <br align="left"/>
+       metric_id  <br align="left"/>
+       value  <br align="left"/> </td> </tr> 
+       </table>> 
+       shape = record];
+   metrics [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.metric</b> </td> </tr>
+       <tr> <td align="left">     
+       metric_id (length, weight..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record];             
+  
+
+   groupmetricstrutta [fillcolor="limegreen"
+       label="dattrutta.groupmetrics"
+       shape = record];  
+  
+   tstrutta [fillcolor="limegreen"
+       label="dattrutta.series"
+       shape = table];   
+   mettstrutta [fillcolor="limegreen"
+       label="dattrutta.metadata-series"
+       shape = folder];
+   indmetricstrutta [fillcolor="limegreen"
+       label="dattrutta.indmetrics"
+       shape = record]; 
+   fishtrutta [fillcolor="limegreen"
+       label="dattrutta.fish"
+       shape = record]; 
+
+
+
+  groupmetrics -> ann -> site -> ts [label = "n:1"]
+  indmetrics -> fish -> site [label = "n:1"]
+  indmetrics -> metrics
+ 
+
+  mettstrutta -> tstrutta [label = "1:1"]
+  indmetricstrutta -> fishtrutta -> tstrutta  [label = "n:1"]
+  groupmetricstrutta -> groupmetrics [label="inherits", style="dashed"]
+  indmetricstrutta -> indmetrics [label="inherits", style="dashed"]
+  fishtrutta -> fish [label="inherits", style="dashed"] 
+  tstrutta -> ts [ label="inherits", style="dashed", labelOverlay="15%"]
+
+
+
+
+}
+```
+
+## WGTRUTTA : electrofishing
+
+-   We will also develop an electrofishing db
+
+## Other migratory species
+
+DIADSEA. Future collaboration opportunities
+
+![](images/clipboard-4112571689.png){width="468"}
+
+![](images/clipboard-4003305238.png){width="505"}
+
+## Opinions?
+
+-   Validate spatial structure
+-   the structure might be different for different species
+-   Starting from wide area to lower level: question how do we split
+
+# Some insight on the timelines (HABITAT)
+
+```{mermaid}
+gantt
+    title Habitat database project timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m
+    todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
+
+
+    section Build river referentials
+
+
+
+    section Needs / format
+    start   :milestone, start, 2024-06-01, 0d
+    Needs of ICES expert working groups #8 :done, 2024-06-01, until init
+    Discuss interoperability and storage with ICES and GFM #9 :done, 2024-11-01, until init
+    Initial meeting   :milestone, init, 2024-11-25, 0d
+    Analyse spatial structure :done, 2024-12-01, 5w
+    WP2 Analysis of eel data :active, after init, until v1
+    Get all data from different species  #6 :done, 2024-09-01, 7M
+    Populate the DB using Hydro Atlas data  #7 :done, 2024-09-01, 7M
+    Export format Arrow & postgres #11 :done, 2025-02-01, until alpha
+    Alpha release (basins)   :milestone, alpha, 2025-03-15, 3d
+
+    section Salmon 
+
+
+
+    WGNAS habitat #22 :active, after alpha, until beta
+    WGBAST habitat #21 :active, after alpha, until beta
+    Beta0 release (hierarchy WGBAST+WGNAS)   :milestone, beta, 2025-06-15, 0d
+    Beta1 release (names WGBAST+WGNAS)   :milestone, beta, 2025-06-30, 3d
+    WGNAS validation :active, after beta, until beta2
+    WGBAST validation :active, after beta, until beta2
+    v 0.0.1 (WGNAS+WGBAST+WGEEL)   :milestone, v1,  2025-10-25, 0d
+
+    section Eel
+
+    Validation meeting: milestone, valid, 2025-06-17, 0d
+
+    WGEEL habitat #23 :active, after beta, until beta2
+    Beta2 release (WGEEL) :milestone, beta2, 2025-09-20, 0d
+    WGEEL validation :active, after beta2, until v1
+    v 0.0.1 (WGNAS+WGBAST+WGEEL)   :milestone, v1,  2025-10-25, 0d
+
+    Section ICES 
+
+    Release to ICES: active, after v1, until end
+    Final meeting   :milestone, final, 2025-12-01, 0d
+    End projet   :milestone, end, 2026-06-01, 0d
+
+    section EU hydro
+
+     Populate DB using EU hydro #26 :active, 2025-02-01, 6M 
+```
+
+# Some insight on the timelines (METRICDB)
+
+```{mermaid}
+    gantt
+    title Stock DB Timeline
+    dateFormat  YYYY-MM-DD
+    todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
+
+    section Collect data and needs
+    Needs of ICES expert working groups #8 :done, 2024-06-01, until init
+    Link with RDBES/ICES/GFCM :done, 2024-08-12, until init
+    Initial meeting:milestone, init, 2024-11-25, 3d
+    Collect DB from WGNAS :done, 2024-06-01, 2024-08-30
+    Collect DB  From WGBAST :done, 2024-11-01, 2025-01-01
+
+    section Buid DB
+    WGNAS WGBFAS and WGTRUTTA database description : done, after init, until 2024-03-01
+    Create template DB :crit, 2024-12-30, until beta
+
+
+    section Import
+    Import data from WGNAS :current, 2025-02-01, until beta
+    Beta version (WGNAS): milestone, beta, 2025-06-01, 2d
+    Import data from WGEEL : after beta, until alpha
+    Alpha version (WGEEL): milestone, alpha, 2025-07-15, 2d
+    Import data from WGBAST landings: current, after alpha, until v1
+    V0.0.1 (WGBAST landings): milestone, v1, 2025-10-15, 2d
+    Import data from WGBAST young fish : after v1, until v2
+    V0.0.2 (WGBAST young fish): milestone, v2, 2025-11-15, 2d
+    Import data from WGBAST (stock) : after v2, until end
+
+    section validate
+
+    Database structure with ICES: crit, after alpha, 1M
+    Release first vocab to ICES: current, after alpha, 1M
+    Validate structure with WGNAS: after alpha, until final
+    Validate structure with WGEEL: after alpha, until final
+    Validate structure with WGBAST: after alpha, until end
+    Validate structure with WGTRUTTA: after alpha, until end
+    Validation meeting: milestone, valid, 2025-10-15, 3d
+    Final meeting:milestone, final, 2025-12-01, 3d
+    ICES Import to ICES db: crit, after final, until v3
+
+    section shiny / R
+
+    Export nimble functions WGNAS: current, after final, 2026-02-01
+
+    V0.0.3 (WGBAST model): milestone, v3, 2026-04-01, 2d
+    Propose and adapt changes to shiny apps : current, after v3, until end
+    WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
+```
+
+## Thank you!
+
+Last hour (and more if needed) open for discussion
+
+We want to have people go into the WG and come back with it
+
+emails:
+
+Webpage!
+
+## Feedback
+
+Webinar questions: we will collate and add answers to the HTML
+
+SHOW TIMELINES! Habitat first, then REMIND THERE IS OTHERS TOO
