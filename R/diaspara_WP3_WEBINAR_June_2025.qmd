@@ -96,7 +96,7 @@ Why would we need another another database ?
 ::: {.column .incremental width="25%"}
 **METRICS DATABASE**
 
--   Benefiting from the DBEEL, using similar vocab (series + sampling)
+-   Benefiting from the WGEEL DB, using similar vocab (series + sampling)
 -   There is already a mapping by ICES of the data structure.
 -   Excel sheets to call for LHT with WP2.
 :::
