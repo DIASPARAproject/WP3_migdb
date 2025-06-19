@@ -120,9 +120,17 @@ Why would we need another another database ?
 
 # Important to remember!
 
+::::: columns
+::: {.column .incremental width="50%"}
 -   We are producing different dictionaries
 -   These will be used at ICES (for *everything*)
 -   AREA (Habitat) is part of the vocabulary
+:::
+
+::: {.column .incremental width="50%"}
+![](images/clipboard-1245948393.png)
+:::
+:::::
 
 # Everything is online
 
@@ -159,7 +167,6 @@ digraph DatabaseRelations {
     Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
 }
 ```
-
 
 # Referentials
 
@@ -287,7 +294,7 @@ digraph schema {
 -   Work with ICES tools (DATSU, DB, data calls)
 -   Data calls using Shiny / Datsu
 -   DB manager at ICES can handle all migratory species
--   One shiny instead of two / three
+-   One Shiny instead of two / three
 -   People moving between WGs know the data & Inter-WG Collaboration
 -   Potential for spatial models: available habitat, scenarios, etc.
 
@@ -295,27 +302,24 @@ digraph schema {
 
 ::::: columns
 ::: {.column width="50%"}
--   Link to the timeline: https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html 
--   (Dont worry we will get into this later) 
+-   Link to the timeline: <https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html>
+-   (Don't worry, we will get into this later)
 :::
 
 ::: {.column .incremental width="50%"}
--   Habitat DB beta version release in ZENODO https://zenodo.org/records/14726599
+-   Habitat DB beta version release in ZENODO <https://zenodo.org/records/14726599>
 -   Dictionaries and all work: more releases in the summer, comments from the users wanted
 -   June to September: Integrating WGEEL data -WGEEL as test group (because we can complain to ourselves)
 -   Data call using DATSU in 2026 (Eel) 2027 (Salmon)
 :::
 :::::
 
-
 ## Today, we will focus on the habitat database
 
-Thank you!
+Thank you! <https://diaspara.bordeaux-aquitaine.inrae.fr/workpackage3.html>
 
 :::: columns
-::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-547729593.png)
+::: {.column .incremental width="100%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="621"}
 :::
-https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html  
-
 ::::
