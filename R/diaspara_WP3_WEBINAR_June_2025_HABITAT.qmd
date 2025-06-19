@@ -108,7 +108,9 @@ digraph {
 -   examples (Cedric)
 
 -   Split, examples. e.g. gulf of bothnia
+
 -   EMU split: should they still follow WFD areas
+
 -   How do we split the sea in a consistent way: We could show examples: showing different countries (Germany, PL, Estonia) how they handle the limitations, how could we unify this consistently
 
 ## WGTRUTTA
@@ -127,6 +129,7 @@ Future collaboration opportunities, e.g., DIADSEA, DIADES.
 ::: {.column width="50%"}
 ![](images/clipboard-4112571689.png){width="505"}
 :::
+
 ::: {.column .incremental width="50%"}
 ![](images/clipboard-4003305238.png){width="505"}
 :::
@@ -143,17 +146,11 @@ Future collaboration opportunities, e.g., DIADSEA, DIADES.
 
 https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/rep7.html
 
-## Thank you!
 
-We want a lot of feedback!
-From you, your working groups, etc.
+We want a lot of feedback! From you, your working groups, etc.
 
-"Cédric Briand" <cedric.briand@eaux-et-vilaine.bzh>
-"Jules Oliviero" <jules.oliviero@inrae.fr>
-"Jani Helminen" <jani.helminen@luke.fi>
+"Cédric Briand" [cedric.briand\@eaux-et-vilaine.bzh](mailto:cedric.briand@eaux-et-vilaine.bzh){.email} "Jules Oliviero" [jules.oliviero\@inrae.fr](mailto:jules.oliviero@inrae.fr){.email} "Jani Helminen" [jani.helminen\@luke.fi](mailto:jani.helminen@luke.fi){.email}
 
 Webinar questions: we will collate and add answers to the HTML (on webpage)
 
 # Last hour (and more if needed) open for discussion
-
-

@@ -31,12 +31,11 @@ background-transition: fade
 editor: visual
 ---
 
-
 # WGEEL / habitat
 
 ```{dot}
 //| label: fig-area_hierarchy_eel
-
+//| fig-cap: "Habitat hierarchy eel"
 digraph {
     compound=true;
     newrank=true;
@@ -142,13 +141,14 @@ digraph {
 }
          
 ```
-## WGEEL / habitat (Baltic)
 
+## WGEEL / habitat (Baltic)
 
 ::: {.callout-warning appearance="default"}
 ## WFD
-* Variations in EMU borders, 
-* coastal, transitional
+
+-   Variations in EMU borders,
+-   coastal, transitional
 :::
 
 ![](images/emu1.png){width="500"}
@@ -157,8 +157,9 @@ digraph {
 
 ::: {.callout-warning appearance="default"}
 ## WFD - EMUS
-* missing RBD (Denmark - Sweden)
-* More international basins than acknowledged
+
+-   missing RBD (Denmark - Sweden)
+-   More international basins than acknowledged
 :::
 
 ![](images/emu2.png){width="500"}
@@ -167,8 +168,9 @@ digraph {
 
 ::: {.callout-tip appearance="simple"}
 ## WFD - marine EMUS
-* Marine EMUs border OK (swedish marine EMU)
-* Here EMUs follow WFD basins.
+
+-   Marine EMUs border OK (swedish marine EMU)
+-   Here EMUs follow WFD basins.
 :::
 
 ![](images/emu3.png){width="500"}
@@ -177,9 +179,10 @@ digraph {
 
 ::: {.callout-tip appearance="simple"}
 ## Baltic takeaway message :
-* When EMUs include marine parts, separate it, and add it to the marine habitat
+
+-   When EMUs include marine parts, separate it, and add it to the marine habitat
 :::
- 
+
 ```{dot}
 //| label: fig-area_hierarchy_eel
 
@@ -293,7 +296,8 @@ digraph {
 
 ::: {.callout-tip appearance="warning"}
 ## EMUs (Examples Meuse, Ems and Rhine)
-* Need to report consistently for transborder basins
+
+-   Need to report consistently for transborder basins
 :::
 
 ![](images/emu4.png){width="500"}
@@ -302,78 +306,89 @@ digraph {
 
 ::: {.callout-tip appearance="simple"}
 ## Rhine Meuse takeaway message :
-* Build consistent international basins.
+
+-   Build consistent international basins.
 :::
 
 ## WGEEL / habitat (France)
 
 ::: {.callout-tip appearance="simple"}
 ## France takeaway message :
-* Include coastal areas
-:::
-![](images/emu_france.png){width="500"}
 
+-   Include coastal areas
+:::
+
+![](images/emu_france.png){width="500"}
 
 ## WGEEL / habitat (Spain/ Portugal)
 
 ::: {.callout-warning appearance="simple"}
 ## Spain / Portugal takeaway message :
-* Not consistent with WISE basins
-* Impossible to split along between Atlantic and the Mediterranean.
+
+-   Not consistent with WISE basins
+-   Impossible to split along between Atlantic and the Mediterranean.
 :::
+
 ![](images/emu_spain_1.png){width="500"}
 
 ## WGEEL / habitat (Spain/ Portugal)
 
 ::: {.callout-warning appearance="simple"}
-## Spain / Portugal  :
-* Not consistent with WISE basins
-* Impossible to split along between Atlantic and the Mediterranean.
+## Spain / Portugal :
+
+-   Not consistent with WISE basins
+-   Impossible to split along between Atlantic and the Mediterranean.
 :::
+
 ![](images/emu_spain_2.png){width="500"}
 
 ## WGEEL / habitat (Spain/ Portugal)
 
 ::: {.callout-warning appearance="simple"}
 ## Spain / Portugal :
-* Use international basins, Minho, Duero, Tagus, Guadiana, Guadalquivir
+
+-   Use international basins, Minho, Duero, Tagus, Guadiana, Guadalquivir
 :::
+
 ![](images/emu_spain_3.png){width="500"}
 
 ## WGEEL / habitat (Spain/ Portugal)
 
 ::: {.callout-warning appearance="simple"}
 ## Spain / Portugal :
-* Where do we split ? Which units will be grouped ?
-* Use of Spanish Mediterranean
+
+-   Where do we split ? Which units will be grouped ?
+-   Use of Spanish Mediterranean
 :::
+
 ![](images/emu_spain_4.png){width="500"}
 
 ## WGEEL / habitat (Spain/ Portugal)
 
-
 ::: {.callout-tip appearance="simple"}
-## Italy  :
-* Use WFD split / report
-* Split between Adriatic and Thyrrenian sea
+## Italy :
+
+-   Use WFD split / report
+-   Split between Adriatic and Thyrrenian sea
 :::
+
 ![](images/emu_italy.png){width="500"}
 
 ## WGEEL / Mediterranean
 
 ::: {.callout-tip appearance="simple"}
-## Lagoons  :
-* Use vocab with coordinates sent by Eleonora
-* Integrate
+## Lagoons :
+
+-   Use vocab with coordinates sent by Eleonora
+-   Integrate
 :::
-![](images/emu_spain_5.png){width="500"}
+
 
 ## WGEEL / habitat (conclusion)
 
-* When EMUs include marine parts, separate it, and add it to the marine habitat.
-* build consistent international basins.
-* Grouping WISE units in the wider model needs to be decided based on recruitment + WP2 (LHT) but we'll have laid out the basis structure for that.
-
+-   When EMUs include marine parts, separate it, and add it to the marine habitat.
+-   build consistent international basins.
+-   Grouping WISE units in the wider model needs to be decided based on recruitment + WP2 (LHT) but we'll have laid out the basis structure for that.
 
 ## WGTRUTTA : habitat referential
 
@@ -384,7 +399,7 @@ The following structure shows a simplified version of the relation between site 
 :::
 
 ```{dot}
-//| fig-cap: Habitat db structure.
+#| fig-cap: Habitat db structure.
 
 digraph G {
 node [fontname="Helvetica,Arial,sans-serif"]
@@ -592,6 +607,8 @@ digraph schema {
 }
 ```
 
+* text
+
 ## WGTRUTTA : electrofishing
 
 -   A simple solution would be to integrate the site it in group or individual metrics.
@@ -725,7 +742,7 @@ DIADSEA. Future collaboration opportunities
 -   the structure might be different for different species
 -   Starting from wide area to lower level: question how do we split
 
-# Some insight on the timelines (HABITAT)
+# Some insight on the timelines (HABITAT){.scrollable}
 
 ```{mermaid}
 gantt
@@ -783,10 +800,10 @@ gantt
      Populate DB using EU hydro #26 :active, 2025-02-01, 6M 
 ```
 
-# Some insight on the timelines (METRICDB)
+# Some insight on the timelines (METRICDB){.scrollable}
 
 ```{mermaid}
-    gantt
+gantt
     title Stock DB Timeline
     dateFormat  YYYY-MM-DD
     todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
@@ -835,18 +852,16 @@ gantt
     WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
 ```
 
-## Thank you!
+# Feedback
 
-Last hour (and more if needed) open for discussion
+We want a lot of feedback! From you, your working groups, etc.
 
-We want to have people go into the WG and come back with it
+Cédric Briand [cedric.briand\@eaux-et-vilaine.bzh](mailto:cedric.briand@eaux-et-vilaine.bzh){.email} "
 
-emails:
+Jules Oliviero [jules.oliviero\@inrae.fr](mailto:jules.oliviero@inrae.fr){.email} "
 
-Webpage!
+Jani Helminen [jani.helminen\@luke.fi](mailto:jani.helminen@luke.fi){.email}
 
-## Feedback
+Webinar questions: we will collate and add answers to the HTML (on webpage)
 
-Webinar questions: we will collate and add answers to the HTML
-
-SHOW TIMELINES! Habitat first, then REMIND THERE IS OTHERS TOO
+# Last hour (and more if needed) open for discussion

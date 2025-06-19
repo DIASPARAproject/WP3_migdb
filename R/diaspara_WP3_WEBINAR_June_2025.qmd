@@ -88,7 +88,7 @@ Why would we need another another database ?
 
 -   This is the main database
 -   All unified data
--   Data from models etc.
+-   Data from models etc,k WGNAS integrated, WGEEL due by August
 -   Details on the data structure coming
 -   Validation from ICES
 :::
@@ -96,8 +96,9 @@ Why would we need another another database ?
 ::: {.column .incremental width="25%"}
 **METRICS DATABASE**
 
--   Benefiting from the DBEEL, using similar vocab (series + sampling)
+-   Benefiting from the WGEEL DB, using similar vocab (series + sampling)
 -   There is already a mapping by ICES of the data structure.
+-   Another mapping due in August.
 -   Excel sheets to call for LHT with WP2.
 :::
 
@@ -105,7 +106,7 @@ Why would we need another another database ?
 **ELECTROFISHING DATABASE**
 
 -   Link to Habitat database
--   Catch in freshwater data
+-   Freshwater data
 -   Work in the autumn
 :::
 
@@ -159,7 +160,6 @@ digraph DatabaseRelations {
     Metrics_Series -> Model_DB [style=dashed, label="TAF", color =tan];
 }
 ```
-
 
 # Referentials
 
@@ -295,10 +295,9 @@ digraph schema {
 
 ::::: columns
 ::: {.column width="50%"}
--   Link to the timeline: https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html 
--   (Dont worry we will get into this later) 
+-   Link to the [timeline](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html)
+-   (Dont worry we will get into this later)
 :::
-
 ::: {.column .incremental width="50%"}
 -   Habitat DB beta version release in ZENODO https://zenodo.org/records/14726599
 -   Dictionaries and all work: more releases in the summer, comments from the users wanted
@@ -306,7 +305,6 @@ digraph schema {
 -   Data call using DATSU in 2026 (Eel) 2027 (Salmon)
 :::
 :::::
-
 
 ## Today, we will focus on the habitat database
 
@@ -316,6 +314,6 @@ Thank you!
 ::: {.column .incremental width="40%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-547729593.png)
 :::
-https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html  
 
+https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html
 ::::
