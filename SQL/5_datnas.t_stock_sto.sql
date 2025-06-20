@@ -9,7 +9,7 @@ CREATE TABLE datnas.t_stock_sto (
    CONSTRAINT fk_sto_add_code FOREIGN KEY (sto_add_code) 
    REFERENCES refnas.tg_additional_add (add_code), 
   CONSTRAINT fk_sto_met_var_met_spe_code
-    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES refnas.tr_metadata_met(met_var,met_spe_code) 
+    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES datnas.t_metadata_met(met_var,met_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_are_code FOREIGN KEY (sto_are_code)
     REFERENCES refnas.tr_area_are (are_code) 

@@ -7,18 +7,17 @@ UNIQUE  ("version", area, var_mod, "year", "location", age);
 
 -- For the archive db, the constraint is not working meaning that we have duplicated values
 
-SELECT DISTINCT met_nim_code FROM refnas.tr_metadata_met
+SELECT DISTINCT met_nim_code FROM datnas.t_metadata_met
 JOIN refsalmoglob."database" ON var_mod = met_var
 WHERE  met_cat_code ='Other'
 
 
-SELECT * FROM refnas.tr_metadata_met WHERE met_var LIKE '%mu%'
-SELECT DISTINCT met_modelstage FROM refnas.tr_metadata_met
+SELECT * FROM datnas.t_metadata_met WHERE met_var LIKE '%mu%'
+SELECT DISTINCT met_modelstage FROM datnas.t_metadata_met
 
 -- This will create the main table to hold the stock data
 -- I'm currenlty putting foreign key to ref but this is just for show because this table
 -- will only contain inherited valeus
-
 
 
 DROP TABLE IF EXISTS dat.t_stock_sto CASCADE;
@@ -28,7 +27,7 @@ CREATE TABLE dat.t_stock_sto (
   sto_year INT4 NULL,
   sto_spe_code VARCHAR(3) NOT NULL,
   CONSTRAINT fk_sto_met_var_met_spe_code
-    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES "ref".tr_metadata_met(met_var,met_spe_code) 
+    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES dat.t_metadata_met(met_var,met_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   sto_value NUMERIC NULL,
   sto_are_code TEXT NOT NULL,

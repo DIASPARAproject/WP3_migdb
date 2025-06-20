@@ -50,7 +50,7 @@ CREATE TABLE dat.t_mig_mig (
     CHECK (((mig_mis_code IS NULL) AND (mig_value IS NOT NULL)) 
     OR ((mig_mis_code IS NOT NULL) AND (mig_value IS NULL))),
   CONSTRAINT c_fk_mig_met_var FOREIGN KEY (mig_met_var, mig_spe_code) 
-  REFERENCES "ref".tr_metadata_met(met_var, met_spe_code) ON UPDATE CASCADE ON DELETE CASCADE,
+  REFERENCES "dat".t_metadata_met(met_var, met_spe_code) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT c_fk_mig_wkg_code FOREIGN KEY (mig_spe_code) 
   REFERENCES "ref".tr_icworkinggroup_wkg ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT c_fk_mig_spe_code FOREIGN KEY (mig_spe_code) 

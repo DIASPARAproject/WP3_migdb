@@ -168,4 +168,4 @@ SELECT * FROM refsalmoglob.DATABASE WHERE var_mod = 'logN4';
 SELECT * FROM refsalmoglob.DATABASE WHERE var_mod = 'omega';
 
 
-SELECT * FROM refnas.tr_metadata_met WHERE met_var = 'log_C5_NAC_2_lbnf_oth_sd'
+SELECT * FROM datnas.t_metadata_met WHERE met_var = 'log_C5_NAC_2_lbnf_oth_sd'
