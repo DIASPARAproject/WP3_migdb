@@ -16,10 +16,12 @@ san_qal_id INTEGER NOT NULL,
 san_qal_comment TEXT, 
 san_wkg_code TEXT NOT NULL,  
 CONSTRAINT fk_san_wkg_code  FOREIGN KEY (san_wkg_code)
-REFERENCES "ref".tr_icworkinggroup_wkg(wkg_code),
+REFERENCES "ref".tr_icworkinggroup_wkg(wkg_code)
+ON UPDATE CASCADE ON DELETE RESTRICT,
 san_ver_code TEXT NOT NULL,
 CONSTRAINT fk_san_ver_code FOREIGN KEY (san_ver_code)
 REFERENCES ref.tr_version_ver(ver_code)
+ON UPDATE CASCADE ON DELETE RESTRICT
 );
   
 
@@ -41,3 +43,10 @@ COMMENT ON COLUMN dat.t_serannual_san.san_wkg_code IS 'Code of the working group
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 COMMENT ON COLUMN dat.t_serannual_san.san_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
 
+
+ALTER TABLE dateel.t_serannual_san DROP  CONSTRAINT  fk_san_ver_code
+
+
+ALTER TABLE dateel.t_serannual_san ADD CONSTRAINT  fk_san_ver_code FOREIGN KEY (san_ver_code)
+REFERENCES refeel.tr_version_ver(ver_code)
+ON UPDATE CASCADE ON DELETE RESTRICT

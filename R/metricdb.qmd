@@ -1110,8 +1110,8 @@ das0 <- dbGetQuery(con_wgeel_distant, "SELECT * FROM datawg.t_dataseries_das;
 res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_serannual_san")
 clipr::write_clip(colnames(res))
 
-das0$das_dts_datasource[is.na(das0$das_dts_datasource)] <- "ANG-2016"
-das0$das_dts_datasource <- paste0(gsub(pattern = "dc_", replacement = "ANG-", x= das0$das_dts_datasource), "-1")
+das0$das_dts_datasource[is.na(das0$das_dts_datasource)] <- "WGEEL-2016"
+das0$das_dts_datasource <- paste0(gsub(pattern = "dc_", replacement = "WGEEL-", x= das0$das_dts_datasource), "-1")
 das0$das_qal_id[is.na(das0$das_qal_id)] <- 1
 
 nrow(das0) # 6523
