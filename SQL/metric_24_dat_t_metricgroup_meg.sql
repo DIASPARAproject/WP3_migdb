@@ -35,7 +35,12 @@ CREATE TABLE dat.t_metricgroup_meg (
   CONSTRAINT fk_meg_qal_id FOREIGN KEY (meg_qal_id) 
   REFERENCES "ref".tr_quality_qal(qal_id) ON UPDATE CASCADE
 );
-CREATE INDEX t_meg_group_gr_idx ON datawg.t_metricgroup_meg USING btree (meg_gr_id);
+CREATE INDEX t_meg_group_gr_idx ON dat.t_metricgroup_meg USING btree (meg_gr_id);
+
+GRANT ALL ON dat.t_metricgroup_meg TO diaspara_admin;
+GRANT SELECT ON dat.t_metricgroup_meg TO diaspara_read; 
+
+
 
 -- Table Triggers TODO
 /*

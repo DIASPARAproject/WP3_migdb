@@ -639,7 +639,33 @@ habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_monitoring_mon;")
 knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+## Fish Traits  ref.tr_trait_tra
 
+This one was formerly called metric, but metric `ref.tr_metric_met` already exist and is better
+suited to statistics (mean, sd ... ). So we are using the word trait.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_06_ref_tr_trait_tra.sql"}
+```
+
+</details>
+
+
+```{r tbl-ref_tr_trait_tra}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fishway table (to be imported in ICES vocab).
+#| tbl-cap: Fishway vocab proposed to ICES.
+
+habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_monitoring_mon;")
+knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 Series are linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
 
