@@ -2,6 +2,9 @@
 -- DROP TABLE dateel.t_group_gr;
 
 CREATE TABLE dateel.t_group_gr (
+  CONSTRAINT fk_gr_gr_id  FOREIGN KEY (gr_gr_id, gr_wkg_code)
+  REFERENCES dat.t_group_gr(gr_id, gr_wkg_code)
+  ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT fk_gr_wkg_code  FOREIGN KEY (gr_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -18,6 +21,7 @@ on the sampling with gr_comments. There can be several group metrics for the sam
 with sampling designs for different stages';
 
 COMMENT ON COLUMN dateel.t_group_gr.gr_id IS 'Group ID, serial primary key on gr_id and gr_wkg_code';
+COMMENT ON COLUMN dateel.t_group_gr.gr_gr_id IS 'Parent group ID, used when giving separate metrics for male and females';
 COMMENT ON COLUMN dateel.t_group_gr.gr_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 COMMENT ON COLUMN dateel.t_group_gr.gr_year IS 'The year';

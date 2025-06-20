@@ -1,8 +1,12 @@
 
--- DROP TABLE dat.t_group_gr;
+-- DROP TABLE dat.t_group_gr CASCADE;
 
 CREATE TABLE dat.t_group_gr (
   gr_id serial4 NOT NULL,
+  gr_gr_id INTEGER,
+  CONSTRAINT fk_gr_gr_id  FOREIGN KEY (gr_gr_id, gr_wkg_code)
+  REFERENCES dat.t_group_gr(gr_id, gr_wkg_code)
+  ON UPDATE CASCADE ON DELETE CASCADE,
   gr_wkg_code TEXT NOT NULL,  
   CONSTRAINT fk_gr_wkg_code  FOREIGN KEY (gr_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
@@ -24,6 +28,7 @@ on the sampling with gr_comments. There can be several group metrics for the sam
 with sampling designs for different stages';
 
 COMMENT ON COLUMN dat.t_group_gr.gr_id IS 'Group ID, serial primary key on gr_id and gr_wkg_code';
+COMMENT ON COLUMN dat.t_group_gr.gr_gr_id IS 'Parent group ID, used when giving separate metrics for male and females';
 COMMENT ON COLUMN dat.t_group_gr.gr_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 COMMENT ON COLUMN dat.t_group_gr.gr_year IS 'The year';
@@ -33,3 +38,5 @@ COMMENT ON COLUMN dat.t_group_gr.gr_lastupdate IS 'Last update, inserted automat
 COMMENT ON COLUMN dat.t_group_gr.gr_ver_code IS 'Version code as in tr_version_ver, corresponds to the working group code WGNAS-2024-1 WGEEL-2016-1, the -1 indicate the first data call in the year, -2 would be second etc....';
 
 
+GRANT ALL ON dat.t_group_gr TO diaspara_admin;
+GRANT SELECT ON dat.t_group_gr TO diaspara_read; 
