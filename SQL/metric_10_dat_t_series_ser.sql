@@ -77,9 +77,8 @@ COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS 'Species, one of SAL, ELE, T
 it should correspond to the main species target by the sampling';
 COMMENT ON COLUMN dat.t_series_ser.ser_lfs_code  IS 'Life stage see tr_lifestage_lfs,Code of the lifestage see tr_lifestage_lfs,  the constraint is set on 
 both lfs_code, and lfs_spe_code (as two species can have the same lifestage code. The lifestage can be NULL but it should correspond to the main lifestage targeted by the series;';
-COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS 'Code of the working group, one of
-WGBAST, WGEEL, WGNAS, WKTRUTTA';
-COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
+COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS 'Code of the working group, one of WGBAST, WGEEL, WGNAS, WKTRUTTA';
+COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code referencing tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
 COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS 'Code of the country';
 COMMENT ON COLUMN dat.t_series_ser.ser_wltyp_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), T (Transitional water), FW (Freshwater), null accepted';
 COMMENT ON COLUMN dat.t_series_ser.ser_hab_code IS 'Code of the habitat, see tr_habitat_hab';
