@@ -8,3 +8,6 @@ CREATE TABLE dateel.tj_seriesstation_ses (
   REFERENCES "ref"."StationDictionary" ("Station_Code")   
   ) inherits (dat.tj_seriesstation_ses);
   
+
+GRANT ALL ON dateel.tj_seriesstation_ses TO diaspara_admin;
+GRANT SELECT ON dateel.tj_seriesstation_ses TO diaspara_read; 

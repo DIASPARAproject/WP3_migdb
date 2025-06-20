@@ -13,15 +13,15 @@ CREATE TABLE dat.t_group_gr (
   gr_comment text NULL,
   gr_lastupdate date DEFAULT CURRENT_DATE NOT NULL,
   gr_ver_code TEXT NOT NULL,
-  CONSTRAINT fk_gr_ver_code FOREIGN KEY (grser_ver_code)
+  CONSTRAINT fk_gr_ver_code FOREIGN KEY (gr_ver_code)
   REFERENCES ref.tr_version_ver(ver_code)
   ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-COMMENT ON TABLE dat.group_gr IS 'Table identifying the group metrics, a group metric corresponds to a
+COMMENT ON TABLE dat.t_group_gr IS 'Table identifying the group metrics, a group metric corresponds to a
 number of fish sampled for a given year, mostly to describe the annual series. Comments can be made
 on the sampling with gr_comments. There can be several group metrics for the same year, for instance
-with sampling designs targetted to different stages';
+with sampling designs for different stages';
 
 COMMENT ON COLUMN dat.t_group_gr.gr_id IS 'Group ID, serial primary key on gr_id and gr_wkg_code';
 COMMENT ON COLUMN dat.t_group_gr.gr_wkg_code IS 'Code of the working group, one of

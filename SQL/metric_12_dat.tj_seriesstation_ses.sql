@@ -10,3 +10,6 @@ CREATE TABLE dat.tj_seriesstation_ses (
   REFERENCES "ref"."StationDictionary" ("Station_Code")   
   );
   
+
+GRANT ALL ON dat.tj_seriesstation_ses TO diaspara_admin;
+GRANT SELECT ON dat.tj_seriesstation_ses TO diaspara_read; 

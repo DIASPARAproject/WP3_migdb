@@ -56,3 +56,5 @@ met_environment BOOLEAN,
 met_environment_comment TEXT)
 
 
+GRANT ALL ON dateel.t_recruitmentmetadata_met TO diaspara_admin;
+GRANT SELECT ON dateel.t_recruitmentmetadata_met TO diaspara_read; 

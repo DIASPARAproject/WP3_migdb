@@ -31,3 +31,6 @@ COMMENT ON COLUMN dateel.t_serannual_san.san_wkg_code IS 'Code of the working gr
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
 COMMENT ON COLUMN dateel.t_serannual_san.san_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
 
+
+GRANT ALL ON dateel.t_serannual_san TO diaspara_admin;
+GRANT SELECT ON dateel.t_serannual_san TO diaspara_read; 
