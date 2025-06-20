@@ -109,7 +109,6 @@ digraph schema {
         tr_metric_mtr <br align="left"/>
         tr_category_cat <br align="left"/>
         tr_destination_dest <br align="left"/>
-        tr_metadata_met <br align="left"/>
         tr_area_are <br align="left"/> </td> </tr> 
        </table>> 
        shape = cylinder]; 
