@@ -1110,7 +1110,7 @@ This table (@tbl-objectype) is used in metadata
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_ref_tr_objectype_oty.sql"}
+``` {.sql include="../SQL/2_ref_tr_objecttype_oty.sql"}
 ```
 
 </details>
@@ -1406,7 +1406,7 @@ The code for creating metadata is listed below
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_dat.t_metadata_met.sql"}
+``` {.sql include="../SQL/4_dat_t_metadata_met.sql"}
 ```
 
 </details>
@@ -1437,7 +1437,7 @@ laying out the foundations.
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_ref.tr_habitatlevel_lev.sql"}
+``` {.sql include="../SQL/2_ref_tr_habitatlevel_lev.sql"}
 ```
 
 </details>
@@ -1556,7 +1556,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")%>% knitr::kab
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_ref.tr_area_are.sql"}
+``` {.sql include="../SQL/2_ref_tr_area_are.sql"}
 ```
 
 </details>
@@ -2972,7 +2972,7 @@ GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing
 
 <summary>Creating the referential for WGNAS</summary>
 
-``` {.sql include="../SQL/4_datnas_t_metadata_met.sql"}
+``` {.sql include="../SQL/5_datnas_t_metadata_met.sql"}
 ```
 
 </details>
@@ -3103,9 +3103,9 @@ Table @tbl-metadata.
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap: Content of the refnas metadata table
+#| tbl-cap: Content of the datnas metadata table
 
-dbGetQuery(con_diaspara, "SELECT * FROM refnas.t_metadata_met limit 10;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met limit 10;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -3121,7 +3121,7 @@ those from inheritance from schema datnas, datang, datbast...
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/4_dat.t_stock_sto.sql"}
+``` {.sql include="../SQL/4_dat_t_stock_sto.sql"}
 ```
 
 </details>
