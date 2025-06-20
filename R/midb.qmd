@@ -325,7 +325,6 @@ tr_version_ver <br align="left"/>
 tr_metric_mtr <br align="left"/>
 tr_category_cat <br align="left"/>
 tr_destination_dest <br align="left"/>
-tr_metadata_met <br align="left"/>
 tr_area_are <br align="left"/> </td> </tr> 
 </table>> 
 shape = cylinder]; 
@@ -1081,16 +1080,7 @@ sd[ww,] %>% kable()
 
 </details>
 
-The code for creating metadata is listed below
 
-<details>
-
-<summary>SQL code to create tables</summary>
-
-``` {.sql include="../SQL/2_ref.sql"}
-```
-
-</details>
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
@@ -1114,7 +1104,7 @@ e.g. catch, mortality, biomass. Please check and also check definitions.
 <h3>DIASPARA</h3>
 
 WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
-tr_destination_dest. Note this is just a column in tr_metadata_met not
+tr_destination_dest. Note this is just a column in t_metadata_met not
 in the main table. Check if it could not simply be removed if the
 definition of the parameter is clear ?
 :::
@@ -1122,6 +1112,15 @@ definition of the parameter is clear ?
 ## Object type (tr_objectype_oty)
 
 This table (@tbl-objectype) is used in metadata
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_ref_tr_objectype_oty.sql"}
+```
+
+</details>
 
 ```{r}
 #| label: tbl-objectype
@@ -1141,6 +1140,15 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable
 In the salmoglob db, this table (@tbl-nimble) corresponded to both
 tables status and nimble which most often contained the same
 information.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_ref_tr_nimble_nim.sql"}
+```
+
+</details>
 
 ```{r}
 #| label: tbl-nimble
@@ -1213,6 +1221,17 @@ the best way to re-run the model at that stage.
 The DB will be held in ICES server. Create a procedure to save the
 database at each working group to be able to run past versions of the
 model.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_ref_tr_version_ver.sql"}
+```
+
+</details>
+
+
 :::
 
 ```{r }
@@ -1233,6 +1252,7 @@ tr_version_ver <- data.frame(
   ver_code = paste0("SAL-",2020:2024,"-1"),
   ver_year = 2020:2024,
   ver_spe_code = "SAL",
+  ver_wkg_code = "WGNAS",
   ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
   ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
   # TODO FIND other DOI (mail sent to ICES)
@@ -1298,6 +1318,15 @@ or stocks but not data calls.
 
 ## Metric (tr_metric_mtr)
 
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_ref_tr_metric_mtr.sql"}
+```
+
+</details>
+
 ```{r tbl-metric}
 #| echo: FALSE
 #| eval: TRUE
@@ -1322,6 +1351,15 @@ categories @Tbl-category were in the salmoglob metadata, we have
 simplified to reduce the number of categories and be able to get for
 instance all parameters dealing with catch.
 
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_ref_tr_category_cat.sql"}
+```
+
+</details>
+
 ```{r}
 #| label: tbl-category
 #| echo: FALSE
@@ -1339,8 +1377,17 @@ A bit cumbersome this table, the idea is "what becomes of this fish".
 Different types of landings. But it's just in metatdata and we need need
 in WGBAST
 
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_ref_tr_destination_des.sql"}
+```
+
+</details>
+
 ```{r}
-#| label: tbl-destination
+#| label: tbl-tr_destination_des
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
@@ -1358,7 +1405,21 @@ Here Hilaire say that naming the table "outcome" wasn't ideal so I've
 followed his suggestion
 :::
 
-## Metadata (tr_metadata_met)
+## Metadata (t_metadata_met)
+
+The code for creating metadata is listed below
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/2_dat.t_metadata_met.sql"}
+```
+
+</details>
+
+
+
 
 ```{r}
 #| label: tbl-metadata
@@ -1367,7 +1428,7 @@ followed his suggestion
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: metadata
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metadata_met;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -2937,14 +2998,26 @@ GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing
 
 <summary>Creating the referential for WGNAS</summary>
 
-``` {.sql include="../SQL/3_refnas.sql"}
+``` {.sql include="../SQL/3_refnas_tr_version_ver.sql"}
 ```
 
 </details>
 
+
+
+
 ## Import the metadata table
 
-```{r refnas.tr_metadata_met}
+<details>
+
+<summary>Creating the referential for WGNAS</summary>
+
+``` {.sql include="../SQL/4_datnas_t_metadata_met.sql"}
+```
+
+</details>
+
+```{r datnas.t_metadata_met}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -2953,18 +3026,17 @@ GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing
 #| code-summary: Code to import to refnas work in progress ...
 
 
-# TODO create tr_area_are
-# tr_metadata_met
+# t_metadata_met
 
 metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
 
-res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.tr_metadata_met;")
+res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met;")
 clipr::write_clip(colnames(res))
 
 # unique(metadata$metric)
 # dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
 
-tr_metadata_met <-
+t_metadata_met <-
   data.frame(
     met_var = metadata$var_mod,
     met_spe_code = "SAL",
@@ -3024,9 +3096,9 @@ tr_metadata_met <-
     
   )
 
-res <- dbWriteTable(con_diaspara_admin, "tr_metadata_met_temp", 
-                    tr_metadata_met, overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_metadata_met 
+res <- dbWriteTable(con_diaspara_admin, "t_metadata_met_temp", 
+                    t_metadata_met, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO datnas.t_metadata_met 
 SELECT 
  met_var,
  met_spe_code,
@@ -3047,9 +3119,9 @@ SELECT
  met_cat_code, 
  met_definition, 
  met_deprecated
-FROM tr_metadata_met_temp")
+FROM t_metadata_met_temp")
 
-dbExecute(con_diaspara_admin, "DROP TABLE tr_metadata_temp CASCADE;")
+dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_temp CASCADE;")
 
 
 ```
@@ -3073,7 +3145,7 @@ Table @tbl-metadata.
 #| message: FALSE
 #| tbl-cap: Content of the refnas metadata table
 
-dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_metadata_met limit 10;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.t_metadata_met limit 10;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
