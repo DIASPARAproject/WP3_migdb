@@ -3215,7 +3215,7 @@ Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/4_tg_additional_add.sql"}
+``` {.sql include="../SQL/4_refnas_tg_additional_add.sql"}
 ```
 
 </details>

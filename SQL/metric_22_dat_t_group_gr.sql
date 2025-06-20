@@ -30,6 +30,6 @@ COMMENT ON COLUMN dat.t_group_gr.gr_year IS 'The year';
 COMMENT ON COLUMN dat.t_group_gr.gr_number IS 'Number of fish in the group';
 COMMENT ON COLUMN dat.t_group_gr.gr_comment IS 'Comment on the group metric, including on the sampling design applied to that particular year, if different from that applied for the whole series.';
 COMMENT ON COLUMN dat.t_group_gr.gr_lastupdate IS 'Last update, inserted automatically';
-COMMENT ON COLUMN dat.t_group_gr.gr_ver_code IS 'Version code as in tr_version_ver, corresponds to a species code SAL-2024-1 ANG-2016-1';
+COMMENT ON COLUMN dat.t_group_gr.gr_ver_code IS 'Version code as in tr_version_ver, corresponds to the working group code WGNAS-2024-1 WGEEL-2016-1, the -1 indicate the first data call in the year, -2 would be second etc....';
 
 
