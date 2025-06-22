@@ -28,7 +28,7 @@ CREATE TABLE dat.t_grouptrait_grt (
   grt_traitqualcode TEXT,
   CONSTRAINT fk_grt_traitqualcode FOREIGN KEY
   REFERENCES ref.tr_traitqualitative_trq
-  grt_
+  grt_trm_code TEXT 
   grt_last_update date DEFAULT CURRENT_DATE NOT NULL,
   grt_qal_id int4 NULL,
   grt_ver_code TEXT NOT NULL,

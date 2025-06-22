@@ -1,4 +1,4 @@
--- DROP TABLE ref.tr_trait_tra;
+-- DROP TABLE ref.tr_trait_tra CASCADE;
 
 CREATE TABLE ref.tr_trait_tra (
   tra_id integer PRIMARY KEY,
@@ -18,12 +18,16 @@ CREATE TABLE ref.tr_trait_tra (
   tra_icestablesource text,
   tra_individualname text NULL,
   tra_groupname text NULL,
-  --tra_type text NULL,
+  CONSTRAINT uk_tra_groupname UNIQUE (tra_groupname),
   tra_uni_code varchar(20) NULL,
   tra_typemetric text NULL,
-  CONSTRAINT ck_tra_typemetric CHECK (((tra_typemetric = 'individual'::text) OR (tra_typemetric = 'group'::text) OR (tra_typemetric = 'both'::text))),
+  CONSTRAINT ck_tra_typemetric CHECK (((tra_typemetric = 'Individual'::text) 
+  OR (tra_typemetric = 'Group'::text) 
+  OR (tra_typemetric = 'Both'::text))),
+  tra_qualitativeornumeric TEXT,
+  CONSTRAINT ck_tra_qualitativeornumeric CHECK ((tra_qualitativeornumeric = 'Qualitative'::text) 
+  OR (tra_qualitativeornumeric = 'Numeric'::text)),
   CONSTRAINT uk_tra_individualname UNIQUE (tra_individualname),
-  CONSTRAINT uk_tra_groupname UNIQUE (tra_groupname),
   CONSTRAINT uk_tra_code UNIQUE (tra_code),
   CONSTRAINT fk_tra_uni_code FOREIGN KEY (tra_uni_code) 
   REFERENCES ref.tr_units_uni(uni_code) 
@@ -41,6 +45,7 @@ COMMENT ON COLUMN ref.tr_trait_tra.tra_individualname IS 'Name of the metric use
 COMMENT ON COLUMN ref.tr_trait_tra.tra_groupname IS 'Name of the metric used in group metrics';
 COMMENT ON COLUMN ref.tr_trait_tra.tra_uni_code IS 'Unit used, references tr_unit_uni';
 COMMENT ON COLUMN ref.tr_trait_tra.tra_typemetric IS 'Is the metric a group metric (group), or individual metric (individual) or can be used in both tables (both) ?';
+COMMENT ON COLUMN ref.tr_trait_tra.tra_qualitativeornumeric IS 'Indicate variable type, either Qualitative or Numeric';
 
 
 

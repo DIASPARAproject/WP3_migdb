@@ -1,8 +1,16 @@
--- DROP TABLE "ref".tr_traitmethod_trm;
+-- DROP TABLE ref.tr_traitmethod_trm;
 
 CREATE TABLE ref.tr_traitmethod_trm (
   trm_id integer PRIMARY KEY,
   trm_code text NOT NULL,
+  trm_wkg_code TEXT NOT NULL,  
+  CONSTRAINT fk_trm_wkg_code  FOREIGN KEY (trm_wkg_code)
+  REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+  trm_spe_code TEXT NOT NULL,  
+  CONSTRAINT fk_trm_spe_code  FOREIGN KEY (trm_spe_code)
+  REFERENCES ref.tr_species_spe(spe_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
   trm_description text NULL,
   trm_definition text,
   trm_icesvalue character varying(4),  
@@ -12,19 +20,15 @@ CREATE TABLE ref.tr_traitmethod_trm (
 );
 
 
+COMMENT ON TABLE ref.tr_traitmethod_trm.trm_id IS 'Table of method used to obtain a trait metric';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_id IS 'Integer, id of the method used';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_code IS 'Name of the method used';
+COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_wkg_code IS 'Working group code';
+COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_spe_code IS 'Species code';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_description IS 'Description of the method';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_definition IS 'Definition of the method used to obtain the metric';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_icesguid IS 'GUID in the ICES database';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_icestablesource IS 'Source table in ICES vocab';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_individualname IS 'Name of the metric used in individual metrics';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_groupname IS 'Name of the metric used in group metrics';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_type IS 'Type of trait or metric : biology, migration or quality';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_uni_code IS 'Unit used, references tr_unit_uni';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_group IS 'Is the metric a group metric, or individual metric or can be used in both tables ?';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_min IS 'Minimum allowed value';
-COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_max IS 'Maximum allowed value';
 
 
 GRANT ALL ON ref.tr_traitmethod_trm TO diaspara_admin;

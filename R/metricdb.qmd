@@ -643,15 +643,102 @@ knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover"
 
 This one was formerly called metric, but metric `ref.tr_metric_met` already exist and is better
 suited to statistics (mean, sd ... ). So we are using the word trait.
+Trait is refering to a species (there are different method,
+or different measurements for different species).
+The trait can be, either qualitative or quantitative.
+The trait is measured by a method, the measure (either categorical
+eg. sex = 'Male') or quantitative e.g. (length_mm = 150) might be accompanied by a method.
+For instance a fish is measured for length as fork length or total length,
+in the individual_trait table, the fish will be related to three columns,
+the code of the length parameter in the trait table, the quantitative value,
+and the method used.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `tr_trait_tra`</summary>
 
 ``` {.sql include="../SQL/metric_06_ref_tr_trait_tra.sql"}
 ```
 
 </details>
+
+## Numeric fish trait (tr_traitnumeric_trn)
+
+Trait can be either qualitative or quantitative (numeric). Both tables are inherited from 
+`tr_trait_tra`. 
+
+<details>
+
+<summary>SQL code to create table `tr_traitnumeric_trn` </summary>
+
+``` {.sql include="../SQL/metric_06_ref_tr_traitnumeric_trn.sql"}
+```
+
+```{r ref_ref_tr_traitnumeric_trn_insert}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import trait table.
+
+tra <- dbGetQuery(con_wgeel_distant, "SELECT * FROM ref.tr_metrictype_mty ;")
+# we will include group metric names later
+tra <- tra[!grepl("mean", tra$mty_name),]
+# we will also include method later
+tra <- tra[!grepl("method", tra$mty_name),]
+res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra")
+clipr::write_clip(colnames(res))
+tr_trait_tra_temp <- data.frame(
+"tra_id" = tra$mty_id,
+"tra_code" = tra$mty_name,
+"tra_description" = tra$mty_description,
+"tra_individualname" = ifelse(is.na(tra$mty_individual_name),tra$mty_name ,tra$mty_individual_name),
+"tra_groupname" = tra$mty_name,
+"tra_type" = tra$mty_type,
+"tra_uni_code" = tra$mty_uni_code,
+"tra_group"=tra$mty_group)
+tr_trait_tra_temp$tra_individualname[tr_trait_tra_temp$tra_group=="group"] <- NA
+tr_trait_tra_temp$tra_groupname[tr_trait_tra_temp$tra_group=="individual"] <- NA
+dbWriteTable(con_diaspara_admin, "tr_trait_tra_temp",tr_trait_tra_temp)
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_trait_tra 
+SELECT 
+tra_code,
+tra_description,
+tra_individualname,
+tra_groupname,
+tra_type,
+tra_uni_code,
+tra_group
+ FROM tr_trait_tra_temp")
+# TODO add group name
+```
+
+
+</details>
+
+## Qualitative fish trait (tr_traitqualitative_trq)
+
+<details>
+
+<summary>SQL code to create table `tr_traitqualitative_trq` </summary>
+
+``` {.sql include="../SQL/metric_06_ref_tr_traitqualitative_trq.sql"}
+```
+</details>
+
+## Values of Qualitative fish trait (tr_traitqualvalue_tva)
+
+The qualitative traits have values
+
+<details>
+
+<summary>SQL code to create table `tr_traitqualvalue_tva` </summary>
+
+``` {.sql include="../SQL/metric_08_ref_tr_traitqualvalue_tva.sql"}
+```
+</details>
+
 
 
 ```{r tbl-ref_tr_trait_tra}
@@ -660,24 +747,89 @@ suited to statistics (mean, sd ... ). So we are using the word trait.
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to show fishway table (to be imported in ICES vocab).
-#| tbl-cap: Fishway vocab proposed to ICES.
+#| code-summary: Code to show trait table.
+#| tbl-cap: Trait table ...
 
-habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_monitoring_mon;")
-knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+meth <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra;")
+knitr::kable(trait) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+## Fish trait measurement method
+
+In individual metrics the metric used is either a measurement,
+or a category, or a method. 
+In the new database, the metric
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_07_ref_tr_traitmethod_trm.sql"}
 ```
 
-Series are linked to a station (from the station vocabulary) but not in the vocab table, as we need a unique identifier here and a series will not always correspond to a location.
+</details>
 
 
+```{r ref_tr_traitmethod_trm_insert}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import traitmethod table.
 
-:::{.callout-note appearance="simple"}
-## QUESTION to DIASPARA
-Do we want a vocabulary there ? We started with, and removed it.
-:::
+tra <- dbGetQuery(con_wgeel_distant, "SELECT * FROM ref.tr_metrictype_mty ;")
+tra <- tra[grepl("method", tra$mty_name),]
+res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm")
+clipr::write_clip(colnames(res))
+tr_trait_tra_temp <- data.frame(
+"trm_id" = tra$mty_id,
+"trm_code" = tra$mty_name,
+"trm_description" = tra$mty_description,
+)
+tr_traitmethod_trm_temp$trm_individualname[tr_trait_trm_temp$trm_group=="group"] <- NA
+tr_traitmethod_trm_temp$trm_groupname[tr_trait_trm_temp$trm_group=="individual"] <- NA
+dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp",tr_traitmethod_trm_temp)
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitmethod_trm 
+SELECT 
+trm_code,
+trm_description,
+ FROM tr_trait_trm_temp")
+# TODO add group name
+```
+
+```{r tbl-ref_tr_traitmethod_trm}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show trait measurement method table.
+#| tbl-cap: Trait table, check how this will be imported ...
+
+trm <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm;")
+knitr::kable(trm) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+## Fish trait measurement limits
+
+For each trait we can store a measurement limit, currently this is in the table,
+it will probably go to DATSU.
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_08_ref_tr_traitlimit_lim.sql"}
+```
+
+</details>
 
 
 ## Creating the station table
+
+Series will be linked to one or several stations.
+
+
 
 The station are loaded into a table that will not be
 exactly like ICES's since I cannot load the full tables, and don't want to replicate the full complexity of stations. For instance currently station 1000 has several parents for "Station_DTYPE" which I agregate like EW~EU~NU~CW,
@@ -934,9 +1086,6 @@ If so we need to decide what fields could change over time (if any)
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import to to refeel.tr_series_ser
-
-ser <- dbGetQuery(con_wgeel_distant, "SELECT ser.*, gea_issscfg_code FROM datawg.t_series_ser ser LEFT JOIN ref.tr_gear_gea on gea_id = ser_sam_gear;
-")
 
 res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_series_ser")
 clipr::write_clip(colnames(res))
