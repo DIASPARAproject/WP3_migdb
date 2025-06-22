@@ -547,6 +547,15 @@ knitr::kable(tr_species_spe_temp) %>% kable_styling(bootstrap_options = c("strip
 
 ```
 
+<details>
+
+<summary>SQL code to create table `tr_species_spe`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_species_spe.sql"}
+```
+
+</details>
+
 ```{r}
 #| label: species
 #| echo: TRUE
@@ -554,15 +563,6 @@ knitr::kable(tr_species_spe_temp) %>% kable_styling(bootstrap_options = c("strip
 #| warning: FALSE
 #| message: FALSE
 
-dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_species_spe;")
-dbExecute(con_diaspara_admin,"CREATE TABLE ref.tr_species_spe (
-     spe_code CHARACTER VARYING(3) PRIMARY KEY,
-     spe_commonnname TEXT,
-     spe_scientificname TEXT,
-     spe_codeaphia numeric NOT NULL,
-     spe_description TEXT)");
-dbExecute(con_diaspara_admin, "GRANT ALL ON TABLE ref.tr_species_spe to diaspara_admin")
-dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_species_spe to diaspara_read")
 dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species_spe_temp, overwrite = TRUE)
 dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
 dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
@@ -620,6 +620,15 @@ but we will add it.
 :::
 ::::::
 
+<details>
+
+<summary>SQL code to create table `tr_icworkinggroup_wkg`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_icworkinggroup_wkg.sql"}
+```
+
+</details>
+
 ```{r}
 #| label: working_group
 #| echo: TRUE
@@ -629,18 +638,7 @@ but we will add it.
 #| code-fold: TRUE
 #| code-summary: Code to create reference table for working groups 
 
-dbExecute(con_diaspara_admin,
-          "DROP TABLE IF EXISTS ref.tr_icworkinggroup_wkg CASCADE;")
-dbExecute(con_diaspara_admin,
-          "CREATE TABLE ref.tr_icworkinggroup_wkg (
-wkg_code TEXT PRIMARY KEY,
-wkg_description TEXT,
-wkg_icesguid uuid,
-wkg_stockkeylabel TEXT
-);")
 
-dbExecute(con_diaspara_admin, "COMMENT ON TABLE ref.tr_icworkinggroup_wkg 
-IS 'Table corresponding to the IC_WorkingGroup referential;';")
 # Using the jsonlite to download the guid also
 tbl <- jsonlite::fromJSON(
   "https://vocab.ices.dk/services/api/Code/3f6fb38a-a3c5-4f5c-bf31-2045e12536ee")
@@ -671,15 +669,7 @@ dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_icworkinggroup_wkg
          FROM temp_tr_icworkinggroup_wkg;") #4
 dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_icworkinggroup_wkg;")
 
-dbExecute(con_diaspara_admin, "COMMENT ON COLUMN 
-ref.tr_icworkinggroup_wkg.wkg_code IS 
-'Working group code uppercase, WGEEL, WGNAS, WGBAST, WGTRUTTA';")
 
-
-dbExecute(con_diaspara_admin, "GRANT ALL ON ref.tr_icworkinggroup_wkg 
-          TO diaspara_admin;")
-dbExecute(con_diaspara_admin, "GRANT SELECT ON ref.tr_icworkinggroup_wkg 
-          TO diaspara_read;")
 ```
 
 ```{r tbl-icworkinggroup}
@@ -701,9 +691,19 @@ source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered
 from North to South starting from the Baltic and ending in the
 Mediterranean, with American number being the highest in order.
 
+
+
+
 <details>
 
-<summary>Code to create table from wgeel and NUTS</summary>
+<summary>SQL code to create table `tr_country_cou`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_country_cou.sql"}
+```
+
+</details>
+
+
 
 ```{r}
 #| label: country
@@ -711,15 +711,9 @@ Mediterranean, with American number being the highest in order.
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to create table tr_country_cou from wgeel and NUTS.
 
-dbExecute(con_diaspara_admin, "DROP TABLE IF EXISTS ref.tr_country_cou;")
-dbExecute(con_diaspara_admin, "CREATE TABLE ref.tr_country_cou (
-    cou_code character varying(2) NOT NULL,
-    cou_country text NOT NULL,
-    cou_order integer NOT NULL,
-    geom public.geometry,
-    cou_iso3code character varying(3)
-);")
 
 
 dbExecute(con_diaspara_admin,
@@ -776,13 +770,6 @@ dbExecute(con_diaspara_admin,
 SET geom = nuts.geom  
 FROM  area.\"ref-countries-2024-01m-4326\" nuts 
 WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
-
-dbExecute(con_diaspara_admin,"COMMENT ON TABLE ref.tr_country_cou IS
-          'Table of country codes source EuroGeographics and UN-FAO.';")
-dbExecute(con_diaspara_admin,"ALTER TABLE ref.tr_country_cou 
-          OWNER TO diaspara_admin;")
-dbExecute(con_diaspara_admin,
-          "GRANT SELECT ON TABLE ref.tr_country_cou TO diaspara_read;")
 ```
 
 ```{r tbl-country}
@@ -791,11 +778,12 @@ dbExecute(con_diaspara_admin,
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Country table in the diaspara DB
+#| code-fold: TRUE
 tr_country_cou <- dbGetQuery(con_diaspara, "SELECT cou_code,cou_country,cou_order, cou_iso3code FROM ref.tr_country_cou order by cou_order")
 knitr::kable(tr_country_cou) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-</details>
+
 
 ```{r fig-country}
 #| echo: TRUE
@@ -2101,7 +2089,7 @@ include information on maturity.
 
 <details>
 
-<summary>SQL code to create table tr_maturity_mat</summary>
+<summary>SQL code to create table `tr_maturity_mat`</summary>
 
 ``` {.sql include="../SQL/2_ref_tr_maturity_mat.sql"}
 ```
