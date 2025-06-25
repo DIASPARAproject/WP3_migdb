@@ -34,8 +34,8 @@ adjustment of the sensitivity of the counter ensures that the sizes into which f
 classified remains consistent.');
 INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('AC', 
-'Acoustic receiver', 
-'Acoustic receivers are use in fish tracking to detect and decode transmissions from acoustic fish tags');
+'Telemetry', 
+'e.g., Acoustic, PIT, or radiotelemetry receivers are use in fish tracking to detect and decode transmissions from fish tags');
 INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('IR', 
 'Infrared counter', 
