@@ -36,6 +36,10 @@ INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('AC', 
 'Acoustic receiver', 
 'Acoustic receivers are use in fish tracking to detect and decode transmissions from acoustic fish tags');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('IR', 
+'Infrared counter', 
+'Counter that uses infrared, e.g., Vaki Riverwatcher');
 
 
 
