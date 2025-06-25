@@ -20,7 +20,7 @@ CREATE TABLE ref.tr_traitmethod_trm (
 );
 
 
-COMMENT ON TABLE ref.tr_traitmethod_trm.trm_id IS 'Table of method used to obtain a trait metric';
+COMMENT ON TABLE ref.tr_traitmethod_trm IS 'Table of method used to obtain a trait metric';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_id IS 'Integer, id of the method used';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_code IS 'Name of the method used';
 COMMENT ON COLUMN ref.tr_traitmethod_trm.trm_wkg_code IS 'Working group code';

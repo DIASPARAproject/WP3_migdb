@@ -143,7 +143,7 @@ digraph schema {
        value  <br align="left"/> </td> </tr> 
        </table>> 
        shape = record];
-   metrics [fillcolor="gray"
+   traits [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>ref.metric</b> </td> </tr>
        <tr> <td align="left">     
@@ -186,7 +186,7 @@ digraph schema {
   metts -> stationDictionary  [label = "1:1"]
   groupmetrics -> ann -> ts [label = "n:1"]
   indmetrics -> fish -> ts [label = "n:1"]
-  indmetrics -> metrics
+  indmetrics -> traits
 
   groupmetricseel -> metanneel [label = "n:1"]
   anneel -> tseel [label = "n:1"]
@@ -674,7 +674,7 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 ``` {.sql include="../SQL/metric_06_ref_tr_traitnumeric_trn.sql"}
 ```
 
-```{r ref_ref_tr_traitnumeric_trn_insert}
+```{r ref_tr_traitnumeric_trn_insert}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -688,20 +688,31 @@ tra <- tra[!grepl("mean", tra$mty_name),]
 # we will also include method later
 tra <- tra[!grepl("method", tra$mty_name),]
 res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra")
-clipr::write_clip(colnames(res))
-tr_trait_tra_temp <- data.frame(
+#clipr::write_clip(colnames(res))
+tranum <- data.frame(
 "tra_id" = tra$mty_id,
 "tra_code" = tra$mty_name,
 "tra_description" = tra$mty_description,
 "tra_individualname" = ifelse(is.na(tra$mty_individual_name),tra$mty_name ,tra$mty_individual_name),
+"tra_wkg_code" = 'WGEEL',
+"Tra_spe_code" = 'ANG',
 "tra_groupname" = tra$mty_name,
 "tra_type" = tra$mty_type,
 "tra_uni_code" = tra$mty_uni_code,
-"tra_group"=tra$mty_group)
-tr_trait_tra_temp$tra_individualname[tr_trait_tra_temp$tra_group=="group"] <- NA
-tr_trait_tra_temp$tra_groupname[tr_trait_tra_temp$tra_group=="individual"] <- NA
-dbWriteTable(con_diaspara_admin, "tr_trait_tra_temp",tr_trait_tra_temp)
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_trait_tra 
+"tra_typemetric"=tra$mty_group,
+"tra_qualitativeornumeric"='numeric')
+tranum$tra_individualname[tranum$tra_typemetric=="group"] <- NA
+tranum$tra_groupname[tranum$tra_typemetric=="individual"] <- NA
+# the proportions will be numeric for group and qualitative for individual (
+# e.g. evex presence)
+tranum[tranum$tra_typemetric=="both" & grepl("proportion",tranum$tra_code),
+c("tra_individualname")] <-NA
+tranum[tranum$tra_typemetric=="both" & grepl("proportion",tranum$tra_code),
+c("tra_typemetric")] <- "group"
+
+
+dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum)
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitnumeric_trn
 SELECT 
 tra_code,
 tra_description,
@@ -750,14 +761,13 @@ The qualitative traits have values
 #| code-summary: Code to show trait table.
 #| tbl-cap: Trait table ...
 
-meth <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra;")
+trait <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra;")
 knitr::kable(trait) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 ## Fish trait measurement method
 
-In individual metrics the metric used is either a measurement,
-or a category, or a method. 
-In the new database, the metric
+Currently in the wgeel database, the metrics table value contains one column for value which can store numeric or integer. When it is integer, then, the metric id (mty_id) refers either to a category (e.g sex, or is differenciated), or a method (sexed using size, sexed after gonadal inspection). 
+In the new database, the method will be stored in a different column in the group or individual metrics. This table references the methods proposed.
 
 <details>
 
@@ -809,20 +819,6 @@ trm_description,
 trm <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm;")
 knitr::kable(trm) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
-
-## Fish trait measurement limits
-
-For each trait we can store a measurement limit, currently this is in the table,
-it will probably go to DATSU.
-
-<details>
-
-<summary>SQL code to create tables</summary>
-
-``` {.sql include="../SQL/metric_08_ref_tr_traitlimit_lim.sql"}
-```
-
-</details>
 
 
 ## Creating the station table
