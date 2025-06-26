@@ -39,9 +39,8 @@ check the t_metadataannual table for the unit used';
 COMMENT ON COLUMN dat.t_serannual_san.san_datelastupdate IS 'Date of last update on the annual data';
 COMMENT ON COLUMN dat.t_serannual_san.san_qal_id IS 'Quality ID code of the series';
 COMMENT ON COLUMN dat.t_serannual_san.san_qal_comment IS 'Comment related to data quality, e.g. why this year the series should not be used, or used with caution.';
-COMMENT ON COLUMN dat.t_serannual_san.san_wkg_code IS 'Code of the working group, one of
-WGBAST, WGEEL, WGNAS, WKTRUTTA';
-COMMENT ON COLUMN dat.t_serannual_san.san_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. NAS_2025dc_2020, wgeel_2016, wkemp_2025';
+COMMENT ON COLUMN dat.t_serannual_san.san_wkg_code IS 'Code of the working group, one ofWGBAST, WGEEL, WGNAS, WKTRUTTA';
+COMMENT ON COLUMN dat.t_serannual_san.san_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. WGNAS_2020_1, WGEEL_2016_1';
 
 
 ALTER TABLE dateel.t_serannual_san DROP  CONSTRAINT  fk_san_ver_code
