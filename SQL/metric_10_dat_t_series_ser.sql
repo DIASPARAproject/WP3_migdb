@@ -83,9 +83,9 @@ COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS 'Code of the country';
 COMMENT ON COLUMN dat.t_series_ser.ser_wltyp_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), T (Transitional water), FW (Freshwater), null accepted';
 COMMENT ON COLUMN dat.t_series_ser.ser_hab_code IS 'Code of the habitat, see tr_habitat_hab';
 COMMENT ON COLUMN dat.t_series_ser.ser_are_code IS 'Code of the area, areas are geographical sector most often corresponding to stock units, see tr_area_are.';
-COMMENT ON COLUMN dat.t_series_ser.ser_uni_code IS 'Annual value Unit, references table tr_unit_uni.';
-COMMENT ON COLUMN dat.t_series_ser.ser_effort_uni_code IS 'Annual data collection effort unit code, references table tr_unit_uni.';
-COMMENT ON COLUMN dat.t_series_ser.ser_description IS 'Sem description should comply with column svc_description in the vocabulary. Quick concise description of the series. Should include species, stage targeted, location and gear. e.g. Glass eel monitoring in the Vilaine estuary (France) with a trapping ladder.';
+COMMENT ON COLUMN dat.t_series_ser.ser_uni_code IS 'Unit for the value reported in annual table, if the series reports annual data in Kg or Number use kg or number.';
+COMMENT ON COLUMN dat.t_series_ser.ser_effort_uni_code IS 'Annual data collection effort unit code, used for the effort column in annual data';
+COMMENT ON COLUMN dat.t_series_ser.ser_description IS 'Concise description of the series. Should include species, stage targeted, location and gear. e.g. Glass eel monitoring in the Vilaine estuary (France) with a trapping ladder.';
 COMMENT ON COLUMN dat.t_series_ser.ser_locationdescription IS 'This should provide a description of the site, e.g. if ist far inland, in the middle of a river, near a dam etc. Also please specify the adjectant marine region (Baltic, North Sea) etc.
 (e.g.  "Bresle river trap 3 km from the sea" or IYFS/IBTS sampling in the Skagerrak-Kattegat"';
 COMMENT ON COLUMN dat.t_series_ser.ser_gea_code IS 'Code of the gear used, see tr_gear_gea';

@@ -1364,7 +1364,7 @@ FROM t_serannual_san_temp") # 6402
 
 </details>
 
-# Creating one table that should only resided in wgeel datasets
+# Creating one table that will only be in wgeel datasets (for stock annex)
 
 ## Creating table dateel.t_recruitmentmetadata_met
 
