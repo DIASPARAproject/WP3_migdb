@@ -12,7 +12,7 @@ DELETE FROM ref.tr_monitoring_mon;
 INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('SO', 
 'Sonar HF', 
-'High frequency sonar used to monitor fish migration, e.g. Didson, Aris, Blueview, Occulus ....');
+'Multibeam, high frequency sonar used to monitor fish migration, e.g. Didson, Aris, Blueview, Occulus ....');
 INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('TR', 
 'Trap', 
@@ -34,8 +34,33 @@ adjustment of the sensitivity of the counter ensures that the sizes into which f
 classified remains consistent.');
 INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('AC', 
-'Acoustic receiver', 
-'Acoustic receivers are use in fish tracking to detect and decode transmissions from acoustic fish tags');
+'Telemetry', 
+'e.g., Acoustic, PIT, or radiotelemetry receivers are use in fish tracking to detect and decode transmissions from fish tags');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('IR', 
+'Infrared counter', 
+'Counter that uses infrared, e.g., Vaki Riverwatcher');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('OC', 
+'Other catching methods', 
+'Any other type of fish catching method than a trap. E.g. rod, gillnet, etc.');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('VC', 
+'Visual count', 
+'Visual fish counting methods, not including with the use of cameras');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('IQ', 
+'Interview or questionnaire', 
+'Interview or questionnaire of e.g. recreational fishers or other parties');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('MK', 
+'Mark and Recapture', 
+'Mark and recapture methods');
+INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
+VALUES('CD', 
+'Catch data', 
+'Recreational or commercial fisheries catch data');
+
 
 
 
