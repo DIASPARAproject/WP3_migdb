@@ -40,26 +40,8 @@ INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
 VALUES('IR', 
 'Infrared counter', 
 'Counter that uses infrared, e.g., Vaki Riverwatcher');
-INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
-VALUES('OC', 
-'Other catching methods', 
-'Any other type of fish catching method than a trap. E.g. rod, gillnet, etc.');
-INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
-VALUES('VC', 
-'Visual count', 
-'Visual fish counting methods, not including with the use of cameras');
-INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
-VALUES('IQ', 
-'Interview or questionnaire', 
-'Interview or questionnaire of e.g. recreational fishers or other parties');
-INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
-VALUES('MK', 
-'Mark and Recapture', 
-'Mark and recapture methods');
-INSERT INTO ref.tr_monitoring_mon (mon_code, mon_description, mon_definition)
-VALUES('CD', 
-'Catch data', 
-'Recreational or commercial fisheries catch data');
+
+
 
 
 
