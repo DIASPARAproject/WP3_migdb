@@ -268,7 +268,12 @@ con_wgeel_distant <- dbConnect(Postgres(),
                            port = cred$port,
                            user = cred$userdistant,
                            password = cred$passworddistant)
-
+con_wgeel_local <- dbConnect(Postgres(), 
+                           dbname = "wgeel",
+                           host = '127.0.0.1',
+                           port = cred$port,
+                           user = cred$userdistant,
+                           password = cred$passwordsalmo)
 
 
 ```
@@ -680,9 +685,9 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import trait table.
+#| code-summary: Code to import numeric trait.
 
-tra <- dbGetQuery(con_wgeel_distant, "SELECT * FROM ref.tr_metrictype_mty ;")
+tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 # we will include group metric names later
 tra <- tra[!grepl("mean", tra$mty_name),]
 # we will also include method later
@@ -691,37 +696,59 @@ res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra")
 #clipr::write_clip(colnames(res))
 tranum <- data.frame(
 "tra_id" = tra$mty_id,
-"tra_code" = tra$mty_name,
+"tra_code" = stringi::stri_trans_totitle(tra$mty_name),
 "tra_description" = tra$mty_description,
-"tra_individualname" = ifelse(is.na(tra$mty_individual_name),tra$mty_name ,tra$mty_individual_name),
 "tra_wkg_code" = 'WGEEL',
 "Tra_spe_code" = 'ANG',
-"tra_groupname" = tra$mty_name,
-"tra_type" = tra$mty_type,
-"tra_uni_code" = tra$mty_uni_code,
-"tra_typemetric"=tra$mty_group,
-"tra_qualitativeornumeric"='numeric')
-tranum$tra_individualname[tranum$tra_typemetric=="group"] <- NA
-tranum$tra_groupname[tranum$tra_typemetric=="individual"] <- NA
+"trn_uni_code" = tra$mty_uni_code,
+"tra_typemetric"=stringi::stri_trans_totitle(tra$mty_group),"tra_qualitativeornumeric"='Numeric',
+"trn_minvalue" = tra$mty_min,
+"trn_maxvalue" = tra$mty_max)
+
 # the proportions will be numeric for group and qualitative for individual (
 # e.g. evex presence)
-tranum[tranum$tra_typemetric=="both" & grepl("proportion",tranum$tra_code),
-c("tra_individualname")] <-NA
-tranum[tranum$tra_typemetric=="both" & grepl("proportion",tranum$tra_code),
-c("tra_typemetric")] <- "group"
+
+tranum[tranum$tra_typemetric=="Both" & grepl("proportion",tranum$tra_code),
+c("tra_typemetric")] <- "Group"
 
 
-dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum)
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitnumeric_trn
-SELECT 
+# view(tranum)
+# fix names
+tranum$tra_description[tranum$tra_code=="Lengthmm"] <- 'Total body length in millimeters (mm) or mean total body length for group'
+tranum$tra_description[tranum$tra_code=="differentiated_proportion"] <- 'Proportion of differentiated eel'
+
+tranum$tra_description[tranum$tra_code=="Female_proportion"] <- 'Female proportion in the population female/(male+female) for group (between 0 and 1)'
+tranum$tra_description[tranum$tra_code=="Anguillicola_proportion"] <- 'Prevalence of Anguillicola in proportion in group (between 0 and 1)'
+tranum$tra_description[tranum$tra_code=="Evex_proportion"] <- 'EVE and EVEX proportion in the group (between 0 and 1)'
+tranum$tra_description[tranum$tra_code=="Hva_proportion"] <- 'HVA proportion in the group (between 0 and 1)'
+
+
+
+dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_traitnumeric_trn")
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitnumeric_trn(
+tra_id,
 tra_code,
+tra_wkg_code,
+tra_spe_code,
 tra_description,
-tra_individualname,
-tra_groupname,
-tra_type,
-tra_uni_code,
-tra_group
- FROM tr_trait_tra_temp")
+tra_typemetric,
+trn_uni_code,
+tra_qualitativeornumeric,
+trn_minvalue,
+trn_maxvalue)
+SELECT 
+tra_id,
+tra_code,
+'WGEEL',
+'ANG',
+tra_description,
+tra_typemetric,
+trn_uni_code,
+tra_qualitativeornumeric,
+trn_minvalue,
+trn_maxvalue
+ FROM tr_traitnumeric_trn_temp") #19
 # TODO add group name
 ```
 
@@ -737,6 +764,89 @@ tra_group
 ``` {.sql include="../SQL/metric_06_ref_tr_traitqualitative_trq.sql"}
 ```
 </details>
+
+```{r ref_tr_traitqualitative_trq_insert}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import qualitative table.
+
+tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
+# we will include group metric names later
+tra <- tra[grepl("is_", tra$mty_individual_name) | grepl("presence", tra$mty_individual_name),]
+# we will also include method later
+
+#clipr::write_clip(colnames(res))
+traqal <- data.frame(
+"tra_id" = tra$mty_id,
+"tra_code" = stringi::stri_trans_totitle(tra$mty_individual_name),
+"tra_description" = tra$mty_description,
+"tra_wkg_code" = 'WGEEL',
+"Tra_spe_code" = 'ANG',
+"tra_uni_code" = tra$mty_uni_code,
+"tra_typemetric"='Individual',
+"tra_qualitativeornumeric"='Qualitative'
+)
+
+
+# the proportions will be numeric for group and qualitative for individual (
+# e.g. evex presence)
+
+traqal$tra_code <- gsub("\\s*_\\([^\\)]+\\)", "", traqal$tra_code)
+traqal$tra_code[traqal$tra_code=="Is_female"] <- "Sex"
+traqal$tra_individualname <- traqal$tra_code
+
+# fix names
+
+traqal$tra_description[traqal$tra_code=="Is_differentiated"] <- 'Is the eel differentiated (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+traqal$tra_description[traqal$tra_code=="Sex"] <- 'Sex (F Female,H Hermaphordite,
+I Immature attempt made,M Male, T Transitional, U Undetermined no attempt made, X Mixed)'
+traqal$tra_description[traqal$tra_code=="Anguillicola_presence"] <- 'Presence of Anguillicola (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+traqal$tra_description[traqal$tra_code=="Evex_presence"] <- 'EVE or EVEX presence (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+traqal$tra_description[traqal$tra_code=="Hva_presence"] <- 'HVA presence (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+# view(traqal)
+
+dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp", traqal, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitqualitative_trq(
+tra_id,
+tra_code,
+tra_wkg_code,
+tra_spe_code,
+tra_description,
+tra_typemetric,
+tra_qualitativeornumeric)
+SELECT 
+tra_id,
+tra_code,
+'WGEEL',
+'ANG',
+tra_description,
+tra_typemetric,
+tra_qualitativeornumeric
+ FROM tr_traitqualitative_trq_temp") #5
+# TODO add group name
+
+
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitqualitative_trq(
+tra_id,
+tra_code,
+tra_wkg_code,
+tra_spe_code,
+tra_description,
+tra_typemetric,
+tra_qualitativeornumeric)
+SELECT 
+29,
+'Pigment_stage',
+'WGEEL',
+'ANG',
+'Pigmentation stage according to Elie, 1982',
+'Individual',
+'Qualitative'") 
+
+```
 
 ## Values of Qualitative fish trait (tr_traitqualvalue_tva)
 
@@ -787,7 +897,7 @@ In the new database, the method will be stored in a different column in the grou
 #| code-fold: TRUE
 #| code-summary: Code to import traitmethod table.
 
-tra <- dbGetQuery(con_wgeel_distant, "SELECT * FROM ref.tr_metrictype_mty ;")
+tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 tra <- tra[grepl("method", tra$mty_name),]
 res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm")
 clipr::write_clip(colnames(res))

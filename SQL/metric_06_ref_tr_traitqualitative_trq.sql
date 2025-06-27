@@ -1,4 +1,4 @@
--- DROP TABLE IF EXISTS ref.tr_traitqualitative_trq;
+-- DROP TABLE IF EXISTS ref.tr_traitqualitative_trq CASCADE;
 
 CREATE TABLE ref.tr_traitqualitative_trq (
   CONSTRAINT fk_tra_wkg_code  FOREIGN KEY (tra_wkg_code)
@@ -7,8 +7,7 @@ CREATE TABLE ref.tr_traitqualitative_trq (
   CONSTRAINT fk_tra_spe_code  FOREIGN KEY (tra_spe_code)
   REFERENCES ref.tr_species_spe(spe_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT fk_tra_uni_code FOREIGN KEY (tra_uni_code) 
-  REFERENCES ref.tr_units_uni(uni_code)   ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT uk_trq_code UNIQUE (tra_code)
   ) INHERITS (ref.tr_trait_tra);
 
 
