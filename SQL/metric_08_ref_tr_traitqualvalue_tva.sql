@@ -15,11 +15,27 @@ CREATE TABLE ref.tr_traitvaluequal_qal(
 
 
 COMMENT ON COLUMN ref.tr_traitvaluequal_qal.qal_id IS 'Integer, id of the qualitative used';
-COMMENT ON COLUMN ref.tr_traitvaluequal_qal.qal_code IS 'Code of the qualitative traitvalue';
+COMMENT ON COLUMN ref.tr_traitvaluequal_qal.qal_code IS 'Code of the qualitative trait';
 COMMENT ON COLUMN ref.tr_traitvaluequal_qal.qal_description IS 'Description of the method';
-
-
-
 
 GRANT ALL ON ref.tr_traitvaluequal_qal TO diaspara_admin;
 GRANT SELECT ON ref.tr_traitvaluequal_qal TO diaspara_read; 
+
+DROP TABLE IF EXISTS refeel.tr_traitvaluequal_qal;
+CREATE TABLE refeel.tr_traitvaluequal_qal(
+  CONSTRAINT uk_qal_code UNIQUE (qal_code),
+  CONSTRAINT uk_qal_id UNIQUE (qal_id),
+  CONSTRAINT fk_qal_trq_code 
+  FOREIGN KEY (qal_trq_code)
+  REFERENCES ref.tr_traitqualitative_trq(tra_code)
+  ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT uk_qal_code UNIQUE (qal_code)
+) INHERITS (ref.tr_traitvaluequal_qal);
+
+
+COMMENT ON COLUMN refeel.tr_traitvaluequal_qal.qal_id IS 'Integer, id of the qualitative used';
+COMMENT ON COLUMN refeel.tr_traitvaluequal_qal.qal_code IS 'Code of the qualitative trait';
+COMMENT ON COLUMN refeel.tr_traitvaluequal_qal.qal_description IS 'Description of the method';
+
+GRANT ALL ON refeel.tr_traitvaluequal_qal TO diaspara_admin;
+GRANT SELECT ON refeel.tr_traitvaluequal_qal TO diaspara_read; 

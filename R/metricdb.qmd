@@ -679,7 +679,7 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 ``` {.sql include="../SQL/metric_06_ref_tr_traitnumeric_trn.sql"}
 ```
 
-```{r ref_tr_traitnumeric_trn_insert}
+```{r refeel_tr_traitnumeric_trn_insert}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -715,18 +715,21 @@ c("tra_typemetric")] <- "Group"
 # view(tranum)
 # fix names
 tranum$tra_description[tranum$tra_code=="Lengthmm"] <- 'Total body length in millimeters (mm) or mean total body length for group'
-tranum$tra_description[tranum$tra_code=="differentiated_proportion"] <- 'Proportion of differentiated eel'
+tranum$tra_description[tranum$tra_code=="Differentiated_proportion"] <- 'Proportion of differentiated eel (between 0 and 1)'
 
 tranum$tra_description[tranum$tra_code=="Female_proportion"] <- 'Female proportion in the population female/(male+female) for group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Anguillicola_proportion"] <- 'Prevalence of Anguillicola in proportion in group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Evex_proportion"] <- 'EVE and EVEX proportion in the group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Hva_proportion"] <- 'HVA proportion in the group (between 0 and 1)'
-
-
+# duplicated, now two methods
+tranum <- tranum[tranum$tra_code!="Muscle_lipid_gravimeter_perc"] 
+tranum$tra_description[tranum$tra_code=="Muscle_lipid_fatmeter_perc"] <-
+"Lipid percentage or mean muscle lipid percentage for group"
+tranum$tra_code[tranum$tra_code=="Muscle_lipid_fatmeter_perc"] <- "Muscle_lipid"
 
 dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_traitnumeric_trn")
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitnumeric_trn(
+dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitnumeric_trn")
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitnumeric_trn(
 tra_id,
 tra_code,
 tra_wkg_code,
@@ -749,7 +752,7 @@ tra_qualitativeornumeric,
 trn_minvalue,
 trn_maxvalue
  FROM tr_traitnumeric_trn_temp") #19
-# TODO add group name
+
 ```
 
 
@@ -765,7 +768,7 @@ trn_maxvalue
 ```
 </details>
 
-```{r ref_tr_traitqualitative_trq_insert}
+```{r refeel_tr_traitqualitative_trq_insert}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -809,7 +812,7 @@ traqal$tra_description[traqal$tra_code=="Hva_presence"] <- 'HVA presence (Y Yes,
 # view(traqal)
 
 dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp", traqal, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitqualitative_trq(
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitqualitative_trq(
 tra_id,
 tra_code,
 tra_wkg_code,
@@ -829,7 +832,7 @@ tra_qualitativeornumeric
 # TODO add group name
 
 
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitqualitative_trq(
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitqualitative_trq(
 tra_id,
 tra_code,
 tra_wkg_code,
@@ -901,13 +904,15 @@ tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 tra <- tra[grepl("method", tra$mty_name),]
 res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm")
 clipr::write_clip(colnames(res))
-tr_trait_tra_temp <- data.frame(
-"trm_id" = tra$mty_id,
-"trm_code" = tra$mty_name,
-"trm_description" = tra$mty_description,
+traitmethod <- data.frame(
+"trm_id" = 1:6,
+"trm_tra_code"= c("Gonadal_inspection", "Length_based_sex", "Anguillicola_stereomicroscope_count", "Anguillicola visual count",
+"Muscle_lipid_fatmeter", "Muscle_lipid_gravimeter"),
+"trm_wkg_code" = rep('WGEEL', 6),
+"trm_spe_code" = rep('ANG',6),
+"trm_description" = c(, "Non invasive estimation of the fat content by measuring the dielectric properties of tissues, this method requires a calibration.","Gravimeter, muscle tissues are dried and the lipids are extracted using solvents, the extracted fat is dried and weighted")
 )
-tr_traitmethod_trm_temp$trm_individualname[tr_trait_trm_temp$trm_group=="group"] <- NA
-tr_traitmethod_trm_temp$trm_groupname[tr_trait_trm_temp$trm_group=="individual"] <- NA
+
 dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp",tr_traitmethod_trm_temp)
 dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitmethod_trm 
 SELECT 
