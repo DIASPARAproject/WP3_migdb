@@ -102,3 +102,5 @@ COMMENT ON TABLE ref."PRGOV" IS 'Program Governance referential';
 COMMENT ON TABLE ref."PURPM" IS 'Purpose of monitoring';
 COMMENT ON TABLE ref."MSTAT" IS 'Purpose of monitoring';
 COMMENT ON TABLE ref."EDMO" IS 'European Directory of Marine Organisations (EDMO)';
+
+

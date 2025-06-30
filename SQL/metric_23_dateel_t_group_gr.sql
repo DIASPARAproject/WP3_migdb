@@ -1,7 +1,10 @@
 
--- DROP TABLE dateel.t_group_gr;
+-- DROP TABLE IF EXISTS dateel.t_group_gr;
 
 CREATE TABLE dateel.t_group_gr (
+ CONSTRAINT fk_gr_ser_id FOREIGN KEY (gr_ser_id)
+  REFERENCES dateel.t_series_ser (ser_id) 
+  ON UPDATE CASCADE ON DELETE CASCADE, 
   CONSTRAINT fk_gr_gr_id  FOREIGN KEY (gr_gr_id, gr_wkg_code)
   REFERENCES dat.t_group_gr(gr_id, gr_wkg_code)
   ON UPDATE CASCADE ON DELETE CASCADE,
@@ -10,7 +13,7 @@ CREATE TABLE dateel.t_group_gr (
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT t_group_gr_pkey PRIMARY KEY (gr_id, gr_wkg_code), 
   CONSTRAINT fk_gr_ver_code FOREIGN KEY (gr_ver_code)
-  REFERENCES ref.tr_version_ver(ver_code)
+  REFERENCES refeel.tr_version_ver(ver_code)
   ON UPDATE CASCADE ON DELETE RESTRICT
 ) INHERITS (dat.t_group_gr);
 

@@ -722,10 +722,10 @@ tranum$tra_description[tranum$tra_code=="Anguillicola_proportion"] <- 'Prevalenc
 tranum$tra_description[tranum$tra_code=="Evex_proportion"] <- 'EVE and EVEX proportion in the group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Hva_proportion"] <- 'HVA proportion in the group (between 0 and 1)'
 # duplicated, now two methods
-tranum <- tranum[tranum$tra_code!="Muscle_lipid_gravimeter_perc"] 
-tranum$tra_description[tranum$tra_code=="Muscle_lipid_fatmeter_perc"] <-
+tranum <- tranum[tranum$tra_id!=11,] 
+tranum$tra_description[tranum$tra_id==10] <-
 "Lipid percentage or mean muscle lipid percentage for group"
-tranum$tra_code[tranum$tra_code=="Muscle_lipid_fatmeter_perc"] <- "Muscle_lipid"
+tranum[tranum$tra_id==10,"tra_code"] <- "Muscle_lipid"
 
 dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitnumeric_trn")
@@ -751,7 +751,7 @@ trn_uni_code,
 tra_qualitativeornumeric,
 trn_minvalue,
 trn_maxvalue
- FROM tr_traitnumeric_trn_temp") #19
+ FROM tr_traitnumeric_trn_temp") #18
 
 ```
 
@@ -812,6 +812,7 @@ traqal$tra_description[traqal$tra_code=="Hva_presence"] <- 'HVA presence (Y Yes,
 # view(traqal)
 
 dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp", traqal, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitqualitative_trq");
 dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitqualitative_trq(
 tra_id,
 tra_code,
@@ -848,6 +849,14 @@ SELECT
 'Pigmentation stage according to Elie, 1982',
 'Individual',
 'Qualitative'") 
+# duplicated for variables which were both group and 
+dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id = 34 WHERE tra_code='Hva_presence';")
+dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id = 33 WHERE tra_code='Evex_presence';")
+dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 32 WHERE tra_code='Anguillicola_presence';")
+dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 31 WHERE tra_code='Is_differentiated'")
+dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 30 WHERE tra_code='Sex';")
+
+
 
 ```
 
@@ -865,7 +874,7 @@ The qualitative traits have values
 
 
 
-```{r tbl-ref_tr_trait_tra}
+```{r tbl-refeel_tr_traitvalueqal_tra}
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
@@ -874,8 +883,52 @@ The qualitative traits have values
 #| code-summary: Code to show trait table.
 #| tbl-cap: Trait table ...
 
-trait <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra;")
-knitr::kable(trait) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+qal <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_qal;")
+trq <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitqualitative_trq;")
+#clipr::write_clip(colnames(qal))
+trq <- data.frame(
+  "qal_id"=1:(12+5*4+7),
+  "qal_trq_code"=c(
+    rep(trq$tra_code[1],12),
+    rep(trq$tra_code[2],5),
+    rep(trq$tra_code[3],5),
+    rep(trq$tra_code[4],5),
+    rep(trq$tra_code[5],5),
+    rep(trq$tra_code[6],7))
+  ,
+  "qal_code"=c(c("VA","VB","VIA0","VIA1","VIA2","VIA3","VIA4","VIB", "mix_VIA1_VIA4",
+   "mix_VA_VB", "U","NA"),
+   rep(c("N","NA","U","Y","P"),4),
+   c("F","I","M","T","U","X","H")),
+  "qal_description" = c(
+  "No pigmentation except a spot on the caudal fin",
+  "Early development of the pigmentation on the skull, no superficial piment beyond the cerebral spot.",
+  "Development of dorsal pigmentation along the base of dorsal fin",
+  "The dosal pigmentation is complete from head to tail",
+  "Presence of medio lateral pigmentation but it does not reach the beginning of the dorsal fin",
+  "The medio-lateral pigmentation reaches the beginning of the dorsal fin",
+  "Ventro lateral pigmentation distributed along the myosepta. Pigments are still distinct.",
+  "Yellow eel, pigments are no longer distinct in the ventro lateral region",
+  "Development of surface and branchiostegal pigmentation",
+  "No or early pigmentation",
+  "Glass eels, but pigmentation stage is unknown",
+  "Not available",
+  rep(c("NO","Not Applicable", "Unknown","Yes", "Probable"), 4),
+  "Female", "Immature - attempt made but sex could not be destinguished",
+  "Male", "Transitional", "Undetermined - no attempt made", "Mixed", "Hermaphrodite"
+  ))
+dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_qal_temp", trq, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitvaluequal_qal");
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitvaluequal_qal
+SELECT 
+qal_id,
+qal_trq_code,
+qal_code,
+qal_description,
+'WGEEL',
+'ANG'
+ FROM tr_traitvaluequal_qal_temp;") #39
+
 ```
 ## Fish trait measurement method
 
@@ -910,16 +963,24 @@ traitmethod <- data.frame(
 "Muscle_lipid_fatmeter", "Muscle_lipid_gravimeter"),
 "trm_wkg_code" = rep('WGEEL', 6),
 "trm_spe_code" = rep('ANG',6),
-"trm_description" = c(, "Non invasive estimation of the fat content by measuring the dielectric properties of tissues, this method requires a calibration.","Gravimeter, muscle tissues are dried and the lipids are extracted using solvents, the extracted fat is dried and weighted")
+"trm_description" = c(
+  "The eel is dissected and the gonads are inpected, In males, the testes  appear as thin, ribbon-like, whitish structures. In females, the ovaries are larger, lobed, and more granular, often yellowish or pinkish depending on maturity. Many eels pass through an intersexual phase (Here refered as Mixed to align with ICES Vocab), where gonads show both ovarian and testicular tissue. This is part of their natural development",
+  "The size at silvering of eels depends on the sex. Males are found within the 25-45 cm range, and females are found over 45 cm. There is an overlap of sexes arround ",
+  "Anguillicola count using a dissecting microscope, this allows to detect early-stage infections or small larvae",
+  "Anguillicola visual count",
+  "Non invasive estimation of the fat content by measuring the dielectric properties of tissues, this method requires a calibration.",
+  "Gravimeter, muscle tissues are dried and the lipids are extracted using solvents, the extracted fat is dried and weighted")
 )
 
-dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp",tr_traitmethod_trm_temp)
+dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp",traitmethod, overwrite =TRUE)
 dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitmethod_trm 
 SELECT 
-trm_code,
-trm_description,
- FROM tr_trait_trm_temp")
-# TODO add group name
+trm_id,
+trm_tra_code,
+trm_wkg_code,
+trm_spe_code,
+trm_description
+ FROM tr_traitmethod_trm_temp") #6
 ```
 
 ```{r tbl-ref_tr_traitmethod_trm}
@@ -974,7 +1035,7 @@ The following chunk creates a vocab with 14086 stations.
 library(icesStation)
 system.time(
 station <- getListStation())
-u#tilisateur     syst�me      �coul� 
+user     system      spent
  #    268.09        9.06     1402.47 
 save(station, file = "data/station.Rdata")
 # load(file = "data/station.Rdata")
@@ -1025,6 +1086,73 @@ SELECT
   
 ```
 
+
+
+```{r ices_Station}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import station
+
+# tested 28/05/2025
+
+library(icesStation)
+system.time(
+station <- getListStation())
+user     system      spent
+ #    268.09        9.06     1402.47 
+save(station, file = "data/station.Rdata")
+# load(file = "data/station.Rdata")
+initcap <- function(X) paste0(substring(X,1,1),tolower(substring(X,2, length(X))))
+
+
+station <- station[station$Station_Name != 'TestBulkUload1',]
+station$Station_Deprecated<- initcap(as.character(station$Station_Deprecated))
+
+dbWriteTable(con_diaspara_admin, "temp_station", station, overwrite = TRUE)
+dbExecute(con_diaspara_admin,'DELETE FROM "ref"."StationDictionary"')
+dbExecute(con_diaspara_admin,'INSERT INTO "ref"."StationDictionary"
+("Definition", 
+"HeaderRecord", 
+"Station_Code",
+ "Station_Country",
+ "Station_Name",
+ "Station_LongName", 
+"Station_ActiveFromDate", 
+"Station_ActiveUntilDate",
+ "Station_ProgramGovernance",
+ "Station_StationGovernance", 
+"Station_PURPM",
+ "Station_DataType",
+ "Station_WLTYP",
+ "Station_MSTAT", 
+"Station_Notes", 
+"Station_Deprecated")
+SELECT
+"Definition", 
+"HeaderRecord", 
+"Station_Code"::INTEGER,
+ "Station_Country",
+ "Station_Name",
+ "Station_LongName", 
+"Station_ActiveFromDate", 
+"Station_ActiveUntilDate",
+ "Station_ProgramGovernance",
+ "Station_StationGovernance", 
+"Station_PURPM",
+ "Station_DataType",
+ "Station_WLTYP",
+ "Station_MSTAT", 
+"Station_Notes", 
+"Station_Deprecated" 
+ FROM temp_station') #14086
+ dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
+  
+```
+Note there is a table tr_station in wgeel but which was never really aligned with
+ICES. So Probably all data providers will have to do their homework...
 
 ## Creating the version table refeel.tr_version_ver
 
@@ -1292,12 +1420,12 @@ t_series_ser2 <-
    "ser_lfs_code" = NA,
    "ser_are_code" = NA, # TODO sai_emu_nameshort sai_area_division
    "ser_wkg_code" = "WGEEL",
-   "ser_ver_code" = case_when(sai$sai_dts_datasource =="dc_2019" ~ "ANG-2019-1",
-                              sai$sai_dts_datasource =="dc_2021" ~ "ANG-2021-1",
-                              sai$sai_dts_datasource =="dc_2022" ~ "ANG-2022-1",
-                              sai$sai_dts_datasource =="dc_2023" ~ "ANG-2023-1",
-                              sai$sai_dts_datasource =="dc_2024" ~ "ANG-2024-1",
-                              .default = "ANG-2018-1"),
+   "ser_ver_code" = case_when(sai$sai_dts_datasource =="dc_2019" ~ "WGEEL-2019-1",
+                              sai$sai_dts_datasource =="dc_2021" ~ "WGEEL-2021-1",
+                              sai$sai_dts_datasource =="dc_2022" ~ "WGEEL-2022-1",
+                              sai$sai_dts_datasource =="dc_2023" ~ "WGEEL-2023-1",
+                              sai$sai_dts_datasource =="dc_2024" ~ "WGEEL-2024-1",
+                              .default = "WGEEL-2018-1"),
    "ser_cou_code" = sai$sai_cou_code,
    "ser_hab_code" = NA,
    "ser_gea_code" = NA,
@@ -1487,7 +1615,7 @@ The code was developped during [WKEELDATA6](https://doi.org/10.17895/ices.pub.29
 Currently the table is not intended to be held in the db
 There is still work to be done on the area referential for eel (starting summer 2025).
 Some referentials are coming from the old db (emu, sampling type), and 
-is currently not transfered.
+are currently not transfered.
 
 
 <details>
@@ -1502,8 +1630,33 @@ is currently not transfered.
 
 
 
-## Creating group metrics (TODO)
+# Creating group metrics
 
+## Create group table
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_22_dat_t_group_gr.sql"}
+```
+
+</details>
+
+## Create group table for dateel
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_23_dateel_t_group_gr.sql"}
+```
+
+</details>
+
+
+## Create table 
 
 
 ## Creating ind metrics (TODO)

@@ -18,15 +18,14 @@ GRANT SELECT ON ref.tr_traitqualitative_trq TO diaspara_read;
 
 DROP TABLE IF EXISTS refeel.tr_traitqualitative_trq;
 CREATE TABLE refeel.tr_traitqualitative_trq (
-  CONSTRAINT uk_refeel_trq_id UNIQUE (tra_id),
-  CONSTRAINT uk_refeel_trq_code UNIQUE(tra_code),
+  CONSTRAINT uk_refeel_tra_id UNIQUE (tra_id),
+  CONSTRAINT uk_refeel_tra_code UNIQUE(tra_code),
   CONSTRAINT fk_tra_wkg_code  FOREIGN KEY (tra_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_tra_spe_code  FOREIGN KEY (tra_spe_code)
   REFERENCES ref.tr_species_spe(spe_code)
-  ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT uk_trq_code UNIQUE (tra_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT
   ) INHERITS (ref.tr_traitqualitative_trq);
 
 

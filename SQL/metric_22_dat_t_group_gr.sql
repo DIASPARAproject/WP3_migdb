@@ -3,6 +3,10 @@
 
 CREATE TABLE dat.t_group_gr (
   gr_id serial4 NOT NULL,
+  gr_ser_id UUID,
+  CONSTRAINT fk_gr_ser_id FOREIGN KEY (gr_ser_id)
+  REFERENCES dat.t_series_ser (ser_id) 
+  ON UPDATE CASCADE ON DELETE CASCADE, 
   gr_gr_id INTEGER,
   CONSTRAINT fk_gr_gr_id  FOREIGN KEY (gr_gr_id, gr_wkg_code)
   REFERENCES dat.t_group_gr(gr_id, gr_wkg_code)

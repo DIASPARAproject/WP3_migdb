@@ -21,13 +21,14 @@ CREATE TABLE dat.t_grouptrait_grt (
   REFERENCES dat.t_group_gr(gr_id) 
   ON DELETE CASCADE ON UPDATE CASCADE,
   grt_tra_code TEXT NOT NULL,
-  CONSTRAINT fk_grt_mty_id FOREIGN KEY (grt_mty_id) 
-  REFERENCES ref.tr_metrictype_mty(mty_id)
-  ON UPDATE CASCADE,
-  grt_traitnum numeric NOT NULL,
-  grt_traitqualcode TEXT,
-  CONSTRAINT fk_grt_traitqualcode FOREIGN KEY
-  REFERENCES ref.tr_traitqualitative_trq
+  CONSTRAINT fk_grt_tra_code FOREIGN KEY (grt_tra_code) 
+  REFERENCES refeel.tr_trait_tra(tra_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+  grt_value numeric NOT NULL,
+  grt_qal_code TEXT,
+  CONSTRAINT fk_grt_qal_code FOREIGN KEY (grt_qal_code)
+  REFERENCES refeel.tr_traitqualitative_trq(qal_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT,
   grt_trm_code TEXT 
   grt_last_update date DEFAULT CURRENT_DATE NOT NULL,
   grt_qal_id int4 NULL,
