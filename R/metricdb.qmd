@@ -70,14 +70,6 @@ digraph schema {
 	rankdir=TB;
 	size="8,5"
     node [style=filled, fillcolor=gray, shape = record];	
-    vocab [fillcolor="gray"
-       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>ref.vocab</b> </td> </tr>
-       <tr> <td align="left">
-        ser_id (uuid) <br align="left"/>
-        ser_code (text)  </td> </tr> 
-       </table>> 
-       shape = Msquare];
     stationDictionary [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>ref.StationDictionary</b> </td> </tr>
@@ -97,12 +89,31 @@ digraph schema {
        shape = record];
     metts [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b> ?? dat.metadata-series ??</b> </td> </tr>
+       <tr> <td> <b> dat.metadata-series</b> </td> </tr>
+       <tr>
+       <td align="left"><i>These are metadata</i><br/>
+           <i>created during benchmark</i><br/>
+           <i>probably not in DB</i><br/>
+        </td>        
+        </tr>
        <tr> <td align="left">
        ser_id  <br align="left"/>
        ...     </td> </tr> 
        </table>> 
        shape = folder];
+    station_ts_join [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b> dat.series-station-join </b> </td> </tr>
+       <tr>
+       <td><i>One series can have multiple stations</i></td>          
+        <!-- New row below the bold header -->
+        </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       StationCode <br align="left"/>
+       </td> </tr> 
+       </table>> 
+       shape = folder];    
    ann [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>dat.annual-series</b> </td> </tr>
@@ -122,6 +133,16 @@ digraph schema {
        ... </td> </tr> 
        </table>> 
        shape = record];
+   group [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>dat.group</b> </td> </tr>
+       <tr> <td align="left">
+       ser_id  <br align="left"/>
+       gr_id   <br align="left"/>
+       year   <br align="left"/>       
+       ... </td> </tr> 
+       </table>> 
+       shape = record];   
    fish [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>dat.fish</b> </td> </tr>
@@ -143,14 +164,47 @@ digraph schema {
        value  <br align="left"/> </td> </tr> 
        </table>> 
        shape = record];
-   traits [fillcolor="gray"
+   trait [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>ref.metric</b> </td> </tr>
+       <tr> <td> <b>ref.trait</b> </td> </tr>
        <tr> <td align="left">     
        metric_id (length, weight..)  <br align="left"/>
         </td> </tr> 
        </table>> 
-       shape = record];             
+       shape = record]; 
+    traitqal [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.trait_qualitative</b> </td> </tr>
+       <tr> <td align="left">     
+       trait_code (Sex, Pigment stage..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record]; 
+    traitnum [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.trait_numeric</b> </td> </tr>
+       <tr> <td align="left">     
+       trait_code (Length_mm, Weight_g..)  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record];  
+    traitmethod [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.traitmethod</b> </td> </tr>
+       <tr> <td align="left">     
+       Sex (Gonadal inspection), Sex (length based)..  <br align="left"/>
+        </td> </tr> 
+       </table>> 
+       shape = record]; 
+    traitqalvalue [fillcolor="gray"
+       label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+       <tr> <td> <b>ref.traitqalvalue</b> </td> </tr>
+       <tr> <td align="left">     
+       traitqalcode (pigment stage, sex..)  <br align="left"/>
+       qalValue (VB, M(male), F(female))
+        </td> </tr> 
+       </table>> 
+       shape = record];               
    tseel [fillcolor="pink"
        label="dateel.series"
        shape = table];   
@@ -168,33 +222,45 @@ digraph schema {
        shape = record]; 
    fisheel [fillcolor="pink"
        label="dateel.fish"
-       shape = record];        
+       shape = record];
+   traiteel [fillcolor="pink"
+       label="dateel.trait"
+       shape = record];       
    tsnas [fillcolor="limegreen"
        label="datnas.series"
        shape = table];   
-   mettsnas [fillcolor="limegreen"
-       label="datnas.metadata-series"
-       shape = folder];
    indmetricsnas [fillcolor="limegreen"
        label="datnas.indmetrics"
        shape = record]; 
    fishnas [fillcolor="limegreen"
        label="datnas.fish"
        shape = record]; 
+  traitnas [fillcolor="limegreen"
+       label="datnas.trait"
+       shape = record];  
 
-  metts  -> ts -> vocab [label = "1:1"]
-  metts -> stationDictionary  [label = "1:1"]
-  groupmetrics -> ann -> ts [label = "n:1"]
+  station_ts_join -> ts [label = "n:1"]
+  station_ts_join -> stationDictionary  [label = "1:n"]
+  ann ->  ts [label = "n:1"]
+  groupmetrics -> group->  ts [label = "n:1"]
   indmetrics -> fish -> ts [label = "n:1"]
-  indmetrics -> traits
-
+  indmetrics -> trait [label = "n:1"]
+  indmetrics -> traitqalvalue [label = "n:1"]
+  indmetrics -> traitmethod [label = "n:1"]
+  groupmetrics -> trait [label = "n:1"]
+  groupmetrics -> traitqalvalue [label = "n:1"]
+  groupmetrics -> traitmethod [label = "n:1"]
+  groupmetrics -> anneel [label = "implicit (year - ser_id)", style="dashed"]
+  trait -> traitnum [label="inherits", style="dashed"]
+  trait -> traitqal [label="inherits", style="dashed"]
+  traitqalvalue -> traitqal [label = "n:1"]
   groupmetricseel -> metanneel [label = "n:1"]
   anneel -> tseel [label = "n:1"]
-  mettseel -> tseel ->  vocab [label = "1:1"]
+
   indmetricseel -> fisheel -> tseel  [label = "n:1"]
   
 
-  mettsnas -> tsnas ->  vocab [label = "1:1"]
+
   indmetricsnas -> fishnas -> tsnas  [label = "n:1"]
 
   groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
@@ -206,9 +272,9 @@ digraph schema {
   tseel -> ts [ label="inherits", style="dashed"]
   tsnas -> ts [ label="inherits", style="dashed", labelOverlay="15%"]
   mettseel -> metts [label="inherits", style="dashed"]
-  mettsnas -> metts [ label="inherits", style="dashed"]
-
-  // make the same rank
+  traiteel -> trait [label="inherits", style="dashed"]
+  traitnas -> trait [label="inherits", style="dashed"]
+  group  // make the same rank
 
   {rank = same; tseel;tsnas}
 }
@@ -860,35 +926,35 @@ dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id=
 
 ```
 
-## Values of Qualitative fish trait (tr_traitqualvalue_tva)
+## Values of Qualitative fish trait (tr_traitqualvalue_trv)
 
 The qualitative traits have values
 
 <details>
 
-<summary>SQL code to create table `tr_traitqualvalue_tva` </summary>
+<summary>SQL code to create table `tr_traitqualvalue_trv` </summary>
 
-``` {.sql include="../SQL/metric_08_ref_tr_traitqualvalue_tva.sql"}
+``` {.sql include="../SQL/metric_08_ref_tr_traitqualvalue_trv.sql"}
 ```
 </details>
 
 
 
-```{r tbl-refeel_tr_traitvalueqal_tra}
+```{r tbl-refeel_tr_traitvalueqal_trv}
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to show trait table.
-#| tbl-cap: Trait table ...
+#| code-summary: Code to show trait value table.
+#| tbl-cap: Table of possible qualitative trait values
 
-qal <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_qal;")
+trv <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;")
 trq <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitqualitative_trq;")
-#clipr::write_clip(colnames(qal))
+#clipr::write_clip(colnames(trv))
 trq <- data.frame(
-  "qal_id"=1:(13+5*4+7),
-  "qal_trq_code"=c(
+  "trv_id"=1:(13+5*4+7),
+  "trv_trq_code"=c(
     rep(trq$tra_code[1],13),
     rep(trq$tra_code[2],5),
     rep(trq$tra_code[3],5),
@@ -896,11 +962,11 @@ trq <- data.frame(
     rep(trq$tra_code[5],5),
     rep(trq$tra_code[6],7))
   ,
-  "qal_code"=c(c("VA","VB","VIA0","VIA1","VIA2","VIA3","VIA4","VIB","VII", "mix_VIA1_VIA4",
+  "trv_code"=c(c("VA","VB","VIA0","VIA1","VIA2","VIA3","VIA4","VIB","VII", "mix_VIA1_VIA4",
    "mix_VA_VB", "U","NA"),
    rep(c("N","NA","U","Y","P"),4),
    c("F","I","M","T","U","X","H")),
-  "qal_description" = c(
+  "trv_description" = c(
   "No pigmentation except a spot on the caudal fin",
   "Early development of the pigmentation on the skull, no superficial piment beyond the cerebral spot.",
   "Development of dorsal pigmentation along the base of dorsal fin",
@@ -918,17 +984,17 @@ trq <- data.frame(
   "Female", "Immature - attempt made but sex could not be destinguished",
   "Male", "Transitional", "Undetermined - no attempt made", "Mixed", "Hermaphrodite"
   ))
-dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_qal_temp", trq, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitvaluequal_qal");
-dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitvaluequal_qal
+dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_trv_temp", trq, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitvaluequal_trv");
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitvaluequal_trv
 SELECT 
-qal_id,
-qal_trq_code,
-qal_code,
-qal_description,
+trv_id,
+trv_trq_code,
+trv_code,
+trv_description,
 'WGEEL',
 'ANG'
- FROM tr_traitvaluequal_qal_temp;") #40
+ FROM tr_traitvaluequal_trv_temp;") #40
 
 ```
 ## Fish trait measurement method
@@ -974,7 +1040,8 @@ traitmethod <- data.frame(
 )
 
 dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp",traitmethod, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_traitmethod_trm 
+dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitmethod_trm")
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitmethod_trm 
 SELECT 
 trm_id,
 trm_tra_code,
@@ -1635,6 +1702,8 @@ are currently not transfered.
 
 ## Create group table
 
+Need a foreign key on both species and lfs code.
+
 
 <details>
 
@@ -1656,8 +1725,48 @@ are currently not transfered.
 
 </details>
 
+## Import data
 
-## Create table 
+Scripts differ a bit for series and sampling. Check for some series with comment
+so see if need removing.
+
+>  all related metrics have qal_id=22 following data call 2022
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_24_dateel_t_group_gr_insert.sql"}
+```
+
+</details>
+
+# Grouptrait table 
+
+## Create table
+
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_26_dat_t_grouptrait_grt.sql"}
+```
+
+</details>
+
+## Import data 
+
+<details>
+
+<summary>SQL code to create tables</summary>
+
+``` {.sql include="../SQL/metric_27_dat_t_grouptrait_grt_import.sql"}
+```
+
+</details>
+
 
 
 ## Creating ind metrics (TODO)
