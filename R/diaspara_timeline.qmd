@@ -112,10 +112,10 @@ More details here :
 
 
     section Import
-    Import data from WGNAS :current, 2025-02-01, until beta
-    Beta version (WGNAS): milestone, beta, 2025-06-01, 2d
-    Import data from WGEEL : after beta, until alpha
-    Alpha version (WGEEL): milestone, alpha, 2025-07-15, 2d
+    Import data from WGNAS :current, 2025-02-01, until alpha
+    Alpha version (WGNAS): milestone, alpha, 2025-06-01, 2d
+    Import data from WGEEL : after alpha, until alpha
+    Beta version (WGEEL): milestone, beta, 2025-07-15, 2d
     Import data from WGBAST landings: current, after alpha, until v1
     V0.0.1 (WGBAST landings): milestone, v1, 2025-10-15, 2d
     Import data from WGBAST young fish : after v1, until v2
@@ -127,9 +127,9 @@ More details here :
     Database structure with ICES: crit, after alpha, 1M
     Release first vocab to ICES: current, after alpha, 1M
     Validate structure with WGNAS: after alpha, until final
-    Validate structure with WGEEL: after alpha, until final
-    Validate structure with WGBAST: after alpha, until end
-    Validate structure with WGTRUTTA: after alpha, until end
+    Validate structure with WGEEL: after beta, until final
+    Validate structure with WGBAST: after beta, until end
+    Validate structure with WGTRUTTA: after beta, until end
     Validation meeting: milestone, valid, 2025-10-15, 3d
     Final meeting:milestone, final, 2025-12-01, 3d
     ICES Import to ICES db: crit, after final, until v3

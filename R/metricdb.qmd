@@ -887,16 +887,16 @@ qal <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_qal;")
 trq <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitqualitative_trq;")
 #clipr::write_clip(colnames(qal))
 trq <- data.frame(
-  "qal_id"=1:(12+5*4+7),
+  "qal_id"=1:(13+5*4+7),
   "qal_trq_code"=c(
-    rep(trq$tra_code[1],12),
+    rep(trq$tra_code[1],13),
     rep(trq$tra_code[2],5),
     rep(trq$tra_code[3],5),
     rep(trq$tra_code[4],5),
     rep(trq$tra_code[5],5),
     rep(trq$tra_code[6],7))
   ,
-  "qal_code"=c(c("VA","VB","VIA0","VIA1","VIA2","VIA3","VIA4","VIB", "mix_VIA1_VIA4",
+  "qal_code"=c(c("VA","VB","VIA0","VIA1","VIA2","VIA3","VIA4","VIB","VII", "mix_VIA1_VIA4",
    "mix_VA_VB", "U","NA"),
    rep(c("N","NA","U","Y","P"),4),
    c("F","I","M","T","U","X","H")),
@@ -908,7 +908,8 @@ trq <- data.frame(
   "Presence of medio lateral pigmentation but it does not reach the beginning of the dorsal fin",
   "The medio-lateral pigmentation reaches the beginning of the dorsal fin",
   "Ventro lateral pigmentation distributed along the myosepta. Pigments are still distinct.",
-  "Yellow eel, pigments are no longer distinct in the ventro lateral region",
+  "Pigments are no longer distinct in the ventro lateral region",
+  "Loss of transparency, the abdominal cavity takes a silvery color. Generalised development of yellow eel pigment cells",
   "Development of surface and branchiostegal pigmentation",
   "No or early pigmentation",
   "Glass eels, but pigmentation stage is unknown",
@@ -927,7 +928,7 @@ qal_code,
 qal_description,
 'WGEEL',
 'ANG'
- FROM tr_traitvaluequal_qal_temp;") #39
+ FROM tr_traitvaluequal_qal_temp;") #40
 
 ```
 ## Fish trait measurement method
@@ -1088,7 +1089,7 @@ SELECT
 
 
 
-```{r ices_Station}
+```{r ices_Station_import}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE

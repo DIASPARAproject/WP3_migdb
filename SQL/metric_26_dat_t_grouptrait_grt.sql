@@ -29,7 +29,7 @@ CREATE TABLE dat.t_grouptrait_grt (
   CONSTRAINT fk_grt_qal_code FOREIGN KEY (grt_qal_code)
   REFERENCES refeel.tr_traitqualitative_trq(qal_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  grt_trm_code TEXT 
+  grt_trm_code TEXT, 
   grt_last_update date DEFAULT CURRENT_DATE NOT NULL,
   grt_qal_id int4 NULL,
   grt_ver_code TEXT NOT NULL,
