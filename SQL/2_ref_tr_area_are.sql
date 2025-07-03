@@ -6,6 +6,7 @@ CREATE TABLE ref.tr_area_are (
    are_lev_code TEXT,
    are_wkg_code TEXT,
    are_ismarine BOOLEAN,
+   are_rivername TEXT,
    geom_polygon geometry(MULTIPOLYGON, 4326),
    geom_line geometry(MULTILINESTRING, 4326),
   CONSTRAINT fk_are_are_id FOREIGN KEY (are_are_id) 
