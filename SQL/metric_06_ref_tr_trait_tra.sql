@@ -34,3 +34,32 @@ COMMENT ON COLUMN ref.tr_trait_tra.tra_qualitativeornumeric IS 'Indicate variabl
 GRANT ALL ON ref.tr_trait_tra TO diaspara_admin;
 GRANT SELECT ON ref.tr_trait_tra TO diaspara_read; 
 
+/*
+note The refeel.tg_trait_tra actually contains physically all parms and that's not the case of
+ref.tr_trait_tra which only gets those by inheritance.
+refeel.tg_trait_tra must be created after insertion in tr_traitnumeric_trn
+and tr_traitqualitative_trq
+*/
+
+CREATE TABLE refeel.tg_trait_tra AS (
+SELECT  
+  tra_id,
+  tra_code,
+  tra_description, 
+  tra_wkg_code,  
+  tra_spe_code , 
+  tra_typemetric,
+  tra_qualitativeornumeric FROM 
+  refeel.tr_traitnumeric_trn
+UNION
+SELECT  
+  tra_id,
+  tra_code,
+  tra_description, 
+  tra_wkg_code,  
+  tra_spe_code , 
+  tra_typemetric,
+  tra_qualitativeornumeric FROM 
+  refeel.tr_traitqualitative_trq);
+ALTER TABLE refeel.tg_trait_tra 
+ADD  CONSTRAINT uk_tra_code UNIQUE (tra_code);

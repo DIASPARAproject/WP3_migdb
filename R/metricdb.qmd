@@ -745,6 +745,9 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 ``` {.sql include="../SQL/metric_06_ref_tr_traitnumeric_trn.sql"}
 ```
 
+
+
+
 ```{r refeel_tr_traitnumeric_trn_insert}
 #| echo: TRUE
 #| eval: FALSE
@@ -752,10 +755,10 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import numeric trait.
-
+tra$
 tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 # we will include group metric names later
-tra <- tra[!grepl("mean", tra$mty_name),]
+tra <- tra[(!grepl("mean", tra$mty_name) | tra$mty_name =='eye_diam_meanmm' | tra$mty_name == 'teq'),]
 # we will also include method later
 tra <- tra[!grepl("method", tra$mty_name),]
 res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra")
@@ -770,6 +773,7 @@ tranum <- data.frame(
 "tra_typemetric"=stringi::stri_trans_totitle(tra$mty_group),"tra_qualitativeornumeric"='Numeric',
 "trn_minvalue" = tra$mty_min,
 "trn_maxvalue" = tra$mty_max)
+
 
 # the proportions will be numeric for group and qualitative for individual (
 # e.g. evex presence)
@@ -926,7 +930,7 @@ dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id=
 
 ```
 
-## Values of Qualitative fish trait (tr_traitqualvalue_trv)
+## Values of Qualitative fish trait (tr_traitvaluequal_trv)
 
 The qualitative traits have values
 
@@ -934,7 +938,7 @@ The qualitative traits have values
 
 <summary>SQL code to create table `tr_traitqualvalue_trv` </summary>
 
-``` {.sql include="../SQL/metric_08_ref_tr_traitqualvalue_trv.sql"}
+``` {.sql include="../SQL/metric_08_ref_tr_tr_traitvaluequal_trv.sql"}
 ```
 </details>
 
@@ -1758,9 +1762,14 @@ so see if need removing.
 
 ## Import data 
 
+![Mapping previous database for groups :This is how the mapping was done for groups, on the left the new db
+with in red the fields for individual metric (not in group metrics),
+on the right, the old db, with in oranges fields that need to be mapped to
+method. In yellow the groups that now refer to subgroup by sex recreated at previous step](images/mapping_trait_and_mty.png)
+
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to import data</summary>
 
 ``` {.sql include="../SQL/metric_27_dat_t_grouptrait_grt_import.sql"}
 ```

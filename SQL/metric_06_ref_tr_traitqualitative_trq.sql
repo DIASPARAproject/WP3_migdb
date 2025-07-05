@@ -33,3 +33,5 @@ COMMENT ON TABLE refeel.tr_traitqualitative_trq IS 'Table of qualitative trait p
 
 GRANT ALL ON refeel.tr_traitqualitative_trq TO diaspara_admin;
 GRANT SELECT ON refeel.tr_traitqualitative_trq TO diaspara_read; 
+
+

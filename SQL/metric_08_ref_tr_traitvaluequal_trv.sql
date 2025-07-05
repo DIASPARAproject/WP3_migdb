@@ -7,7 +7,7 @@ CREATE TABLE ref.tr_traitvaluequal_trv(
   FOREIGN KEY (trv_trq_code)
   REFERENCES ref.tr_traitqualitative_trq(tra_code)
   ON UPDATE CASCADE ON DELETE CASCADE,
-  trv_code text NOT NULL UNIQUE,
+  trv_code text NOT NULL ,
   trv_description text NULL,
   trv_spe_code TEXT NOT NULL,
   CONSTRAINT fk_trv_spe_code  FOREIGN KEY (trv_spe_code)
@@ -28,13 +28,12 @@ COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_description IS 'Description of t
 GRANT ALL ON ref.tr_traitvaluequal_trv TO diaspara_admin;
 GRANT SELECT ON ref.tr_traitvaluequal_trv TO diaspara_read; 
 
-DROP TABLE IF EXISTS refeel.tr_traitvaluequal_trv;
-CREATE TABLE refeel.tr_traitvaluequal_trv(
+DROP TABLE IF EXISTS refeel.tr_traitvaluequal_trv CASCADE
   CONSTRAINT uk_trv_id UNIQUE (trv_id),
   CONSTRAINT fk_trv_trq_code 
   FOREIGN KEY (trv_trq_code)
-  REFERENCES refeel.tr_traitqualitative_trq(tra_code)
-  ON UPDATE CASCADE ON DELETE CASCADE,
+    REFERENCES refeel.tr_traitqualitative_trq(tra_code)
+      ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT uk_refeel_trv_code UNIQUE (trv_code, trv_trq_code)
 ) INHERITS (ref.tr_traitvaluequal_trv);
 
