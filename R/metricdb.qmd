@@ -26,7 +26,7 @@ bibliography: diaspara.bib
 include-after-body: "footer.html"
 ---
 
-Aside the main db report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. In the project these correspond to LHT, but it's more, the data should also correspond to the time series and the sampling db developped by WGEEL. The two latter data structure (series and sampling) are very similar and they both hold very similar group metrics and individual metrics.
+Aside the main db report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. In the project these correspond to LHT, but additionally, the data should also correspond to the time series and the sampling db developped by WGEEL. The two latter data structure (series and sampling) are very similar and they both hold very similar group metrics and individual metrics.
 
  The first was developed initially to store data about the series used in recruitment. In practice, it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
 Finally, we can link individual metrics. The individual metrics are all detailed for one fish. And they concern metrics like size, weight, sex, but also can hold data about quality, contamination. So these are in essence the Life History traits analysed by WP2 in DIASPARA  (Figure @fig-series_diagram_wgeel - in pink).
@@ -50,7 +50,7 @@ The database development highlighted in the current report has several objective
 
 * The fifth objective is to adapt the shiny scripts of data integration.
 
-# Creating the database structure from WGEEL (TODO)
+# Building database structure from WGEEL 
 
 
 [git issue #23 Write simplified structure from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
@@ -65,7 +65,7 @@ Once done a beta version probably not completely adapted will be released.
 
 ```{dot}
 //| label: fig-schema_diaspara
-//| fig-cap: Simplified structure of the metric database. The time series table, start with an identifier (at the bottom) which correspond to a station or a regional monitoring program. The series contains the main attributes, including geometry, species stage ... This table is empty and filled by inheritance (---> arrows).The actual data are in the schema corresponding to each working group (pink and green).
+//| fig-cap: Simplified structure of the metric database. The time series table, start with the series (at the bottom) which correspond to a series site or a regional monitoring program. The series contains the main attributes, including geometry, species stage ... This table is empty and filled by inheritance (---> arrows).The actual data are in the schema corresponding to each working group (pink and green). The series table can join several stations from the ICES vocab.
 digraph schema {
 	rankdir=TB;
 	size="8,5"
@@ -123,9 +123,9 @@ digraph schema {
        ...   </td> </tr> 
        </table>> 
        shape = record];    
-   groupmetrics [fillcolor="gray"
+   grouptrait [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-       <tr> <td> <b>dat.groupmetrics</b> </td> </tr>
+       <tr> <td> <b>dat.grouptrait</b> </td> </tr>
        <tr> <td align="left">
        ser_id  <br align="left"/>
        year   <br align="left"/>
@@ -155,7 +155,8 @@ digraph schema {
        ... </td> </tr> 
        </table>> 
        shape = record];
-   indmetrics [fillcolor="gray"
+   indtrait
+ [fillcolor="gray"
        label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
        <tr> <td> <b>dat.individualmetrics</b> </td> </tr>
        <tr> <td align="left">
@@ -214,11 +215,11 @@ digraph schema {
    anneel [fillcolor="pink"
        label="dat.annual-series"
        shape = record]; 
-   groupmetricseel [fillcolor="pink"
-       label="dateel.groupmetrics"
+   grouptraiteel [fillcolor="pink"
+       label="dateel.grouptrait"
        shape = record];  
-   indmetricseel [fillcolor="pink"
-       label="dateel.indmetrics"
+   indtraiteel [fillcolor="pink"
+       label="dateel.indtrait"
        shape = record]; 
    fisheel [fillcolor="pink"
        label="dateel.fish"
@@ -229,8 +230,8 @@ digraph schema {
    tsnas [fillcolor="limegreen"
        label="datnas.series"
        shape = table];   
-   indmetricsnas [fillcolor="limegreen"
-       label="datnas.indmetrics"
+   indtraitnas [fillcolor="limegreen"
+       label="datnas.indtrait"
        shape = record]; 
    fishnas [fillcolor="limegreen"
        label="datnas.fish"
@@ -242,30 +243,30 @@ digraph schema {
   station_ts_join -> ts [label = "n:1"]
   station_ts_join -> stationDictionary  [label = "1:n"]
   ann ->  ts [label = "n:1"]
-  groupmetrics -> group->  ts [label = "n:1"]
-  indmetrics -> fish -> ts [label = "n:1"]
-  indmetrics -> trait [label = "n:1"]
-  indmetrics -> traitqalvalue [label = "n:1"]
-  indmetrics -> traitmethod [label = "n:1"]
-  groupmetrics -> trait [label = "n:1"]
-  groupmetrics -> traitqalvalue [label = "n:1"]
-  groupmetrics -> traitmethod [label = "n:1"]
-  groupmetrics -> anneel [label = "implicit (year - ser_id)", style="dashed"]
+  grouptrait -> group->  ts [label = "n:1"]
+  indtrait -> fish -> ts [label = "n:1"]
+  indtrait -> trait [label = "n:1"]
+  indtrait -> traitqalvalue [label = "n:1"]
+  indtrait -> traitmethod [label = "n:1"]
+  grouptrait -> trait [label = "n:1"]
+  grouptrait -> traitqalvalue [label = "n:1"]
+  grouptrait -> traitmethod [label = "n:1"]
+  grouptrait -> anneel [label = "implicit (year - ser_id)", style="dashed"]
   trait -> traitnum [label="inherits", style="dashed"]
   trait -> traitqal [label="inherits", style="dashed"]
   traitqalvalue -> traitqal [label = "n:1"]
-  groupmetricseel -> metanneel [label = "n:1"]
+  grouptraiteel -> metanneel [label = "n:1"]
   anneel -> tseel [label = "n:1"]
 
-  indmetricseel -> fisheel -> tseel  [label = "n:1"]
+  indtraiteel -> fisheel -> tseel  [label = "n:1"]
   
 
 
-  indmetricsnas -> fishnas -> tsnas  [label = "n:1"]
+  indtraitnas -> fishnas -> tsnas  [label = "n:1"]
 
-  groupmetricseel -> groupmetrics [label="inherits", style="dashed"]
-  indmetricseel -> indmetrics [label="inherits", style="dashed"]
-  indmetricsnas -> indmetrics [label="inherits", style="dashed"]
+  grouptraiteel -> grouptrait [label="inherits", style="dashed"]
+  indtraiteel -> indtrait [label="inherits", style="dashed"]
+  indtraitnas -> indtrait [label="inherits", style="dashed"]
   fisheel -> fish [label="inherits", style="dashed"]
   fishnas -> fish [label="inherits", style="dashed"] 
   anneel -> ann [ label="inherits", style="dashed"]
@@ -350,6 +351,9 @@ To include the station, we need two tables, the fist one is the Station dictiona
 and the second is the relation Dictionary (which relates two stations together).
 Now these tables in turn rely on some vocabs from ICES which we are loading
 straight as they are in our template database.
+
+
+
 
 ### SemanticRelation
 
@@ -663,7 +667,7 @@ knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover"
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `tr_fishway_fiw` </summary>
 
 ``` {.sql include="../SQL/metric_04_ref_tr_fishway_fiw.sql"}
 ```
@@ -689,7 +693,7 @@ knitr::kable(habitat) %>% kable_styling(bootstrap_options = c("striped", "hover"
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `tr_monitoring_mon`</summary>
 
 ``` {.sql include="../SQL/metric_05_ref_tr_monitoring_mon.sql"}
 ```
@@ -726,12 +730,26 @@ and the method used.
 
 <details>
 
-<summary>SQL code to create table `tr_trait_tra`</summary>
+<summary>SQL code to create tables `ref.tr_trait_tra` and refeel.tg_trait_tra</summary>
 
 ``` {.sql include="../SQL/metric_06_ref_tr_trait_tra.sql"}
 ```
 
 </details>
+
+:::{.callout-warning appearance="simple"}
+## refeel.tg_trait_tra and ref.tr_trait_tra have different structures.
+The first has nothing inside, it's a shell for inheritance.
+Tables `ref.tr_traitnumeric_trn` and `ref.tr_traitqualitative_trq` are inherited from `ref.tr_trait_tra`.
+They in turn are inherited from tables `refeel.tr_traitnumeric_trn` and `refeel.tr_traitqualitative_trq`.
+So the values entered in `refeel.tr_traitqualitative_trq` appear when running a select query from
+`ref.tr_trait_tra` even if they are not physically in these tables, and foreign key constraint
+to `ref.tr_trait_tra` would return no value there.
+Now if I inherit `refeel.tr_trait_tra` the values will get to `ref.tr_trait_tra` from two sources
+and I will double the lines there. Also, physically data are not there. So I still cannot
+use it as a reference table. So the table refeel.tg_trait_tra is not inherited, it's a grouping
+table with the values actually physically there.
+:::
 
 ## Numeric fish trait (tr_traitnumeric_trn)
 
@@ -740,7 +758,7 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 
 <details>
 
-<summary>SQL code to create table `tr_traitnumeric_trn` </summary>
+<summary>SQL code to create tables `ref.tr_traitnumeric_trn` and `refeel.tr_traitnumeric_trn` </summary>
 
 ``` {.sql include="../SQL/metric_06_ref_tr_traitnumeric_trn.sql"}
 ```
@@ -755,7 +773,7 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to import numeric trait.
-tra$
+
 tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 # we will include group metric names later
 tra <- tra[(!grepl("mean", tra$mty_name) | tra$mty_name =='eye_diam_meanmm' | tra$mty_name == 'teq'),]
@@ -832,7 +850,7 @@ trn_maxvalue
 
 <details>
 
-<summary>SQL code to create table `tr_traitqualitative_trq` </summary>
+<summary>SQL code to create table `ref.tr_traitqualitative_trq` and `refeel.tr_traitqualitative_trq` </summary>
 
 ``` {.sql include="../SQL/metric_06_ref_tr_traitqualitative_trq.sql"}
 ```
@@ -936,9 +954,9 @@ The qualitative traits have values
 
 <details>
 
-<summary>SQL code to create table `tr_traitqualvalue_trv` </summary>
+<summary>SQL code to create tables `ref.tr_traitqualvalue_trv` and `refeel.tr_traitqualvalue_trv`</summary>
 
-``` {.sql include="../SQL/metric_08_ref_tr_tr_traitvaluequal_trv.sql"}
+``` {.sql include="../SQL/metric_08_ref_tr_traitvaluequal_trv.sql"}
 ```
 </details>
 
@@ -946,7 +964,7 @@ The qualitative traits have values
 
 ```{r tbl-refeel_tr_traitvalueqal_trv}
 #| echo: TRUE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
@@ -984,7 +1002,7 @@ trq <- data.frame(
   "No or early pigmentation",
   "Glass eels, but pigmentation stage is unknown",
   "Not available",
-  rep(c("NO","Not Applicable", "Unknown","Yes", "Probable"), 4),
+  rep(c("No","Not Applicable", "Unknown","Yes", "Probable"), 4),
   "Female", "Immature - attempt made but sex could not be destinguished",
   "Male", "Transitional", "Undetermined - no attempt made", "Mixed", "Hermaphrodite"
   ))
@@ -1005,10 +1023,11 @@ trv_description,
 
 Currently in the wgeel database, the metrics table value contains one column for value which can store numeric or integer. When it is integer, then, the metric id (mty_id) refers either to a category (e.g sex, or is differenciated), or a method (sexed using size, sexed after gonadal inspection). 
 In the new database, the method will be stored in a different column in the group or individual metrics. This table references the methods proposed.
+Again these methods will be working group specific so we create an inherited table.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create tables `ref.tr_traitmethod_trm` and `refeel.tr_traitmethod_trm`</summary>
 
 ``` {.sql include="../SQL/metric_07_ref_tr_traitmethod_trm.sql"}
 ```
@@ -1030,7 +1049,7 @@ res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm")
 clipr::write_clip(colnames(res))
 traitmethod <- data.frame(
 "trm_id" = 1:6,
-"trm_tra_code"= c("Gonadal_inspection", "Length_based_sex", "Anguillicola_stereomicroscope_count", "Anguillicola visual count",
+"trm_tra_code"= c("Gonadal_inspection", "Length_based_sex", "Anguillicola_stereomicroscope_count", "Anguillicola_visual_count",
 "Muscle_lipid_fatmeter", "Muscle_lipid_gravimeter"),
 "trm_wkg_code" = rep('WGEEL', 6),
 "trm_spe_code" = rep('ANG',6),
@@ -1072,8 +1091,6 @@ knitr::kable(trm) %>% kable_styling(bootstrap_options = c("striped", "hover", "c
 ## Creating the station table
 
 Series will be linked to one or several stations.
-
-
 
 The station are loaded into a table that will not be
 exactly like ICES's since I cannot load the full tables, and don't want to replicate the full complexity of stations. For instance currently station 1000 has several parents for "Station_DTYPE" which I agregate like EW~EU~NU~CW,
@@ -1223,14 +1240,21 @@ SELECT
  dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
   
 ```
-Note there is a table tr_station in wgeel but which was never really aligned with
-ICES. So Probably all data providers will have to do their homework...
+
+
+:::{.callout-important appearance="simple"}
+## Comment on Station import
+Even though a table station exists in WGEEL, it really contains no actual code from ICES. 
+To insert data into stations, the data providers will have to check that they have an EDMO code, and then we will have to bulk load stations.
+:::
+
+
 
 ## Creating the version table refeel.tr_version_ver
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `refeel.tr_version_ver`</summary>
 
 ``` {.sql include="../SQL/metric_02_refeel_tr_version_ver.sql"}
 ```
@@ -1300,12 +1324,12 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_version_ver;")%>% knitr::kable
 
 
 
-## Creating series main table dat.t_series_ser
+## Creating series main table for series
 
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dat.t_series_ser` </summary>
 
 ``` {.sql include="../SQL/metric_10_dat_t_series_ser.sql"}
 ```
@@ -1375,12 +1399,12 @@ If so we need to decide what fields could change over time (if any)
 :::
 
 
-## Creating inherited table dateel.t_series_ser
+## Creating inherited series
 
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dateel.t_series_ser`</summary>
 
 ``` {.sql include="../SQL/metric_11_dateel_t_series_ser.sql"}
 ```
@@ -1553,12 +1577,13 @@ FROM t_series_ser_temp2") # 252
 
 ```
 
-## Creating  table dat.t_serannual_san
+## Annual series table
 
+This table holds annual data from the series.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dat.t_serannual_san`</summary>
 
 ``` {.sql include="../SQL/metric_20_dat_t_serannual_san.sql"}
 ```
@@ -1566,12 +1591,12 @@ FROM t_series_ser_temp2") # 252
 </details>
 
 
-## Creating inherited table dateel.t_seriesannual_san
+## Creating inherited table for annual series
 
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create tables `dateel.t_serannual_san`</summary>
 
 ``` {.sql include="../SQL/metric_21_dateel_t_serannual_san.sql"}
 ```
@@ -1579,8 +1604,9 @@ FROM t_series_ser_temp2") # 252
 </details>
 
 
-## Import dateel.t_serannual_ser from datawg.t_dataseries_das WGEEL
+## Import data for annual series 
 
+Data are imported from WGEEL `datawg.t_dataseries_das`table to `dateel.t_serannual_ser`.
 
 ```{r dateel.t_serannual_ser}
 #| echo: TRUE
@@ -1654,12 +1680,13 @@ FROM t_serannual_san_temp") # 6402
 
 
 
-## Creating table dat.tj_seriesstation_ses
+## Creating table joining series and station
 
+The table is created but empty. We need the stations in ICES first.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dat.tj_seriesstation_ses`</summary>
 
 ``` {.sql include="../SQL/metric_12_dat.tj_seriesstation_ses.sql"}
 ```
@@ -1667,21 +1694,21 @@ FROM t_serannual_san_temp") # 6402
 </details>
 
 
-## Creating inherited table dateel.tj_seriesstation_ses
+## Creating inherited joining series and station
 
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dateel.tj_seriesstation_ses`</summary>
 
 ``` {.sql include="../SQL/metric_13_dateel.tj_seriesstation_ses.sql"}
 ```
 
 </details>
 
-# Creating one table that will only be in wgeel datasets (for stock annex)
+# Creating additional table for stock annex
 
-## Creating table dateel.t_recruitmentmetadata_met
+## Creating table t_recruitmentmetadata
 
 The code was developped during [WKEELDATA6](https://doi.org/10.17895/ices.pub.29290463)
 Currently the table is not intended to be held in the db
@@ -1692,7 +1719,7 @@ are currently not transfered.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dateel.t_recruitmentmetadata_met`</summary>
 
 ``` {.sql include="../SQL/metric_14_dateel_t_recruitmentmetadata_met.sql"}
 ```
@@ -1700,18 +1727,18 @@ are currently not transfered.
 </details>
 
 
-
-
 # Creating group metrics
 
 ## Create group table
 
+:::{.callout-note appearance="simple"}
+## Note for group metrics
 Need a foreign key on both species and lfs code.
-
+:::
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dat.t_group_gr`</summary>
 
 ``` {.sql include="../SQL/metric_22_dat_t_group_gr.sql"}
 ```
@@ -1722,14 +1749,14 @@ Need a foreign key on both species and lfs code.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create table `dateel.t_group_gr`</summary>
 
 ``` {.sql include="../SQL/metric_23_dateel_t_group_gr.sql"}
 ```
 
 </details>
 
-## Import data
+## Import data for group
 
 Scripts differ a bit for series and sampling. Check for some series with comment
 so see if need removing.
@@ -1739,7 +1766,7 @@ so see if need removing.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to Import data </summary>
 
 ``` {.sql include="../SQL/metric_24_dateel_t_group_gr_insert.sql"}
 ```
@@ -1753,7 +1780,7 @@ so see if need removing.
 
 <details>
 
-<summary>SQL code to create tables</summary>
+<summary>SQL code to create tables `dat.t_grouptrait_grt` and `dateel.t_grouptrait_grt` </summary>
 
 ``` {.sql include="../SQL/metric_26_dat_t_grouptrait_grt.sql"}
 ```
@@ -1778,11 +1805,47 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 
 
 
-## Creating ind metrics (TODO)
+# Creating ind metrics 
 
-[TODO] 
+## Fish table
 
-# Import data from WGEEL (TODO)
+<details>
+
+<summary>SQL code to create tables `dat.t_fish_fi` and `dateel.t_fish_fi`</summary>
+
+``` {.sql include="../SQL/metric_28_dat_t_fish_fi.sql"}
+```
+
+</details>
+
+<details>
+
+<summary>SQL code to import data tables</summary>
+
+``` {.sql include="../SQL/metric_29_dat_t_fish_fi_insert.sql"}
+```
+
+</details>
+
+## Table t_indtrait_int
+
+<details>
+
+<summary>SQL code to create tables `dat.t_indivtrait_int` and `dateel.t_indivtrait_int` </summary>
+
+``` {.sql include="../SQL/metric_30_dat_t_indivtrait_int.sql"}
+```
+
+</details>
+
+<details>
+
+<summary>SQL code to import individual metric tables</summary>
+
+``` {.sql include="../SQL/metric_31_dat_t_indivtrait_int_insert.sql"}
+```
+
+</details>
 
 [TODO] Link the ccm wso_id to the hydroshed db identifiers of the basins to get the best fit from tr_area_are.
 [git issue #25 Import data from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
@@ -1791,14 +1854,15 @@ The release date for that one is :
 
 [Milestone release alpha](https://github.com/DIASPARAproject/WP3_migdb/milestone/5)
 
-So the metric release will be after wgeel, but hopefully some of the work will be started and this can be discussed during wgeel.
+So the metric release will be after wgeel, the work will be finished and this can be presented during wgeel.
 
 # Import data from WP2 (TODO)
 
 
-# Import to ICES
+# Import to ICES (TODO)
 
 
 
 # Acknowledgements
 
+Maria and Johana for their help.

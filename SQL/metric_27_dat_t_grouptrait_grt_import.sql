@@ -69,9 +69,9 @@ WHEN meg_mty_id = 11 THEN 'Muscle_lipid_gravimeter' -- different method see meth
 WHEN meg_mty_id = 6 AND meg_method_sex = 1 THEN 'Gonadal_inspection'
 WHEN meg_mty_id = 6 AND meg_method_sex = 0 THEN 'Length_based_sex'
 WHEN meg_mty_id = 8 AND meg_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
-WHEN meg_mty_id = 8 AND meg_method_anguillicola = 0 THEN 'Anguillicola visual count'
+WHEN meg_mty_id = 8 AND meg_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
 WHEN meg_mty_id = 9 AND meg_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
-WHEN meg_mty_id = 9 AND meg_method_anguillicola = 0 THEN 'Anguillicola visual count'
+WHEN meg_mty_id = 9 AND meg_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
 ELSE NULL END AS grt_trm_code,
 meg_last_update AS grt_last_update, 
 meg_qal_id AS grt_qal_code, 
@@ -163,9 +163,9 @@ WHEN meg_mty_id = 11 THEN 'Muscle_lipid_gravimeter' -- different method see meth
 WHEN meg_mty_id = 6 AND meg_method_sex = 1 THEN 'Gonadal_inspection'
 WHEN meg_mty_id = 6 AND meg_method_sex = 0 THEN 'Length_based_sex'
 WHEN meg_mty_id = 8 AND meg_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
-WHEN meg_mty_id = 8 AND meg_method_anguillicola = 0 THEN 'Anguillicola visual count'
+WHEN meg_mty_id = 8 AND meg_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
 WHEN meg_mty_id = 9 AND meg_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
-WHEN meg_mty_id = 9 AND meg_method_anguillicola = 0 THEN 'Anguillicola visual count'
+WHEN meg_mty_id = 9 AND meg_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
 ELSE NULL END AS grt_trm_code,
 meg_last_update AS grt_last_update, 
 meg_qal_id AS grt_qal_code, 
@@ -250,9 +250,9 @@ WHEN meg_mty_id = 11 THEN 'Muscle_lipid_gravimeter' -- different method see meth
 WHEN meg_mty_id = 6 AND meg_method_sex = 1 THEN 'Gonadal_inspection'
 WHEN meg_mty_id = 6 AND meg_method_sex = 0 THEN 'Length_based_sex'
 WHEN meg_mty_id = 8 AND meg_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
-WHEN meg_mty_id = 8 AND meg_method_anguillicola = 0 THEN 'Anguillicola visual count'
+WHEN meg_mty_id = 8 AND meg_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
 WHEN meg_mty_id = 9 AND meg_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
-WHEN meg_mty_id = 9 AND meg_method_anguillicola = 0 THEN 'Anguillicola visual count'
+WHEN meg_mty_id = 9 AND meg_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
 ELSE NULL END AS grt_trm_code,
 meg_last_update AS grt_last_update, 
 meg_qal_id AS grt_qal_code, 
