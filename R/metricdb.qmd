@@ -844,6 +844,19 @@ trn_maxvalue
 ```
 
 
+```{r}
+#| label: tbl-refeel.tr_traitnumeric_trn
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show trait numeric table.
+#| tbl-cap: Quantitative parameters parameters
+dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
 </details>
 
 ## Qualitative fish trait (tr_traitqualitative_trq)
@@ -943,10 +956,22 @@ dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id 
 dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 32 WHERE tra_code='Anguillicola_presence';")
 dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 31 WHERE tra_code='Is_differentiated'")
 dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 30 WHERE tra_code='Sex';")
+```
 
-
+```{r}
+#| label: tbl-tr_traitqualitative_trq
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show qualitative trait table.
+#| tbl-cap: Qualtitative parameters
+dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitqualitative_trq;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+
 
 ## Values of Qualitative fish trait (tr_traitvaluequal_trv)
 
@@ -968,7 +993,7 @@ The qualitative traits have values
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to show trait value table.
+#| code-summary: Code to import trait values for qualitative parm.
 #| tbl-cap: Table of possible qualitative trait values
 
 trv <- dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;")
@@ -1019,6 +1044,21 @@ trv_description,
  FROM tr_traitvaluequal_trv_temp;") #40
 
 ```
+
+```{r}
+#| label: tbl-tr_traitvalueqal_trv
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show trait value table.
+#| tbl-cap: Values for qualitative parameters
+dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
 ## Fish trait measurement method
 
 Currently in the wgeel database, the metrics table value contains one column for value which can store numeric or integer. When it is integer, then, the metric id (mty_id) refers either to a category (e.g sex, or is differenciated), or a method (sexed using size, sexed after gonadal inspection). 
@@ -1412,6 +1452,8 @@ If so we need to decide what fields could change over time (if any)
 </details>
 
 
+
+
 ## Import t_series_ser from wgeel
 
 ```{r refeel.t_series_ser_import}
@@ -1577,6 +1619,19 @@ FROM t_series_ser_temp2") # 252
 
 ```
 
+```{r}
+#| label: tbl-dateel.t_series_ser
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show series table.
+#| tbl-cap: Table t_series_ser for series first 20 lines
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_series_ser limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
 ## Annual series table
 
 This table holds annual data from the series.
@@ -1679,6 +1734,17 @@ FROM t_serannual_san_temp") # 6402
 ``` 
 
 
+```{r}
+#| label: tbl-dateel.t_serannual_san
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show series table.
+#| tbl-cap: Table t_serannual_san for annual values  first 20 lines
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_serannual_san limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 ## Creating table joining series and station
 
@@ -1727,6 +1793,20 @@ are currently not transfered.
 </details>
 
 
+```{r}
+#| label: tbl-dateel.t_recruitmentmetadata_met
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show series metadata table.
+#| tbl-cap: Table t_recruitmentmetadata_met for additional values collected during wkeeldata
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_recruitmentmetadata_met limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
+
 # Creating group metrics
 
 ## Create group table
@@ -1773,6 +1853,20 @@ so see if need removing.
 
 </details>
 
+
+
+```{r}
+#| label: tbl-dateel.t_group_gr
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show group table.
+#| tbl-cap: Table t_group_gr, group related to annual values first 20 lines
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_group_gr limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
 # Grouptrait table 
 
 ## Create table
@@ -1803,7 +1897,17 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 
 </details>
 
-
+```{r}
+#| label: tbl-dateel.t_grouptrait_grt
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show t_grouptrait_grt table.
+#| tbl-cap: Table t_grouptrait_grt, group metrics (t_grouptrait_grt)
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 # Creating ind metrics 
 
@@ -1827,6 +1931,19 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 
 </details>
 
+
+```{r}
+#| label: tbl-dateel.t_fish_fi
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fish table.
+#| tbl-cap: Table t_fish_fi, fish table
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_fish_fi limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
 ## Table t_indtrait_int
 
 <details>
@@ -1846,6 +1963,19 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 ```
 
 </details>
+
+
+```{r}
+#| label: tbl-dateel.t_indivtrait_int
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fish table.
+#| tbl-cap: Table t_indivtrait_int, fish metric table
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_indivtrait_int limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 [TODO] Link the ccm wso_id to the hydroshed db identifiers of the basins to get the best fit from tr_area_are.
 [git issue #25 Import data from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
