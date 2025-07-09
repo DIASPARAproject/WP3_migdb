@@ -4,7 +4,7 @@ subtitle: "DIASPARA WP3.2 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
-description: "Creation of metric db, version = build"
+description: "Creation of metric db, version = final for WGEEL"
 title-block-banner: "images/diaspara_bandeau.png"
 title-block-banner-color: "white"
 format:

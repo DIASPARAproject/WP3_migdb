@@ -24,3 +24,7 @@ GRANT SELECT ON ref.tr_area_are TO diaspara_read;
 
 COMMENT ON TABLE ref.tr_area_are IS 'Table corresponding to different geographic levels, from stock 
 to river section.');
+
+
+
+
