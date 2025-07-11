@@ -76,5 +76,6 @@ CREATE TABLE dateel.t_fish_fi (
 ) INHERITS (dat.t_fish_fi);
  
 
-    
+GRANT ALL ON dateel.t_fish_fi TO diaspara_admin;
+GRANT SELECT ON dateel.t_fish_fi TO diaspara_read;  
     
