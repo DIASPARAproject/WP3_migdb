@@ -104,7 +104,7 @@ meiser.mei_fi_id AS int_fi_id,
 CASE WHEN mei_mty_id = 10 THEN  'Muscle_lipid' 
 ELSE 'problem' END AS int_tra_code,
 mei_value AS int_value, 
-NULL AS int_trv_code, -- there ARE NO qualitative VALUES FOR GROUP metrics
+NULL AS int_trv_code, 
 CASE WHEN mei_mty_id = 10 THEN 'Muscle_lipid_fatmeter' -- different method see method
 ELSE NULL END AS int_trm_code,
 mei_last_update AS int_last_update, 
@@ -181,7 +181,7 @@ WHEN mei_mty_id = 17 THEN 'Cd'
 WHEN mei_mty_id = 26 THEN 'Teq'
 ELSE 'problem' END AS int_tra_code,
 mei_value AS int_value, 
-NULL AS int_trv_code, -- there ARE NO qualitative VALUES FOR GROUP metrics
+NULL AS int_trv_code,
 CASE WHEN mei_mty_id = 11 THEN 'Muscle_lipid_gravimeter' -- different method see METHOD
 WHEN mei_mty_id = 9 AND mei_method_anguillicola = 1 THEN 'Anguillicola_stereomicroscope_count'
 WHEN mei_mty_id = 9 AND mei_method_anguillicola = 0 THEN 'Anguillicola_visual_count'
@@ -372,8 +372,8 @@ SELECT
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
 'ANG' AS int_spe_code,
-fi_id AS int_id, 
-meiser.mei_fi_id AS int_fi_id, 
+mei_id AS int_id, 
+meisa.mei_fi_id AS int_fi_id, 
 CASE 
 WHEN mei_mty_id = 6 THEN 'Sex'
 WHEN mei_mty_id = 7 THEN 'Is_differentiated'
@@ -409,12 +409,12 @@ CASE WHEN mei_dts_datasource = 'dc_2019' THEN 'WGEEL-2019-1'
      WHEN mei_dts_datasource ='dc_2023' THEN 'WGEEL-2023-1'
      WHEN mei_dts_datasource ='dc_2024' THEN 'WGEEL-2024-1'
      ELSE 'WGEEL-2018-1' END AS int_ver_code
-FROM datwgeel.t_metricindseries_meiser meiser
-JOIN datwgeel.t_fishseries_fiser fiser ON meiser.mei_fi_id = fi_id
-JOIN datwgeel.t_series_ser AS tss ON fiser_ser_id = ser_id
-JOIN dateel.t_series_ser AS tss2 ON ser_code= ser_nameshort
-LEFT JOIN mm ON meiser.mei_fi_id = mm.mei_fi_id -- joining subquery
-WHERE mei_mty_id IN (6,7,8,13,14); --189327 (pigment stage is not yet in the db)
+FROM datwgeel.t_metricindsamp_meisa meisa
+JOIN datwgeel.t_fishsamp_fisa  ON meisa.mei_fi_id = fi_id
+JOIN datwgeel.t_samplinginfo_sai AS tss ON fisa_sai_id = sai_id
+JOIN dateel.t_series_ser AS tss2 ON ser_code= sai_id::TEXT
+LEFT JOIN mm ON meisa.mei_fi_id = mm.mei_fi_id -- joining subquery
+WHERE mei_mty_id IN (6,7,8,13,14); --163914 (pigment stage is not yet in the db)
 
 
 

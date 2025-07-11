@@ -101,7 +101,7 @@ COMMENT ON COLUMN refnas.t_metadata_met.met_location
 IS 'Describe process at sea, e.g. Btw. FAR - GLD fisheries, or Aft. Gld fISheries.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_fishery 
 IS 'Description of the fishery.';
-COMMENT ON COLUMN ref.t_metadata_met.met_des_code 
+COMMENT ON COLUMN refnas.t_metadata_met.met_des_code 
 IS 'Destination of the fish, e.g. Released (alive), Seal damage,
 Removed (from the environment), references table tr_destination_des., this is currently only used by WGBAST,
 so can be kept NULL';
