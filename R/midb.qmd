@@ -136,7 +136,6 @@ reference the column def_code in table def).
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-
 #if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
   setwd("D:/workspace/DIASPARA_WP3_migdb/R")
@@ -981,14 +980,10 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")%>% knitr::kable() %>
 
 Some of the values are missing from ICES vocab (Table @tbl-unit).
 
-:::::: questionbox
+::::: questionbox
 :::: questionbox-header
-::: questionbox-icon
-:::
-
 QUESTION ICES: missing values for units, what do we do ?
 ::::
-
 ::: questionbox-body
 What do we do with units without correspondance? These come from FAO (if
 I remember well). Do we try to search for those in the wgeel database,
@@ -1003,7 +998,7 @@ haul.
 
 -   Before working any further I would like your opinion there.
 :::
-::::::
+:::::
 
 ## Parameters
 
@@ -3232,7 +3227,7 @@ nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
 , CASE WHEN d.var_mod IN ('eggs','p_smolt', 'p_smolt_pr', 'prop_female') THEN d.age
        WHEN d.var_mod IN ('omega') THEN d.LOCATION
        END AS sto_add_code
-FROM refsalmoglob."database" d JOIN
+FROM refsalmoglob.database d JOIN
 refsalmoglob.metadata m ON m.var_mod = d.var_mod; ")# 45076
 ```
 
@@ -3281,27 +3276,41 @@ Done see metricDB report
 
 # t_metadata_met
 
-eelstock <- dbGetQuery(con_diapara_admin, "SELECT * FROM datwgeel.t_eelstock_eel")
+eelstock <- dbGetQuery(con_diaspara_admin, "SELECT * FROM datwgeel.t_eelstock_eel WHERE eel_qal_id in (0,1,2,3,4) ")
+nrow(eelstock) # 73730
+unique(eelstock$eel_typ_id)
+# 6  4  8  9 11 17 18 15 14 13 16 19 10 32 33 34
+# View(eelstock[eelstock$eel_typ_id ==32,])
+View(typ)
 
-res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met;")
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_metadata_met;")
 clipr::write_clip(colnames(res))
 
+
+
+typ <- dbGetQuery(con_diaspara_admin,"SELECT *  FROM refwgeel.tr_typeseries_typ")
+# below I'm removing from typ as these values are not actually in the database
+typ <- typ[!typ$typ_id %in% c(1,2,3),]  # remove series
+typ <- typ[!typ$typ_id %in% c(16),]  # potential_availabe_habitat_production_ha
+typ <- typ[!typ$typ_id %in% c(5, 7),]  # com_catch and rec_catch
+typ <- typ[!typ$typ_id %in% c(26:31),]  # silver eel equivalents (deprecated)
 # unique(metadata$metric)
 # dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
 
 t_metadata_met <-
   data.frame(
-    met_var = metadata$var_mod,
-    met_spe_code = "SAL",
-    met_wkg_code = "WGNAS",
-    met_ver_code = "SAL-2024-1", # no data on version in metadata
-    met_oty_code = metadata$type_object,
-    met_nim_code =  case_when(
-      "Data_nimble"== metadata$nimble ~ "Data",
+    met_var = typ$typ_name,
+    met_spe_code = "ANG",
+    met_wkg_code = "WGEEL",
+    met_ver_code = "ANG-2025-1", 
+    met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
+    met_nim_code =  case_when(    
+      typ$typ_id %in% c(4,6,8,9,),
       "Const_nimble" == metadata$nimble ~ "Parameter constant",
       "Output" == metadata$nimble ~ "Output",
       "other" == metadata$nimble ~ "Other",
-      .default = NA),
+      .default = NA), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
     met_dim = paste0(
       "{", metadata$dim1, ",",
       replace_na(metadata$dim2, 0), ",",

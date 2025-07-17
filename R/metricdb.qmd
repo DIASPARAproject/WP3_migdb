@@ -61,7 +61,7 @@ Once done a beta version probably not completely adapted will be released.
 
 [milestone metric DB beta version](https://github.com/DIASPARAproject/WP3_migdb/milestone/6)
 
-
+<!--- cSpell:disable --->
 
 ```{dot}
 //| label: fig-schema_diaspara
@@ -280,6 +280,7 @@ digraph schema {
   {rank = same; tseel;tsnas}
 }
 ```
+<!--- cSpell:enable --->
 
 ```{r init}
 #| echo: FALSE
@@ -323,7 +324,7 @@ con_diaspara_admin <- dbConnect(Postgres(),
                            port = cred$port,
                            user = cred$usersalmo,
                            password = cred$passwordsalmo)
-con_salmoglob <- dbConnect(Postgres(), 
+con_salmoglob <- dbConnect(Postgres(),
                            dbname = cred$dbnamesalmo,
                            host = cred$host,
                            port = cred$port,
@@ -337,7 +338,7 @@ con_wgeel_distant <- dbConnect(Postgres(),
                            password = cred$passworddistant)
 con_wgeel_local <- dbConnect(Postgres(), 
                            dbname = "wgeel",
-                           host = '127.0.0.1',
+                           host = "127.0.0.1",
                            port = cred$port,
                            user = cred$userdistant,
                            password = cred$passwordsalmo)
@@ -592,13 +593,13 @@ Habitats directive Art. 17 reporting in year 2018.
 
 :::{.questionbox}
 ::::{.questionbox-header}
-::::{.questionbox-icon}
-::::
+:::::{.questionbox-icon}
+:::::
 ICES / DIASPARA is this enough ?
 ::::
 ::::{.questionbox-body}
 The idea was to have estuaries and lagoons, but rivers are associated with vegetation, 
-So I'm not sure if this vocab is enough ?
+So I''m not sure if this vocab is enough ?
 ::::
 :::
 
@@ -616,7 +617,7 @@ So I'm not sure if this vocab is enough ?
 library(XML)
 
 # Parse the XML file downloaded from https://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/codelist
-xml_file <- "R/data/habitats.xml"  # Replace with your actual file path
+xml_file <- "R/data/habitats.xml" # Replace with your actual file path
 #file.exists("R/data/habitats.xml")
 xml_data <- xmlParse(xml_file)
 
@@ -625,13 +626,14 @@ values <- getNodeSet(xml_data, "//value")
 
 # Extract relevant data into a data frame
 extract_info <- function(node) {
-  id <- xmlGetAttr(node, "id")
-  code <- gsub("http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/", x= id,replacement = "")
-  label <- xmlValue(node[["label"]])
+  id <- xmlGetAttr(node, "id")
+  code <- gsub("http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/",
+  x= id,replacement = "")
+  label <- xmlValue(node[["label"]])
   defintion <- xmlValue(node[["defintion"]])
-  status_node <- getNodeSet(node, ".//status/label")[[1]]
-  status <- xmlValue(status_node)
-  return(data.frame(id = id, code = code, label = label,status = status, stringsAsFactors = FALSE))
+  status_node <- getNodeSet(node, ".//status/label")[[1]]
+  status <- xmlValue(status_node)
+  return(data.frame(id = id, code = code, label = label,status = status, stringsAsFactors = FALSE))
 }
 
 habitat <- do.call(rbind, lapply(values, extract_info))
@@ -853,7 +855,9 @@ trn_maxvalue
 #| code-fold: TRUE
 #| code-summary: Code to show trait numeric table.
 #| tbl-cap: Quantitative parameters parameters
-dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;") %>%
+   knitr::kable() %>% 
+   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1007,8 +1011,7 @@ trq <- data.frame(
     rep(trq$tra_code[3],5),
     rep(trq$tra_code[4],5),
     rep(trq$tra_code[5],5),
-    rep(trq$tra_code[6],7))
-  ,
+    rep(trq$tra_code[6],7)),
   "trv_code"=c(c("VA","VB","VIA0","VIA1","VIA2","VIA3","VIA4","VIB","VII", "mix_VIA1_VIA4",
    "mix_VA_VB", "U","NA"),
    rep(c("N","NA","U","Y","P"),4),
@@ -1031,7 +1034,8 @@ trq <- data.frame(
   "Female", "Immature - attempt made but sex could not be destinguished",
   "Male", "Transitional", "Undetermined - no attempt made", "Mixed", "Hermaphrodite"
   ))
-dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_trv_temp", trq, overwrite =TRUE)
+dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_trv_temp", trq,
+overwrite =TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitvaluequal_trv");
 dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitvaluequal_trv
 SELECT 
@@ -1054,7 +1058,9 @@ trv_description,
 #| code-fold: TRUE
 #| code-summary: Code to show trait value table.
 #| tbl-cap: Values for qualitative parameters
-dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;") %>%
+  knitr::kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1084,34 +1090,37 @@ Again these methods will be working group specific so we create an inherited tab
 #| code-summary: Code to import traitmethod table.
 
 tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
-tra <- tra[grepl("method", tra$mty_name),]
+tra <- tra[grepl("method", tra$mty_name), ]
 res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm")
 clipr::write_clip(colnames(res))
 traitmethod <- data.frame(
-"trm_id" = 1:6,
-"trm_tra_code"= c("Gonadal_inspection", "Length_based_sex", "Anguillicola_stereomicroscope_count", "Anguillicola_visual_count",
-"Muscle_lipid_fatmeter", "Muscle_lipid_gravimeter"),
-"trm_wkg_code" = rep('WGEEL', 6),
-"trm_spe_code" = rep('ANG',6),
-"trm_description" = c(
-  "The eel is dissected and the gonads are inpected, In males, the testes  appear as thin, ribbon-like, whitish structures. In females, the ovaries are larger, lobed, and more granular, often yellowish or pinkish depending on maturity. Many eels pass through an intersexual phase (Here refered as Mixed to align with ICES Vocab), where gonads show both ovarian and testicular tissue. This is part of their natural development",
-  "The size at silvering of eels depends on the sex. Males are found within the 25-45 cm range, and females are found over 45 cm. There is an overlap of sexes arround ",
-  "Anguillicola count using a dissecting microscope, this allows to detect early-stage infections or small larvae",
-  "Anguillicola visual count",
-  "Non invasive estimation of the fat content by measuring the dielectric properties of tissues, this method requires a calibration.",
-  "Gravimeter, muscle tissues are dried and the lipids are extracted using solvents, the extracted fat is dried and weighted")
+  "trm_id" = 1:6,
+  "trm_tra_code" = c(
+    "Gonadal_inspection", "Length_based_sex", "Anguillicola_stereomicroscope_count", "Anguillicola_visual_count",
+    "Muscle_lipid_fatmeter", "Muscle_lipid_gravimeter"
+  ),
+  "trm_wkg_code" = rep("WGEEL", 6),
+  "trm_spe_code" = rep("ANG", 6),
+  "trm_description" = c(
+    "The eel is dissected and the gonads are inpected, In males, the testes  appear as thin, ribbon-like, whitish structures. In females, the ovaries are larger, lobed, and more granular, often yellowish or pinkish depending on maturity. Many eels pass through an intersexual phase (Here refered as Mixed to align with ICES Vocab), where gonads show both ovarian and testicular tissue. This is part of their natural development", # nolint
+    "The size at silvering of eels depends on the sex. Males are found within the 25-45 cm range, and females are found over 45 cm. There is an overlap of sexes arround ",# nolint
+    "Anguillicola count using a dissecting microscope, this allows to detect early-stage infections or small larvae",
+    "Anguillicola visual count",
+    "Non invasive estimation of the fat content by measuring the dielectric properties of tissues, this method requires a calibration.",# nolint
+    "Gravimeter, muscle tissues are dried and the lipids are extracted using solvents, the extracted fat is dried and weighted" # nolint
+  )
 )
 
-dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp",traitmethod, overwrite =TRUE)
+dbWriteTable(con_diaspara_admin, "tr_traitmethod_trm_temp", traitmethod, overwrite = TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitmethod_trm")
-dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitmethod_trm 
-SELECT 
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitmethod_trm
+SELECT
 trm_id,
 trm_tra_code,
 trm_wkg_code,
 trm_spe_code,
 trm_description
- FROM tr_traitmethod_trm_temp") #6
+ FROM tr_traitmethod_trm_temp") # 6
 ```
 
 ```{r tbl-ref_tr_traitmethod_trm}
@@ -1164,8 +1173,8 @@ The following chunk creates a vocab with 14086 stations.
 library(icesStation)
 system.time(
 station <- getListStation())
-user     system      spent
- #    268.09        9.06     1402.47 
+# user     system      spent
+#    268.09        9.06     1402.47 
 save(station, file = "data/station.Rdata")
 # load(file = "data/station.Rdata")
 initcap <- function(X) paste0(substring(X,1,1),tolower(substring(X,2, length(X))))
@@ -1230,7 +1239,7 @@ SELECT
 library(icesStation)
 system.time(
 station <- getListStation())
-user     system      spent
+#      user     system      spent
  #    268.09        9.06     1402.47 
 save(station, file = "data/station.Rdata")
 # load(file = "data/station.Rdata")
@@ -1906,7 +1915,8 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 #| code-fold: TRUE
 #| code-summary: Code to show t_grouptrait_grt table.
 #| tbl-cap: Table t_grouptrait_grt, group metrics (t_grouptrait_grt)
-dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")%>% knitr::kable() %>%
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 # Creating ind metrics 

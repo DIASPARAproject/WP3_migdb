@@ -84,3 +84,6 @@ IS'Is the variable still used ?';
 
 ALTER TABLE dateel.t_metadata_met OWNER TO diaspara_admin;
 GRANT SELECT ON dateel.t_metadata_met TO diaspara_read;
+
+
+SELECT * FROM    t
