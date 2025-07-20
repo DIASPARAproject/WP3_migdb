@@ -69,14 +69,14 @@ instance wgbast could reference different age class than wgnas, and the
 stage would be completely different between wgeel and wgnas reference
 daughter tables. Some of these referential table would be common between
 species (e.g. source from ICES vocab, which corresponds to working group
-or accession events (datacalls)).
+or accession events (datacall)).
 
 ## Unicity constraints
 
 Another important point to add (at least to the salmoglob database) is
-unicity constraint. As some values would be null, creating unicity
+unique constraint. As some values would be null, creating unique
 constraints with indexes would be necessary. These allow to have
-different levels of constraints for instance the unicity would be
+different levels of constraints for instance the unique constraint would be
 defined for : (`year, age, area, parameter`) (`year, age, parameter`)
 (`year, area, parameter`) (`year, parameter`)
 
@@ -110,7 +110,7 @@ source of one column so the table dataaccess will be called
 tables build in conjuction from other tables and not in the
 dictionaries are called `t_`(sometable).
 
--   Foreign key are used instead of check constrainst as check
+-   Foreign key are used instead of check constraints as check
 constraint might not ensure the integrity of data after their
 integration (only when new rows are created or modified).
 
