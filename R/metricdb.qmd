@@ -619,20 +619,20 @@ library(XML)
 # Parse the XML file downloaded from https://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/codelist
 xml_file <- "R/data/habitats.xml" # Replace with your actual file path
 #file.exists("R/data/habitats.xml")
-xml_data <- xmlParse(xml_file)
+xml_data <- XML::xmlParse(xml_file)
 
 # Extract all <value> nodes
 values <- getNodeSet(xml_data, "//value")
 
 # Extract relevant data into a data frame
 extract_info <- function(node) {
-  id <- xmlGetAttr(node, "id")
+  id <- XML::xmlGetAttr(node, "id")
   code <- gsub("http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/",
   x= id,replacement = "")
-  label <- xmlValue(node[["label"]])
-  defintion <- xmlValue(node[["defintion"]])
-  status_node <- getNodeSet(node, ".//status/label")[[1]]
-  status <- xmlValue(status_node)
+  label <- XML::xmlValue(node[["label"]])
+  #defintion <- XML::xmlValue(node[["defintion"]])
+  status_node <- XML::getNodeSet(node, ".//status/label")[[1]]
+  status <- XML::xmlValue(status_node)
   return(data.frame(id = id, code = code, label = label,status = status, stringsAsFactors = FALSE))
 }
 
