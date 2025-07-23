@@ -25,7 +25,7 @@ ver_description TEXT
 );
 COMMENT ON TABLE ref.tr_version_ver
 IS 'Table of data or variable version, essentially one datacall or advice.';
-COMMENT ON COLUMN ref.tr_version_ver.ver_version 
+COMMENT ON COLUMN ref.tr_version_ver.ver_code 
 IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_year 
 IS 'Year of assessement.';

@@ -10,7 +10,7 @@ ON UPDATE CASCADE ON DELETE CASCADE;
 COMMENT ON TABLE refnas.tr_version_ver
 IS 'Table of data or variable version, essentially one datacall or advice, inherits ref.tr_version_ver';
 
-COMMENT ON COLUMN refnas.tr_version_ver.ver_version 
+COMMENT ON COLUMN refnas.tr_version_ver.ver_code 
 IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_year 
 IS 'Year of assessement.';

@@ -71,9 +71,13 @@ CREATE TABLE dat.t_stock_sto (
   CONSTRAINT fk_sto_wkg_code  FOREIGN KEY (sto_wkg_code)
   REFERENCES "ref".tr_icworkinggroup_wkg(wkg_code)
   ON UPDATE CASCADE ON DELETE RESTRICT, 
-  CONSTRAINT c_uk_sto_id_sto_wkg_code UNIQUE (sto_id, sto_wkg_code),
+  CONSTRAINT uk_sto_id_sto_wkg_code UNIQUE (sto_id, sto_wkg_code),
   CONSTRAINT ck_notnull_value_and_mis_code CHECK ((((sto_mis_code IS NULL) AND (sto_value IS NOT NULL)) OR 
-  ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL))))
+  ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL)))),
+  sto_ver_code TEXT ,
+  CONSTRAINT fk_sto_ver_code FOREIGN KEY (sto_ver_code)
+  REFERENCES ref.tr_version_ver (ver_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT
   -- We removed qual_id = 0
   -- CONSTRAINT ck_qal_id_and_missvalue CHECK (((eel_missvaluequal IS NULL) OR (eel_qal_id <> 0))),
   -- TODO CHECK LATER HOW TO DEAL WITH DEPRECATED
@@ -166,3 +170,15 @@ UPDATE
     ON
     datawg.t_eelstock_eel FOR EACH ROW EXECUTE FUNCTION datawg.checkemu_whole_country();
   */
+
+
+/*
+ * Added afterwards for eel
+ */
+
+/*
+ALTER TABLE dat.t_stock_sto ADD COLUMN   sto_ver_code TEXT ;
+ALTER TABLE dat.t_stock_sto ADD CONSTRAINT fk_sto_ver_code FOREIGN KEY (sto_ver_code)
+  REFERENCES ref.tr_version_ver (ver_code)
+  ON UPDATE CASCADE ON DELETE RESTRICT;
+*/
