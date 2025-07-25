@@ -453,6 +453,7 @@ avoid generations of researchers to avoid what `ELE` is (apart from
 elephants). For the others I've taken as close as possible to the latin
 name.
 
+
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -980,8 +981,11 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")%>% knitr::kable() %>
 
 Some of the values are missing from ICES vocab (Table @tbl-unit).
 
-::::: questionbox
-:::: questionbox-header
+
+::: {.callout}
+<h3> QUESTION ICES: missing values for units, what do we do ? <\h3>
+:::
+
 QUESTION ICES: missing values for units, what do we do ?
 ::::
 ::: questionbox-body
@@ -1059,7 +1063,6 @@ sd[ww,] %>% kable()
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
-
 Not yet completely sure about this .... Environment (sea, transition
 ...), age, life stage and complex are in the metadata. But they are also
 in the main table. To start with, we remove them to reduce complexity
@@ -1069,20 +1072,12 @@ structure still in construction
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
-
 As in the diagram, added a category (data type in figure @fig-metadata).
 The idea is to be able to get quickly all parameters related to a type,
 e.g. catch, mortality, biomass. Please check and also check definitions.
 :::
 
-::: {.callout-note appearance="simple"}
-<h3>DIASPARA</h3>
 
-WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
-tr_destination_dest. Note this is just a column in t_metadata_met not
-in the main table. Check if it could not simply be removed if the
-definition of the parameter is clear ?
-:::
 
 ## Object type (tr_objectype_oty)
 
@@ -1097,6 +1092,8 @@ This table (@tbl-objectype) is used in metadata
 
 </details>
 
+
+
 ```{r}
 #| label: tbl-objectype
 #| echo: FALSE
@@ -1106,9 +1103,15 @@ This table (@tbl-objectype) is used in metadata
 #| tbl-cap: Object type
 
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-
 ```
+
+::: {.callout-note appearance="simple"}
+<h3>DIASPARA</h3>
+WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
+tr_destination_dest. Note this is just a column in t_metadata_met not
+in the main table. Check if it could not simply be removed if the
+definition of the parameter is clear ?
+:::
 
 ## Type of parm / data (tr_nimble_nim)
 
@@ -1245,22 +1248,19 @@ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 ```
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
 
-Question to WNGAS / ICES
-::::
 
-::: questionbox-body
+::: {.callout-important}
+<h3>Question to WNGAS / ICES</h3>
 -   Check there is just one version per year
 -   Provide descriptions of the version of the model
 -   Questions sent to ICES to provide access to historical DOI
 -   Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves
 Hernvann
 :::
-::::::
+
+
+
 
 ```{r}
 #| label: tbl-version
@@ -3425,6 +3425,7 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_met_wgeel_temp CASCADE;")
 
 ``` {.sql include="../SQL/6_dateel.t_stock_sto_insert.sql"}
 ```
+
 
 
 

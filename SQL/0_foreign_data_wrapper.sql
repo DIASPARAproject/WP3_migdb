@@ -44,3 +44,10 @@ IMPORT FOREIGN SCHEMA public
 GRANT ALL PRIVILEGES ON SCHEMA refsalmoglob TO diaspara_admin;
 
 SELECT * FROM pg_stat_get_activity(NULL::integer) 
+
+
+ALTER FOREIGN TABLE datwgeel.t_eelstock_eel OPTIONS (ADD updatable 'false');
+ALTER FOREIGN TABLE datwgeel.t_series_ser OPTIONS (ADD updatable 'false');
+ALTER FOREIGN TABLE datwgeel.t_fish_fi OPTIONS (ADD updatable 'false');
+
+
