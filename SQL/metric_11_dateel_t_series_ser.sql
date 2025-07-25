@@ -1,3 +1,11 @@
+
+-- when dumping this is inherited => I have a not null constraint on the server 
+-- when the table is recreated
+
+ALTER TABLE dat.t_series_ser ALTER COLUMN ser_are_code DROP NOT NULL;
+ALTER TABLE dat.t_series_ser ALTER COLUMN ser_cou_code DROP NOT NULL;
+
+
 DROP TABLE IF EXISTS dateel.t_series_ser;
 CREATE TABLE dateel.t_series_ser ( 
   CONSTRAINT pk_ser_id PRIMARY KEY (ser_id),
@@ -78,5 +86,5 @@ COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326, ca
 GRANT ALL ON dateel.t_series_ser TO diaspara_admin;
 GRANT SELECT ON dateel.t_series_ser TO diaspara_read; 
 
-
- 
+-- pb with DUMP
+ ALTER TABLE  dateel.t_series_ser ALTER COLUMN 

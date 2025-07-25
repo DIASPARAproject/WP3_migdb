@@ -30,4 +30,50 @@ pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspa
 
 pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --schema dat --schema datnas-v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
 
+psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara -c "DROP SCHEMA refeel CASCADE;"
+
+
+psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara -c "DROP SCHEMA dateel CASCADE;"
+
+
+psql --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara -c "ALTER TABLE dateel.t_series_ser ALTER COLUMN ser_are_code drop not null;"
+
+
 pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --schema refeel --schema dateel -v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+
+pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --schema dateel -v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+
+psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+
+
+DROP TABLE IF EXISTS dateel.t_grouptrait_grt CASCADE;
+DROP TABLE IF EXISTS dateel.t_indivtrait_int CASCADE;
+DROP TABLE IF EXISTS dateel.t_fish_fi CASCADE;
+DROP TABLE IF EXISTS dateel.t_group_gr CASCADE;
+DROP TABLE IF EXISTS dateel.tj_seriesstation_ses CASCADE;
+DROP TABLE IF EXISTS dateel.t_recruitmentmetadata_met CASCADE;
+DROP TABLE IF EXISTS dateel.t_serannual_san CASCADE;
+DROP TABLE IF EXISTS dateel.t_series_ser CASCADE;
+\q
+
+# I have needed to drop non null constraint that are inherited from dat
+
+
+psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+ALTER TABLE dat.t_series_ser ALTER COLUMN ser_are_code DROP NOT NULL;
+ALTER TABLE dat.t_series_ser ALTER COLUMN ser_cou_code DROP NOT NULL;
+
+pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --table dateel.t_series_ser --table dateel.t_serannual_san --table dateel.t_recruitmentmetadata_met --table dateel.tj_seriesstation_ses -v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --table dateel.t_series_ser --table dateel.t_serannual_san --table dateel.t_recruitmentmetadata_met --table dateel.tj_seriesstation_ses -v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+
+pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --table dateel.t_group_gr --table dateel.t_fish_fi --table dateel.t_indivtrait_int --table dateel.t_grouptrait_grt -v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
+
+
+
+
