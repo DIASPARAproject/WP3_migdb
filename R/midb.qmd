@@ -69,14 +69,14 @@ instance wgbast could reference different age class than wgnas, and the
 stage would be completely different between wgeel and wgnas reference
 daughter tables. Some of these referential table would be common between
 species (e.g. source from ICES vocab, which corresponds to working group
-or accession events (datacalls)).
+or accession events (datacall)).
 
 ## Unicity constraints
 
 Another important point to add (at least to the salmoglob database) is
-unicity constraint. As some values would be null, creating unicity
+unique constraint. As some values would be null, creating unique
 constraints with indexes would be necessary. These allow to have
-different levels of constraints for instance the unicity would be
+different levels of constraints for instance the unique constraint would be
 defined for : (`year, age, area, parameter`) (`year, age, parameter`)
 (`year, area, parameter`) (`year, parameter`)
 
@@ -110,7 +110,7 @@ source of one column so the table dataaccess will be called
 tables build in conjuction from other tables and not in the
 dictionaries are called `t_`(sometable).
 
--   Foreign key are used instead of check constrainst as check
+-   Foreign key are used instead of check constraints as check
 constraint might not ensure the integrity of data after their
 integration (only when new rows are created or modified).
 
@@ -136,7 +136,6 @@ reference the column def_code in table def).
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-
 #if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
   setwd("D:/workspace/DIASPARA_WP3_migdb/R")
@@ -160,22 +159,21 @@ load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
-cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
                           dbname = cred$dbnamediaspara,
-                          host = cred$host,
+                          host = cred$hostdistant,
                           port = cred$port,
                           user = cred$userdiaspara,
                           password = cred$passworddiaspara)
 con_diaspara_admin <- dbConnect(Postgres(), 
                                 dbname = cred$dbnamediaspara,
-                                host = cred$host,
+                                host = cred$hostdistant,
                                 port = cred$port,
-                                user = cred$usersalmo,
-                                password = cred$passwordsalmo)
+                                user = cred$userdistant,
+                                password = cred$passworddistant)
 con_salmoglob <- dbConnect(Postgres(), 
                            dbname = cred$dbnamesalmo,
-                           host = cred$host,
+                           host = cred$hostdistant,
                            port = cred$port,
                            user = cred$usersalmo,
                            password = cred$passwordsalmo)
@@ -281,10 +279,10 @@ CREATE SCHEMA dateel;
 ALTER SCHEMA dateel OWNER TO diaspara_admin;
 COMMENT ON SCHEMA dateel IS 'SCHEMA for WGEEL';
 
-DROP SCHEMA IF EXISTS datnas CASCADE;
-CREATE SCHEMA datnas;
-ALTER SCHEMA datnas OWNER TO diaspara_admin;
-COMMENT ON SCHEMA datnas IS 'SCHEMA for WGNAS';
+DROP SCHEMA IF EXISTS dateel CASCADE;
+CREATE SCHEMA dateel;
+ALTER SCHEMA dateel OWNER TO diaspara_admin;
+COMMENT ON SCHEMA dateel IS 'SCHEMA for WGNAS';
 
 DROP SCHEMA IF EXISTS datbast CASCADE;
 CREATE SCHEMA datbast;
@@ -454,6 +452,7 @@ select `ANG`. This column with species will be everywhere. We want to
 avoid generations of researchers to avoid what `ELE` is (apart from
 elephants). For the others I've taken as close as possible to the latin
 name.
+
 
 :::::: questionbox
 :::: questionbox-header
@@ -982,14 +981,13 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")%>% knitr::kable() %>
 
 Some of the values are missing from ICES vocab (Table @tbl-unit).
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
+
+::: {.callout}
+<h3> QUESTION ICES: missing values for units, what do we do ? <\h3>
 :::
 
 QUESTION ICES: missing values for units, what do we do ?
 ::::
-
 ::: questionbox-body
 What do we do with units without correspondance? These come from FAO (if
 I remember well). Do we try to search for those in the wgeel database,
@@ -1004,7 +1002,7 @@ haul.
 
 -   Before working any further I would like your opinion there.
 :::
-::::::
+:::::
 
 ## Parameters
 
@@ -1065,7 +1063,6 @@ sd[ww,] %>% kable()
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
-
 Not yet completely sure about this .... Environment (sea, transition
 ...), age, life stage and complex are in the metadata. But they are also
 in the main table. To start with, we remove them to reduce complexity
@@ -1075,20 +1072,12 @@ structure still in construction
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
-
 As in the diagram, added a category (data type in figure @fig-metadata).
 The idea is to be able to get quickly all parameters related to a type,
 e.g. catch, mortality, biomass. Please check and also check definitions.
 :::
 
-::: {.callout-note appearance="simple"}
-<h3>DIASPARA</h3>
 
-WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
-tr_destination_dest. Note this is just a column in t_metadata_met not
-in the main table. Check if it could not simply be removed if the
-definition of the parameter is clear ?
-:::
 
 ## Object type (tr_objectype_oty)
 
@@ -1103,6 +1092,8 @@ This table (@tbl-objectype) is used in metadata
 
 </details>
 
+
+
 ```{r}
 #| label: tbl-objectype
 #| echo: FALSE
@@ -1112,9 +1103,15 @@ This table (@tbl-objectype) is used in metadata
 #| tbl-cap: Object type
 
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-
 ```
+
+::: {.callout-note appearance="simple"}
+<h3>DIASPARA</h3>
+WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
+tr_destination_dest. Note this is just a column in t_metadata_met not
+in the main table. Check if it could not simply be removed if the
+definition of the parameter is clear ?
+:::
 
 ## Type of parm / data (tr_nimble_nim)
 
@@ -1251,22 +1248,19 @@ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 ```
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
 
-Question to WNGAS / ICES
-::::
 
-::: questionbox-body
+::: {.callout-important}
+<h3>Question to WNGAS / ICES</h3>
 -   Check there is just one version per year
 -   Provide descriptions of the version of the model
 -   Questions sent to ICES to provide access to historical DOI
 -   Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves
 Hernvann
 :::
-::::::
+
+
+
 
 ```{r}
 #| label: tbl-version
@@ -1385,34 +1379,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") %>%
 Here Hilaire say that naming the table "outcome" wasn't ideal so I've
 followed his suggestion
 :::
-
-## Metadata (t_metadata_met)
-
-The code for creating metadata is listed below
-
-<details>
-
-<summary>SQL code to create tables</summary>
-
-``` {.sql include="../SQL/4_dat_t_metadata_met.sql"}
-```
-
-</details>
-
-
-
-
-```{r}
-#| label: tbl-metadata
-#| echo: FALSE
-#| eval: TRUE
-#| warning: FALSE
-#| message: FALSE
-#| tbl-cap: metadata
-dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-```
-
 ## Area (tr_area_are)
 
 This table will be created further in the habitat repository... But here we are 
@@ -1465,6 +1431,13 @@ dbExecute(con_diaspara_admin,
   'Country',
   'Corresponds to one or more units, but in almost all stocks
   this level is relevant to split data.'
+  );")
+
+
+dbExecute(con_diaspara_admin,
+          "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
+  'EMU',
+  'Administrative unit for eel, the hierarchical next level is country.'
   );")
 
 dbExecute(con_diaspara_admin,
@@ -2938,6 +2911,38 @@ dev.off()
 ICES,
 GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
+
+
+
+## Metadata (dat.t_metadata_met)
+
+The code for creating metadata is listed below
+
+<details>
+
+<summary>SQL code to create table `dat.t_metadata_met`</summary>
+
+``` {.sql include="../SQL/4_dat_t_metadata_met.sql"}
+```
+
+</details>
+
+
+
+
+```{r}
+#| label: tbl-metadata
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: metadata
+dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+
 # SCHEMA datnas and refnas
 
 ## Create referential for WGNAS
@@ -2971,7 +2976,7 @@ GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import to refnas work in progress ...
+#| code-summary: Code to import metadata to datnas ...
 
 
 # t_metadata_met
@@ -3186,7 +3191,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tg_additional_add;")%>% knitr::ka
 ## Import the t_stock_sto
 
 
-```{r refnas.t_stock_sto}
+```{r datnas.t_stock_sto}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -3233,11 +3238,11 @@ nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
 , CASE WHEN d.var_mod IN ('eggs','p_smolt', 'p_smolt_pr', 'prop_female') THEN d.age
        WHEN d.var_mod IN ('omega') THEN d.LOCATION
        END AS sto_add_code
-FROM refsalmoglob."database" d JOIN
+FROM refsalmoglob.database d JOIN
 refsalmoglob.metadata m ON m.var_mod = d.var_mod; ")# 45076
 ```
 
-## structure of the table refnas.t_stock_sto
+## structure of the table datnas.t_stock_sto
 
 
 ```{r}
@@ -3258,12 +3263,171 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")%>%
 
 ## refeel.tr_version_ver
 
+Done see metricDB report
+
+##refeel.tr_area_are
+
+This will be continued in t_stock_tso
+
+```{r refeel.tr_area_are}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import salmoglob main db into the new database.
 
 
 
+## dateel.t_metadata_met
+
+<summary>SQL code to create table `dateel.t_metadata_met` </summary>
+
+``` {.sql include="../SQL/6_dateel.t_metadata_met.sql"}
+```
+
+Note : 
+
+* We currently consider that SumH, and Biom are "Output", the result of model.
+
+*    type not a referential, used for legacy in WGNAS 
+    see [type table](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4)
+    so I'm leaving it empty currently
+
+```{r dateel.t_metadata_met}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to metadata for eel work in progress ...
 
 
-# WORK IN PROGRESS....
+# t_metadata_met
+
+eelstock <- dbGetQuery(con_diaspara_admin, "SELECT * FROM datwgeel.t_eelstock_eel WHERE eel_qal_id in (0,1,2,3,4) ")
+nrow(eelstock) # 73730
+unique(eelstock$eel_typ_id)
+# 6  4  8  9 11 17 18 15 14 13 16 19 10 32 33 34
+# View(eelstock[eelstock$eel_typ_id ==32,])
+
+
+
+res <- dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_metadata_met;")
+clipr::write_clip(colnames(res))
+
+
+
+typ <- dbGetQuery(con_diaspara_admin,"SELECT *  FROM refwgeel.tr_typeseries_typ")
+# below I'm removing from typ as these values are not actually in the database
+typ <- typ[!typ$typ_id %in% c(1,2,3),]  # remove series
+typ <- typ[!typ$typ_id %in% c(16),]  # potential_availabe_habitat_production_ha
+typ <- typ[!typ$typ_id %in% c(5, 7),]  # com_catch and rec_catch
+typ <- typ[!typ$typ_id %in% c(26:31),]  # silver eel equivalents (deprecated)
+# unique(metadata$metric)
+# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
+View(typ)
+t_metadata_met <-
+  data.frame(
+    met_var = typ$typ_name,
+    met_spe_code = "ANG",
+    met_wkg_code = "WGEEL",
+    met_ver_code = "WGEEL-2025-1", 
+    met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
+    met_nim_code =  case_when(    
+      typ$typ_id %in% c(4:12,32,33)   ~ "Data",
+      .default = "Output"), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+    met_dim = paste0(
+      "{", 1, ",",
+       0, ",",
+       0, "}"
+    ),
+    met_dimname = paste0(
+      "{'Year',NULL,NULL}"
+    ),
+    met_modelstage = NA,
+    met_type = typ$typ_id, 
+    # not a referential, used for legacy in WGNAS, and I'm using the old code in wgeel
+    # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
+    met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
+    met_fishery = NA, # not a referential
+    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_des_code = NA,
+    met_uni_code = NA, # (TODO)
+    met_cat_code = case_when(
+typ$typ_name == "com_landings_kg" ~ "Catch",
+typ$typ_name == "rec_landings_kg" ~ "Catch",
+typ$typ_name == "other_landings_kg" ~ "Catch",
+typ$typ_name == "other_landings_n" ~ "Catch",
+typ$typ_name == "gee_n" ~ "Count",
+typ$typ_name == "q_aqua_kg" ~ "Other" ,
+typ$typ_name == "q_aqua_n" ~ "Other" ,
+typ$typ_name == "q_release_kg" ~ "Release",
+typ$typ_name == "q_release_n" ~ "Release",
+typ$typ_name == "b0_kg" ~ "Biomass",
+typ$typ_name == "bbest_kg" ~ "Biomass",
+typ$typ_name == "b_current_without_stocking_kg" ~ "Biomass",
+typ$typ_name == "bcurrent_kg" ~ "Biomass",
+typ$typ_name == "suma" ~ "Mortality",
+typ$typ_name == "sumf" ~ "Mortality",
+typ$typ_name == "sumh" ~ "Mortality",
+typ$typ_name == "sumf_com" ~ "Mortality",
+typ$typ_name == "sumf_rec" ~ "Mortality",
+typ$typ_name == "sumh_hydro" ~ "Mortality",
+typ$typ_name == "sumh_habitat" ~ "Mortality",
+typ$typ_name == "sumh_other" ~ "Mortality",
+typ$typ_name == "sumh_release" ~ "Mortality",
+.default = NA
+    ),
+met_definition = typ$typ_description,
+met_deprecated = NA 
+# not integrating any of the deprecated data
+)
+
+res <- dbWriteTable(con_diaspara_admin, "t_metadata_met_wgeel_temp", 
+                    t_metadata_met, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO dateel.t_metadata_met 
+SELECT 
+ met_var,
+ met_spe_code,
+ met_wkg_code,
+ met_ver_code,
+ met_oty_code, 
+ met_nim_code,
+ met_dim::INTEGER[], 
+ met_dimname::TEXT[], 
+ met_modelstage, 
+ met_type,
+ met_location, 
+ met_fishery, 
+ met_mtr_code, 
+ met_des_code, 
+ met_uni_code,
+ met_cat_code, 
+ met_definition, 
+ met_deprecated
+FROM t_metadata_met_wgeel_temp") # 22
+
+dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_met_wgeel_temp CASCADE;")
+
+
+```
+## dateel.t_stock_sto
+
+
+<summary>SQL code to create table `dateel.t_stock_sto` </summary>
+
+``` {.sql include="../SQL/6_dateel.t_stock_sto.sql"}
+```
+
+
+<summary>SQL code to insert values in table `dateel.t_stock_sto` </summary>
+
+``` {.sql include="../SQL/6_dateel.t_stock_sto_insert.sql"}
+```
+
+
+
 
 This document is still in construction ![Structure of the db (still in
 construction)](images\diaspara-ref.png){#fig-ref}

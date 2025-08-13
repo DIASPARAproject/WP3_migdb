@@ -117,3 +117,10 @@ INSERT
 UPDATE
     ON
     datnas.t_stock_sto FOR EACH ROW EXECUTE FUNCTION datnas.update_sto_datelastupdate();
+
+
+-- fix after change in wgeel
+/*
+SELECT * FROM refnas.tr_version_ver
+UPDATE datnas.t_stock_sto SET sto_ver_code = 'WGNAS-2024-1'; -- 45076
+*/
