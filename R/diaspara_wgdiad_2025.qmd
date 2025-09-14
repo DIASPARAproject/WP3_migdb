@@ -9,7 +9,7 @@ title-slide-attributes:
   data-background-image: images/diaspara_background.png
   data-background-size: stretch
   data-background-opacity: "0.5"
-logo: images/diaspara_participants_logo.png
+logo: images/diaspara_participants_logo_withEUlogo.png
 footer: ""
 format: 
   revealjs :
@@ -31,25 +31,35 @@ background-transition: fade
 editor: visual
 ---
 
-
 ## Topics Today
 
 ::::: columns
 ::: {.column .incremental width="40%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
-::: {.column .incremental width="60%"}
--   1. Overall about Diaspara and WP3
--   2. What databases are being created
--   3. Examples of data
--   4. Timeline and WG's
+
+::: {.column width="60%"}
+-   
+
+    1.  Overall about Diaspara and WP3
+
+-   
+
+    2.  What databases are being created
+
+-   
+
+    3.  Examples of data
+
+-   
+
+    4.  Timeline and WG's
 :::
 :::::
 
+# Diaspara
 
-# Overall about Diaspara
-
-![](images/clipboard-725413065.png)
+![](images/clipboard-725413065.png){fig-align="left" height="450"}
 
 # WP3 - Databases & Current status
 
@@ -81,7 +91,7 @@ editor: visual
 ::: {.column .incremental width="50%"}
 -   Github timeline issues progress
 -   <https://diaspara.bordeaux-aquitaine.inrae.fr/>
--   Habitat DB beta version release in ZENODO https://zenodo.org/records/14726599
+-   Habitat DB beta version release in ZENODO <https://zenodo.org/records/14726599>
 :::
 
 ::: {.column .incremental width="50%"}
@@ -89,19 +99,22 @@ editor: visual
 :::
 :::::
 
-
 ## Topics Today
 
 ::::: columns
 ::: {.column .incremental width="40%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
-::: {.column .incremental width="60%"}
--   2. What databases are being created
+
+::: {.column width="60%"}
+-   
+
+    2.  What databases are being created
 :::
 :::::
 
 # Note!
+
 -   In the long run, the number of databases and/or their location should not affect the WG work
 
 # The databases
@@ -113,15 +126,25 @@ editor: visual
 -   All unified data
 -   Data from models etc.
 -   Validation from ICES
--   Hosting discussions
+-   Hosting: under discussion
 :::
 
 ::: {.column .incremental width="25%"}
-**Group and individual METRICS DATABASE** - Benefiting from the WGEEL DB, using similar vocab (series + sampling) - There is already a mapping by ICES of the data structure
+**METRICS DATABASE** -
+
+-   Benefiting from the WGEEL DB, using similar vocab (series + sampling)
+
+-   Group and individual data
+
+-   There is already a mapping by ICES of the data structure
 :::
 
 ::: {.column .incremental width="25%"}
-**HABITAT DATABASE** - Not a db: Vocabulary - Other databases are using this
+**HABITAT DATABASE**
+
+-   Not a db: Vocabulary
+
+-   Other databases are using this
 :::
 
 ::: {.column .incremental width="25%"}
@@ -156,7 +179,7 @@ editor: visual
 -   No freshwater data currently
 :::
 
-::: {.column width="50%"}
+::: {.column .incremental width="50%"}
 -   TAF to get the data for the assessment use
 -   Work to ensure all data are available
 -   DIASPARA habitat data to add freshwater areas
@@ -169,8 +192,11 @@ editor: visual
 ::: {.column .incremental width="40%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
+
 ::: {.column .incremental width="60%"}
--   3. Examples of data
+-   
+
+    3.  Examples of data
 :::
 :::::
 
@@ -183,7 +209,6 @@ editor: visual
 -   This structure will work on the same referential structure.
 
 ![Excel file for the DB](images\Viktor.png "An excel template to import data to WP2")
-
 
 ## Habitat DB
 
@@ -201,7 +226,6 @@ editor: visual
 
 ![Subdivision level WGBAST, souce hydrosheds for the continental habitat](images/WGBAST_hierarchy_subdivision.png "Baltic Sea Marine and Continental split per subdivision"){#fig-WGBAST_hierarchy_subdivision}
 
-
 ## Examples of use
 
 ![Screenshot](images/jules_screenshot.png "Dbeaver screenshot")
@@ -210,15 +234,17 @@ editor: visual
 
 ![Screenshot](images/jani_screenshot.jpg "Qgis screenshot")
 
-
 ## Topics Today
 
 ::::: columns
 ::: {.column .incremental width="40%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
+
 ::: {.column .incremental width="60%"}
--   4. Timeline and WG's
+-   
+
+    4.  Timeline and WG's
 :::
 :::::
 
@@ -237,32 +263,39 @@ editor: visual
 :::::
 
 # What does this mean for the working groups
+
 -   TAF to get data from different DB's
 -   Access via API: analyse part of the data
 -   Shiny app to display data
 -   Same language for all: DB managing and analysis
 
 # Are all data publicly available?
+
 -   Case specific
 -   See e.g., catch data
 
 # The timeline?
 
+::::: columns
+::: {.column .incremental width="50%"}
 ![](images/MessyDBPaint.JPG)
+:::
 
--   Currently Integrating WGEEL data 
+::: {.column width="50%"}
+-   We are ready to hand in the simplified version of the metric db. Works for salmon and eel.
 -   WGEEL as test group (because we can complain to ourselves)
 -   Data call using DATSU in 2026 (Eel) 2027 (Salmon)
-
+-   <https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html>
+:::
+:::::
 
 # Help needed
+
 -   Ensure river data are in a useful format
 -   Ensure habitat split is in a useful format
 -   Share your concerns with us!
 -   WGDIAD recommendation
-
-
-
+-   A lot of work has been done with vocab. It will be used for everything. Review needed.
 
 ## Thank you!
 
