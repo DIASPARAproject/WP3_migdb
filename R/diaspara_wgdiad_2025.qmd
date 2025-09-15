@@ -264,10 +264,22 @@ editor: visual
 
 # What does this mean for the working groups
 
+::::: columns
+::: {.column .incremental width="50%"}
 -   TAF to get data from different DB's
 -   Access via API: analyse part of the data
+-   Same language for all: DB management and analysis
 -   Shiny app to display data
--   Same language for all: DB managing and analysis
+-   Shorter reports?
+:::
+
+::: {.column width="50%"}
+![](images/ShinyAppExample.png)
+
+:::
+:::::
+
+
 
 # Are all data publicly available?
 
