@@ -1493,7 +1493,11 @@ dbExecute(con_diaspara_admin,
   'Subdivision level from ICES, GFCM and NAFO'
   );")
 
-
+dbExecute(con_diaspara_admin,
+          "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
+  'Lagoons',
+  'Shallow body of water seperated from a larger body of water by a narrow landform'
+  );")
 
 
 ```
