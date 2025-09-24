@@ -81,7 +81,7 @@ SELECT * FROM public.DATABASE WHERE var_mod = 'eggs' AND VERSION = 10 AND area =
 -- OK it's two ages
 
 SELECT * FROM public.DATABASE WHERE var_mod = 'omega' AND area ='SF' ;
--- OK pour celui location est rentré comme area (c'est le seul)
+-- OK pour celui location est rentrï¿½ comme area (c'est le seul)
 
 SELECT * FROM public.DATABASE WHERE var_mod = 'p_smolt' AND area ='SF' ;
 
@@ -141,7 +141,7 @@ nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
     WHEN m.life_stage = '_' THEN '_'
    ELSE 'TROUBLE' END AS sto_lfs_code 
 , NULL AS sto_hty_code
-, NULL AS sto_fia_code -- fishing area
+--, NULL AS sto_fia_code -- fishing area
 , 1 AS sto_qal_code -- see later TO INSERT deprecated values
 , NULL AS sto_qal_comment 
 , NULL AS sto_comment

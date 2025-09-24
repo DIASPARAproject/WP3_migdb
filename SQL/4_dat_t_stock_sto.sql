@@ -48,10 +48,10 @@ CREATE TABLE dat.t_stock_sto (
   CONSTRAINT fk_hty_code FOREIGN KEY (sto_hty_code)
     REFERENCES "ref".tr_habitattype_hty(hty_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
-  sto_fia_code TEXT NULL,
-  CONSTRAINT fk_sto_fia_code FOREIGN KEY(sto_fia_code)
-    REFERENCES "ref".tr_fishingarea_fia(fia_code)
-    ON UPDATE CASCADE ON DELETE RESTRICT, 
+  --sto_fia_code TEXT NULL,
+  --CONSTRAINT fk_sto_fia_code FOREIGN KEY(sto_fia_code)
+  --  REFERENCES "ref".tr_fishingarea_fia(fia_code)
+  --  ON UPDATE CASCADE ON DELETE RESTRICT, 
   sto_qal_code INT4 NOT NULL,
   CONSTRAINT fk_sto_qal_code FOREIGN KEY (sto_qal_code)
     REFERENCES "ref".tr_quality_qal(qal_code)
@@ -106,7 +106,7 @@ COMMENT ON COLUMN dat.t_stock_sto.sto_lfs_code IS 'Code of the lifestage see tr_
 both lfs_code, and lfs_spe_code (as two species can have the same lifestage code.';
 COMMENT ON COLUMN dat.t_stock_sto.sto_hty_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), 
 T (Transitional water), FW (Freshwater), null accepted';
-COMMENT ON COLUMN dat.t_stock_sto.sto_fia_code IS 'For marine area, code of the ICES area (table tr_fishingarea_fia), Null accepted';
+-- COMMENT ON COLUMN dat.t_stock_sto.sto_fia_code IS 'For marine area, code of the ICES area (table tr_fishingarea_fia), Null accepted';
 COMMENT ON COLUMN dat.t_stock_sto.sto_qal_code IS 'Code of data quality (1 good quality, 2 modified by working group, 
 3 bad quality (not used), 4 dubious, 18, 19 ... historical data not used. 
 Not null, Foreign key set to tr_quality_qal';
@@ -181,4 +181,5 @@ ALTER TABLE dat.t_stock_sto ADD COLUMN   sto_ver_code TEXT ;
 ALTER TABLE dat.t_stock_sto ADD CONSTRAINT fk_sto_ver_code FOREIGN KEY (sto_ver_code)
   REFERENCES ref.tr_version_ver (ver_code)
   ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE dat.t_stock_sto DROP COLUMN   sto_fia_code CASCADE;
 */

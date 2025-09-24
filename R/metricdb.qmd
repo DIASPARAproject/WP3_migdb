@@ -970,7 +970,7 @@ dbExecute(con_diaspara_admin, "UPDATE refeel.tr_traitqualitative_trq SET tra_id=
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to show qualitative trait table.
-#| tbl-cap: Qualtitative parameters
+#| tbl-cap: Qualitative parameters
 dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitqualitative_trq;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
