@@ -75,5 +75,12 @@ pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspa
 pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --table dateel.t_group_gr --table dateel.t_fish_fi --table dateel.t_indivtrait_int --table dateel.t_grouptrait_grt -v | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
 
 
+# dump structure from dam
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/damdb --schema nomenclature --schema dbmig -v | 
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/damdb --schema dbmig -f "C:/temp/dam.sql" 
+psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara -f "C:/temp/dam.sql" 
+
+
+
 
 

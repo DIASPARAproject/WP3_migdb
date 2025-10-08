@@ -1,7 +1,7 @@
 ---
 title: "DIASPARA : Proposed change in the database structure "
-subtitle: " A short introduction"
-author: "Cédric Briand, Jani Helminen"
+subtitle: " WGEEL presentation"
+author: "Cédric Briand, Jani Helminen, Jules Oliviero"
 filters:
   - quarto-kroki
   - speakernotes
@@ -10,7 +10,7 @@ title-slide-attributes:
   data-background-size: stretch
   data-background-opacity: "0.5"
 logo: images/diaspara_participants_logo.png
-footer: "DIASPARA -ICES WKEELDATA meeting"
+footer: "DIASPARA progress -WGEEL meeting"
 format: 
   revealjs :
     speakernotes:
@@ -47,7 +47,6 @@ Individual and group metrics, series of data
 DB for dams/migration obstacles
 
 DB of Electrofishing
-
 
 ```{r init}
 #| echo: FALSE
@@ -107,7 +106,6 @@ con_wgeel_distant <- dbConnect(Postgres(),
 
 ```
 
-
 # General structure of the DB
 
 ```{dot}
@@ -131,14 +129,7 @@ digraph DatabaseRelations {
 }
 ```
 
-
-
-
-
 DATA AND REFERENTIALS
-
-
-
 
 # GENERAL STRUCTURE OF Metric DB
 
@@ -155,7 +146,7 @@ DATA AND REFERENTIALS
 
 -   group metrics
 
--  Individual metrics
+-   Individual metrics
 :::
 ::::
 
@@ -165,7 +156,6 @@ DATA AND REFERENTIALS
 ::::::
 
 ::: notes
-
 :::
 
 ::: footer
@@ -176,16 +166,15 @@ DATA AND REFERENTIALS
 :::::: columns
 :::: column
 ::: incremental
-
 -   DCF DATA (sampling, electrofishing, other data not series)
 
 -   t_samplinginfo_sai
 
--    (No annual data)
+-   (No annual data)
 
 -   group metrics
 
--  Individual metrics
+-   Individual metrics
 :::
 ::::
 
@@ -195,12 +184,10 @@ DATA AND REFERENTIALS
 ::::::
 
 ::: notes
-
 :::
 
 ::: footer
 :::
-
 
 ## Proposed simplified data structure
 
@@ -353,110 +340,67 @@ digraph schema {
 }
 ```
 
-
 ## Series Vocab
 
-svc_id
-svc_code
-svc_description
-
-
+svc_id svc_code svc_description
 
 ## Station
 
-
-:::::: columns
-:::: column
-Definition
-HeaderRecord
-Station_Code
-Station_Country
-Station_Name
-Station_LongName
-Station_ActiveFromDate
-Station_ActiveUntilDate
-Station_ProgramGovernance
-Station_StationGovernance
-Station_PURPM
-::::
+::::: columns
+::: column
+Definition HeaderRecord Station_Code Station_Country Station_Name Station_LongName Station_ActiveFromDate Station_ActiveUntilDate Station_ProgramGovernance Station_StationGovernance Station_PURPM
+:::
 
 ::: column
-Station_Latitude
-Station_LatitudeRange
-Station_Longitude
-Station_LongitudeRange
-Station_Geometry
-Station_DataType
-Station_WLTYP
-Station_MSTAT
-Station_Notes
-Station_Deprecated
+Station_Latitude Station_LatitudeRange Station_Longitude Station_LongitudeRange Station_Geometry Station_DataType Station_WLTYP Station_MSTAT Station_Notes Station_Deprecated
 :::
-::::::
+:::::
 
 ## Relation
 
-
-* Definiton
-* HeaderRecord
-* Relation_Code
-* Relation_Country
-* Relation_Name
-* Relation_ActiveFromDate
-* Relation_RelatedCode
-* Relation_RelatedCountry
-* Relation_RelatedName
-* Relation_RelatedActiveFromDate
-* Relation_RelationType
-
+-   Definiton
+-   HeaderRecord
+-   Relation_Code
+-   Relation_Country
+-   Relation_Name
+-   Relation_ActiveFromDate
+-   Relation_RelatedCode
+-   Relation_RelatedCountry
+-   Relation_RelatedName
+-   Relation_RelatedActiveFromDate
+-   Relation_RelationType
 
 ## Series
 
+::::: columns
+::: column
+-   ser_svc_id
+-   ser_code
+-   ser_station_code
+-   ser_name
+-   ser_spe_code
+-   ser_lfs_code
+-   ser_are_code
+-   ser_wkg_code
+-   ser_ver_code
+-   geom
+:::
 
-:::::: columns
-:::: column
-* ser_svc_id
-* ser_code
-* ser_station_code
-* ser_name
-* ser_spe_code
-* ser_lfs_code
-* ser_are_code
-* ser_wkg_code
-* ser_ver_code
-* geom
-::::
-
-:::: column
-
-ser_description
-ser_locationdescription
-ser_hty_code
-ser_gea_code
-ser_ccm_wso_id
-ser_distanceseakm
-ser_stocking
-ser_stockingcomment
-ser_annual_effort_uni_code
-ser_protocol
-ser_samplingstrategy
-ser_datelastupdate
-::::
-::::::
-
-
+::: column
+ser_description ser_locationdescription ser_hty_code ser_gea_code ser_ccm_wso_id ser_distanceseakm ser_stocking ser_stockingcomment ser_annual_effort_uni_code ser_protocol ser_samplingstrategy ser_datelastupdate
+:::
+:::::
 
 ## Annual
 
-
-* san_svc_id
-* san_id
-* san_value
-* san_year
-* san_comment
-* san_effort
-* san_datelastupdate
-* san_qal_id
-* san_qal_comment
-* san_wkg_code
-* san_ver_code
+-   san_svc_id
+-   san_id
+-   san_value
+-   san_year
+-   san_comment
+-   san_effort
+-   san_datelastupdate
+-   san_qal_id
+-   san_qal_comment
+-   san_wkg_code
+-   san_ver_code

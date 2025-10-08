@@ -383,7 +383,6 @@ digraph {
 -   Integrate
 :::
 
-
 ## WGEEL / habitat (conclusion)
 
 -   When EMUs include marine parts, separate it, and add it to the marine habitat.
@@ -607,7 +606,7 @@ digraph schema {
 }
 ```
 
-* text
+-   text
 
 ## WGTRUTTA : electrofishing
 
@@ -742,7 +741,7 @@ DIADSEA. Future collaboration opportunities
 -   the structure might be different for different species
 -   Starting from wide area to lower level: question how do we split
 
-# Some insight on the timelines (HABITAT){.scrollable}
+# Some insight on the timelines (HABITAT) {.scrollable}
 
 ```{mermaid}
 gantt
@@ -800,7 +799,7 @@ gantt
      Populate DB using EU hydro #26 :active, 2025-02-01, 6M 
 ```
 
-# Some insight on the timelines (METRICDB){.scrollable}
+# Some insight on the timelines (METRICDB) {.scrollable}
 
 ```{mermaid}
 gantt

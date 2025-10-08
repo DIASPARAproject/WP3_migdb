@@ -170,8 +170,9 @@ gantt
     HABITAT DB beta2 release (WGEEL) :milestone, beta2, 2025-09-20, 0d
     WGEEL  :  2025-09-29, 10d
     WGEEL DB 2025: milestone, wgeel, 2025-10-06, 0d
-    Import data WGEEL : crit,  after wgeel, until v1
+
     v 0.0.1 version (Metrics): milestone, v1, 2025-10-30, 0d
+    Import data WGEEL : crit, after wgeel, until v1
     Final meeting: milestone, final, 2025-11-05, 3d
     WP3 DELIVERABLE (template database) : milestone, end, 2026-06-01,3d
 
@@ -192,5 +193,67 @@ gantt
     section shiny / R
 
     Propose and adapt changes to shiny apps ... : crit, 2026-03-01, 6M
+
+```
+
+
+# WGEEL plans
+
+
+```{mermaid}
+gantt
+    title wgeel timeline
+    dateFormat  YYYY-MM-DD
+    todayMarker stroke-width:5px,stroke:#0f0,opacity:0.5
+
+    section metric DB (DIASPARA)
+    Alpha version (Metrics): milestone, alpha, 2025-06-15, 0d
+    (ICES) Data exchange format: crit, after alpha, 4M
+    WGEEL data integration : 2025-09-08, 7d 
+    WGEEL  :  2025-09-29, 10d
+    WGEEL DB 2025: milestone, wgeel, 2025-10-06, 0d
+    Import data WGEEL : crit,  after wgeel, until v1
+    v 0.0.1 version (Metrics): milestone, v1, 2025-10-30, 0d
+    Final meeting: milestone, final, 2025-11-05, 3d
+
+    Create datacall WGEEL ... : crit, after end, 3M
+
+    End diaspara : milestone, end, 2026-05-01, 0d
+    Propose and adapt changes to shiny apps ... :  2026-03-01, 6M
+    ICES Create db: crit, after end, 2027-01-01
+
+    section Stock DB (DIASPARA)
+    
+    Initial meeting:milestone, init, 2024-11-25, 3d
+
+    Import data from WGNAS :current, 2025-02-01, until alpha
+    Alpha version (WGNAS): milestone, alpha, 2025-06-01, 2d
+    Import data from WGEEL : after alpha, until alpha
+    Beta version (WGEEL): milestone, beta, 2025-07-15, 2d
+    Validate structure with WGEEL: after wgeel, 5d
+    Final import from WGEEL : after wgeel, until final
+    Release first vocab to ICES: current, after final, 1M    
+    Propose and adapt changes to shiny apps ... :  2026-03-01, 6M
+    ICES Create db: crit, after end, 2027-01-01
+
+    section RDBES
+
+    Habitat DB release :milestone, releaseHDB, 2026-06-02, 0d
+    ICES Habitat continental habitat:crit, after releaseHDB,  2027-01-01 
+    RDG datacall including continental: 2027-02-01, 6M
+    WGEEL (work with TAF & RDBES): 2026-09-30, 1M
+    WGEEL (work with TAF & RDBES): 2027-09-30, 1M
+    WGEEL (work with TAF & RDBES): 2028-09-30, 1M
+
+    section regional models (!funding)
+    Electrofishing DB release (DIASPARA):milestone, releaseDB, 2026-06-02, 0d
+    Dam DB release (DIASPARA) :milestone, releaseeDB, 2026-06-02, 0d
+    WkDIADData : milestone, wkdiaddata, 2026-05-01, 0d
+    Data call Dam and E.fishing: 2026-06-01, 12M
+    Regional model development: 2027-01-01, 24M
+    Global model development: 2027-01-01, 24M
+
+    
+
 
 ```

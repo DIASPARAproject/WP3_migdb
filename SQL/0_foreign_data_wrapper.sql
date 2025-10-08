@@ -23,6 +23,7 @@ CREATE USER MAPPING FOR USER
   SERVER wgnas_data_wrapper
   OPTIONS (user 'postgres', password 'postgres');
 
+
 CREATE USER MAPPING FOR USER
   SERVER eda_data_wrapper
   OPTIONS (user 'postgres', password 'postgres');
