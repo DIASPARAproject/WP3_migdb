@@ -1,0 +1,322 @@
+---
+title: "Diaspara WP3 & WGDIAD 2025"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
+format: 
+  revealjs :
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+## Topics Today
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+-   
+
+    1.  Overall about Diaspara and WP3
+
+-   
+
+    2.  What databases are being created
+
+-   
+
+    3.  Examples of data
+
+-   
+
+    4.  Timeline and WG's
+:::
+:::::
+
+# Diaspara
+
+![](images/clipboard-725413065.png){fig-align="left" height="450"}
+
+# WP3 - Databases & Current status
+
+-   Several databases (WGs) - resources!
+
+-   RDBES (marine catch data + catch sampling)
+
+-   These need to be maintained in the long term
+
+-   Overlap in data calls
+
+# Frameworks for assessment
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   FAIR (Findability, Accessibility, Interoperability, Reusability).
+-   Use of TAF (Transparent assessment Framework).
+-   Use of DATSU (quality insurance and checking procedures for data call).
+:::
+
+::: {.column width="50%"}
+![](images/bycexample.JPG)
+:::
+:::::
+
+# Everything is online
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   Github timeline issues progress
+-   <https://diaspara.bordeaux-aquitaine.inrae.fr/>
+-   Habitat DB beta version release in ZENODO <https://zenodo.org/records/14726599>
+:::
+
+::: {.column .incremental width="50%"}
+![](images/clipboard-3215351918.png)
+:::
+:::::
+
+## Topics Today
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+-   
+
+    2.  What databases are being created
+:::
+:::::
+
+# Note!
+
+-   In the long run, the number of databases and/or their location should not affect the WG work
+
+# The databases
+
+::::::: columns
+::: {.column .incremental width="25%"}
+**STOCK DATABASE**
+
+-   All unified data
+-   Data from models etc.
+-   Validation from ICES
+-   Hosting: under discussion
+:::
+
+::: {.column .incremental width="25%"}
+**METRICS DATABASE** -
+
+-   Benefiting from the WGEEL DB, using similar vocab (series + sampling)
+
+-   Group and individual data
+
+-   There is already a mapping by ICES of the data structure
+:::
+
+::: {.column .incremental width="25%"}
+**HABITAT DATABASE**
+
+-   Not a db: Vocabulary
+
+-   Other databases are using this
+:::
+
+::: {.column .incremental width="25%"}
+**ELECTROFISHING DATABASE and OBSTACLES DATABASE**
+
+-   Link to Habitat database
+-   Freshwater data
+-   Schemas in DIASPARA
+:::
+:::::::
+
+# Important to remember!
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   We are producing different dictionaries
+-   These will be used at ICES (for *everything*)
+-   AREA (Habitat) is part of the vocabulary
+:::
+
+::: {.column .incremental width="50%"}
+![](images/clipboard-1245948393.png)
+:::
+:::::
+
+# Example: Catch data
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   Already in RDBES
+-   Duplicated in WG data calls
+-   No freshwater data currently
+:::
+
+::: {.column .incremental width="50%"}
+-   TAF to get the data for the assessment use
+-   Work to ensure all data are available
+-   DIASPARA habitat data to add freshwater areas
+:::
+:::::
+
+## Topics Today
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column .incremental width="60%"}
+-   
+
+    3.  Examples of data
+:::
+:::::
+
+# Group and individual metric DB
+
+-   DIASPARA WP2 data collection.
+
+-   Based on our analysis of the three DB's: a common database structure for all species is possible
+
+-   This structure will work on the same referential structure.
+
+![Excel file for the DB](images\Viktor.png "An excel template to import data to WP2")
+
+## Habitat DB
+
+-   Format : Geoparquet, Postgis schema
+-   Hydroatlas. Version 2 is coming!
+-   EU-Hydro different information but smaller coverage
+-   The idea is to have access to both
+-   Several releases (ZENODO)
+
+## Habitat: Splitting per ICES Ecoregion
+
+![All Catchments corresponding to ICES ecoregions, source of the catchments hydrosheds.](images/fig_final_allcatchments.png "ICES ecoregions and all catchments")
+
+## Example from the Baltic Sea: Subdivision level
+
+![Subdivision level WGBAST, souce hydrosheds for the continental habitat](images/WGBAST_hierarchy_subdivision.png "Baltic Sea Marine and Continental split per subdivision"){#fig-WGBAST_hierarchy_subdivision}
+
+## Examples of use
+
+![Screenshot](images/jules_screenshot.png "Dbeaver screenshot")
+
+## Examples of use
+
+![Screenshot](images/jani_screenshot.jpg "Qgis screenshot")
+
+## Topics Today
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column .incremental width="60%"}
+-   
+
+    4.  Timeline and WG's
+:::
+:::::
+
+# What does this mean for the data providers
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   Catch data in one data call only
+-   DATSU submission
+-   Automatic checks
+:::
+
+::: {.column width="50%"}
+![](images/bycexample.JPG)
+:::
+:::::
+
+# What does this mean for the working groups
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   TAF to get data from different DB's
+-   Access via API: analyse part of the data
+-   Same language for all: DB management and analysis
+-   Shiny app to display data
+-   Shorter reports?
+:::
+
+::: {.column width="50%"}
+![](images/ShinyAppExample.png)
+
+:::
+:::::
+
+
+
+# Are all data publicly available?
+
+-   Case specific
+-   See e.g., catch data
+
+# The timeline?
+
+::::: columns
+::: {.column .incremental width="50%"}
+![](images/MessyDBPaint.JPG)
+:::
+
+::: {.column width="50%"}
+-   We are ready to hand in the simplified version of the metric db. Works for salmon and eel.
+-   WGEEL as test group (because we can complain to ourselves)
+-   Data call using DATSU in 2026 (Eel) 2027 (Salmon)
+-   <https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p10/diaspara_timeline.html>
+:::
+:::::
+
+# Help needed
+
+-   Ensure river data are in a useful format
+-   Ensure habitat split is in a useful format
+-   Share your concerns with us!
+-   WGDIAD recommendation
+-   A lot of work has been done with vocab. It will be used for everything. Review needed.
+
+## Thank you!
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column .incremental width="60%"}
+![](images/clipboard-2078010992.png)
+:::
+:::::
