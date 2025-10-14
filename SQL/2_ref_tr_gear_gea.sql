@@ -109,3 +109,18 @@ UPDATE "ref".tr_gear_gea
 UPDATE "ref".tr_gear_gea
 	SET gea_icestablesource='GearType'
 	WHERE gea_id=59; --28
+UPDATE "ref".tr_gear_gea
+  SET gea_icestablesource='GearType'
+  WHERE gea_id=7;
+UPDATE "ref".tr_gear_gea
+  SET gea_icestablesource='GearType',gea_icesvalue='OTB'
+  WHERE gea_id=8;
+UPDATE "ref".tr_gear_gea
+  SET gea_icestablesource='GearType',gea_icesvalue='OTT'
+  WHERE gea_id=10;
+UPDATE "ref".tr_gear_gea
+  SET gea_icestablesource='GearType',gea_icesvalue='PTB'
+  WHERE gea_id=11;
+UPDATE "ref".tr_gear_gea
+  SET gea_icestablesource='GearType',gea_icesvalue='OTM'
+  WHERE gea_id=13;

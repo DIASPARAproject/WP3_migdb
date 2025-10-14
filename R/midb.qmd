@@ -30,6 +30,8 @@ editor:
     wrap: 72
 ---
 
+\listoftables
+
 The main structure of the database has been proposed during the online
 diaspara meeting : [database
 structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1).
@@ -2338,7 +2340,10 @@ How do you work in ICES to keep historical data ?
 :::
 ::::::
 
-Table tr_quality_qal used by the wgeel {#tbl-tr_quality_qalwgeel}
+
+::: {#tbl-tr_quality_qalwgeel}
+
+Table tr_quality_qal used by the wgeel 
 
 | qal_id | qal_level | qal_text |
 |-------------------|----------------------------|-------------------------|
@@ -2355,6 +2360,8 @@ Table tr_quality_qal used by the wgeel {#tbl-tr_quality_qalwgeel}
 | 22 | discarded_wgeel_2022 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2022 |
 | 23 | discarded_wgeel 2023 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2023 |
 | 24 | discarded_wgeel 2024 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2024 |
+:::
+
 
 ### Code to create the table
 
@@ -3431,13 +3438,13 @@ We still need to add units to the metadata table
 
 <summary>SQL code to create table `dateel.t_stock_sto` </summary>
 
-``` {.sql include="../SQL/6_dateel_t_stock_sto.sql"}
+``` {.sql include="../SQL/7_dateel_t_stock_sto.sql"}
 ```
 
 
 <summary>SQL code to insert values in table `dateel.t_stock_sto` </summary>
 
-``` {.sql include="../SQL/6_dateel_t_stock_sto_insert.sql"}
+``` {.sql include="../SQL/8_dateel_t_stock_sto_insert.sql"}
 ```
 
 
@@ -3450,18 +3457,25 @@ We still need to add units to the metadata table
 
 An analysis of the WGBAST dataset for landings shows that it could follow the structure
 of the main t_stock_sto table, here is the list of changes needed.
+
 * **gear**. The gear must be added to the dimension of the t_stock_sto table, it is one dimension
 of the table.
+
 * **Time period**. The data are not always reported by YEAR, unlike in eel or WGNAS. Other types of time
 reporting e.g. Month, Half of year, Quarter need to be added to the t_stock_sto table, since this table
 is inherited in postgres and aready has one more column (to store some extra dimension)
 is WGNAS when compared to WGEEL, we need to do the same and allow for three additional columns,
  one for gear, one for time period type and one for time period.
 * The metadata will allow by a simple join to get back to F_type (stored in column met_type). It should also for a simple division according to the destination column, allowing to separate dead fish from the living ones.
+
 * **Effort, Numbers and Weights**. The database will be in long format while in the current structure, Effort, Weights and Numbers are reported in separate columns.A simple query will bring back the original format.
+
 * Effort is reported in geardays only for driftnet, longline and trapnet fisheries. 
+
 * TODO CHECK WITH MARIA about the unit
+
 * TODO Check ALV ALL in gears
+
 * TODO Check 138 rows without f_type, can these all be attributed to COMM
 
 
