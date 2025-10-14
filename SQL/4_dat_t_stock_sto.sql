@@ -118,6 +118,8 @@ references table tr_missvalueqal_mis, should be null if value is provided (can''
 COMMENT ON COLUMN dat.t_stock_sto.sto_dta_code IS 'Access to data, default is ''Public''';
 COMMENT ON COLUMN dat.t_stock_sto.sto_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
+COMMENT ON COLUMN dat.t_stock_sto.sto_spe_code IS 'Code of the species';
+COMMENT ON COLUMN dat.t_stock_sto.sto_ver_code IS 'Code of the version';
 
 ALTER TABLE dat.t_stock_sto OWNER TO diaspara_admin;
 GRANT SELECT ON dat.t_stock_sto  TO diaspara_read;

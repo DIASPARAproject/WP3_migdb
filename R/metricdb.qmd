@@ -843,6 +843,18 @@ trn_minvalue,
 trn_maxvalue
  FROM tr_traitnumeric_trn_temp") #18
 
+
+ dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitnumeric_trn (tra_id,tra_code,tra_description,tra_wkg_code,tra_spe_code,tra_typemetric,tra_qualitativeornumeric,trn_uni_code,trn_minvalue,trn_maxvalue)
+	VALUES (27,'Eye_diam_vert_mm','Eye diameter (vertical) in mm','WGEEL','ANG','Individual','Numeric','mm',1,15);
+INSERT INTO refeel.tr_traitnumeric_trn (tra_id,tra_code,tra_description,tra_wkg_code,tra_spe_code,tra_typemetric,tra_qualitativeornumeric,trn_uni_code,trn_minvalue,trn_maxvalue)
+	VALUES (28,'Eye_diam_horiz_mm','Eye diameter (horizontal) in mm','WGEEL','ANG','Individual','Numeric','mm',1,15);
+") #18
+
+
+ dbExecute(con_diaspara_admin,  "UPDATE refeel.tr_traitnumeric_trn
+	SET tra_code='Eye_diam_mean_mm'
+	WHERE tra_id=4;")
+
 ```
 
 
