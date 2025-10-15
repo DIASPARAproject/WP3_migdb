@@ -1239,7 +1239,7 @@ model.
 
 
 tr_version_ver <- data.frame(
-  ver_code = paste0("SAL-",2020:2024,"-1"),
+  ver_code = paste0("WGNAS-",2020:2024,"-1"),
   ver_year = 2020:2024,
   ver_spe_code = "SAL",
   ver_wkg_code = "WGNAS",
@@ -1254,8 +1254,21 @@ DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver,
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
 DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
+tr_version_ver <- data.frame(
+  ver_code = paste0("WGBAST-",2024:2025,"-1"),
+  ver_year = 2024:2025,
+  ver_spe_code = NA,
+  ver_wkg_code = "WGBAST",
+  ver_datacalldoi=c("https://doi.org/10.17895/ices.pub.25071005.v3","https://doi.org/10.17895/ices.pub.28218932.v2"), 
+  ver_stockkeylabel =c("sal.27.22–31"), 
+  # TODO FIND other DOI (mail sent to ICES)
+  ver_version=c(1,1), # TODO WGNAS check that there is just one version per year
+  ver_description=c("Joint ICES Fisheries Data call for landings, discards, biological and effort data and other supporting information in support of the ICES fisheries advice in 2024.","Combined ICES Fisheries Data call for landings, discards, biological and effort data and other supporting information in support of the ICES fisheries advice in 2025.")) # TODO WGNAS provide model description
 
-# TODO eel and wgbast
+DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
+                  overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 #"ele.2737.nea","sal.27.22–31",
 
 ```
@@ -2360,6 +2373,7 @@ Table tr_quality_qal used by the wgeel
 | 22 | discarded_wgeel_2022 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2022 |
 | 23 | discarded_wgeel 2023 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2023 |
 | 24 | discarded_wgeel 2024 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2024 |
+
 :::
 
 
@@ -2530,7 +2544,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_sex_sex;") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
-## Gear (tr_gear_gea)
+## Gear (ref.tr_gear_gea)
 
 The gears dictionnary is set by FAO and used in EU 
 [link](https://www.europarl.europa.eu/RegData/etudes/STUD/2024/759320/IPOL_STU(2024)759320_EN.pdf). There is a gear dictionary in ICES but it's used to describe the type of
@@ -2937,8 +2951,69 @@ dev.off()
 ICES,
 GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
+## Time period (ref.tr_timeperiod_tip)
+
+WGBAST reports data per month, quarter, or half year.
+There is a vocabulary for quarters, couldn't find a vocab for half of year.
 
 
+<details>
+
+<summary>SQL code to create table `tr_timeperiod_tip`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_timeperiod_tip}
+```
+
+</details>
+
+
+```{r import_tr_timeperiod_tip}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import timeperiod codes
+
+quarter <- icesVocab::getCodeList('TS_Quarter')
+#I don't want this I want a code
+tip <- data.frame(tip_id=1:4, 
+tip_code = c("MON","HYR","QTR","YR"), 
+tip_description = c("Monthly data, from 1 to 12", "Half of year, either from 1 to 6 (included)=1, or from month 7 to 12 (included)=2", "Quarterly data from 1 to 4", "Year value of timeperiod should be NULL and year column filled"), 
+ tip_icesvalue = NA,
+ tip_icesguid = NA,
+ tip_icestablesource =NA)
+
+  rename("tip_icesguid"="Guid",  "tip_code" = "Key", "tip_description" = "Description") |> 
+  select ( tip_code, tip_icesguid, tip_description)  |>
+  mutate(tip_icestablesource = "TS_Quarter",
+         tip_id = 1:4) |>
+  select(tip_id, tip_code, tip_description, tip_icesvalue, tip_icesguid, tip_icestablesource)
+tip$tip_icesguid <- as.character(tip$tip_icesguid)
+DBI::dbWriteTable(con_diaspara_admin, "temp_tipr", tip, overwrite = TRUE)
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_timeperiod_tip
+(tip_id, tip_code, tip_description, tip_icesvalue, tip_icesguid, tip_icestablesource)
+SELECT tip_id, tip_code, tip_description, tip_icesvalue, tip_icesguid::uuid, tip_icestablesource
+FROM temp_tipr")# 4
+DBI::dbExecute(con_diaspara_admin, "DROP table temp_tipr")
+
+```
+
+```{r}
+#| label: tbl-tr_timeperiod_tip
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Table of gears
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_timeperiod_tip;") %>% 
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+# Metadata
 
 ## Metadata (dat.t_metadata_met)
 
@@ -3450,7 +3525,7 @@ We still need to add units to the metadata table
 
 # WGBAST
 
-<summary>SQL code to insert values in table `dateel.t_stock_sto` </summary>
+<summary>SQL code to create table `datbast.t_metadata_met` </summary>
 
 ``` {.sql include="../SQL/9_datbast_t_metadata_met.sql"}
 ```
@@ -3472,7 +3547,7 @@ is WGNAS when compared to WGEEL, we need to do the same and allow for three addi
 
 * Effort is reported in geardays only for driftnet, longline and trapnet fisheries. 
 
-* TODO CHECK WITH MARIA about the unit
+* TODO CHECK WITH maria about the unit (effort gearxdays)
 
 * TODO Check ALV ALL in gears
 
@@ -3515,7 +3590,7 @@ table(df_all$gear)
 
 # driftnet=GND, longline=LLD, trapnet=FYK, angling=AN, other=MIS, set gillnet (anchored, stationary)=GNS
 
-df_all$gearICES <- case_when(df_all$gear == "AN" ~ "LHP" # CHECK THIS Handlines and hand-operated pole-and-lines
+df_all$gearICES <- case_when(df_all$gear == "AN" ~ "LHP", # CHECK THIS Handlines and hand-operated pole-and-lines
                              df_all$gear == "LLD" ~ "LLD",
                              df_all$gear == "GND" ~ "GND",
                              df_all$gear == "MIS" ~ "MIS",
@@ -3573,9 +3648,9 @@ table(df_all$f_type)
 
 
 
-res  <-  dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_metadata_met;")
-clipr::write_clip(colnames(res))
-head(t_metadata_met)
+# t_metadata_met  <-  dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_metadata_met;")
+# clipr::write_clip(colnames(t_metadata_met))
+# head(t_metadata_met)
 
 typ <- outer(c("N","W","E"), paste0("_", unique(df_all$f_type[!is.na(df_all$f_type)])), FUN = "paste0")
 dim(typ) <- NULL
@@ -3583,6 +3658,7 @@ dim(typ) <- NULL
 #"SEAL_W"  "BMS_W"   "BROOD_W" "COMM_E"  "ALV_E"   "RECR_E"  "DISC_E"  "SEAL_E"  "BMS_E"   "BROOD_E"
 typ <- outer(typ, c("_SAL", "_TRT"),  FUN = "paste0")
 dim(typ) <- NULL
+
 #get the type back
 met_type <- substring(typ, 3,sapply(gregexpr("_",typ), function(X)X[2])-1) #COMM COMM, ...., 
 uni_code <- substring(typ, 1,1)
@@ -3590,6 +3666,8 @@ uni_code <- case_when(uni_code == "E" ~ "nd",
                       uni_code == "W" ~ "kg",
                       uni_code == "N" ~ "nr") #see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#unit-tr_units_uni
 met_spe_code <- substring(typ, sapply(gregexpr("_",typ), function(X)X[2])+1,nchar(typ))
+
+
 # vector with SAL ... then TRT
 t_metadata_met  <- data.frame(
     met_var = typ,
@@ -3634,74 +3712,46 @@ t_metadata_met  <- data.frame(
        met_type == "SEAL" ~ "Removed",
        met_type == "BMS" ~ "Discarded",
        .default = NA),
-met_type = met_type, # historical code in the db corresponds to f_type
 met_definition = "TODO",
 met_deprecated = NA 
 # not integrating any of the deprecated data
 )
+DBI::dbWriteTable(con_diaspara_admin, "temp_wgbast_t_metadata_met", t_metadata_met, overwrite = TRUE)
 
 
 
-
-species met_spe_code sto_spe_code
-country              sto_cou_code
-year                 sto_year
-time_period          => decide either different tables or a different structure of t_stock_sto
-tp_type
-sub_div              sto_are_code (decide what to do with continental landings)
-f_type               WHy ARE SOME TYPES LEFT BLANK (SE FI 200 300)
-gear                 
-effort 
-weight   
-w_type     
-numb       
-n_type     
-river      
-notes     
-w_ci      
-n_ci       
-gear2          Why is this different from gear ?
-subdiv_ic  
-hyr        
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
+SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met")# 4
 
 
+```
+
+## datbast.t_stock_sto
+
+
+<summary>SQL code to create table `datbast.t_stock_sto` </summary>
+
+``` {.sql include="../SQL/10_datbast_t_stock_sto.sql"}
+```
+
+
+<summary>SQL code to insert values in table `dateel.t_stock_sto` </summary>
+
+```{r datbast.t_stock_sto}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to t_stock_sto for wgbast.
 
 
 
+```
 
 
-# unique(metadata$metric)
-# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
-View(typ)
 
-
-res  <-  dbWriteTable(con_diaspara_admin, "t_metadata_met_wgeel_temp", 
-                    t_metadata_met, overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO dateel.t_metadata_met 
-SELECT 
- met_var,
- met_spe_code,
- met_wkg_code,
- met_ver_code,
- met_oty_code, 
- met_nim_code,
- met_dim::INTEGER[], 
- met_dimname::TEXT[], 
- met_modelstage, 
- met_type,
- met_location, 
- met_fishery, 
- met_mtr_code, 
- met_des_code, 
- met_uni_code,
- met_cat_code, 
- met_definition, 
- met_deprecated
-FROM t_metadata_met_wgeel_temp") # 22
-
-dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_met_wgeel_temp CASCADE;")
-
-
+``` {.sql include="../SQL/11_datbast_t_stock_sto_insert.sql"}
 ```
 
 

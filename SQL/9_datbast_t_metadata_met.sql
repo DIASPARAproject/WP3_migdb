@@ -5,11 +5,11 @@ CREATE TABLE datbast.t_metadata_met(
  CONSTRAINT fk_met_spe_code FOREIGN KEY (met_spe_code)
   REFERENCES ref.tr_species_spe(spe_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
- CONSTRAINT ck_met_spe_code CHECK (met_spe_code='ANG'),
+ CONSTRAINT ck_met_spe_code CHECK (met_spe_code='SAL' OR met_spe_code='TRT'),
  CONSTRAINT fk_met_wkg_code FOREIGN KEY (met_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT ck_met_wkg_code CHECK (met_wkg_code='WGEEL'),
+  CONSTRAINT ck_met_wkg_code CHECK (met_wkg_code='WGBAST'),
   CONSTRAINT fk_met_ver_code FOREIGN KEY (met_ver_code)
   REFERENCES refeel.tr_version_ver(ver_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
