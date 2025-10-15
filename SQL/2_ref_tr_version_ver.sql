@@ -30,7 +30,7 @@ IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_year 
 IS 'Year of assessement.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_spe_code 
-IS 'Species code e.g. ''ele'' references tr_species_spe.';
+IS 'Species code e.g. ''ANG'' or ''SAL,TRT'' the reference name should be in tr_species_spe, comma separated';
 COMMENT ON COLUMN ref.tr_version_ver.ver_wkg_code 
 IS 'Code of the working group, one of WGBAST, WGEEL, WGNAS, WKTRUTTA';
 --COMMENT ON COLUMN ref.tr_version_ver.ver_stockkey 
@@ -52,6 +52,9 @@ GRANT ALL ON ref.tr_version_ver TO diaspara_admin;
 GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
 
 
--- we need to allow several species separated by a comma
+-- we need to allow several species separated by a comma (several species for a working group)
+-- the 
 ALTER TABLE ref.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
+ALTER TABLE refnas.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
+ALTER TABLE refeel.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
 ALTER TABLE ref.tr_version_ver ALTER COLUMN ver_spe_code type TEXT;
