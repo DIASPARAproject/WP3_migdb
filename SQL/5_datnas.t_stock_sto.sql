@@ -69,7 +69,7 @@ COMMENT ON COLUMN datnas.t_stock_sto.sto_id IS 'Integer serial identifying. Only
 when looking at the pair, sto_id, sto_wkg_code';
 COMMENT ON COLUMN datnas.t_stock_sto.sto_met_var IS 'Name of the variable in the database, this was previously named
 var_mod in the salmoglob database and eel_typ_id in the wgeel database, there is a unicity constraint based
-on the pair of column sto_spe_code, sto_met_code';
+on the pair of column sto_spe_code, sto_met_var';
 -- note if we end up with a single table, then the constraint will  have to be set
 -- on sto_wkg_code, sto_spe_code and sto_met_code.
 COMMENT ON COLUMN datnas.t_stock_sto.sto_year IS 'Year';

@@ -7,11 +7,14 @@ DROP TABLE IF EXISTS datbast.t_stock_sto;
 CREATE TABLE datbast.t_stock_sto (
     sto_gear_code text,
   CONSTRAINT fk_sto_gear_code
-    FOREIGN KEY (sto_gear _code) REFERENCES  ref.tr_gear_gea(gea_code)
+    FOREIGN KEY (sto_gear_code) REFERENCES  ref.tr_gear_gea(gea_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,  
-    sto_tp_type 
+    sto_tp_type TEXT 
+    FOREIGN KEY (sto_tp_type) REFERENCES  ref.tr_timeperiod_tip(tip_code)
+    ON UPDATE CASCADE ON DELETE RESTRICT,  
+    sto_timeperiod integer,
   CONSTRAINT fk_sto_met_var_met_spe_code
-    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES dateel.t_metadata_met(met_var,met_spe_code) 
+    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES datbast.t_metadata_met(met_var,met_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_are_code FOREIGN KEY (sto_are_code)
     REFERENCES refeel.tr_area_are (are_code) 
@@ -48,10 +51,10 @@ inherits (dat.t_stock_sto) ;
 
 -- This table will always be for EEL (ang) and WGEEL
 
-ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT 'ANG';
-ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='ANG');
-ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGEEL';
-ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGEEL');
+ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT NULL;
+ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='SAL' OR sto_spe_code='TRT');
+ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGBAST';
+ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGBAST');
 
 
 
@@ -61,42 +64,41 @@ GRANT ALL ON TABLE datbast.t_stock_sto TO diaspara_read;
 
 
 
-COMMENT ON TABLE dateel.t_stock_sto IS 
-'Table including the stock data in schema dateel.... This table feeds the dat.t_stock_sto table by inheritance. It corresponds
-to the t_eelstock_eel table in the original WGEEL database.';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_id IS 'Integer serial identifying. Only unique in this table
+COMMENT ON TABLE datbast.t_stock_sto IS 
+'Table including the stock data in schema datbast.... This table feeds the dat.t_stock_sto table by inheritance. It corresponds
+to the catch excel table in the original WGBAST database.';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_id IS 'Integer serial identifying. Only unique in this table
 when looking at the pair, sto_id, sto_wkg_code';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_met_var IS 'Name of the variable in the database, this was previously named
-eel_typ_name in the eel database, there is a unicity constraint based
-on the pair of column sto_spe_code, sto_met_code';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_met_var IS 'Name of the variable in the database, this is a mixture for f_type, value type (effort E, Number N, Weight W), and species e.g. COMM_N_TRT, see databast.t_metadata_met.met_var, there is a unicity constraint based
+on the pair of column sto_spe_code, sto_met_var';
 -- note if we end up with a single table, then the constraint will  have to be set
 -- on sto_wkg_code, sto_spe_code and sto_met_code.
-COMMENT ON COLUMN dateel.t_stock_sto.sto_year IS 'Year';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_value IS 'Value if null then provide a value in sto_mis_code to explain why not provided';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_are_code IS 'Code of the area, areas are geographical sector most often corresponding to stock units, 
+COMMENT ON COLUMN datbast.t_stock_sto.sto_year IS 'Year';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_value IS 'Value if null then provide a value in sto_mis_code to explain why not provided';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_are_code IS 'Code of the area, areas are geographical sector most often corresponding to stock units, 
 see tr_area_are.';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_cou_code IS 'Code of the country see tr_country_cou, not null';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_lfs_code IS 'Code of the lifestage see tr_lifestage_lfs, Not null, the constraint is set on 
+COMMENT ON COLUMN datbast.t_stock_sto.sto_cou_code IS 'Code of the country see tr_country_cou, not null';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_lfs_code IS 'Code of the lifestage see tr_lifestage_lfs, Not null, the constraint is set on 
 both lfs_code, and lfs_spe_code (as two species can have the same lifestage code.';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_hty_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), 
+COMMENT ON COLUMN datbast.t_stock_sto.sto_hty_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), 
 T (Transitional water), FW (Freshwater), null accepted';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_fia_code IS 'For marine area, code of the ICES area (table tr_fishingarea_fia), Null accepted';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_qal_code IS 'Code of data quality (1 good quality, 2 modified by working group, 
+COMMENT ON COLUMN datbast.t_stock_sto.sto_fia_code IS 'For marine area, code of the ICES area (table tr_fishingarea_fia), Null accepted';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_qal_code IS 'Code of data quality (1 good quality, 2 modified by working group, 
 3 bad quality (not used), 4 dubious, 18, 19 ... historical data not used. 
 Not null, Foreign key set to tr_quality_qal';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_qal_comment IS 'Comment for the quality, for instance explaining why a data is qualified as good or dubious.';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_comment IS 'Comment on the value';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_datelastupdate IS 'Last update of the data';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_mis_code IS 'When no value are given in sto_value, justify why with, NC (not collected), NP (Not pertinent), NR (Not reported),
+COMMENT ON COLUMN datbast.t_stock_sto.sto_qal_comment IS 'Comment for the quality, for instance explaining why a data is qualified as good or dubious.';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_comment IS 'Comment on the value';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_datelastupdate IS 'Last update of the data';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_mis_code IS 'When no value are given in sto_value, justify why with, NC (not collected), NP (Not pertinent), NR (Not reported),
 references table tr_missvalueqal_mis, should be null if value is provided (can''t have both).';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_dta_code IS 'Access to data, default is ''Public''';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_wkg_code IS 'Code of the working group, one of
+COMMENT ON COLUMN datbast.t_stock_sto.sto_dta_code IS 'Access to data, default is ''Public''';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_wkg_code IS 'Code of the working group, one of
 WGBAST, WGEEL, WGNAS, WKTRUTTA';
-COMMENT ON COLUMN dateel.t_stock_sto.sto_ver_code IS 'Version code, references refeel. tr_version_ver, code like WGEEL-2025-1';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_ver_code IS 'Version code, references refeel. tr_version_ver, code like WGEEL-2025-1';
 
 -- trigger on date
-DROP FUNCTION IF EXISTS dateel.update_sto_datelastupdate CASCADE;
-CREATE OR REPLACE FUNCTION dateel.update_sto_datelastupdate()
+DROP FUNCTION IF EXISTS datbast.update_sto_datelastupdate CASCADE;
+CREATE OR REPLACE FUNCTION datbast.update_sto_datelastupdate()
  RETURNS trigger
  LANGUAGE plpgsql
 AS $function$
@@ -106,7 +108,7 @@ BEGIN
 END;
 $function$
 ;
-ALTER FUNCTION dateel.update_sto_datelastupdate() OWNER TO diaspara_admin;
+ALTER FUNCTION datbast.update_sto_datelastupdate() OWNER TO diaspara_admin;
 
 
 CREATE TRIGGER update_sto_datelastupdate BEFORE
@@ -114,7 +116,7 @@ INSERT
     OR
 UPDATE
     ON
-    dateel.t_stock_sto FOR EACH ROW EXECUTE FUNCTION dateel.update_sto_datelastupdate();
+    datbast.t_stock_sto FOR EACH ROW EXECUTE FUNCTION datbast.update_sto_datelastupdate();
 
 
 
