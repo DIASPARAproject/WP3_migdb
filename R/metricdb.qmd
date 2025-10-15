@@ -1346,24 +1346,21 @@ wgeel <- ver[grepl("wgeel", ver$dts_datasource), "dts_datasource"]
 wgeelyear <- as.integer(lapply(strsplit(wgeel,"_"), function(X)X[2]))
 tr_version_ver <- data.frame(
 ver_code = paste0(rep("ANG-", 11),c(wgeelyear, dcyear, 2025),c("-1","-2",rep("-1", 9))),
-ver_year = c(wgeelyear, dcyear, 2025),
+ver_year = c(wgeelyear, dcyear, 2025,2025),
 ver_spe_code = "ANG",
-ver_datacalldoi=c(rep(NA, 9), 
+ver_datacalldoi=c(rep(NA, 10), 
 "https://doi.org/10.17895/ices.pub.25816738.v2",
-"https://doi.org/10.17895/ices.pub.25816738.v2"), 
-ver_stockkeylabel =c("ele"), # sugested by Hilaire. 
-# TODO FIND other DOI (mail sent to ICES)
-ver_version=c(1,2,rep(1,9)), # TODO WGNAS check that there is just one version per year
-ver_description=ver$dts_description) # TODO WGNAS provide model description
+"https://doi.org/10.17895/ices.pub.25816738.v2",
+"https://doi.org/10.17895/ices.pub.29254589"), 
+ver_stockkeylabel =c("ele.2737.nea"), 
+ver_version=c(1,2,rep(1,19),2), 
+ver_description=ver$dts_description) # 
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
 overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_version_ver(ver_code,ver_year,ver_spe_code, ver_datacalldoi,ver_stockkeylabel,ver_version, ver_description) SELECT ver_code,ver_year,ver_spe_code, ver_datacalldoi,ver_stockkeylabel,ver_version, ver_descriptio FROM temp_tr_version_ver;") # 5
  DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
-
-# TODO eel and wgbast
-#"ele.2737.nea","sal.27.22–31",
 
 ```
 

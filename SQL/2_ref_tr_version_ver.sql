@@ -51,3 +51,7 @@ IS 'Description of the data call / version.';
 GRANT ALL ON ref.tr_version_ver TO diaspara_admin;
 GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
 
+
+-- we need to allow several species separated by a comma
+ALTER TABLE ref.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
+ALTER TABLE ref.tr_version_ver ALTER COLUMN ver_spe_code type TEXT;
