@@ -6,7 +6,7 @@ CREATE TABLE ref.tr_area_are (
    are_lev_code TEXT,
    are_wkg_code TEXT,
    are_ismarine BOOLEAN,
-   are_rivername TEXT,
+   are_name TEXT,
    geom_polygon geometry(MULTIPOLYGON, 4326),
    geom_line geometry(MULTILINESTRING, 4326),
   CONSTRAINT fk_are_are_id FOREIGN KEY (are_are_id) 
@@ -24,6 +24,9 @@ GRANT SELECT ON ref.tr_area_are TO diaspara_read;
 
 COMMENT ON TABLE ref.tr_area_are IS 'Table corresponding to different geographic levels, from stock 
 to river section.');
+
+-- we need to rename the column
+ALTER TABLE "ref".tr_area_are RENAME COLUMN are_rivername TO are_name;
 
 
 

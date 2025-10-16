@@ -136,3 +136,11 @@ UPDATE
     ON
     datawg.t_migstock_mig FOR EACH ROW EXECUTE FUNCTION checkemu_whole_country();
 */
+
+
+SELECT DISTINCT are_lev_code FROM refbast.tr_area_are;
+SELECT * FROM refbast.tr_area_are WHERE are_lev_code = 'Assessment_unit';
+
+SELECT DISTINCT are_lev_code FROM refbast.tr_area_are;
+
+SELECT * FROM refbast.tr_area_are WHERE are_ismarine ;
