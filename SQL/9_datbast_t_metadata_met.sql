@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS datbast.t_metadata_met;
+DROP TABLE IF EXISTS datbast.t_metadata_met CASCADE;
 
 CREATE TABLE datbast.t_metadata_met(
  CONSTRAINT t_metadata_met_pkey PRIMARY KEY(met_var, met_spe_code),
@@ -11,7 +11,7 @@ CREATE TABLE datbast.t_metadata_met(
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT ck_met_wkg_code CHECK (met_wkg_code='WGBAST'),
   CONSTRAINT fk_met_ver_code FOREIGN KEY (met_ver_code)
-  REFERENCES refeel.tr_version_ver(ver_code) 
+  REFERENCES refbast.tr_version_ver(ver_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_met_oty_code FOREIGN KEY (met_oty_code) 
   REFERENCES ref.tr_objecttype_oty (oty_code) 
@@ -33,7 +33,6 @@ CREATE TABLE datbast.t_metadata_met(
   ON UPDATE CASCADE ON DELETE RESTRICT
 )
 INHERITS (dat.t_metadata_met);
-
 
 
 --  COMMENTS FOR WGEEL

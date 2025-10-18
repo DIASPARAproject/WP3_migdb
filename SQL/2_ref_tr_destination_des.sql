@@ -17,7 +17,8 @@ INSERT INTO ref.tr_destination_des VALUES (
 'Discarded', 'Discards');
 INSERT INTO ref.tr_destination_des VALUES (
 'Released', 'Released alive');
-
+INSERT INTO ref.tr_destination_des VALUES (
+'Released ', 'Released alive');
 
 GRANT ALL ON ref.tr_destination_des TO diaspara_admin;
 GRANT SELECT ON ref.tr_destination_des TO diaspara_read;

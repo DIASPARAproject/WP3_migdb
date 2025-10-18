@@ -1251,25 +1251,8 @@ tr_version_ver <- data.frame(
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
                   overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver(ver_code, ver_year, ver_spe_code, ver_stockkeylabel, ver_datacalldoi, ver_version, ver_description, ver_wkg_code) SELECT ver_code, ver_year, ver_spe_code, ver_stockkeylabel, ver_datacalldoi, ver_version::integer, ver_description, ver_wkg_code FROM temp_tr_version_ver;") # 5
 DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
-
-tr_version_ver <- data.frame(
-  ver_code = paste0("WGBAST-",2024:2025,"-1"),
-  ver_year = 2024:2025,
-  ver_spe_code = NA,
-  ver_wkg_code = "WGBAST",
-  ver_datacalldoi=c("https://doi.org/10.17895/ices.pub.25071005.v3","https://doi.org/10.17895/ices.pub.28218932.v2"), 
-  ver_stockkeylabel =c("sal.27.22–31"), 
-  # TODO FIND other DOI (mail sent to ICES)
-  ver_version=c(1,1), # TODO WGNAS check that there is just one version per year
-  ver_description=c("Joint ICES Fisheries Data call for landings, discards, biological and effort data and other supporting information in support of the ICES fisheries advice in 2024.","Combined ICES Fisheries Data call for landings, discards, biological and effort data and other supporting information in support of the ICES fisheries advice in 2025.")) # TODO WGNAS provide model description
-
-DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
-                  overwrite = TRUE)
-dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver SELECT * FROM temp_tr_version_ver;") # 5
-DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
-#"ele.2737.nea","sal.27.22–31",
 
 ```
 
@@ -1525,6 +1508,12 @@ dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
   'Lagoons',
   'Shallow body of water seperated from a larger body of water by a narrow landform'
+  );")
+
+dbExecute(con_diaspara_admin,
+          "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
+  'Subdivision Grouping',
+  'Groups of subdivision from ICES used in the Baltic'
   );")
 
 
@@ -3553,6 +3542,61 @@ is WGNAS when compared to WGEEL, we need to do the same and allow for three addi
 
 * TODO Check 138 rows without f_type, can these all be attributed to COMM
 
+## Create referential for versions WGBAST
+
+<details>
+
+<summary>Creating the referential for WGBAST</summary>
+
+``` {.sql include="../SQL/3_refbast_tr_version_ver.sql"}
+```
+
+</details>
+
+
+```{r }
+#| label: refbast.tr_version_ver_insert
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to insert values into the refbast.tr_version_ver table
+
+
+tr_version_ver <- data.frame(
+  ver_code = paste0("WGNAS-",2020:2024,"-1"),
+  ver_year = 2020:2024,
+  ver_spe_code = "SAL",
+  ver_wkg_code = "WGNAS",
+  ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
+  ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
+  # TODO FIND other DOI (mail sent to ICES)
+  ver_version=c(1,1,1,1,1), # TODO WGNAS check that there is just one version per year
+  ver_description=c(NA,NA,NA,NA,NA)) # TODO WGNAS provide model description
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
+                  overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_version_ver(ver_code, ver_year, ver_spe_code, ver_stockkeylabel, ver_datacalldoi, ver_version, ver_description, ver_wkg_code) SELECT ver_code, ver_year, ver_spe_code, ver_stockkeylabel, ver_datacalldoi, ver_version::integer, ver_description, ver_wkg_code FROM temp_tr_version_ver;") # 5
+DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+
+tr_version_ver <- data.frame(
+  ver_code = paste0("WGBAST-",2024:2025,"-1"),
+  ver_year = 2024:2025,
+  ver_spe_code = NA,
+  ver_wkg_code = "WGBAST",
+  ver_datacalldoi=c("https://doi.org/10.17895/ices.pub.25071005.v3","https://doi.org/10.17895/ices.pub.28218932.v2"), 
+  ver_stockkeylabel =c("sal.27.22–31"), 
+  # TODO FIND other DOI (mail sent to ICES)
+  ver_version=c(1,1), # TODO WGNAS check that there is just one version per year
+  ver_description=c("Joint ICES Fisheries Data call for landings, discards, biological and effort data and other supporting information in support of the ICES fisheries advice in 2024.","Combined ICES Fisheries Data call for landings, discards, biological and effort data and other supporting information in support of the ICES fisheries advice in 2025.")) # TODO WGNAS provide model description
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
+                  overwrite = TRUE)
+dbExecute(con_diaspara_admin, "INSERT INTO refbast.tr_version_ver(ver_code, ver_year, ver_spe_code, ver_stockkeylabel, ver_datacalldoi, ver_version, ver_description, ver_wkg_code) SELECT ver_code, ver_year, ver_spe_code, ver_stockkeylabel, ver_datacalldoi, ver_version::integer, ver_description, ver_wkg_code FROM temp_tr_version_ver;") # 2
+DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+
+```
 
 
 
@@ -3577,14 +3621,15 @@ df_all$subdiv_ic[1] <- NA
 df_all <- df_all |>
   mutate(tp_type=ifelse(tp_type=="QRT", "QTR", tp_type), 
          gear=ifelse(gear=="GNS", "MIS", gear), # Tapani comment
-         w_type = ifelse(w_type %in% c('EXP','GST'), 'EXV', w_type))
+         w_type = ifelse(w_type %in% c('EXP','GST'), 'EXV', w_type),
+         n_type = ifelse(n_type %in% c('EXP','GST'), 'EXV', n_type))
        
          
 # Gears
 
-unique(df_all$gear)
+#unique(df_all$gear)
 #NA    "AN"  "LLD" "GND" "MIS" "FYK" "All" "ALV"
-table(df_all$gear)
+#table(df_all$gear)
 #All  ALV   AN  FYK  GND  LLD  MIS 
 #  93   29 1597 3432 1013 1541 9122 
 
@@ -3604,11 +3649,11 @@ df_all$gearICES <- case_when(df_all$gear == "AN" ~ "LHP", # CHECK THIS Handlines
 # 
 # commercial=COMM, recreational=RECR, discard=DISC, sealdamage=SEAL, unreported=UNRP, ALV=released alive back in water, BMS= Below minimum landings size, BROOD=broodstock fishery
 
-table(df_all$f_type, useNA = "ifany")
+#table(df_all$f_type, useNA = "ifany")
 #  ALV   BMS BROOD  COMM  DISC  RECR  SEAL <NA> 
 #  537    77    39 12920   334  2473   980 368
 #  
-table(df_all$w_type)
+#table(df_all$w_type)
 # there are missing values for f_type, correspond to SAL FI/SE, 1972-1999
 # then SAL 2000 FI/SE, 24-31 logbooks weights
 # then SAL 2001 SE, 2000
@@ -3619,12 +3664,16 @@ table(df_all$w_type)
 # => I think all those lines are COMM, this would be consistent with f_type in scripts
 # where COMM is never used (the default)
 # 
-print(df_all[is.na(df_all$f_type), ], n ="Inf")
+#print(df_all[is.na(df_all$f_type), ], n ="Inf")
 
-# ????? TODO CHECK THIS ???????
-# # MAYBE WE NEED AND HISTORICAL RECR + COMM ?
-df_all <- df_all |>
-  mutate(tp_type=ifelse(is.na(f_type), "COMM", f_type))
+df_all <- 
+  bind_rows(
+  df_all |>
+  filter(is.na(f_type)) |>
+  mutate(tp_type=ifelse(fishery == "F", "REC", "COMM")),
+    df_all |>
+  filter(!is.na(f_type)))
+
 
 #  EST   EXP   EXT   EXV   GST   LOG 
 #  893    28   495  1218    30 14188 
@@ -3632,19 +3681,24 @@ df_all <- df_all |>
 #  EST   EXP   EXT   EXV   GST   LOG 
 #  944    28   335  1295     9 14117 
   
-table(df_all$n_type, df_all$w_type, useNA = "ifany")
-  #       ALV   BMS BROOD  COMM  DISC  RECR  SEAL
-  # EST    61     1    21   106     0   678    24
-  # EXP     0     0     0     0     0    28     0
-  # EXT     1     0     0   384     0    19    91
-  # EXV   359     0     0    15    14   828     2
-  # GST     0     0     0     0     0    30     0
-  # LOG    23    54    18 12103   320   811   836
+# table(df_all$n_type, df_all$w_type, useNA = "ifany")
+  #       EST   EXT   EXV   LOG  <NA>
+  # EST    679     2    26   181    56
+  # EXP      0     0    28     0     0
+  # EXT      2   256     0    75     2
+  # EXV     51     0  1210     0    34
+  # GST      1     0     8     0     0
+  # LOG    106   237     0 13704    70
+  # <NA>    54     0     4   228   714
   
 # these are not used (f_type, w_type) => ignored or add to comments.
+# 
+ table(df_all$f_type, df_all$w_type, useNA = "ifany") 
 
 
-table(df_all$f_type)
+#table(df_all$f_type)
+
+saveRDS(df_all, file="data/wgbast_landings_modified.Rds")
 
 
 
@@ -3656,22 +3710,28 @@ typ <- outer(c("N","W","E"), paste0("_", unique(df_all$f_type[!is.na(df_all$f_ty
 dim(typ) <- NULL
 #"COMM_N"  "ALV_N"   "RECR_N"  "DISC_N"  "SEAL_N"  "BMS_N"   "BROOD_N" "COMM_W"  "ALV_W"   "RECR_W"  "DISC_W" 
 #"SEAL_W"  "BMS_W"   "BROOD_W" "COMM_E"  "ALV_E"   "RECR_E"  "DISC_E"  "SEAL_E"  "BMS_E"   "BROOD_E"
-typ <- outer(typ, c("_SAL", "_TRT"),  FUN = "paste0")
-dim(typ) <- NULL
+#typ <- outer(typ, c("_SAL", "_TRT"),  FUN = "paste0")
+#dim(typ) <- NULL
+
 
 #get the type back
-met_type <- substring(typ, 3,sapply(gregexpr("_",typ), function(X)X[2])-1) #COMM COMM, ...., 
+met_type <- substring(typ, 3,nchar(typ)) #COMM COMM, ...., 
 uni_code <- substring(typ, 1,1)
 uni_code <- case_when(uni_code == "E" ~ "nd", 
                       uni_code == "W" ~ "kg",
                       uni_code == "N" ~ "nr") #see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#unit-tr_units_uni
-met_spe_code <- substring(typ, sapply(gregexpr("_",typ), function(X)X[2])+1,nchar(typ))
+
 
 
 # vector with SAL ... then TRT
-t_metadata_met  <- data.frame(
+# The column species is repeated because the foreign key for t_stock_sto is on both TRT and SAL,
+# so for instance we'll have two lines one with COMM_N for TRT one for SAL.
+# It might seem weird but might allow for different metadata, and also most importantly
+# later on, in the model some variables will be specific to SAL
+# but when the variables are in common, then need to be repeated.
+t_metadata_met_TRT  <- data.frame(
     met_var = typ,
-    met_spe_code = met_spe_code,
+    met_spe_code = "TRT",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3693,35 +3753,41 @@ t_metadata_met  <- data.frame(
     met_fishery = NA, # not a referential
     met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = case_when(
-    met_type == "COMM" ~ "Removed",
-    met_type == "ALV" ~ "Released",
-    met_type == "RECR" ~ "Removed",
-    met_type == "DISC" ~ "Discarded",
-    met_type == "BROOD" ~ "Removed",
-    met_type == "SEAL" ~ "Removed",
-    met_type == "BMS" ~ "Discarded",
-    .default = NA),
+      met_type == "COMM" ~ "Removed",
+      met_type == "ALV" ~ "Released",
+      met_type == "RECR" ~ "Removed",
+      met_type == "DISC" ~ "Discarded",
+      met_type == "BROOD" ~ "Removed",
+      met_type == "SEAL" ~ "Seal damaged",
+      met_type == "BMS" ~ "Discarded",
+      .default = NA),
       # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#destination-tr_destination_dest
     met_uni_code = uni_code,
     met_cat_code = case_when(
        met_type == "COMM" ~ "Catch",
        met_type == "ALV" ~ "Release",
        met_type == "RECR" ~ "Catch",
-       met_type == "DISC" ~ "Discarded",
-       met_type == "BROOD" ~ "Removed",
-       met_type == "SEAL" ~ "Removed",
-       met_type == "BMS" ~ "Discarded",
+       met_type == "DISC" ~ "Catch",
+       met_type == "BROOD" ~ "Other",
+       met_type == "SEAL" ~ "Other",
+       met_type == "BMS" ~ "Catch",
        .default = NA),
 met_definition = "TODO",
 met_deprecated = NA 
 # not integrating any of the deprecated data
 )
+t_metadata_met_SAL <- t_metadata_met_TRT
+t_metadata_met_SAL$met_spe_code<- "SAL"
+
+
+t_metadata_met <- bind_rows(t_metadata_met_TRT,t_metadata_met_SAL)
+
 DBI::dbWriteTable(con_diaspara_admin, "temp_wgbast_t_metadata_met", t_metadata_met, overwrite = TRUE)
 
 
-
+DBI::dbExecute(con_diaspara_admin, "DELETE FROM datbast.t_metadata_met")
 DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
-SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met")# 4
+SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #42
 
 
 ```
@@ -3735,7 +3801,7 @@ SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_
 ```
 
 
-<summary>SQL code to insert values in table `dateel.t_stock_sto` </summary>
+<summary>SQL code to insert values in table `dateel.t_stock_sto`</summary>
 
 ```{r datbast.t_stock_sto}
 #| echo: TRUE
@@ -3743,11 +3809,72 @@ SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import to t_stock_sto for wgbast.
+#| code-summary: Code to import to t_stock_sto for wgbast
+
+df_all <- readRDS(file="data/wgbast_landings_modified.Rds")
+
+# Instert Numbers
+
+
+
+df_all_N <- df_all |>
+  filter(!is.na(numb)) |>
+  mutate(sto_met_var = paste0(tp_type, "_N"))
+
+t_stock_sto_N = data.frame(
+  sto_met_var = df_all_N$sto_met_var,
+  sto_year = df_all_N$year,
+  sto_spe_code = df_all_N$species,
+  sto_value = df_all_N$ numb,
+  sto_are_code = case_when()
+)      
+  
+
+
+dbExecute(con_diaspara_admin,"INSERT INTO datnas.t_stock_sto
+(sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, 
+sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, 
+sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, 
+sto_dta_code, sto_wkg_code,sto_add_code)
+SELECT 
+nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
+, d.var_mod AS sto_met_var
+, d.year AS sto_year
+, 'SAL' AS  sto_spe_code
+, d.value AS sto_value
+, d.area AS sto_are_code
+, NULL AS sto_cou_code -- OK can be NULL
+, CASE WHEN m.life_stage = 'Eggs' THEN 'E'
+    WHEN m.life_stage = 'Adult' THEN 'A'
+    WHEN m.life_stage = 'Multiple' THEN 'AL'
+    WHEN m.life_stage = 'Adults' THEN 'A'
+    WHEN m.life_stage = 'Smolts' THEN 'SM'
+    WHEN m.life_stage = 'Non mature' THEN 'PS' -- IS THAT RIGHT ?
+    WHEN m.life_stage = 'PFA' THEN 'PS' -- No VALUES
+    WHEN m.life_stage = 'Spawners' THEN 'A' -- No values
+    WHEN m.life_stage = '_' THEN '_'
+   ELSE 'TROUBLE' END AS sto_lfs_code 
+, NULL AS sto_hty_code
+, NULL AS sto_fia_code -- fishing area
+, 1 AS sto_qal_code -- see later TO INSERT deprecated values
+, NULL AS sto_qal_comment 
+, NULL AS sto_comment
+, date(d.date_time) AS sto_datelastupdate
+, NULL AS sto_mis_code
+, 'Public' AS sto_dta_code
+, 'WGNAS' AS sto_wkg_code
+, CASE WHEN d.var_mod IN ('eggs','p_smolt', 'p_smolt_pr', 'prop_female') THEN d.age
+       WHEN d.var_mod IN ('omega') THEN d.LOCATION
+       END AS sto_add_code
+FROM refsalmoglob.database d JOIN
+refsalmoglob.metadata m ON m.var_mod = d.var_mod; ")
+
 
 
 
 ```
+
+
 
 
 

@@ -143,4 +143,4 @@ SELECT * FROM refbast.tr_area_are WHERE are_lev_code = 'Assessment_unit';
 
 SELECT DISTINCT are_lev_code FROM refbast.tr_area_are;
 
-SELECT * FROM refbast.tr_area_are WHERE are_ismarine ;
+SELECT * FROM ref.tr_area_are WHERE are_wkg_code = 'WGEEL' LIMIT 100

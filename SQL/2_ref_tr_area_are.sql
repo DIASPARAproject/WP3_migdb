@@ -25,8 +25,10 @@ GRANT SELECT ON ref.tr_area_are TO diaspara_read;
 COMMENT ON TABLE ref.tr_area_are IS 'Table corresponding to different geographic levels, from stock 
 to river section.');
 
--- we need to rename the column
+-- we need to rename the column (fix 16/10/2025)
 ALTER TABLE "ref".tr_area_are RENAME COLUMN are_rivername TO are_name;
+
+
 
 
 

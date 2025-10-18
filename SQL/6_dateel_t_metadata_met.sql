@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS dateel.t_metadata_met;
 
 CREATE TABLE dateel.t_metadata_met(
- CONSTRAINT t_metadata_met_pkey PRIMARY KEY(met_var, met_spe_code),
+ CONSTRAINT t_metadata_met_pkey PRIMARY KEY(met_var, met_wkg_code),
  CONSTRAINT fk_met_spe_code FOREIGN KEY (met_spe_code)
   REFERENCES ref.tr_species_spe(spe_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -85,5 +85,7 @@ IS'Is the variable still used ?';
 
 ALTER TABLE dateel.t_metadata_met OWNER TO diaspara_admin;
 GRANT SELECT ON dateel.t_metadata_met TO diaspara_read;
+
+
 
 

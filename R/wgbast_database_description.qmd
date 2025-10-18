@@ -94,7 +94,7 @@ setwd("D:/workspace/DIASPARA_WP3_migdb/R")
 datawd <- "D:/DIASPARA/wgbast"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
 setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
 }
 source("utilities/load_library.R")
 load_library("tidyverse")
@@ -463,7 +463,8 @@ In the WGBAST thinking we have only one coastal water category independently fro
 ## NOTE WGBAST
 Currently subdivisions are used but for some historical data it is not possible to separate ICES subdivisions, so for these historical data these data are lumped together.
 :::
-## Catches type
+
+## Catches type (f_type)
 
 Catches are further classified as `commercial, recreational, discard, and seal damage` 
 [@ICES2021_wgbast_stock_annex]. The excel tables gives more types than the stock annex :
@@ -508,12 +509,83 @@ The Stock annex seems to miss part of catch categories.
 :::
 
 
-:::{.callout-note appearance="simple"}
-## NOTE
-There are `r sum(is.na(catchdb$f_type))` NA values for `f_type`.
+### Missing values for f_type (historical dataset)
+
+There are `r sum(is.na(catchdb$f_type))` missing values for f_type.
+We need some help there. Some data are historical, they are reported in sub_div 200, 300, or 32 from 1972
+to 1999. There is one line for F (Freswater) one line for O and C (Marine habitat). Always weights.
+
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+
+::::
+::::{.questionbox-body}
+QUESTION WGBAST (National correspondents): Is it OK to attribute COMM to C and O and RECR to F ?
+Or do we need to create another type like HIST for historical data ? 
+::::
+:::
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+
+::::
+::::{.answerbox-body}
+TODO
+::::
 :::
 
 
+``` {r tbl-missingftype_1}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Data without f_type for the historical dataset in FI and SE.
+catchdb |> filter(is.na(f_type) & year < 2000) |>
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+
+
+### Missing values for f_type (recent dataset)
+
+Here we have less lines, and the data structure is not aggregated to 200, 300, 32.
+There must be some mistakes.
+
+``` {r tbl-missingftype_2}
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Data without f_type for the historical dataset in FI and SE.
+catchdb |> filter(is.na(f_type) & year >= 2000) |>
+ kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+```
+:::{.questionbox}
+::::{.questionbox-header}
+::::{.questionbox-icon}
+::::
+::::
+::::{.questionbox-body}
+QUESTION WGBAST (National correspondents): Is it OK to attribute COMM to C and O and RECR to F ?
+::::
+:::
+
+:::{.answerbox}
+::::{.answerbox-header}
+::::{.answerbox-icon}
+::::
+ANSWER WGBAST (Henni)
+::::
+::::{.answerbox-body}
+National correspondents need to answer this one => OK we'll do...
+::::
+:::
 
 ## Source of fishery data
 
@@ -923,7 +995,29 @@ WGBAST
 ::::
 :::
 
+```{r tbl-youngfishdbdborigin}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Origin in the young fish and smolt database
+table(sy$origin, sy$tab, useNA="ifany") %>% 
+  kable() %>%
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
+The n_type are not consistent for one river accross time, with a lot of NA.
+
+```{r tbl-youngfishdbdbntyperiver}
+#| echo: FALSE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE 
+#| tbl-cap: Origin in the young fish and smolt database
+sy |> group_by(species,river, year, n_type ) |>
+   summarize(n()) |>
+  kable() |>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 # part III - TRUTTA electrofishing densities dataset
 
@@ -938,6 +1032,7 @@ ttd <- ttd[!is.na(ttd$density_n_100m2),]
 
 ttd %>%skim()
 ```
+
 
 ## Species
 

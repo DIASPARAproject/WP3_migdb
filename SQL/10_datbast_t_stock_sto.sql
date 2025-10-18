@@ -15,6 +15,8 @@ CREATE TABLE datbast.t_stock_sto (
     sto_timeperiod integer,
   CONSTRAINT fk_sto_met_var_met_spe_code
     FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES datbast.t_metadata_met(met_var,met_spe_code) 
+    sto_datasourcecode TEXT,
+    FOREIGN KEY TODO
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_are_code FOREIGN KEY (sto_are_code)
     REFERENCES refeel.tr_area_are (are_code) 
