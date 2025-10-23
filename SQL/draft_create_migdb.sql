@@ -139,8 +139,72 @@ UPDATE
 
 
 SELECT DISTINCT are_lev_code FROM refbast.tr_area_are;
-SELECT * FROM refbast.tr_area_are WHERE are_lev_code = 'Assessment_unit';
+SELECT * FROM refbast.tr_area_are WHERE are_lev_code = 'River';
 
 SELECT DISTINCT are_lev_code FROM refbast.tr_area_are;
 
 SELECT * FROM ref.tr_area_are WHERE are_wkg_code = 'WGEEL' LIMIT 100
+
+SELECT * FROM pg_stat_activity;
+
+
+
+
+ALTER TABLE refbast.landings_wbast_river_names RENAME COLUMN "Area_name" TO "riv_are_name";
+
+SELECT * FROM refbast.tr_area_are WHERE are_lev_code = 'River_section' AND are_name IS NOT NULL;
+
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE 'Indalsälven'; --OK
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '%man%';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '%Vinde%'; 
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '%Dalälven%'; 
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE 'Luleälven';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE 'Salaca';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE 'Skellefteälven';
+
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+SELECT * FROM refbast.tr_area_are WHERE are_name LIKE '';
+
+
+WITH river_sections AS (
+SELECT * FROM refbast.tr_area_are 
+WHERE are_lev_code = 'River_section' 
+AND are_name IS NOT NULL)
+
+SELECT DISTINCT are2.are_id, are2.are_code, are1.are_name FROM river_sections are1 
+JOIN refbast.tr_area_are are2 ON are1.are_are_id = are2.are_id 
+WHERE are1.are_name IS NOT NULL
+
+geography_columns as gc 
+JOIN "ref".catchments_baltic ON main_bas = are_code
+
+
+SELECT trr.* FROM refbast.tr_rivernames_riv 
+JOIN tr_area_are ON are_code = trr
+AS trr

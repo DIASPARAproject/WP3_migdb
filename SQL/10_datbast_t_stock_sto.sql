@@ -6,20 +6,32 @@
 DROP TABLE IF EXISTS datbast.t_stock_sto;
 CREATE TABLE datbast.t_stock_sto (
     sto_gear_code text,
-  CONSTRAINT fk_sto_gear_code
-    FOREIGN KEY (sto_gear_code) REFERENCES  ref.tr_gear_gea(gea_code)
+  CONSTRAINT fk_sto_gear_code FOREIGN KEY (sto_gear_code) 
+    REFERENCES  ref.tr_gear_gea(gea_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,  
     sto_tip_code TEXT,
-    FOREIGN KEY (sto_tip_code) REFERENCES  ref.tr_timeperiod_tip(tip_code)
+  CONSTRAINT fk_tip_code FOREIGN KEY (sto_tip_code)
+    REFERENCES  ref.tr_timeperiod_tip(tip_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,  
-    sto_timeperiod integer,
+    sto_timeperiod integer NOT NULL,
+    sto_dts_code TEXT,
+  CONSTRAINT fk_sto_dts_code FOREIGN KEY (sto_dts_code) 
+    REFERENCES ref.tr_datasource_dts(dts_code)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+   sto_dtb_code TEXT,
+  CONSTRAINT fk_sto_dtb_code FOREIGN KEY (sto_dtb_code) 
+    REFERENCES ref.tr_databasis_dtb(dtb_code)
+    ON UPDATE CASCADE ON DELETE RESTRICT, 
+  sto_esm_code TEXT,
+  CONSTRAINT fk_sto_esm_code FOREIGN KEY (sto_esm_code)
+    REFERENCES refbast.tr_estimationmethod_esm(esm_code)
+    ON UPDATE CASCADE ON DELETE RESTRICT,   
   CONSTRAINT fk_sto_met_var_met_spe_code
-    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES datbast.t_metadata_met(met_var,met_spe_code) 
-    sto_datasourcecode TEXT,
-    FOREIGN KEY TODO
+    FOREIGN KEY (sto_met_var, sto_spe_code) 
+    REFERENCES datbast.t_metadata_met(met_var,met_spe_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_are_code FOREIGN KEY (sto_are_code)
-    REFERENCES refeel.tr_area_are (are_code) 
+    REFERENCES refbast.tr_area_are (are_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_cou_code FOREIGN KEY (sto_cou_code)
     REFERENCES ref.tr_country_cou (cou_code)
@@ -30,9 +42,6 @@ CREATE TABLE datbast.t_stock_sto (
   CONSTRAINT fk_hty_code FOREIGN KEY (sto_hty_code)
     REFERENCES ref.tr_habitattype_hty(hty_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
-  --CONSTRAINT fk_sto_fia_code FOREIGN KEY(sto_fia_code)
-  --  REFERENCES ref.tr_fishingarea_fia(fia_code)
-  --  ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT fk_sto_qal_code FOREIGN KEY (sto_qal_code)
     REFERENCES ref.tr_quality_qal(qal_code)
     ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -47,15 +56,15 @@ CREATE TABLE datbast.t_stock_sto (
   ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT c_uk_sto_id_sto_wkg_code UNIQUE (sto_id, sto_wkg_code),
   CONSTRAINT ck_notnull_value_and_mis_code CHECK ((((sto_mis_code IS NULL) AND (sto_value IS NOT NULL)) OR 
-  ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL)))),
-   CONSTRAINT ck_sto_timeperiod CHECK (sto_timeperiod IS NULL OR sto_timeperiod >0)
+  ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL))))
+
 )
 inherits (dat.t_stock_sto) ;
 
 -- This table will always be for WGBAST
 
 ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT NULL;
-ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='SAL' OR sto_spe_code='TRT');
+ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='SAL' OR sto_spe_code='TRS');
 ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGBAST';
 ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGBAST');
 
@@ -74,7 +83,10 @@ COMMENT ON COLUMN datbast.t_stock_sto.sto_id IS 'Integer serial identifying. Onl
 when looking at the pair, sto_id, sto_wkg_code';
 COMMENT ON COLUMN datbast.t_stock_sto.sto_gear_code IS 'Code of the gear used, this column is specific to WGBAST, e.g. it only appears in wgbast.t_stock_sto not in dat.t_stock_sto';
 COMMENT ON COLUMN datbast.t_stock_sto.sto_tip_code IS 'Code of the time period used, one of "MON" = month,"HYR" = half of year,"QTR" = quarter,"YR" = Year  this column is specific to WGBAST, e.g. it only appears in wgbast.t_stock_sto not in dat.t_stock_sto';
-COMMENT ON COLUMN datbast.t_stock_sto.sto_tip_code IS 'An integer giving the value of the time period used';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_timeperiod IS 'An integer giving the value of the time period used';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_dts_code IS 'Code of the data source one of Logb (logbook), Exprt (Expert) SampDS (Survey sampling), SampDC (Commercial sampling), ... see DataSource ICES Vocab;';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_dtb_code IS 'Code of the data basis, one of Estimated, Measured, NotApplicable, Official, Unknown from vocab DataBasis in ICES';
+COMMENT ON COLUMN datbast.t_stock_sto.sto_esm_code IS 'Code of the estimation method, one of smolt1, ...';
 COMMENT ON COLUMN datbast.t_stock_sto.sto_met_var IS 'Name of the variable in the database, this is a mixture for f_type, value type (effort E, Number N, Weight W), and species e.g. COMM_N_TRT, see databast.t_metadata_met.met_var, there is a unicity constraint based
 on the pair of column sto_spe_code, sto_met_var';
 -- note if we end up with a single table, then the constraint will  have to be set
@@ -135,19 +147,19 @@ AS $check_time_period$
 BEGIN
    -- sto_timeperiod is always positive or NULL
    -- if sto_tip_code = "YR" keep sto_timeperiod NULL
-    IF (NEW.sto_tip_code = 'YR' AND NEW.sto_timeperiod > 0) THEN
-    RAISE EXCEPTION 'sto_timeperiod should be NULL(empty) when the code for time period (sto_tip_code) is YR (year), the year is filled in column sto_year';
+    IF (NEW.sto_tip_code = 'Year' AND NEW.sto_timeperiod > 0) THEN
+    RAISE EXCEPTION 'sto_timeperiod should be 0 when the code for time period (sto_tip_code) is YR (year), the year is filled in column sto_year';
     END IF;
      -- if sto_tip_code = "QTR" check 1 2 3 or 4
-    IF (NEW.sto_tip_code = 'QTR' AND NEW.sto_timeperiod > 4) THEN
+    IF (NEW.sto_tip_code = '>Quarter' AND NEW.sto_timeperiod > 4) THEN
     RAISE EXCEPTION 'sto_timeperiod should be 1, 2, 3 or 4 for quarters';
     END IF; 
     -- half of year is one or two        
-    IF (NEW.sto_tip_code = 'HYR' AND NEW.sto_timeperiod > 2) THEN
+    IF (NEW.sto_tip_code = 'Half of Year' AND NEW.sto_timeperiod > 2) THEN
     RAISE EXCEPTION 'sto_timeperiod should be 1 (first half) 2 (second half) when the code for time period (sto_tip_code) is HYR (half of year)' ;
     END IF;
     -- half of year is one or two        
-    IF (NEW.sto_tip_code = 'MON' AND NEW.sto_timeperiod > 12) THEN
+    IF (NEW.sto_tip_code = 'Month' AND NEW.sto_timeperiod > 12) THEN
     RAISE EXCEPTION 'sto_timeperiod should be 1 to 12 when the code for timeperiod (sto_tip_code) is MON (Month)';
     END IF;
     RETURN NEW; 
@@ -156,7 +168,7 @@ $check_time_period$;
 
 ALTER FUNCTION datbast.check_time_period() OWNER TO diaspara_admin;
 
-
+DROP TRIGGER IF EXISTS trg_check_time_period ON datbast.t_stock_sto ;
 CREATE TRIGGER trg_check_time_period BEFORE
 INSERT
     OR

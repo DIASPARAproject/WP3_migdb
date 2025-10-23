@@ -1,10 +1,10 @@
 ---
-title: "diaspara database creation script"
+title: "DIADROMOUS FISH STOCK DATABASE"
 subtitle: "DIASPARA WP3.2 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
-description: "Creation of the migdb Migratory fishes database, version = build"
+description: "DIADROMOUS FISH DATABASE : Scripts to create StockDB (import of data from WGNAS, WGEEL and WGBAST) Creation of referentials (dictionaries). **This document is still in construction.**"
 title-block-banner: "images/diaspara_bandeau.png"
 title-block-banner-color: "white"
 number-sections: true
@@ -33,7 +33,7 @@ editor:
 \listoftables
 
 The main structure of the database has been proposed during the online
-diaspara meeting : [database
+DIASPARA meeting : [database
 structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1).
 This stucture would allow to store the data necessary to run the
 international stock models for the different working groups working on
@@ -44,39 +44,34 @@ different types proposed, and then populates the database with the
 contents of the wgeel and wgnas database. All chunks are run
 sequentially to run the database, but some are later marked with eval =
 FALSE to speed up the process of running the quarto document.
+The diadromous fish database is made of two main structures.
+The first is called *** Stock Database*** and holds values aggregated at the
+scale of the assessment unit, or stock unit. This scale has been created using
+a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
+
 
 # Hierarchical structure of the database {#sec-hierarchical}
 
-The database could start with the simplest structure, with a basic table
-corresponding to all data. Then three tables could be created, one per
-species. This is to allow querying the different tables independently.
-From these species tables, three different tables could be produced, one
-for data, one for parameters outputs, one for parameters priors. Since
-SQL server does not handle inheritance, once the table built, some of
+The database starts with the simplest structure, with a basic table
+corresponding to all data. Then three tables are created, one per
+Working group  Since SQL server does not handle inheritance, once the table built, some of
 those will have to be replaced with views or partitioned views.
-
-From these three table on could envisage the creation of specific table
-for working groups. Meaning one table for eel (wgeel), one table for
-salmon (wgnas), one table for salmon (wgbast), and one table for trutta
-(wgtrutta).
 
 ## Referential tables
 
-> \[TO BE EDITED LATER WHEN WE KNOW EXACTLY WHAT WE HAVE DONE\]
 
-Similarly, referential tables could be created with a mother table from
-which specific (or wg specific) tables would inherit. All mother table
-will be held in a schema called ref. Having working group specific
+
+Similarly, referential tables are created with a mother table  from
+which specific (or wg specific) tables inherit. All mother tables
+will be held in a schema called `ref`. Having working group specific
 tables make the setting up of consistent foreign key more easy. For
-instance wgbast could reference different age class than wgnas, and the
-stage would be completely different between wgeel and wgnas reference
-daughter tables. Some of these referential table would be common between
-species (e.g. source from ICES vocab, which corresponds to working group
-or accession events (datacall)).
+instance wgeel references different stages than wgnas. Most of these referential 
+table are common between species and whenever possible they are sourced from 
+ICES vocab.
 
 ## Unicity constraints
 
-Another important point to add (at least to the salmoglob database) is
+Another important point to add is
 unique constraint. As some values would be null, creating unique
 constraints with indexes would be necessary. These allow to have
 different levels of constraints for instance the unique constraint would be
@@ -193,14 +188,13 @@ con_wgeel_distant <- dbConnect(Postgres(),
 
 ```
 
-This is run in localhost, check the wp3_habitat repository for code to
-set up access to the database. In the future we will grant
-diaspara_admin and diaspara_read to specific users for example with a
-used named trout `GRANT diaspara_admin TO trout` ;
+The database can be created an run in localhost, check the wp3_habitat repository for code to
+set up access to the database. 
+Two roles are created, `diaspara_admin` and `diaspara_read` and users are 
+given specific rights.
 
 ::: {.callout-note appearance="simple"}
-<h3>DIASPARA Note to self</h3>
-
+<h3>DIASPARA technical note</h3>
 need to edit the pb_hba.conf on the server if not in localhost to allow
 access to diaspara.
 :::
@@ -214,50 +208,50 @@ access to diaspara.
 #| code-fold: TRUE
 #| code-summary: Code to create the diaspara DB
 
-dbExecute(con_diaspara_admin, "DROP schema if exists ref CASCADE;");
-dbExecute(con_diaspara_admin, "CREATE schema ref;")
-dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA ref TO diaspara_admin ;")
-dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA public TO diaspara_read ;")
-dbExecute(con_diaspara_admin, paste0("GRANT CONNECT ON DATABASE ",cred$dbnamediaspara," TO diaspara_read;"))
-dbExecute(con_diaspara_admin, paste0("ALTER DATABASE ",cred$dbnamediaspara," OWNER TO diaspara_admin;"))
-dbExecute(con_diaspara_admin, "DROP schema if exists refeel CASCADE;");
-dbExecute(con_diaspara_admin, "CREATE SCHEMA refeel;")
-dbExecute(con_diaspara_admin, "ALTER SCHEMA refeel OWNER TO diaspara_admin;")
-dbExecute(con_diaspara_admin, "DROP schema if exists refnas CASCADE;");
-dbExecute(con_diaspara_admin, "CREATE SCHEMA refnas;")
-dbExecute(con_diaspara_admin, "ALTER SCHEMA refnas OWNER TO diaspara_admin;")
-dbExecute(con_diaspara_admin, "DROP schema if exists refbast CASCADE;");
-dbExecute(con_diaspara_admin, "CREATE SCHEMA refbast;")
-dbExecute(con_diaspara_admin, "ALTER SCHEMA refbast OWNER TO diaspara_admin;")
-dbExecute(con_diaspara_admin, "DROP schema if exists reftrutta CASCADE;");
-dbExecute(con_diaspara_admin, "CREATE SCHEMA reftrutta;")
-dbExecute(con_diaspara_admin, "ALTER SCHEMA reftrutta OWNER TO diaspara_admin;")
-
-# Create foreign data wrapper to wgeel database
-
-dbExecute(con_diaspara_admin, "CREATE EXTENSION IF NOT EXISTS postgres_fdw;")
-
-dbExecute(con_diaspara_admin,"
-CREATE SERVER wgeel_data_wrapper
-  FOREIGN DATA WRAPPER postgres_fdw
-  OPTIONS (host 'localhost', port '5432', dbname 'wgeel');")
-dbExecute(con_diaspara_admin,"
-CREATE SERVER wgnas_data_wrapper
-  FOREIGN DATA WRAPPER postgres_fdw
-  OPTIONS (host 'localhost', port '5432', dbname 'salmoglob');")
-dbExecute(con_diaspara_admin,"
-CREATE USER MAPPING FOR USER
-  SERVER wgeel_data_wrapper
-  OPTIONS (user 'postgres', password 'postgres');")
-dbExecute(con_diaspara_admin,"  
-CREATE SCHEMA refwgeel;")
-dbExecute(con_diaspara_admin,"IMPORT FOREIGN SCHEMA ref    
-    FROM SERVER wgeel_data_wrapper
-    INTO refwgeel;")
-
-dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein :-)'"))    
-dbExecute(con_diaspara_admin,
-          "GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
+# dbExecute(con_diaspara_admin, "DROP schema if exists ref CASCADE;");
+# dbExecute(con_diaspara_admin, "CREATE schema ref;")
+# dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA ref TO diaspara_admin ;")
+# dbExecute(con_diaspara_admin, "GRANT ALL PRIVILEGES ON SCHEMA public TO diaspara_read ;")
+# dbExecute(con_diaspara_admin, paste0("GRANT CONNECT ON DATABASE ",cred$dbnamediaspara," TO diaspara_read;"))
+# dbExecute(con_diaspara_admin, paste0("ALTER DATABASE ",cred$dbnamediaspara," OWNER TO diaspara_admin;"))
+# dbExecute(con_diaspara_admin, "DROP schema if exists refeel CASCADE;");
+# dbExecute(con_diaspara_admin, "CREATE SCHEMA refeel;")
+# dbExecute(con_diaspara_admin, "ALTER SCHEMA refeel OWNER TO diaspara_admin;")
+# dbExecute(con_diaspara_admin, "DROP schema if exists refnas CASCADE;");
+# dbExecute(con_diaspara_admin, "CREATE SCHEMA refnas;")
+# dbExecute(con_diaspara_admin, "ALTER SCHEMA refnas OWNER TO diaspara_admin;")
+# dbExecute(con_diaspara_admin, "DROP schema if exists refbast CASCADE;");
+# dbExecute(con_diaspara_admin, "CREATE SCHEMA refbast;")
+# dbExecute(con_diaspara_admin, "ALTER SCHEMA refbast OWNER TO diaspara_admin;")
+# dbExecute(con_diaspara_admin, "DROP schema if exists reftrutta CASCADE;");
+# dbExecute(con_diaspara_admin, "CREATE SCHEMA reftrutta;")
+# dbExecute(con_diaspara_admin, "ALTER SCHEMA reftrutta OWNER TO diaspara_admin;")
+# 
+# # Create foreign data wrapper to wgeel database
+# 
+# dbExecute(con_diaspara_admin, "CREATE EXTENSION IF NOT EXISTS postgres_fdw;")
+# 
+# dbExecute(con_diaspara_admin,"
+# CREATE SERVER wgeel_data_wrapper
+#   FOREIGN DATA WRAPPER postgres_fdw
+#   OPTIONS (host 'localhost', port '5432', dbname 'wgeel');")
+# dbExecute(con_diaspara_admin,"
+# CREATE SERVER wgnas_data_wrapper
+#   FOREIGN DATA WRAPPER postgres_fdw
+#   OPTIONS (host 'localhost', port '5432', dbname 'salmoglob');")
+# dbExecute(con_diaspara_admin,"
+# CREATE USER MAPPING FOR USER
+#   SERVER wgeel_data_wrapper
+#   OPTIONS (user 'postgres', password 'postgres');")
+# dbExecute(con_diaspara_admin,"  
+# CREATE SCHEMA refwgeel;")
+# dbExecute(con_diaspara_admin,"IMPORT FOREIGN SCHEMA ref    
+#     FROM SERVER wgeel_data_wrapper
+#     INTO refwgeel;")
+# 
+# dbExecute(con_diaspara_admin, paste0("COMMENT ON DATABASE ",cred$dbnamediaspara," IS 'This database is named Frankenstein :-)'"))    
+# dbExecute(con_diaspara_admin,
+#           "GRANT ALL PRIVILEGES ON SCHEMA refwgeel TO diaspara_admin;")
 
 ```
 
@@ -433,7 +427,7 @@ Schema refwgeel has been filled in with a foreign data wrapper to get
 the data from wgeel, the same schema exists for wgnas. We'll see later
 for wgbast and wgtrutta. The schema `dat` is the common schema for all
 data. For each working group, schema `datbast`, `dateel`, `datnas` are
-created. The tables will be created in dat and later similar or a bit
+created. The tables are be created in dat and later similar or a bit
 more complex tables (with some more columns) will be created using the
 `INHERIT FROM` syntax, which will allow to have a hierarchical structure
 in the db, and maintain the structure in a table common to all fishes.
@@ -441,6 +435,8 @@ Note that`dat` should not containt any data, but will hold all the views
 and inherited tables comming from the different schema.
 
 # Creating referentials
+
+This script holds all referentials necesary for the metricDB and the stockDB.
 
 ## species (tr_species_spe)
 
@@ -525,8 +521,8 @@ grep("Alosa",  sp$description)
 bind_rows(
   ele <- getCodeDetail("IC_species","ELE")$detail,
   sal <- getCodeDetail("IC_species","SAL")$detail,
-  trs <- getCodeDetail("IC_species","TRS")$detail) %>%
-  knitr::kable(caption = "Codes for migratory species in ICES, no code found for other species (Lamprey, Alosa ...)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  trs <- getCodeDetail("IC_species","TRS")$detail) |>
+  knitr::kable(caption = "Codes for migratory species in ICES, no code found for other species (Lamprey, Alosa ...)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
@@ -536,15 +532,15 @@ if (file.exists("data/tr_species_spe_temp.Rdata")) {
       spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
       spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
     )
-    tr_species_spe_temp <- species_list %>%
-      rowwise() %>%
+    tr_species_spe_temp <- species_list |>
+      rowwise() |>
       mutate(
         spe_codeaphia = findAphia(spe_scientificname, latin = TRUE)
-      ) %>%
+      ) |>
       ungroup()
     save(tr_species_spe_temp, file = "data/tr_species_spe_temp.Rdata")
   }
-knitr::kable(tr_species_spe_temp) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(tr_species_spe_temp) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -581,7 +577,7 @@ reference to ICES vocabularies.'")
 #| message: FALSE
 #| tbl-cap: Working groups table in the diaspara DB
 tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_species_spe")
-knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(tr_icworkinggroup_wkg) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Working group (tr_icworkinggroup_wkg)
@@ -646,11 +642,11 @@ tbl <- jsonlite::fromJSON(
 
 
 
-temp_tr_icworkinggroup_wkg <- tbl %>%
-  select(key,description,guid) %>%
+temp_tr_icworkinggroup_wkg <- tbl |>
+  select(key,description,guid) |>
   rename(wkg_code = key,
          wkg_description = description,
-         wkg_icesguid = guid)%>%
+         wkg_icesguid = guid)|>
   filter(wkg_code %in% c("WGEEL", "WGNAS", "WGBAST"))
 temp_tr_icworkinggroup_wkg <- bind_rows(temp_tr_icworkinggroup_wkg,
                                         data.frame(wkg_code="WKTRUTTA"))
@@ -680,7 +676,7 @@ dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_icworkinggroup_wkg;")
 #| message: FALSE
 #| tbl-cap: Working groups table in the diaspara DB
 tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_icworkinggroup_wkg")
-knitr::kable(tr_icworkinggroup_wkg) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(tr_icworkinggroup_wkg) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Country (tr_country_cou)
@@ -781,7 +777,7 @@ WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
 #| tbl-cap: Country table in the diaspara DB
 #| code-fold: TRUE
 tr_country_cou <- dbGetQuery(con_diaspara, "SELECT cou_code,cou_country,cou_order, cou_iso3code FROM ref.tr_country_cou order by cou_order")
-knitr::kable(tr_country_cou) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(tr_country_cou) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -798,7 +794,7 @@ knitr::kable(tr_country_cou) %>% kable_styling(bootstrap_options = c("striped", 
 if (file.exists("data/country_sf.Rdata")) load("data/country_sf.Rdata") else {
   country_sf <- sf::st_read(con_diaspara,
                             query = "SELECT cou_code, ST_MakeValid(geom) 
-                          from ref.tr_country_cou") %>%
+                          from ref.tr_country_cou") |>
     sf::st_transform(4326) 
   save(country_sf, file="data/country_sf.Rdata")
 }
@@ -811,11 +807,11 @@ if (file.exists("data/country_sf.Rdata")) load("data/country_sf.Rdata") else {
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
 # background for the globe - center buffered by earth radius
-ocean <- sf::st_point(x = c(0,0)) %>%
-  sf::st_buffer(dist = 6371000) %>%
+ocean <- sf::st_point(x = c(0,0)) |>
+  sf::st_buffer(dist = 6371000) |>
   sf::st_sfc(crs = crs_string)
-country_sf2 <-  country_sf %>% 
-  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+country_sf2 <-  country_sf |> 
+  sf::st_intersection(ocean |> sf::st_transform(4326)) |> 
   # select visible area only
   sf::st_transform(crs = crs_string) # reproject to ortho
 # now the action!
@@ -989,7 +985,7 @@ dbExecute(con_diaspara_admin,  query)
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: tr_units_uni table, check missing values currently not found in ICES Vocab
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 Some of the values are missing from ICES vocab (Table @tbl-unit).
@@ -1060,11 +1056,11 @@ library('icesSD')
 # this does not give the 
 advice <- getAdviceViewRecord()
 advice[grepl('ele',advice$stockCode),
-       c('adviceDOI', 'stockCode','assessmentyear')] %>% kable
+       c('adviceDOI', 'stockCode','assessmentyear')] |> kable
 sd <- mapply(getSD, year= 2020:2024, SIMPLIFY=FALSE)
 sd <- do.call(rbind,sd)
 ww <- grepl('ele',sd$StockKeyLabel) | grepl('Salmo',sd$speciesScientificName)
-sd[ww,] %>% kable()
+sd[ww,] |> kable()
 
 ```
 
@@ -1120,7 +1116,7 @@ This table (@tbl-objectype) is used in metadata
 #| message: FALSE
 #| tbl-cap: Object type
 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 
 ```
@@ -1148,7 +1144,7 @@ information.
 #| message: FALSE
 #| tbl-cap: Nimble
 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1281,7 +1277,7 @@ Hernvann
 #| message: FALSE
 #| tbl-cap: Version
 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1320,7 +1316,7 @@ or stocks but not data calls.
 #| message: FALSE
 #| tbl-cap : Metric, type of parm used in the model
 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1353,7 +1349,7 @@ instance all parameters dealing with catch.
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1379,8 +1375,8 @@ in WGBAST
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") %>% 
-  knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") |> 
+  knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1393,7 +1389,8 @@ followed his suggestion
 ## Area (tr_area_are)
 
 This table will be created further in the habitat repository... But here we are 
-laying out the foundations.
+laying out the foundations. Not assessment unit correpsond to 'Unit' level in the 
+for the Baltic.
 
 ### Habitat level (tr_habitatlevel_lev)
 
@@ -1451,6 +1448,7 @@ dbExecute(con_diaspara_admin,
   'Administrative unit for eel, the hierarchical next level is country.'
   );")
 
+# note this can be unit or Asssessment unit it can have two meanings ...
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
   'Assessment_unit',
@@ -1475,7 +1473,7 @@ dbExecute(con_diaspara_admin,
 
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
-  'river_section',
+  'River_section',
   'Section of river, only a part of a basin, for instance to separate between
   wild and mixed river category in the Baltic.'
   );")
@@ -1512,9 +1510,14 @@ dbExecute(con_diaspara_admin,
 
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
-  'Subdivision Grouping',
+  'Subdivision_grouping',
   'Groups of subdivision from ICES used in the Baltic'
   );")
+
+dbExecute(con_diaspara_admin,"UPDATE ref.tr_habitatlevel_lev
+	SET lev_description='Corresponds to an assessment unit in the Baltic sea, and area for WGNAS, and EMU for WGEEL.'
+	WHERE lev_code='Assessment_unit'"); # remove spaces ...
+
 
 
 ```
@@ -1526,7 +1529,7 @@ dbExecute(con_diaspara_admin,
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Geographical level tr_habitatlevel_lev
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1564,8 +1567,8 @@ dbGetQuery(con_diaspara, "SELECT are_id,
    are_code,
    are_lev_code,
    are_wkg_code,
-   are_ismarine FROM ref.tr_area_are limit 10;")%>%
-  knitr::kable() %>%
+   are_ismarine FROM ref.tr_area_are limit 10;")|>
+  knitr::kable() |>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -1770,8 +1773,8 @@ SELECT
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Code for missing values
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_missvalueqal_mis;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_missvalueqal_mis;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -1907,7 +1910,7 @@ includes the import of the WGEEL stage table.
 
 ### Existing stages in ICES dictionaries
 
-```{r icesVocabstages}
+```{r }
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
@@ -1922,15 +1925,15 @@ includes the import of the WGEEL stage table.
 #| label: tbl-maturityvocab
 
 types <- icesVocab::getCodeTypeList()
-types[grep('stage', tolower(types$Description)),]%>% kable()
+types[grep('stage', tolower(types$Description)),]|> kable()
 TS_MATURITY <- icesVocab::getCodeList('TS_MATURITY')
 TS_DevStage <- icesVocab::getCodeList('TS_DevStage')
 # Devstage is 1 to 15 => no use
 DevScale <- icesVocab::getCodeList('DevScale')
 # At the present the codetypes target Eggs and Larvae surveys
 # This is a description of scales types using different publications => not for use()
-kable(TS_MATURITY, caption = "TS_MATURITY") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(TS_MATURITY, caption = "TS_MATURITY") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
 :::::: questionbox
@@ -2070,8 +2073,8 @@ In terms of stage, we would need alevin, fry (YoY, 0+), parr (>0+). In the Marin
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Code for missing values
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2177,8 +2180,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_maturity")
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of maturity codes
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_maturity_mat;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_maturity_mat;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2222,7 +2225,7 @@ used by RDBES, would you agree ?
 :::
 ::::::
 
-```{r tbl-habitat_type_vocab}
+```{r }
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
@@ -2236,7 +2239,7 @@ WLTYP <- icesVocab::getCodeList('WLTYP')
 
 # At the present the codetypes target Eggs and Larvae surveys
 # This is a description of scales types using different publications => not for use()
-kable(WLTYP, caption = "WLTYP") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(WLTYP, caption = "WLTYP") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
 ### Code to create the habitat type table.
@@ -2297,8 +2300,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_habitat")
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of habitat types
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2413,8 +2416,8 @@ dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_quality_qal WHERE qal_code = 0
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of quality
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2441,8 +2444,8 @@ The code for creating `tr_age_age` (Table @tbl-tr_age_age) is shown below.
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of age
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_age_age;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_age_age;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2468,7 +2471,7 @@ The general definition looks OK. Although, when you store adults, how do you rec
 
 There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) see Table @tbl-vocabsex.
 
-```{r icesVocabsex}
+```{r }
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
@@ -2479,7 +2482,7 @@ There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-
 
 
 TS_SEXCO <- icesVocab::getCodeList('SEXCO')
-kable(TS_SEXCO, caption = "TS_SEXCO") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(TS_SEXCO, caption = "TS_SEXCO") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
 <details>
@@ -2528,8 +2531,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_sex")
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of sex
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_sex_sex;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_sex_sex;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2592,8 +2595,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_gear")
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of gears
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_gear_gea;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_gear_gea;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -2612,6 +2615,7 @@ provides a dictionary of the scientific gear used in monitoring, this one can be
  Method used to monitor eel in the mediterranean are referenced in detail in this 
  [report](https://openknowledge.fao.org/handle/20.500.14283/cc7252en).
 :::
+
 
 
  
@@ -2767,22 +2771,22 @@ if (file.exists("data/fishingareas_major.Rdata"))
     fishing_areas_major <- sf::st_read(con_diaspara,
                                        query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
-                          WHERE fia_level = 'Major'") %>%
+                          WHERE fia_level = 'Major'") |>
       sf::st_transform(4326) 
     save(fishing_areas_major, file="data/fishing_areas_major.Rdata")
   }
 load("data/country_sf.Rdata")
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
-ocean <- sf::st_point(x = c(0,0)) %>%
-  sf::st_buffer(dist = 6371000) %>%
+ocean <- sf::st_point(x = c(0,0)) |>
+  sf::st_buffer(dist = 6371000) |>
   sf::st_sfc(crs = crs_string)
-area_sf2 <-  fishing_areas_major %>% 
-  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+area_sf2 <-  fishing_areas_major |> 
+  sf::st_intersection(ocean |> sf::st_transform(4326)) |> 
   sf::st_transform(crs = crs_string) 
 
-country_sf2 <-  country_sf %>% 
-  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+country_sf2 <-  country_sf |> 
+  sf::st_intersection(ocean |> sf::st_transform(4326)) |> 
   sf::st_transform(crs = crs_string) 
 
 
@@ -2820,14 +2824,14 @@ if (file.exists("data/fishingareas_subarea.Rdata")) load("data/fishingareas_suba
   fishing_areas_subarea <- sf::st_read(con_diaspara,
                                        query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
-                          WHERE fia_level = 'Subarea'") %>%
+                          WHERE fia_level = 'Subarea'") |>
     sf::st_transform(4326) 
   save(fishing_areas_subarea, file="data/fishing_areas_subarea.Rdata")
 }
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
-area_sf2 <-  fishing_areas_subarea %>% 
-  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+area_sf2 <-  fishing_areas_subarea |> 
+  sf::st_intersection(ocean |> sf::st_transform(4326)) |> 
   sf::st_transform(crs = crs_string) # reproject to ortho
 
 g <- ggplot() + 
@@ -2861,7 +2865,7 @@ if (file.exists("data/fishingareas_division.Rdata")) load("data/fishingareas_div
   fishing_areas_division <- sf::st_read(con_diaspara,
                                         query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
-                          WHERE fia_level = 'Division'") %>%
+                          WHERE fia_level = 'Division'") |>
     sf::st_transform(4326) 
   save(fishing_areas_division, file="data/fishing_areas_division.Rdata")
 }
@@ -2869,12 +2873,12 @@ if (file.exists("data/fishingareas_division.Rdata")) load("data/fishingareas_div
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
 
-ocean <- sf::st_point(x = c(0,0)) %>%
-  sf::st_buffer(dist = 6371000) %>%
+ocean <- sf::st_point(x = c(0,0)) |>
+  sf::st_buffer(dist = 6371000) |>
   sf::st_sfc(crs = crs_string)
 
-area_sf2 <-  fishing_areas_division %>% 
-  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+area_sf2 <-  fishing_areas_division |> 
+  sf::st_intersection(ocean |> sf::st_transform(4326)) |> 
   sf::st_transform(crs = crs_string) 
 
 g <- ggplot() + 
@@ -2907,7 +2911,7 @@ if (file.exists("data/fishingareas_subdivision.Rdata")) load("data/fishingareas_
   fishing_areas_subdivision <- sf::st_read(con_diaspara,
                                            query = "SELECT fia_code, ST_MakeValid(geom) 
                           from ref.tr_fishingarea_fia
-                          WHERE fia_level = 'Subdivision'") %>%
+                          WHERE fia_level = 'Subdivision'") |>
     sf::st_transform(4326) 
   save(fishing_areas_subdivision, file="data/fishing_areas_subdivision.Rdata")
 }
@@ -2915,12 +2919,12 @@ if (file.exists("data/fishingareas_subdivision.Rdata")) load("data/fishingareas_
 crs_string <- "+proj=ortho +lon_0=-30 +lat_0=30"
 
 
-ocean <- sf::st_point(x = c(0,0)) %>%
-  sf::st_buffer(dist = 6371000) %>%
+ocean <- sf::st_point(x = c(0,0)) |>
+  sf::st_buffer(dist = 6371000) |>
   sf::st_sfc(crs = crs_string)
 
-area_sf2 <-  fishing_areas_subdivision %>% 
-  sf::st_intersection(ocean %>% sf::st_transform(4326)) %>% 
+area_sf2 <-  fishing_areas_subdivision |> 
+  sf::st_intersection(ocean |> sf::st_transform(4326)) |> 
   sf::st_transform(crs = crs_string) 
 
 g <- ggplot() + 
@@ -2940,7 +2944,7 @@ dev.off()
 ICES,
 GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
-## Time period (ref.tr_timeperiod_tip)
+## Time period (ref.tr_timeperiod_tip) WGBAST
 
 WGBAST reports data per month, quarter, or half year.
 There is a vocabulary for quarters, couldn't find a vocab for half of year.
@@ -2950,7 +2954,7 @@ There is a vocabulary for quarters, couldn't find a vocab for half of year.
 
 <summary>SQL code to create table `tr_timeperiod_tip`</summary>
 
-``` {.sql include="../SQL/2_ref_tr_timeperiod_tip}
+``` {.sql include="../SQL/2_ref_tr_timeperiod_tip.sql"}
 ```
 
 </details>
@@ -2964,22 +2968,18 @@ There is a vocabulary for quarters, couldn't find a vocab for half of year.
 #| code-fold: TRUE
 #| code-summary: Code to import timeperiod codes
 
-quarter <- icesVocab::getCodeList('TS_Quarter')
+tp <- icesVocab::getCodeList('IC_SeasonType')
 #I don't want this I want a code
 tip <- data.frame(tip_id=1:4, 
-tip_code = c("MON","HYR","QTR","YR"), 
-tip_description = c("Monthly data, from 1 to 12", "Half of year, either from 1 to 6 (included)=1, or from month 7 to 12 (included)=2", "Quarterly data from 1 to 4", "Year value of timeperiod should be NULL and year column filled"), 
- tip_icesvalue = NA,
- tip_icesguid = NA,
- tip_icestablesource =NA)
-
-  rename("tip_icesguid"="Guid",  "tip_code" = "Key", "tip_description" = "Description") |> 
-  select ( tip_code, tip_icesguid, tip_description)  |>
-  mutate(tip_icestablesource = "TS_Quarter",
-         tip_id = 1:4) |>
+tip_code = c(tp$Key, "Half of Year"), 
+tip_description = c("Monthly data, from 1 to 12",  "Quarterly data from 1 to 4", "Year value of timeperiod should be NULL and year column filled", "Half of year, either from 1 to 6 (included)=1, or from month 7 to 12 (included)=2"), 
+ tip_icesvalue = c(tp$Key,NA),
+ tip_icesguid = c(tp$Guid,NA),
+ tip_icestablesource =c(rep("IC_SeasonType", 3), NA))|>
   select(tip_id, tip_code, tip_description, tip_icesvalue, tip_icesguid, tip_icestablesource)
 tip$tip_icesguid <- as.character(tip$tip_icesguid)
 DBI::dbWriteTable(con_diaspara_admin, "temp_tipr", tip, overwrite = TRUE)
+DBI::dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_timeperiod_tip")
 DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_timeperiod_tip
 (tip_id, tip_code, tip_description, tip_icesvalue, tip_icesguid, tip_icestablesource)
 SELECT tip_id, tip_code, tip_description, tip_icesvalue, tip_icesguid::uuid, tip_icestablesource
@@ -2996,11 +2996,163 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_tipr")
 #| message: FALSE
 #| code-fold: TRUE
 #| tbl-cap: Table of gears
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_timeperiod_tip;") %>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_timeperiod_tip;") |> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+## Data source (ref.tr_datasource_dts) WGBAST {#sec-datasource}
+
+
+The source of fishery data is included in WGBAST see : [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
+THe vocab described her is deprecated and superseeded by datasource.
+
+During exchange with Data Centre (Thanks Maria for hinting at this change), the current way of handling estimated data,
+is to separate the source of data and the type of estimation. This is how it
+works currently in RDBES. So a catch can coming from logbook, it is estimated,
+and when estimated a method must be provided if estimated (estimation method.)
+
+<details>
+
+<summary>SQL code to create table `tr_datasource_dts`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_datasource_dts.sql"}
+```
+
+</details>
+
+
+```{r import_tr_datasource_dts}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import datasource codes
+
+dts <- icesVocab::getCodeList('DataSource')
+# 
+dts <- dts |>
+  rename("dts_icesguid"="Guid",  "dts_code" = "Key", "dts_description" = "Description") |> 
+  select ( dts_code, dts_icesguid, dts_description)  |>
+  mutate(dts_icestablesource = "DataSource",
+         dts_id = 1:nrow(dts),
+         dts_icesvalue = dts_code) |>
+  select(dts_id, dts_code, dts_description, dts_icesvalue, dts_icesguid, dts_icestablesource)
+
+
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_dtsr", dts, overwrite = TRUE)
+DBI::dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_datasource_dts")
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_datasource_dts
+(dts_id, dts_code, dts_description, dts_icesvalue, dts_icesguid, dts_icestablesource)
+SELECT dts_id, dts_code, dts_description, dts_icesvalue, dts_icesguid::uuid, dts_icestablesource
+FROM temp_dtsr")# 14
+DBI::dbExecute(con_diaspara_admin, "DROP table temp_dtsr")
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_datasource_dts (dts_id,dts_code,dts_description)
+	VALUES (15,'Smolt','Smolt count');")
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_datasource_dts (dts_id,dts_code,dts_description)
+	VALUES (16,'Parr','Parr densities (electrofishing)');")
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_datasource_dts (dts_id,dts_code,dts_description)
+	VALUES (17,'Spawner','Spawner count');")
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_datasource_dts (dts_id,dts_code,dts_description)
+	VALUES (18,'Stocking','Stocking data');")
+
+
+```
+
+
+
+
+```{r}
+#| label: tbl-tr_datasource_dts
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Table of source of data used by WGBAST, some of the values might fit in there but some will need a work by national expert (EST estimated has no correspondance) though it might be extrapolated by some of the comments. The smolt estimation methods are those reported in the young fish table.
+
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_datasource_dts;") |> 
+  knitr::kable() |> 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Data basis ref.tr_databasis_dtb (WGBAST)
+
+
+<details>
+
+<summary>SQL code to create table `tr_databasis_dtb`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_databasis_dtb.sql"}
+```
+
+</details>
+
+```{r import_tr_databasis_dtb}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import databasis codes
+
+dtb <- icesVocab::getCodeList('DataBasis')
+# 
+dtb <- dtb |>
+  rename("dtb_icesguid"="Guid",  "dtb_code" = "Key", "dtb_description" = "Description") |> 
+  select ( dtb_code, dtb_icesguid, dtb_description)  |>
+  mutate(dtb_icestablesource = "DataBasis",
+         dtb_id = 1:nrow(dtb),
+         dtb_icesvalue = dtb_code) |>
+  select(dtb_id, dtb_code, dtb_description, dtb_icesvalue, dtb_icesguid, dtb_icestablesource)
+
+
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_dtbr", dtb, overwrite = TRUE)
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_databasis_dtb
+(dtb_id, dtb_code, dtb_description, dtb_icesvalue, dtb_icesguid, dtb_icestablesource)
+SELECT dtb_id, dtb_code, dtb_description, dtb_icesvalue, dtb_icesguid::uuid, dtb_icestablesource
+FROM temp_dtbr")# 5
+DBI::dbExecute(con_diaspara_admin, "DROP table temp_dtbr")
+
+```
+
+
+## Data estimation method ref.tr_estimationmethod_esm 
+
+This table will be inherited, we are proposing working group specific estimation
+methods. Typically estimation methods of WGBAST. These will only be used if
+sto_dtb_code = 'Estimated'
+
+1. Complete count of smolts.
+2. Sampling of smolts and estimate of total smolt run size.
+3. Estimate of smolt run from parr production by relation developed in the same river.
+4. Estimate of smolt run from parr production by relation developed in another river.
+5. Inference of smolt production from data derived from similar rivers in the region.
+6. Count of spawners.
+7. Estimate inferred from stocking of reared fish in the river.
+8. Salmon catch, exploitation and survival estimate.
+
+<details>
+
+<summary>SQL code to create table `ref.tr_estimationmethod_esm`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_estimationmethod_esm.sql"}
+```
+
+</details>
+
+
+::: {.callout-note appearance="simple"}
+## Note
+
+The estimationmethod are set in each working group table, they are inherited.
+see refbast.tr_estimationmethod_esm
+:::
 
 # Metadata
 
@@ -3027,13 +3179,16 @@ The code for creating metadata is listed below
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: metadata
-dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;")|> head() |> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 
+[//]: # (------------------------WGNAS SECTION -------------------------------)
 
-# WGNAS database 
+
+# WGNAS 
 
 The WGNAS database is created in schemas refnas and datna (see @sec-hierarchical)
 
@@ -3076,7 +3231,7 @@ The WGNAS database is created in schemas refnas and datna (see @sec-hierarchical
 metadata <- dbGetQuery(con_salmoglob, "SELECT * FROM metadata")
 
 res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met;")
-clipr::write_clip(colnames(res))
+#clipr::write_clip(colnames(res))
 
 # unique(metadata$metric)
 # dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
@@ -3171,19 +3326,21 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_temp CASCADE;")
 
 ```
 
-After integration,, the table of metadata from WGNAS is not changed
+After integration, the table of metadata from WGNAS is not changed
 much, apart from adapting to the new referentials. The table is show in
-Table @tbl-metadata.
+Table @tbl-metadatawgnas.
 
 ```{r}
 #| label: tbl-metadatawgnas
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| code-fold: TRUE
+#| code-summary: table metadata
 #| tbl-cap: Content of the datnas metadata table
 
-dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met limit 10;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met limit 10;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -3267,7 +3424,7 @@ Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age
 #| message: FALSE
 #| tbl-cap: Content of the refnas additional table
 
-dbGetQuery(con_diaspara, "SELECT * FROM refnas.tg_additional_add;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.tg_additional_add;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -3290,7 +3447,7 @@ dbExecute(con_diaspara,"ALTER SEQUENCE dat.t_stock_sto_sto_id_seq RESTART WITH 1
 dbExecute(con_diaspara_admin,"DELETE FROM datnas.t_stock_sto;")
 dbExecute(con_diaspara_admin,"INSERT INTO datnas.t_stock_sto
 (sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, 
-sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, 
+sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, 
 sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, 
 sto_dta_code, sto_wkg_code,sto_add_code)
 SELECT 
@@ -3312,7 +3469,6 @@ nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
     WHEN m.life_stage = '_' THEN '_'
    ELSE 'TROUBLE' END AS sto_lfs_code 
 , NULL AS sto_hty_code
-, NULL AS sto_fia_code -- fishing area
 , 1 AS sto_qal_code -- see later TO INSERT deprecated values
 , NULL AS sto_qal_comment 
 , NULL AS sto_comment
@@ -3336,13 +3492,21 @@ refsalmoglob.metadata m ON m.var_mod = d.var_mod; ")# 45076
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
+#| code-fold: TRUE
+#| code-summary: datnas.t_stock_sto table
 #| tbl-cap: Content of the refnas t_stock_sto table
 
-dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")%>% 
-  knitr::kable() %>% 
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")|> 
+  knitr::kable() |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+
+
+[//]: # (------------------------WGEEL SECTION -------------------------------)
+
+
 
 # WGEEL
 
@@ -3350,17 +3514,15 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")%>%
 
 Done see metricDB report
 
-## refeel.tr_area_are
-
-This will be continued in t_stock_sto
-
 
 ## dateel.t_metadata_met
 
+<details>
 <summary>SQL code to create table `dateel.t_metadata_met` </summary>
 
 ``` {.sql include="../SQL/6_dateel_t_metadata_met.sql"}
 ```
+</details>
 
 Note : 
 
@@ -3499,25 +3661,34 @@ We still need to add units to the metadata table
 
 ## dateel.t_stock_sto
 
-
+<details>
 <summary>SQL code to create table `dateel.t_stock_sto` </summary>
 
 ``` {.sql include="../SQL/7_dateel_t_stock_sto.sql"}
 ```
+</details>
 
 
+<details>
 <summary>SQL code to insert values in table `dateel.t_stock_sto` </summary>
 
 ``` {.sql include="../SQL/8_dateel_t_stock_sto_insert.sql"}
 ```
+</details>
+
+
+[//]: # (------------------------WGBAST SECTION -------------------------------)
 
 
 # WGBAST
+
+<details>
 
 <summary>SQL code to create table `datbast.t_metadata_met` </summary>
 
 ``` {.sql include="../SQL/9_datbast_t_metadata_met.sql"}
 ```
+</details>
 
 An analysis of the WGBAST dataset for landings shows that it could follow the structure
 of the main t_stock_sto table, here is the list of changes needed.
@@ -3546,9 +3717,9 @@ is WGNAS when compared to WGEEL, we need to do the same and allow for three addi
 
 <details>
 
-<summary>Creating the referential for WGBAST</summary>
+<summary>Creating the version referential for WGBAST</summary>
 
-``` {.sql include="../SQL/3_refbast_tr_version_ver.sql"}
+``` {.sql include="../SQL/11_refbast_tr_version_ver.sql"}
 ```
 
 </details>
@@ -3598,7 +3769,61 @@ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 ```
 
+<details>
 
+<summary>Creating the estimation method referential for WGBAST</summary>
+
+``` {.sql include="../SQL/12_refbast_tr_estimationmethod_esm.sql"}
+```
+
+</details>
+
+
+```{r import_refbast_tr_estimationmethod_esm}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import estimation method codes
+
+
+# 
+
+esm <- data.frame(
+  esm_id=1:8, 
+  esm_code = paste0("SmoltEst",1:8), 
+  esm_description = c("Estimate of smolt production from complete count of smolts.",
+                      "Sampling of smolts and estimate of total smolt run size.",
+                      "Estimate of smolt run from parr production by relation developed in the same river.",
+                      "Estimate of smolt run from parr production by relation developed in another river.",
+                      "Inference of smolt production from data derived from similar rivers in the region.",
+                      "Estimate of smolt production from count of spawners.",
+                      "Estimate of smolt production inferred from stocking of reared fish in the river.",
+                      "Estimate of smolt production from salmon catch, exploitation and survival estimate."), 
+  esm_icesvalue = NA,
+  esm_icesguid = NA,
+  esm_icestablesource =NA
+)
+
+
+DBI::dbWriteTable(con_diaspara_admin, "temp_esmr", esm, overwrite = TRUE)
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO refbast.tr_estimationmethod_esm
+(esm_id, esm_code, esm_description, esm_icesvalue,  esm_icestablesource)
+SELECT esm_id, esm_code, esm_description, esm_icesvalue, esm_icestablesource
+FROM temp_esmr")# 8
+DBI::dbExecute(con_diaspara_admin, "DROP table temp_esmr")
+
+```
+
+
+
+## Create datbast.t_metadata_met
+
+Note there is a slight different here, I need to add twice the variables for salmon,
+and then for trutta. These are no duplicates as the primary key is set on both TRT
+and SAL. Later on, there should be variables only with SAL (at the second step
+of the integration process.)
 
 ```{r datbast.t_metadata_met}
 #| echo: TRUE
@@ -3639,9 +3864,8 @@ df_all$gearICES <- case_when(df_all$gear == "AN" ~ "LHP", # CHECK THIS Handlines
                              df_all$gear == "LLD" ~ "LLD",
                              df_all$gear == "GND" ~ "GND",
                              df_all$gear == "MIS" ~ "MIS",
-                             df_all$gear == "All" ~ NA,  # CHECK THIS
                              df_all$gear == "FYK" ~ "FYK",
-                             df_all$gear == "ALV" ~ NA)   # CHECK THIS
+                             df_all$gear == "ALV" ~ "LHP")   # LV and FI, in river RECR
 # ALV: discarded alive, BMS: below minimum landing size (dead)
 
 
@@ -3705,17 +3929,19 @@ saveRDS(df_all, file="data/wgbast_landings_modified.Rds")
 # t_metadata_met  <-  dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_metadata_met;")
 # clipr::write_clip(colnames(t_metadata_met))
 # head(t_metadata_met)
-
-typ <- outer(c("N","W","E"), paste0("_", unique(df_all$f_type[!is.na(df_all$f_type)])), FUN = "paste0")
+uktyp <- unique(df_all$f_type)
+uktyp[is.na(uktyp)] <- "HIST" # historical data, check hopefully it's OK
+typ <- outer(c("N","W","E"), paste0("_",uktyp ), FUN = "paste0")
 dim(typ) <- NULL
-#"COMM_N"  "ALV_N"   "RECR_N"  "DISC_N"  "SEAL_N"  "BMS_N"   "BROOD_N" "COMM_W"  "ALV_W"   "RECR_W"  "DISC_W" 
-#"SEAL_W"  "BMS_W"   "BROOD_W" "COMM_E"  "ALV_E"   "RECR_E"  "DISC_E"  "SEAL_E"  "BMS_E"   "BROOD_E"
+#"N_HIST"  "W_HIST"  "E_HIST"  "N_COMM"  "W_COMM"  "E_COMM"  "N_ALV"   "W_ALV"   "E_ALV"   "N_RECR"  "W_RECR"  "E_RECR"  "N_DISC" 
+#"W_DISC"  "E_DISC"  "N_SEAL"  "W_SEAL"  "E_SEAL"  "N_BMS"   "W_BMS"   "E_BMS"   "N_BROOD" "W_BROOD" "E_BROOD"
 #typ <- outer(typ, c("_SAL", "_TRT"),  FUN = "paste0")
 #dim(typ) <- NULL
 
 
 #get the type back
 met_type <- substring(typ, 3,nchar(typ)) #COMM COMM, ...., 
+
 uni_code <- substring(typ, 1,1)
 uni_code <- case_when(uni_code == "E" ~ "nd", 
                       uni_code == "W" ~ "kg",
@@ -3729,9 +3955,9 @@ uni_code <- case_when(uni_code == "E" ~ "nd",
 # It might seem weird but might allow for different metadata, and also most importantly
 # later on, in the model some variables will be specific to SAL
 # but when the variables are in common, then need to be repeated.
-t_metadata_met_TRT  <- data.frame(
+t_metadata_met_TRS  <- data.frame(
     met_var = typ,
-    met_spe_code = "TRT",
+    met_spe_code = "TRS",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3776,32 +4002,52 @@ met_definition = "TODO",
 met_deprecated = NA 
 # not integrating any of the deprecated data
 )
-t_metadata_met_SAL <- t_metadata_met_TRT
+t_metadata_met_SAL <- t_metadata_met_TRS
 t_metadata_met_SAL$met_spe_code<- "SAL"
 
 
-t_metadata_met <- bind_rows(t_metadata_met_TRT,t_metadata_met_SAL)
+t_metadata_met <- bind_rows(t_metadata_met_TRS,t_metadata_met_SAL)
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_wgbast_t_metadata_met", t_metadata_met, overwrite = TRUE)
 
 
 DBI::dbExecute(con_diaspara_admin, "DELETE FROM datbast.t_metadata_met")
 DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
-SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #42
+SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #48
 
 
 ```
 
 ## datbast.t_stock_sto
 
+There are three additional column in `databast.t_stock_sto` when compared to 
+`dat.t_stock_sto`, the table from which it inherits.
+This is similar to `datnas.t_stock_sto` where an additional column was
+created to handle the extra dimension for some arrays stored in WGNAS.
+The columns are :
 
+* sto_tip_code  the time period, one of YR, HYR (half year),  QTR (Quarter), MON (Month). A vocabulary
+has been created for checks on these time periods.
+* sto_timeperiod integer, the value of the time period. Note : a trigger has
+been created to handle different possible values for sto_tip_code (e.g. half of year can
+be 1 or 2 , and month between 1 and 12).
+* sto_datasourcecode. This column is not used in scripts, but discussion with
+Henni have shown that this remains important. It will be adapted to ICES vocab
+`DataSource` with additions for elements on the calculation of smolts in the Young fish database (see
+@sec-datasource)
+.
+
+
+<details>
 <summary>SQL code to create table `datbast.t_stock_sto` </summary>
 
 ``` {.sql include="../SQL/10_datbast_t_stock_sto.sql"}
 ```
+</details>
 
 
-<summary>SQL code to insert values in table `dateel.t_stock_sto`</summary>
+Clearly the table of datasource will have to be revised and new methodologies
+added and 
 
 ```{r datbast.t_stock_sto}
 #| echo: TRUE
@@ -3813,74 +4059,170 @@ SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_
 
 df_all <- readRDS(file="data/wgbast_landings_modified.Rds")
 
-# Instert Numbers
 
+# Modify some lines with comments (TO BE CHECKED)
+df_all[df_all$sub_div == "21" & ! is.na(df_all$sub_div) ,"Notes"] <- "ATTENTION THESE WERE MARKED AS 21 WHICH doesn't exist,
+They have been changed to 31, please check"
 
+tt <- table(df_all$river)
+tt <- tt[order(tt, decreasing =TRUE)]
+tt <- as.data.frame(tt)
+colnames(tt) <- c("Area_name", "number")
+dbWriteTable(con_diaspara_admin, "landings_wbast_river_names", tt,overwrite = TRUE)
+dbExecute(con_diaspara_admin, "ALTER TABLE landings_wbast_river_names set schema refbast;")
+dbExecute(con_diaspara_admin, "ALTER TABLE refbast.landings_wbast_river_names ADD COLUMN riv_are_code TEXT;")
+dbExecute(con_diaspara_admin, 'ALTER TABLE refbast.landings_wbast_river_names RENAME COLUMN "Area_name" TO "riv_are_name";')
+riv <- dbGetQuery(con_diaspara_admin, "SELECT * FROM refbast.tr_rivernames_riv ")
 
+# Insert Numbers
 df_all_N <- df_all |>
   filter(!is.na(numb)) |>
-  mutate(sto_met_var = paste0(tp_type, "_N"))
+  mutate(f_type = ifelse(is.na(f_type), "HIST", f_type)) |>
+  mutate(sto_met_var = paste0(f_type, "_N"))
 
+# unit allows to avoid having NA in strings ... Here we put additional info in the comment from the content
+df_all_N$n_type2 <- df_all_N$n_type
+df_all_N$n_type2[!is.na(df_all_N$n_type)]<-paste0("N_type=",df_all_N$n_type2[!is.na(df_all_N$n_type)])
+df_all_N$n_type2[is.na(df_all_N$n_type)]<- ""
+df_all_N$notes2 <- df_all_N$notes
+df_all_N$notes2[is.na(df_all_N$notes2)] <- ""
+df_all_N$notes2 <- paste(df_all_N$notes2,df_all_N$n_type2, collapse =", ")
+
+df_all_N |> 
+  select(river) |>
+  filter(!is.na(river))|>
+        distinct()
 t_stock_sto_N = data.frame(
   sto_met_var = df_all_N$sto_met_var,
   sto_year = df_all_N$year,
   sto_spe_code = df_all_N$species,
-  sto_value = df_all_N$ numb,
-  sto_are_code = case_when()
-)      
+  sto_value = df_all_N$numb,
+  sto_are_code = case_when(df_all_N$sub_div == "22-32" ~ "27.3.d", # correct, 3 lines corresponding to national survey Estonia
+                           df_all_N$sub_div == "200" ~ "27.3.d22-29",
+                           df_all_N$sub_div == "300" ~ "27.3.d30-31",
+                           df_all_N$sub_div == "32"  ~  "27.3.d32",
+                           df_all_N$sub_div == "31"  ~  "27.3.d31",
+                           df_all_N$sub_div == "30"  ~  "27.3.d30",
+                           df_all_N$sub_div == "29"  ~  "27.3.d29",
+                           df_all_N$sub_div == "27"  ~  "27.3.d27",
+                           df_all_N$sub_div == "26"  ~  "27.3.d26",
+                           df_all_N$sub_div == "25"  ~  "27.3.d25",
+                           df_all_N$sub_div == "24"  ~  "27.3.d24",
+                           df_all_N$sub_div == "23"  ~  "27.3.d24",
+                           df_all_N$sub_div == "22"  ~  "27.3.d24",
+                           df_all_N$sub_div == "21"  ~  "27.3.d31",# 3 Lines for sweden comment added
+                           # here we allow for the two subdivision in the Baltic
+                           df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.1' ~ '27.3.d.28.1',
+                           df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.2' ~ '27.3.d.28.2',
+                           df_all_N$sub_div == "28"  ~  "27.3.d28",
+                           is.na(df_all_N$sub_div)   ~   "27.3.d" # 12 rows with with comments corresponds all catches of the country and year concerned
+                           ),
+  sto_cou_code = df_all_N$country,
+  sto_lfs_code = 'Adult',
+  sto_hty_code = case_when(df_all_N$fishery == "O" ~ "MO",
+                           df_all_N$fishery == "C"~  "MC",
+                           df_all_N$fishery == "R" ~ "F"),
+  sto_qal_code = 1,
+  sto_comment = df_all_N$notes2,
+  sto_datelastupdate = Sys.Date(),
+  sto_mis_code = NA,
+  sto_dta_code = "Public", # check this
+  sto_wkg_code = "WGBAST",
+  sto_ver_code = "WGBAST-2025-1",
+  sto_gear_code  = df_all_N$gearICES,
+  sto_tip_code  = case_when(df_all_N$tp_type == "YR" ~"Year",
+                            df_all_N$tp_type == "HYR" ~ "Half of Year",
+                            df_all_N$tp_type == "MON" ~ "Month",
+                            df_all_N$tp_type == "MONTH" ~ "Month",
+                            df_all_N$tp_type == "QTR" ~ "Quarter",
+                            df_all_N$tp_type == "COMM" ~ "Quarter", # this is an error
+                            is.na( df_all_N$tp_type) ~ "Year",
+                            .default = "Troube this will fail at insertion"),
+  sto_timeperiod = df_all_N$time_period,
   
+  # in the notes some elements hint at surveys, but this will need a check up by WGBAST anyways.
+  sto_dts_code = case_when(df_all_N$n_type == "LOG" ~ "Logb",
+                                 df_all_N$n_type == "EXV" ~ "Exprt",
+                                 df_all_N$n_type == "EST" & (grepl("survey",tolower(df_all_N$notes)) | 
+                                                           grepl("question",tolower(df_all_N$notes)) |
+                                                           grepl("query", tolower(df_all_N$notes)) |
+                                                           grepl("web", tolower(df_all_N$notes))) ~ "SampDS", 
+                                df_all_N$n_type == "EXT" ~ NA),
+  sto_dtb_code = case_when(df_all_N$n_type == "LOG" ~ "Official",
+                           df_all_N$n_type == "EXV"  ~  "Estimated",
+                           df_all_N$n_type == "EST" ~ "Estimated",
+                           df_all_N$n_type == "EXT" ~ "Estimated",
+                           .default =  "Unknown"),
+  sto_esm_code = NA
+)  
+dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_n")
+system.time(dbWriteTable(con_diaspara_admin, "temp_t_stock_sto_n", t_stock_sto_N[1:100,],overwrite = TRUE))
+dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
+          SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_n") 
+dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_n")
+# Insert WEIGHTS
 
 
-dbExecute(con_diaspara_admin,"INSERT INTO datnas.t_stock_sto
-(sto_id, sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, 
-sto_cou_code, sto_lfs_code, sto_hty_code, sto_fia_code, sto_qal_code, 
-sto_qal_comment, sto_comment, sto_datelastupdate, sto_mis_code, 
-sto_dta_code, sto_wkg_code,sto_add_code)
-SELECT 
-nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
-, d.var_mod AS sto_met_var
-, d.year AS sto_year
-, 'SAL' AS  sto_spe_code
-, d.value AS sto_value
-, d.area AS sto_are_code
-, NULL AS sto_cou_code -- OK can be NULL
-, CASE WHEN m.life_stage = 'Eggs' THEN 'E'
-    WHEN m.life_stage = 'Adult' THEN 'A'
-    WHEN m.life_stage = 'Multiple' THEN 'AL'
-    WHEN m.life_stage = 'Adults' THEN 'A'
-    WHEN m.life_stage = 'Smolts' THEN 'SM'
-    WHEN m.life_stage = 'Non mature' THEN 'PS' -- IS THAT RIGHT ?
-    WHEN m.life_stage = 'PFA' THEN 'PS' -- No VALUES
-    WHEN m.life_stage = 'Spawners' THEN 'A' -- No values
-    WHEN m.life_stage = '_' THEN '_'
-   ELSE 'TROUBLE' END AS sto_lfs_code 
-, NULL AS sto_hty_code
-, NULL AS sto_fia_code -- fishing area
-, 1 AS sto_qal_code -- see later TO INSERT deprecated values
-, NULL AS sto_qal_comment 
-, NULL AS sto_comment
-, date(d.date_time) AS sto_datelastupdate
-, NULL AS sto_mis_code
-, 'Public' AS sto_dta_code
-, 'WGNAS' AS sto_wkg_code
-, CASE WHEN d.var_mod IN ('eggs','p_smolt', 'p_smolt_pr', 'prop_female') THEN d.age
-       WHEN d.var_mod IN ('omega') THEN d.LOCATION
-       END AS sto_add_code
-FROM refsalmoglob.database d JOIN
-refsalmoglob.metadata m ON m.var_mod = d.var_mod; ")
+
+
+# Insert Effort
+
+
+
+# Insert N_CI
+
+
+
+# Insert W_CI
+
+
 
 
 
 
 ```
 
+::::: questionbox
+:::: questionbox-header
+QUESTION WGBAST: corrections 
+::::
+::: questionbox-body
+3 lines with area 21 (which do not exists) =>
+It's in sweden for TRS is it correct to assign it to 31 ?
+To be checked during integration.
+
+tp_type has 89 lines with COMM =>
+Assigned to Year to be checked
+:::
+:::::
+
+::::: questionbox
+:::: questionbox-header
+QUESTION WGBAST: Would the data access be restricted
+::::
+::: questionbox-body
+Data access can be Resticted or Public. 
+:::
+:::::
 
 
-
-
-``` {.sql include="../SQL/11_datbast_t_stock_sto_insert.sql"}
-```
-
+::::: questionbox
+:::: questionbox-header
+TODO WGBAST : n_type and w_type
+::::
+::: questionbox-body
+Current we cannot easily translate all values LOG" "EST" "EXV" "EXT"
+values with ICES vocab. While Logbook is OK. We think that you will need
+to create a dictionary of possible estimation methods (we could have more), and then
+resubmit your data while screening for the correct type. For instance we don't have
+an equivalent for EXT (extrapolated) so has not been translated, but the f_type and
+w_type are provided in the column comment. 
+For "Est" when notes indicated "survey", we have assessed it as
+SampDS. If you look at the tr_datasource_dts you will see a table of 
+values in the ICES vocab. Among possible candidates are OthDF Other declarative forms (i.e. landing declarations and national declarative forms),
+or SampDC	Commercial sampling data (sampling methodologies specific to each country). This refers to sampling in commercial vessels, not only for commercial species, or SampDS	Survey sampling data (sampling methodologies specific to each country).
+:::
+:::::
 
 This document is still in construction ![Structure of the db (still in
 construction)](images\diaspara-ref.png){#fig-ref}

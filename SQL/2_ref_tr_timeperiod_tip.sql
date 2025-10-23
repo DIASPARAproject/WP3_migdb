@@ -6,7 +6,7 @@ CREATE TABLE  ref.tr_timeperiod_tip (
   tip_id SERIAL PRIMARY KEY,
   tip_code TEXT NOT NULL CONSTRAINT uk_tip_code UNIQUE, 
   tip_description TEXT,
-  tip_icesvalue character varying(4),  
+  tip_icesvalue TEXT,  
   tip_icesguid uuid,
   tip_icestablesource text
 );

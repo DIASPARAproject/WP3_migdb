@@ -5,7 +5,7 @@ CREATE TABLE datbast.t_metadata_met(
  CONSTRAINT fk_met_spe_code FOREIGN KEY (met_spe_code)
   REFERENCES ref.tr_species_spe(spe_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
- CONSTRAINT ck_met_spe_code CHECK (met_spe_code='SAL' OR met_spe_code='TRT'),
+ CONSTRAINT ck_met_spe_code CHECK (met_spe_code='SAL' OR met_spe_code='TRS'),
  CONSTRAINT fk_met_wkg_code FOREIGN KEY (met_wkg_code)
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -42,7 +42,7 @@ COMMENT ON TABLE datbast.t_metadata_met IS
 COMMENT ON COLUMN datbast.t_metadata_met.met_var 
 IS 'Variable code, primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN datbast.t_metadata_met.met_spe_code 
-IS 'Species, ANG primary key on both met_spe_code and met_var.';
+IS 'Species, SAL OR TRS primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN datbast.t_metadata_met.met_ver_code 
 IS 'Code on the version of the model, see table refeel.tr_version_ver.';
 COMMENT ON COLUMN datbast.t_metadata_met.met_oty_code 
