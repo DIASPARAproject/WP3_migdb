@@ -124,3 +124,6 @@ UPDATE "ref".tr_gear_gea
 UPDATE "ref".tr_gear_gea
   SET gea_icestablesource='GearType',gea_icesvalue='OTM'
   WHERE gea_id=13;
+
+
+ALTER TABLE tr_gear_gea SET gea_code 

@@ -26,6 +26,73 @@ bibliography: diaspara.bib
 include-after-body: "footer.html"
 ---
 
+
+
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") # clean_names
+load_library("uuid")
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamediaspara,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$userdiaspara,
+                           password = cred$passworddiaspara)
+con_diaspara_admin <- dbConnect(Postgres(), 
+                                dbname = cred$dbnamediaspara,
+                                host = cred$hostdistant,
+                                port = cred$port,
+                                user = cred$userdistant,
+                                password = cred$passworddistant)
+con_salmoglob <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamesalmo,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+con_wgeel_distant <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamedistant,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$userdistant,
+                           password = cred$passworddistant)
+# con_wgeel_local <- dbConnect(Postgres(), 
+#                            dbname = "wgeel",
+#                            host = "127.0.0.1",
+#                            port = cred$port,
+#                            user = cred$userdistant,
+#                            password = cred$passwordsalmo)
+
+
+```
+
 Aside the main db report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. In the project these correspond to LHT, but additionally, the data should also correspond to the time series and the sampling db developed by WGEEL. The two latter data structure (series and sampling) are very similar and they both hold very similar group metrics and individual metrics.
 
  The first was developed initially to store data about the series used in recruitment. In practice, it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
@@ -282,70 +349,6 @@ digraph schema {
 ```
 
 
-```{r init}
-#| echo: FALSE
-#| warning: FALSE
-#| message: FALSE
-#| results: 'hide'
-
-#if (!grepl("montepomi", getwd())) {
-if(Sys.info()[["user"]] == 'joliviero'){
-setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "D:/DIASPARA/wgbast"
-} else if (Sys.info()[["user"]] == 'cedric.briand'){
-setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
-}
-source("utilities/load_library.R")
-load_library("tidyverse")
-load_library("knitr")
-load_library("kableExtra")
-load_library("icesVocab")
-load_library("readxl")
-load_library("janitor")
-load_library("skimr")
-load_library("RPostgres")
-load_library("yaml")
-load_library("DBI")
-load_library("ggplot2")
-load_library("sf")
-load_library("janitor") # clean_names
-load_library("uuid")
-cred <- read_yaml("../credentials.yml")
-con_diaspara <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamediaspara,
-                           host = cred$hostdistant,
-                           port = cred$port,
-                           user = cred$userdiaspara,
-                           password = cred$passworddiaspara)
-con_diaspara_admin <- dbConnect(Postgres(), 
-                                dbname = cred$dbnamediaspara,
-                                host = cred$hostdistant,
-                                port = cred$port,
-                                user = cred$userdistant,
-                                password = cred$passworddistant)
-con_salmoglob <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamesalmo,
-                           host = cred$hostdistant,
-                           port = cred$port,
-                           user = cred$usersalmo,
-                           password = cred$passwordsalmo)
-con_wgeel_distant <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamedistant,
-                           host = cred$hostdistant,
-                           port = cred$port,
-                           user = cred$userdistant,
-                           password = cred$passworddistant)
-# con_wgeel_local <- dbConnect(Postgres(), 
-#                            dbname = "wgeel",
-#                            host = "127.0.0.1",
-#                            port = cred$port,
-#                            user = cred$userdistant,
-#                            password = cred$passwordsalmo)
-
-
-```
-
 ## Station
 
 To include the station, we need two tables, the fist one is the Station dictionary
@@ -581,6 +584,8 @@ knitr::kable(Deprecated) %>% kable_styling(bootstrap_options = c("striped", "hov
 
 THe habitat database is managed by [EIONET](http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/)
 Habitats directive Art. 17 reporting in year 2018.
+This is only for Natura2000 sites, a better options would be
+https://eunis.eea.europa.eu/habitats-code-browser.jsp
 
 <details>
 
@@ -1382,7 +1387,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_version_ver;")%>% knitr::kable
 
 
 
-## Creating series main table for series
+### Creating series main table for series
 
 
 <details>
@@ -1457,7 +1462,7 @@ If so we need to decide what fields could change over time (if any)
 :::
 
 
-## Creating inherited series
+### Creating inherited series
 
 
 <details>
@@ -1472,7 +1477,7 @@ If so we need to decide what fields could change over time (if any)
 
 
 
-## Import t_series_ser from wgeel
+### Import t_series_ser from wgeel
 
 ```{r refeel.t_series_ser_import}
 #| echo: TRUE
@@ -1687,7 +1692,7 @@ Data are imported from WGEEL `datawg.t_dataseries_das`table to `dateel.t_serannu
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import to refeel.t_serannual_ser
+#| code-summary: Code to import to dateel.t_serannual_ser
 
 das0 <- dbGetQuery(con_wgeel_distant, "SELECT * FROM datawg.t_dataseries_das;
 ")
@@ -2004,10 +2009,239 @@ So the metric release will be after wgeel, the work will be finished and this ca
 # Import data from WP2 (TODO)
 
 
+# WGBAST
+
+
+## series table t_series_ser
+
+
+### Creating inherited series
+
+
+<details>
+
+<summary>SQL code to create table `dateel.t_series_ser`</summary>
+
+``` {.sql include="../SQL/metric_40_datbast_t_series_ser.sql"}
+```
+
+</details>
+
+
+
+
+### Import t_series_ser from trutta database
+
+```{r refeel.t_series_ser_import_trutta}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to to refeel.tr_series_ser
+
+ser <- readxl::read_xlsx(file.path(datawd, "WGBAST_TRS_densities2024filled.xlsx"), sheet = "dane")
+ser <- janitor::clean_names(ser)
+ser <- ser[,1:9]
+# res <- dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_series_ser")
+# clipr::write_clip(colnames(res))
+riv <- dbGetQuery(con_diaspara_admin, "SELECT are_code, riv_rivername  FROM refbast.tr_rivernames_riv 
+                  JOIN refbast.tr_area_are on are_code = riv_are_code")
+riv$riv = stringi::stri_trans_general(riv$riv_rivername, "latin-ascii")
+ser$riv <-  stringi::stri_trans_general(ser$river, "latin-ascii")
+ser <- ser |> inner_join(riv, by= join_by(riv))
+# 584 on 10303 => 604 with stringi
+# Need to add electrofishing types to gear
+save(ser, file = "data/ser_wgbast.Rdata")
+t_series_ser <-
+  data.frame(
+   "ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
+   "ser_code" = paste0(ser$country, "_", substr(stringi::stri_trans_general(ser$river, "latin-ascii"),1,4),"_P_TRS"),
+    "ser_name"  = ser$river,
+   "ser_spe_code" = "TRS",
+   "ser_lfs_code" = "P",
+   "ser_are_code" = ser$are_code,
+   "ser_wkg_code" = "WGBAST",
+   "ser_ver_code" = "WGBAST-2025-1",
+   "ser_cou_code" = ser$country,
+   "ser_hab_code" = NA, # TODO integrate habitats from eiunis https://eunis.eea.europa.eu/habitats-code-browser.jsp?expand=58,66,79,17#level_17
+   "ser_gea_code" = '10.4', # electric fishing
+   "ser_fiw_code" = NA,
+   "ser_mon_code" = NA,
+   "ser_uni_code" = "nr",
+   "ser_effort_uni_code" = "nr/m2",
+   "ser_description" = NA,
+    "ser_locationdescription" = paste0("main_river"=ser$main_river,", river = ",ser$river,", sub_div= ",ser$sub_div),
+    "ser_wltyp_code" =  "FW",
+    "ser_stocking" = NA,
+    "ser_stockingcomment" = NA,
+    "ser_protocol" = NA,
+    "ser_samplingstrategy" = NA,
+    "ser_datarightsholder" = NA,
+    "ser_datelastupdate" = '2025-06-09' #,
+    # geom
+  )
+
+res <- dbWriteTable(con_diaspara_admin, "t_series_ser_temp", 
+                    t_series_ser, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM  datbast.t_series_ser;")
+dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_series_ser 
+SELECT distinct on (ser_code)
+ ser_id::uuid,
+ ser_code,
+ ser_name,
+ ser_spe_code,
+ ser_lfs_code,
+ ser_are_code::TEXT,
+ ser_wkg_code,
+ ser_ver_code,
+ ser_cou_code,
+ ser_hab_code,
+ ser_gea_code,
+ ser_fiw_code,
+ ser_mon_code,
+ ser_uni_code,
+ ser_effort_uni_code,
+ ser_description,
+ ser_locationdescription,
+ ser_wltyp_code,
+ ser_stocking,
+ ser_stockingcomment,
+ ser_protocol,
+ ser_samplingstrategy,
+ ser_datarightsholder,
+ ser_datelastupdate::date
+FROM t_series_ser_temp") # 25 
+
+
+
+```
+
+The table t_series_ser contains an extract of the series. Only a few were joined when trying
+to match the names. A data integration using the habitat referential would allow to 
+integrate at sub basin level though maybe a table of subbasins (with geometries) would need to 
+be created.
+
+```{r}
+#| label: tbl-datbast.t_series_ser
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show series table for wbast (this is just an example).
+#| tbl-cap: Table t_series_ser for series first 20 lines
+dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_series_ser limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+## Creating table joining series and station
+
+The table is created but empty. We need the stations in ICES first.
+
+<details>
+
+<summary>SQL code to create table `datbast.tj_seriesstation_ses`</summary>
+
+``` {.sql include="../SQL/metric_41_datbast.tj_seriesstation_ses.sql"}
+```
+
+</details>
+
+
+## Creating inherited table for annual series
+
+
+<details>
+
+<summary>SQL code to create tables `datbast.t_serannual_san`</summary>
+
+``` {.sql include="../SQL/metric_43_datbast_t_serannual_san.sql"}
+```
+
+</details>
+
+
+## Import data for annual series 
+
+Data are imported from the electrofishing trutta db to `datbast.t_serannual_ser`.
+Data are structured not by stage but by age group.
+
+
+```{r datbast.t_serannual_ser}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to datbast.t_serannual_ser
+
+# start over from ser, previous chunk
+load(file = "data/ser_wgbast.Rdata") #ser
+
+ser0 <- dbGetQuery(con_diaspara_admin, "SELECT * FROM datbast.t_series_ser")
+ser <- ser |> mutate(ser_code =  paste0(ser$country, "_", substr(stringi::stri_trans_general(ser$river, "latin-ascii"),1,4),"_P_TRS")) |>
+ inner_join(ser0)
+
+t_serannual_san_temp <-
+  data.frame(
+    "san_ser_id" = ser$ser_id,
+    "san_id" = seq(along.with= ser$ser_id),
+    "san_value"=ser$density_n_100m2,
+    "san_year" = ser$year,
+    "san_comment" = NA,
+    "san_effort" = ser$number_of_sites,
+    "san_datelastupdate" = Sys.Date(),
+    "san_qal_id" = 1,
+    "san_qal_comment" = NA,
+    "san_wkg_code" = "WGBAST",
+    "san_ver_code" = "WGBAST-2025-1",
+    "san_agegroup" = ifelse(is.na(ser$age),"all",ser$age))
+
+
+dbWriteTable(con_diaspara_admin, "t_serannual_san_temp", 
+                    t_serannual_san_temp, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM  datbast.t_serannual_san;")
+dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_serannual_san 
+SELECT 
+    san_ser_id::uuid,
+    san_id,
+    san_value,
+    san_year,
+    san_comment,
+    san_effort,
+    san_datelastupdate,
+    san_qal_id,
+    san_qal_comment,
+    san_wkg_code,
+    san_ver_code,
+    san_agegroup
+FROM t_serannual_san_temp") # 604
+
+``` 
+
+:::{.callout-note appearance="simple"}
+## Note for age
+Here age needs to be part of a constraint, values are 0+, >0+ but all is necessary
+to replace NULL.
+:::
+
+```{r}
+#| label: tbl-datbast.t_serannual_san
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show series table.
+#| tbl-cap: Table databast.t_serannual_san for annual values  first 20 lines
+dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_serannual_san limit 20;")%>% knitr::kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
 # Import to ICES (TODO)
 
 
 
 # Acknowledgements
 
-Maria and Johana for their help.
+Maria and Joana for their help.
+Rui and Carlos for their support.

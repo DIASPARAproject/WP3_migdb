@@ -2,12 +2,11 @@
 -- when dumping this is inherited => I have a not null constraint on the server 
 -- when the table is recreated
 
-ALTER TABLE dat.t_series_ser ALTER COLUMN ser_are_code DROP NOT NULL;
-ALTER TABLE dat.t_series_ser ALTER COLUMN ser_cou_code DROP NOT NULL;
 
 
-DROP TABLE IF EXISTS dateel.t_series_ser;
-CREATE TABLE dateel.t_series_ser ( 
+
+DROP TABLE IF EXISTS datbast.t_series_ser;
+CREATE TABLE datbast.t_series_ser ( 
   CONSTRAINT pk_ser_id PRIMARY KEY (ser_id),
   CONSTRAINT uk_ser_code UNIQUE (ser_code),
   CONSTRAINT uk_ser_name UNIQUE (ser_name),
@@ -18,13 +17,13 @@ CREATE TABLE dateel.t_series_ser (
     REFERENCES ref.tr_lifestage_lfs (lfs_code, lfs_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,  
   CONSTRAINT fk_ser_are_code FOREIGN KEY (ser_are_code)
-    REFERENCES refeel.tr_area_are (are_code) 
+    REFERENCES refbast.tr_area_are (are_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_ser_wkg_code  FOREIGN KEY (ser_wkg_code)
    REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
    ON UPDATE CASCADE ON DELETE RESTRICT,   
   CONSTRAINT fk_ser_ver_code FOREIGN KEY (ser_ver_code)
-   REFERENCES refeel.tr_version_ver(ver_code)
+   REFERENCES refbast.tr_version_ver(ver_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,  
   CONSTRAINT fk_ser_cou_code FOREIGN KEY (ser_cou_code)
    REFERENCES ref.tr_country_cou(cou_code)
@@ -50,12 +49,12 @@ CREATE TABLE dateel.t_series_ser (
 ) inherits (dat.t_series_ser);
 
 -- In the wgeel schema the default is WGEEL
-ALTER TABLE dateel.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGEEL';  
+ALTER TABLE datbast.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGBAST';  
 
-COMMENT ON TABLE dateel.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
+COMMENT ON TABLE datbast.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
 It can correspond to time series data or individual metrics collection or both. This table is inherited from dat ';
 COMMENT ON COLUMN dat.t_series_ser.ser_id IS 'UUID, identifier of the series, primary key';
-COMMENT ON COLUMN dat.t_series_ser.ser_code IS 'Code of the series, short name of the recuitment series, this must be 4 letters + stage name, e.g. VilG, LiffGY, FremS for recruitment or silver eel series the first letter is capitalised and the stage name too. For sampling use country + name + (currently BIOM or HIST) for Biometry or Historic dataset, e.g. ES_Anda_Aguas_BIOM';
+COMMENT ON COLUMN dat.t_series_ser.ser_code IS 'Code of the series, use country_code + name series (4 letters) + stage';
 COMMENT ON COLUMN dat.t_series_ser.ser_name IS 'Name of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS 'Species, one of SAL, ELE, TRT, ALA, ALF, SLP, RLP  ... references ref.tr_species_spe, the species can be null but
 it should correspond to the main species target by the sampling';
@@ -83,8 +82,5 @@ COMMENT ON COLUMN dat.t_series_ser.ser_datarightsholder IS 'Code of the data rig
 COMMENT ON COLUMN dat.t_series_ser.ser_datelastupdate IS 'Last modification in the series, from a trigger';
 COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326, can be more detailed than the geometry for station';
 
-GRANT ALL ON dateel.t_series_ser TO diaspara_admin;
-GRANT SELECT ON dateel.t_series_ser TO diaspara_read; 
-
--- pb with DUMP
- ALTER TABLE  dateel.t_series_ser ALTER COLUMN 
+GRANT ALL ON datbast.t_series_ser TO diaspara_admin;
+GRANT SELECT ON datbast.t_series_ser TO diaspara_read; 

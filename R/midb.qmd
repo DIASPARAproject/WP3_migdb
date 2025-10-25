@@ -91,7 +91,7 @@ database is created with postgres.
 -   By default values will be capitalised for the first letter e.g.
 `Public` for the code in dataaccess.
 
--   Code ELE, ANG, TRT are capitalized, as are the working group names
+-   Code ELE, ANG, TRS are capitalized, as are the working group names
 WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
@@ -157,6 +157,12 @@ load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
+con_local <- dbConnect(Postgres(), 
+                          dbname = "diaspara",
+                          host = "localhost",
+                          port = 5433,
+                          user = "postgres",
+                          password = "postgres")
 con_diaspara <- dbConnect(Postgres(), 
                           dbname = cred$dbnamediaspara,
                           host = cred$hostdistant,
@@ -527,8 +533,8 @@ bind_rows(
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
     species_list <- tibble(
-      spe_code = c("SAL", "ANG", "TRT", "ALA", "ALF", "PET", "LAM"),
-      spe_icspecieskey = c("SAL", "ELE", "TRT", NA,NA,NA,NA),
+      spe_code = c("SAL", "ANG", "TRS", "ALA", "ALF", "PET", "LAM"),
+      spe_icspecieskey = c("SAL", "ELE", "TRS", NA,NA,NA,NA),
       spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
       spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
     )
@@ -564,7 +570,7 @@ dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species
 dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
 dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE  ref.tr_species_spe IS 
-'Table of fish species, spe_code SAL, ANG, TRT, ALA, ALF, PET, LAM, with 
+'Table of fish species, spe_code SAL, ANG, TRS, ALA, ALF, PET, LAM, with 
 reference to ICES vocabularies.'")
 ```
 
@@ -2040,7 +2046,7 @@ dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs
     SELECT 
     lfs_code, 
     lfs_name, 
-    'TRT' AS lfs_spe_code,
+    'TRSS' AS lfs_spe_code,
     lfs_description,
     lfs_icesvalue, 
     lfs_icesguid::uuid, 
@@ -3821,7 +3827,7 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_esmr")
 ## Create datbast.t_metadata_met
 
 Note there is a slight different here, I need to add twice the variables for salmon,
-and then for trutta. These are no duplicates as the primary key is set on both TRT
+and then for trutta. These are no duplicates as the primary key is set on both TRS
 and SAL. Later on, there should be variables only with SAL (at the second step
 of the integration process.)
 
@@ -3935,7 +3941,7 @@ typ <- outer(c("N","W","E"), paste0("_",uktyp ), FUN = "paste0")
 dim(typ) <- NULL
 #"N_HIST"  "W_HIST"  "E_HIST"  "N_COMM"  "W_COMM"  "E_COMM"  "N_ALV"   "W_ALV"   "E_ALV"   "N_RECR"  "W_RECR"  "E_RECR"  "N_DISC" 
 #"W_DISC"  "E_DISC"  "N_SEAL"  "W_SEAL"  "E_SEAL"  "N_BMS"   "W_BMS"   "E_BMS"   "N_BROOD" "W_BROOD" "E_BROOD"
-#typ <- outer(typ, c("_SAL", "_TRT"),  FUN = "paste0")
+#typ <- outer(typ, c("_SAL", "_TRS"),  FUN = "paste0")
 #dim(typ) <- NULL
 
 
@@ -3949,9 +3955,9 @@ uni_code <- case_when(uni_code == "E" ~ "nd",
 
 
 
-# vector with SAL ... then TRT
-# The column species is repeated because the foreign key for t_stock_sto is on both TRT and SAL,
-# so for instance we'll have two lines one with COMM_N for TRT one for SAL.
+# vector with SAL ... then TRS
+# The column species is repeated because the foreign key for t_stock_sto is on both TRS and SAL,
+# so for instance we'll have two lines one with COMM_N for TRS one for SAL.
 # It might seem weird but might allow for different metadata, and also most importantly
 # later on, in the model some variables will be specific to SAL
 # but when the variables are in common, then need to be repeated.
@@ -4018,6 +4024,91 @@ SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_
 
 ```
 
+
+```{r datbast.t_metadata_met2}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to metadata for wgbast (variables model)
+
+# sent by Becky
+scalar <- read_csv("data/WGBAST scalars1.csv")
+scalar <- janitor::clean_names(scalar)
+array <- read_csv("data/WGBAST vectors_arrays1.csv")
+array <- janitor::clean_names(array)
+t_metadata_met_a  <- data.frame(
+    met_var = array$variable_name,
+    met_spe_code = "SAL",
+    met_wkg_code = "WGBAST",
+    met_ver_code = "WGBAST-2025-1", 
+    met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
+    met_nim_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+    met_dim = paste0(
+      "{", array$dim1, ",",
+       ifelse(is.na(array$dim2), 0,array$dim2), ",",
+       ifelse(is.na(array$dim3), 0,array$dim3), "}"
+    ),
+    met_dimname = paste0(
+      "{",array$dim1_description,",", ifelse(array$dim2_description=="NA", NULL,array$dim2_description),",", ifelse(array$dim3_description=="NA",NULL,array$dim3_description,"}"
+    ),
+    # Here unlike the eel, I cannot be sure the first dimension is year, might be MON, HYR ....
+    met_modelstage = NA,
+    met_type = NA,  # TODO
+    # not a referential, used for legacy in WGNAS, 
+    # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
+    met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
+    met_fishery = NA, # not a referential
+    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_des_code = NA,
+      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#destination-tr_destination_dest
+    met_uni_code = NA,
+    met_cat_code = NA, # TODO
+met_definition = "TODO",
+met_deprecated = NA 
+# not integrating any of the deprecated data
+)
+t_metadata_met_s  <- data.frame(
+    met_var = scalar$name,
+    met_spe_code = "SAL",
+    met_wkg_code = "WGBAST",
+    met_ver_code = "WGBAST-2025-1", 
+    met_oty_code =  "Single_value",  
+    met_nim_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+    met_dim = paste0(
+      "{", 1, ",",
+       0, ",",
+       0, "}"
+    ),
+    met_dimname = paste0(
+      "{'NULL',NULL,NULL}"
+    ),
+    # Here unlike the eel, I cannot be sure the first dimension is year, might be MON, HYR ....
+    met_modelstage = NA,
+    met_type = NA,  # TODO
+    # not a referential, used for legacy in WGNAS, 
+    # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
+    met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
+    met_fishery = NA, # not a referential
+    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_des_code = NA,
+      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#destination-tr_destination_dest
+    met_uni_code = NA,
+    met_cat_code = NA, # TODO
+met_definition = "TODO",
+met_deprecated = NA 
+# not integrating any of the deprecated data
+)
+t_metadata_met<- bind_rows(t_metadata_met_s, t_metadata_met_a)
+DBI::dbWriteTable(con_diaspara_admin, "temp_wgbast_t_metadata_met", t_metadata_met, overwrite = TRUE)
+
+
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
+SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #117
+```
+
+
 ## datbast.t_stock_sto
 
 There are three additional column in `databast.t_stock_sto` when compared to 
@@ -4064,21 +4155,36 @@ df_all <- readRDS(file="data/wgbast_landings_modified.Rds")
 df_all[df_all$sub_div == "21" & ! is.na(df_all$sub_div) ,"Notes"] <- "ATTENTION THESE WERE MARKED AS 21 WHICH doesn't exist,
 They have been changed to 31, please check"
 
-tt <- table(df_all$river)
-tt <- tt[order(tt, decreasing =TRUE)]
-tt <- as.data.frame(tt)
-colnames(tt) <- c("Area_name", "number")
-dbWriteTable(con_diaspara_admin, "landings_wbast_river_names", tt,overwrite = TRUE)
-dbExecute(con_diaspara_admin, "ALTER TABLE landings_wbast_river_names set schema refbast;")
-dbExecute(con_diaspara_admin, "ALTER TABLE refbast.landings_wbast_river_names ADD COLUMN riv_are_code TEXT;")
-dbExecute(con_diaspara_admin, 'ALTER TABLE refbast.landings_wbast_river_names RENAME COLUMN "Area_name" TO "riv_are_name";')
-riv <- dbGetQuery(con_diaspara_admin, "SELECT * FROM refbast.tr_rivernames_riv ")
+
+# create table of rivernames in WGBAST, do queries and manual search to join them
+# to our layer.
+# tt <- table(df_all$river)
+# tt <- tt[order(tt, decreasing =TRUE)]
+# tt <- as.data.frame(tt)
+# colnames(tt) <- c("riv_are_name", "number")
+# dbWriteTable(con_diaspara_admin, "landings_wbast_river_names", tt,overwrite = TRUE)
+# dbExecute(con_diaspara_admin, "ALTER TABLE landings_wbast_river_names set schema refbast;")
+# dbExecute(con_diaspara_admin, "ALTER TABLE refbast.landings_wbast_river_names ADD COLUMN riv_are_code TEXT;")
+# 
+# For recreational fisheries, the river column is used.
+# It will be used as the hierarchy level to enter the data
+riv <- dbGetQuery(con_diaspara_admin, "SELECT * FROM refbast.landings_wbast_river_names 
+                  JOIN refbast.tr_area_are on are_code = riv_are_code")
+# get the are_code...
+df_all <- df_all |> 
+  left_join(riv |> select(riv_are_name, riv_are_code), by = join_by(river == riv_are_name)) 
+
+gear <- dbGetQuery(con_diaspara_admin, "SELECT * FROM ref.tr_gear_gea WHERE gea_icesvalue is NOT NULL")
+
+df_all <- df_all |> 
+  left_join(gear |> select(gea_code, gea_icesvalue), by = join_by(gearICES == gea_icesvalue))  
+
 
 # Insert Numbers
 df_all_N <- df_all |>
   filter(!is.na(numb)) |>
   mutate(f_type = ifelse(is.na(f_type), "HIST", f_type)) |>
-  mutate(sto_met_var = paste0(f_type, "_N"))
+  mutate(sto_met_var = paste0("N_",f_type))
 
 # unit allows to avoid having NA in strings ... Here we put additional info in the comment from the content
 df_all_N$n_type2 <- df_all_N$n_type
@@ -4088,40 +4194,39 @@ df_all_N$notes2 <- df_all_N$notes
 df_all_N$notes2[is.na(df_all_N$notes2)] <- ""
 df_all_N$notes2 <- paste(df_all_N$notes2,df_all_N$n_type2, collapse =", ")
 
-df_all_N |> 
-  select(river) |>
-  filter(!is.na(river))|>
-        distinct()
+
 t_stock_sto_N = data.frame(
   sto_met_var = df_all_N$sto_met_var,
   sto_year = df_all_N$year,
   sto_spe_code = df_all_N$species,
   sto_value = df_all_N$numb,
-  sto_are_code = case_when(df_all_N$sub_div == "22-32" ~ "27.3.d", # correct, 3 lines corresponding to national survey Estonia
-                           df_all_N$sub_div == "200" ~ "27.3.d22-29",
-                           df_all_N$sub_div == "300" ~ "27.3.d30-31",
-                           df_all_N$sub_div == "32"  ~  "27.3.d32",
-                           df_all_N$sub_div == "31"  ~  "27.3.d31",
-                           df_all_N$sub_div == "30"  ~  "27.3.d30",
-                           df_all_N$sub_div == "29"  ~  "27.3.d29",
-                           df_all_N$sub_div == "27"  ~  "27.3.d27",
-                           df_all_N$sub_div == "26"  ~  "27.3.d26",
-                           df_all_N$sub_div == "25"  ~  "27.3.d25",
-                           df_all_N$sub_div == "24"  ~  "27.3.d24",
-                           df_all_N$sub_div == "23"  ~  "27.3.d24",
-                           df_all_N$sub_div == "22"  ~  "27.3.d24",
-                           df_all_N$sub_div == "21"  ~  "27.3.d31",# 3 Lines for sweden comment added
+  # if it's a river get the code of the river otherwise get other codes....
+  sto_are_code = case_when(!is.na(df_all_N$river) ~ df_all_N$riv_are_code,
+                           df_all_N$sub_div == "22-32" ~ "27.3.d", # correct, 3 lines corresponding to national survey Estonia
+                           df_all_N$sub_div == "200" ~ "27.3.d.22-29",
+                           df_all_N$sub_div == "300" ~ "27.3.d.30-31",
+                           df_all_N$sub_div == "32"  ~  "27.3.d.32",
+                           df_all_N$sub_div == "31"  ~  "27.3.d.31",
+                           df_all_N$sub_div == "30"  ~  "27.3.d.30",
+                           df_all_N$sub_div == "29"  ~  "27.3.d.29",
+                           df_all_N$sub_div == "27"  ~  "27.3.d.27",
+                           df_all_N$sub_div == "26"  ~  "27.3.d.26",
+                           df_all_N$sub_div == "25"  ~  "27.3.d.25",
+                           df_all_N$sub_div == "24"  ~  "27.3.d.24",
+                           df_all_N$sub_div == "23"  ~  "27.3.d.23",
+                           df_all_N$sub_div == "22"  ~  "27.3.d.22",
+                           df_all_N$sub_div == "21"  ~  "27.3.d.31",# 3 Lines for sweden comment added
                            # here we allow for the two subdivision in the Baltic
                            df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.1' ~ '27.3.d.28.1',
                            df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.2' ~ '27.3.d.28.2',
-                           df_all_N$sub_div == "28"  ~  "27.3.d28",
+                           df_all_N$sub_div == "28"  ~  "27.3.d.28",
                            is.na(df_all_N$sub_div)   ~   "27.3.d" # 12 rows with with comments corresponds all catches of the country and year concerned
                            ),
   sto_cou_code = df_all_N$country,
-  sto_lfs_code = 'Adult',
+  sto_lfs_code = 'A',
   sto_hty_code = case_when(df_all_N$fishery == "O" ~ "MO",
                            df_all_N$fishery == "C"~  "MC",
-                           df_all_N$fishery == "R" ~ "F"),
+                           df_all_N$fishery == "R" ~ "FW"),
   sto_qal_code = 1,
   sto_comment = df_all_N$notes2,
   sto_datelastupdate = Sys.Date(),
@@ -4129,7 +4234,7 @@ t_stock_sto_N = data.frame(
   sto_dta_code = "Public", # check this
   sto_wkg_code = "WGBAST",
   sto_ver_code = "WGBAST-2025-1",
-  sto_gear_code  = df_all_N$gearICES,
+  sto_gear_code  = df_all_N$gea_code,
   sto_tip_code  = case_when(df_all_N$tp_type == "YR" ~"Year",
                             df_all_N$tp_type == "HYR" ~ "Half of Year",
                             df_all_N$tp_type == "MON" ~ "Month",
@@ -4157,6 +4262,7 @@ t_stock_sto_N = data.frame(
 )  
 dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_n")
 system.time(dbWriteTable(con_diaspara_admin, "temp_t_stock_sto_n", t_stock_sto_N[1:100,],overwrite = TRUE))
+system.time(dbWriteTable(con_local, "temp_t_stock_sto_n1", t_stock_sto_N,overwrite = TRUE))
 dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
           SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_n") 
 dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_n")

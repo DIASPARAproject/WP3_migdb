@@ -208,3 +208,9 @@ JOIN "ref".catchments_baltic ON main_bas = are_code
 SELECT trr.* FROM refbast.tr_rivernames_riv 
 JOIN tr_area_are ON are_code = trr
 AS trr
+
+
+SELECT * FROM refbast.tr_area_are WHERE are_lev_code = 'Subdivision_grouping'
+SELECT version();
+
+

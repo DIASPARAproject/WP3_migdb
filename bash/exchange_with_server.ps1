@@ -82,5 +82,11 @@ psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercu
 
 
 
+# dump local table to the server
+pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}:5433/diaspara --table temp_t_stock_sto_n1 | psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara
 
 
+C:/"Program Files"/PostgreSQL/14/bin/pg_dump -U postgres --table temp_t_stock_sto_n1 -Fc -v -f test.dump diaspara
+
+C:/"Program Files"/PostgreSQL/14/bin/pg_restore -U postgres -h 185.135.126.250 -d diaspara  test.dump
+pg_restore -U postgres -h localhost -d diaspara  test.dump
