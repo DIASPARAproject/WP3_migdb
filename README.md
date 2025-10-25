@@ -15,5 +15,7 @@ Others contributors: IFI - Ireland, Wageningen Res,
 In practise two databases have been created
 
 The first holds life history traits and time series, mostly in continental habitats, at a series of electrofishing sites, or traps. It is called the **METRIC DB**.
+
 The second is a database of stock parameters, variables, and data, collected at the scale of the assessment unit. It is called the **STOCK DB**
+
 Both are integrated into the DIADROMOUS FISH DATABASE.
