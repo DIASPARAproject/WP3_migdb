@@ -4051,7 +4051,7 @@ t_metadata_met_a  <- data.frame(
        ifelse(is.na(array$dim3), 0,array$dim3), "}"
     ),
     met_dimname = paste0(
-      "{",array$dim1_description,",", ifelse(array$dim2_description=="NA", NULL,array$dim2_description),",", ifelse(array$dim3_description=="NA",NULL,array$dim3_description,"}"
+      "{",array$dim1_description,",", ifelse(array$dim2_description=="NA", NULL,array$dim2_description),",", ifelse(array$dim3_description=="NA",NULL,array$dim3_description),"}"
     ),
     # Here unlike the eel, I cannot be sure the first dimension is year, might be MON, HYR ....
     met_modelstage = NA,
@@ -4152,8 +4152,7 @@ df_all <- readRDS(file="data/wgbast_landings_modified.Rds")
 
 
 # Modify some lines with comments (TO BE CHECKED)
-df_all[df_all$sub_div == "21" & ! is.na(df_all$sub_div) ,"Notes"] <- "ATTENTION THESE WERE MARKED AS 21 WHICH doesn't exist,
-They have been changed to 31, please check"
+df_all[df_all$sub_div == "21" & ! is.na(df_all$sub_div) ,"Notes"] <- "ATTENTION THESE WERE MARKED AS 21 WHICH doesn't exist,They have been changed to 31, please check"
 
 
 # create table of rivernames in WGBAST, do queries and manual search to join them
@@ -4261,13 +4260,96 @@ t_stock_sto_N = data.frame(
   sto_esm_code = NA
 )  
 dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_n")
-system.time(dbWriteTable(con_diaspara_admin, "temp_t_stock_sto_n", t_stock_sto_N[1:100,],overwrite = TRUE))
+system.time(dbWriteTable(con_diaspara_admin, "temp_t_stock_sto_n", t_stock_sto_N[1:5000,]))
 system.time(dbWriteTable(con_local, "temp_t_stock_sto_n1", t_stock_sto_N,overwrite = TRUE))
 dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
           SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_n") 
 dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_n")
-# Insert WEIGHTS
 
+
+# Insert WEIGHTS-------------------------------------
+# 
+df_all_W <- df_all |>
+  filter(!is.na(weight)) |>
+  mutate(f_type = ifelse(is.na(f_type), "HIST", f_type)) |>
+  mutate(sto_met_var = paste0("W_",f_type))
+
+# unit allows to avoid having NA in strings ... Here we put additional info in the comment from the content
+df_all_N$n_type2 <- df_all_N$n_type
+df_all_N$n_type2[!is.na(df_all_N$n_type)]<-paste0("N_type=",df_all_N$n_type2[!is.na(df_all_N$n_type)])
+df_all_N$n_type2[is.na(df_all_N$n_type)]<- ""
+df_all_N$notes2 <- df_all_N$notes
+df_all_N$notes2[is.na(df_all_N$notes2)] <- ""
+df_all_N$notes2 <- paste(df_all_N$notes2,df_all_N$n_type2, collapse =", ")
+
+
+t_stock_sto_N = data.frame(
+  sto_met_var = df_all_N$sto_met_var,
+  sto_year = df_all_N$year,
+  sto_spe_code = df_all_N$species,
+  sto_value = df_all_N$numb,
+  # if it's a river get the code of the river otherwise get other codes....
+  sto_are_code = case_when(!is.na(df_all_N$river) ~ df_all_N$riv_are_code,
+                           df_all_N$sub_div == "22-32" ~ "27.3.d", # correct, 3 lines corresponding to national survey Estonia
+                           df_all_N$sub_div == "200" ~ "27.3.d.22-29",
+                           df_all_N$sub_div == "300" ~ "27.3.d.30-31",
+                           df_all_N$sub_div == "32"  ~  "27.3.d.32",
+                           df_all_N$sub_div == "31"  ~  "27.3.d.31",
+                           df_all_N$sub_div == "30"  ~  "27.3.d.30",
+                           df_all_N$sub_div == "29"  ~  "27.3.d.29",
+                           df_all_N$sub_div == "27"  ~  "27.3.d.27",
+                           df_all_N$sub_div == "26"  ~  "27.3.d.26",
+                           df_all_N$sub_div == "25"  ~  "27.3.d.25",
+                           df_all_N$sub_div == "24"  ~  "27.3.d.24",
+                           df_all_N$sub_div == "23"  ~  "27.3.d.23",
+                           df_all_N$sub_div == "22"  ~  "27.3.d.22",
+                           df_all_N$sub_div == "21"  ~  "27.3.d.31",# 3 Lines for sweden comment added
+                           # here we allow for the two subdivision in the Baltic
+                           df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.1' ~ '27.3.d.28.1',
+                           df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.2' ~ '27.3.d.28.2',
+                           df_all_N$sub_div == "28"  ~  "27.3.d.28",
+                           is.na(df_all_N$sub_div)   ~   "27.3.d" # 12 rows with with comments corresponds all catches of the country and year concerned
+                           ),
+  sto_cou_code = df_all_N$country,
+  sto_lfs_code = 'A',
+  sto_hty_code = case_when(df_all_N$fishery == "O" ~ "MO",
+                           df_all_N$fishery == "C"~  "MC",
+                           df_all_N$fishery == "R" ~ "FW"),
+  sto_qal_code = 1,
+  sto_comment = df_all_N$notes2,
+  sto_datelastupdate = Sys.Date(),
+  sto_mis_code = NA,
+  sto_dta_code = "Public", # check this
+  sto_wkg_code = "WGBAST",
+  sto_ver_code = "WGBAST-2025-1",
+  sto_gear_code  = df_all_N$gea_code,
+  sto_tip_code  = case_when(df_all_N$tp_type == "YR" ~"Year",
+                            df_all_N$tp_type == "HYR" ~ "Half of Year",
+                            df_all_N$tp_type == "MON" ~ "Month",
+                            df_all_N$tp_type == "MONTH" ~ "Month",
+                            df_all_N$tp_type == "QTR" ~ "Quarter",
+                            df_all_N$tp_type == "COMM" ~ "Quarter", # this is an error
+                            is.na( df_all_N$tp_type) ~ "Year",
+                            .default = "Troube this will fail at insertion"),
+  sto_timeperiod = df_all_N$time_period,
+  
+  # in the notes some elements hint at surveys, but this will need a check up by WGBAST anyways.
+  sto_dts_code = case_when(df_all_N$n_type == "LOG" ~ "Logb",
+                                 df_all_N$n_type == "EXV" ~ "Exprt",
+                                 df_all_N$n_type == "EST" & (grepl("survey",tolower(df_all_N$notes)) | 
+                                                           grepl("question",tolower(df_all_N$notes)) |
+                                                           grepl("query", tolower(df_all_N$notes)) |
+                                                           grepl("web", tolower(df_all_N$notes))) ~ "SampDS", 
+                                df_all_N$n_type == "EXT" ~ NA),
+  sto_dtb_code = case_when(df_all_N$n_type == "LOG" ~ "Official",
+                           df_all_N$n_type == "EXV"  ~  "Estimated",
+                           df_all_N$n_type == "EST" ~ "Estimated",
+                           df_all_N$n_type == "EXT" ~ "Estimated",
+                           .default =  "Unknown"),
+  sto_esm_code = NA
+)  
+dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_n")
+system.time(dbWriteTable(con_diaspara_admin, "temp_t_stock_sto_n", t_stock_sto_N[1:5000,]))
 
 
 

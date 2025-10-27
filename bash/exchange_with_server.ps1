@@ -90,3 +90,12 @@ C:/"Program Files"/PostgreSQL/14/bin/pg_dump -U postgres --table temp_t_stock_st
 
 C:/"Program Files"/PostgreSQL/14/bin/pg_restore -U postgres -h 185.135.126.250 -d diaspara  test.dump
 pg_restore -U postgres -h localhost -d diaspara  test.dump
+
+# dump server to local
+
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara --schema ref --schema refbast --schema refeel --schema refnas -Fc -v "C:/temp/diaspara0.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara0.backup"
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara --schema dat --schema catbast --schema dateel --schema datnas -Fc -v -f "C:/temp/diaspara1.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara1.backup"
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema datbast -Fc -v -f "C:/temp/diaspara1.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara1.backup"

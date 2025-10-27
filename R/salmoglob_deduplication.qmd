@@ -1,0 +1,103 @@
+---
+title: "Fix duplicated values in salmoglob"
+author: "Briand Cédric"
+date: last-modified
+date-format: "DD-MM-YYYY"
+format:
+ html:
+  self-contained: true
+editor: source
+---
+
+# Connection à la base
+
+Pierre Yves il faut que tu édite le cred pour mettre tes identifiants de connexion.
+
+```{r init}
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+load_library <- function(library) {
+  if (!all(library %in% installed.packages()[, "Package"])) {
+    install.packages(
+      library[!library %in% installed.packages()[, "Package"]],
+      dep = T
+    )
+  }
+  for (i in 1:length(library)) {
+    require(library[i], character.only = TRUE)
+  }
+}
+load_library("tidyverse")
+load_library("knitr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+# J'utilise un yaml pour stocker mes mots de passe
+cred <- read_yaml("../credentials.yml")
+# Voici un remplacement pour toi
+# cred <- list(host = "000.000.000.000", 
+#              port = 5432L, 
+#             usersalmo = "nameusersalmoglob", 
+#             passwordsalmo = "passwordsalmoglob",
+#             dbnamesalmo = "salmoglob")
+con_salmoglob <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamesalmo,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$usersalmo,
+                           password = cred$passwordsalmo)
+```
+
+# Requètes
+
+## avant déduplication
+
+J'utilise DBI pour la connexion et dbGetQuery pour aller chercher le résutlat.
+
+```{r}
+#| label: count_lines
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Comptage des lignes avant de dédupliquer
+
+res <- dbGetQuery(con_salmoglob, "WITH annual AS (
+SELECT EXTRACT('Year' FROM date_time) AS lastyear ,* FROM public.database_archive )
+SELECT count(*), lastyear FROM annual GROUP BY lastyear order by lastyear;")
+res |>  kable()
+
+```
+
+## après déduplication
+
+
+Utilisation d'un order by pour trier les données et d'un distinct on () qui ne garde que les lignes uniques.
+La syntaxe with (...) AS crée une sous requète, donc un nouveau tableau, à partir
+duquel je relance une requète....
+
+```{r}
+#| label: count_deduplicates
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Comptage des lignes avant de dédupliquer
+
+
+dbGetQuery(con_salmoglob, "WITH extract_year AS (
+SELECT EXTRACT('Year' FROM date_time) AS lastyear ,* FROM public.database_archive ORDER BY date_time desc ),
+deduplicated AS (
+SELECT DISTINCT ON(version, year, type, age, area, location, metric, var_mod) *
+FROM extract_year )
+SELECT count(*), lastyear FROM deduplicated GROUP BY lastyear order by lastyear;") |> kable()
+
+```
+
+
+En fait il n'y a pas trop de duplicats...

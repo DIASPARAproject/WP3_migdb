@@ -169,3 +169,23 @@ SELECT * FROM refsalmoglob.DATABASE WHERE var_mod = 'omega';
 
 
 SELECT * FROM datnas.t_metadata_met WHERE met_var = 'log_C5_NAC_2_lbnf_oth_sd'
+
+-- cleaning up salmoglob
+
+SELECT * FROM public.database_archive LIMIT 100;
+
+SELECT count(*) FROM public.database_archive; --449112
+SELECT count(*) FROM public.database_alter; --35342
+SELECT count(*) FROM public.database; --49749
+
+WITH annual AS (
+SELECT EXTRACT('Year' FROM date_time) AS lastyear ,* FROM public.database_archive )
+SELECT count(*), lastyear FROM annual GROUP BY lastyear;
+
+
+WITH extract_year AS (
+SELECT EXTRACT('Year' FROM date_time) AS lastyear ,* FROM public.database_archive ORDER BY date_time desc ),
+deduplicated AS (
+SELECT DISTINCT ON("version",  "year", "type", age, area, "location", metric, var_mod) *
+FROM extract_year )
+SELECT count(*), lastyear FROM deduplicated GROUP BY lastyear;
