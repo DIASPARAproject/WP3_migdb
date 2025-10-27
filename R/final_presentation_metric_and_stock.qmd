@@ -1,0 +1,151 @@
+---
+title: "The metric and stock DB with example of their format and use for WNAS, WGEEL and WGBAST"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+  - speakernotes
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
+format: 
+  revealjs :
+    self-contained: true
+  pdf:
+    speakernotes:
+      displayNotes: true
+      customStyle: |
+        roundcorner=5pt,
+        subtitlebelowline=true,
+        subtitleaboveline=true,
+        subtitlebackgroundcolor=yellow!70!white,
+        backgroundcolor=blue!20!white,
+        frametitle={Theorem},
+        frametitlerule=true,
+        frametitlebackgroundcolor=yellow!70!white,
+theme: solarized
+background-transition: fade
+editor: visual
+---
+
+# Refresh from the previous presentations
+
+![](images/clipboard-154407505.png)
+
+# Refresh from the previous presentations
+
+![](images/clipboard-4195111625.png)
+
+# Start by pointing to the different documents. Explain what they do.
+
+CEDRIC TODO
+
+# STOCK db
+
+![](images/copilot_stock_model.png)
+
+# STOCK db
+
+-   Generalisation of metadata to define the variables used
+
+-   Additional column for WGNAS (messy but adapted and will do nice for WGBAST) also type in metadata
+
+-   Calendar data \< year in wgbast
+
+-   Data source in WGBAST
+
+-   Habitat structure (Illustrate in detail the use of recursive queries to get habitat)
+
+![](images/clipboard-3336618413.png)
+
+# Example: River Daugava
+
+![](images/clipboard-1464342884.png)
+
+# Example: River Daugava & Gulf of Riga
+
+**SELECT** \* **FROM** ref.**get_parent_area**(310, 'WGBAST');
+
+![**SELECT** \* **FROM** ref.**get_parent_area**(7025, 'WGBAST');](images/clipboard-4250192328.png)
+
+![-\> Some changes to align with new vocab (introduce stages WGNAS, maturity)](images/clipboard-3762430346.png)
+
+# METRIC db
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-1207399477.png){fig-align="left" width="400"}
+:::
+
+::: {.column width="60%"}
+![](images/clipboard-2784958256.png){width="450"}
+:::
+:::::
+
+
+# METRIC db and examples of use
+
+-   WGEEL base
+
+    -   The WGBAST trout data is now adapted to this.
+
+-   WP2: data tests done
+
+-   Expand the WGNAS and WGBAST datasets to use of traps and e-fishing data
+
+# All WGs now able to go deeper in their process
+
+-   WGEEL: spatial model possible
+
+-   WGBAST: data structured better. The tools will be available and can fit into what they are doing.
+
+-   WGNAS: Data management up to date.
+
+-   All: Potential to have much more, without having to put a lot of effort
+
+# Keeping the data flow
+
+-   The current db (WGEEL and WGBAST as examples)
+
+    -   This is what is currently asked in datacalls
+
+-   We don't want to disrupt the data flow, so our objective is to provide structures very close to the current DB (with queries and views)
+
+    -   (show the current db and the final product)
+
+-   These structures will be progressively replaced by data flows coming from the RDBES. the RDBES  will have upload, data checking, view and download tools to handle those data
+
+    -   (maybe agregate it ?.... Talk to Henrik)
+
+![](images/clipboard-55398605.png)
+
+# Keeping the data flow
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   The roadmaps are in timeline (at least the latest)
+-   Integration ICES if accepted.
+    -   Otherwise we have a tool working in postgres as a backup
+:::
+
+::: {.column width="50%"}
+**Use in TAF with different steps.**
+
+1.  Data call or RDBES
+
+2.  Workflow TAF
+
+3.  data checks (shiny app)
+
+4.  integration end of TAF
+
+5.   run models
+
+6.  Import outputs and calibrated variables
+
+7.  store data (all samples) in Rdata TAF.
+:::
+:::::
