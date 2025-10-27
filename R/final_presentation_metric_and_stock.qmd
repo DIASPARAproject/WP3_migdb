@@ -75,9 +75,16 @@ CEDRIC TODO
 
 # METRIC db
 
-![](images/clipboard-1207399477.png){fig-align="left" width="382"}
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-1207399477.png){fig-align="left" width="400"}
+:::
 
-# ![](images/clipboard-2784958256.png){width="310"}
+::: {.column width="60%"}
+![](images/clipboard-2784958256.png){width="450"}
+:::
+:::::
+
 
 # METRIC db and examples of use
 
@@ -119,13 +126,13 @@ CEDRIC TODO
 
 ::::: columns
 ::: {.column .incremental width="50%"}
-The roadmaps are in timeline (at least the latest)
-
-Integration ICES if accepted. Otherwise we have a tool working in postgres as a backup
+-   The roadmaps are in timeline (at least the latest)
+-   Integration ICES if accepted.
+    -   Otherwise we have a tool working in postgres as a backup
 :::
 
 ::: {.column width="50%"}
-Use in TAF with different steps.
+**Use in TAF with different steps.**
 
 1.  Data call or RDBES
 
