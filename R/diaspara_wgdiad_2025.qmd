@@ -271,6 +271,7 @@ editor: visual
 -   Same language for all: DB management and analysis
 -   Shiny app to display data
 -   Shorter reports?
+-   Note: Smartdots
 :::
 
 ::: {.column width="50%"}
