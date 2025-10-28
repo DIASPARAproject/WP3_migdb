@@ -39,13 +39,11 @@ editor: visual
 :::
 
 ::: {.column width="60%"}
+-   [**Regional Models**]{style="font-size:45px"}
 
--   <span style="font-size:45px">**Regional Models**</span> 
+-   [**Data Examples**]{style="font-size:45px"}
 
--   <span style="font-size:45px">**Data Examples**</span> 
-
--   <span style="font-size:45px">**Biological and Biometric data**</span> 
-
+-   [**Biological and Biometric data**]{style="font-size:45px"}
 :::
 :::::
 
@@ -57,7 +55,7 @@ editor: visual
 :::
 
 ::: {.column width="60%"}
--   <span style="font-size:45px">**Regional Models**</span> 
+-   [**Regional Models**]{style="font-size:45px"}
 
 A big reason why we needed habitat database
 :::
@@ -98,7 +96,6 @@ A big reason why we needed habitat database
 :::
 :::::
 
-
 # Different pressures, quantification issues?
 
 ::::: columns
@@ -121,8 +118,7 @@ A big reason why we needed habitat database
 :::
 
 ::: {.column width="60%"}
-
--   <span style="font-size:45px">**Data Examples**</span> 
+-   [**Data Examples**]{style="font-size:45px"}
 
 This is why we have worked with the habitat data so intensively
 :::
@@ -146,7 +142,6 @@ This is why we have worked with the habitat data so intensively
 
 ![](images/clipboard-3102186189.png)
 
-
 ## This presentation
 
 ::::: columns
@@ -155,13 +150,11 @@ This is why we have worked with the habitat data so intensively
 :::
 
 ::: {.column width="60%"}
-
--   <span style="font-size:45px">**Biological and Biometric data**</span> 
+-   [**Biological and Biometric data**]{style="font-size:45px"}
 
 A new way to use available data
 :::
 :::::
-
 
 # New database - data available for use
 

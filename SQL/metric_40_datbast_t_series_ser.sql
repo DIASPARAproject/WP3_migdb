@@ -84,3 +84,7 @@ COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326, ca
 
 GRANT ALL ON datbast.t_series_ser TO diaspara_admin;
 GRANT SELECT ON datbast.t_series_ser TO diaspara_read; 
+
+
+
+

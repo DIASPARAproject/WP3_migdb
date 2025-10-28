@@ -157,12 +157,12 @@ load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
-con_local <- dbConnect(Postgres(), 
+con_diaspara_local <- dbConnect(Postgres(), 
                           dbname = "diaspara",
                           host = "localhost",
-                          port = 5433,
-                          user = "postgres",
-                          password = "postgres")
+                          port = 5432,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
 con_diaspara <- dbConnect(Postgres(), 
                           dbname = cred$dbnamediaspara,
                           host = cred$hostdistant,
@@ -4154,6 +4154,21 @@ df_all <- readRDS(file="data/wgbast_landings_modified.Rds")
 # Modify some lines with comments (TO BE CHECKED)
 df_all[df_all$sub_div == "21" & ! is.na(df_all$sub_div) ,"Notes"] <- "ATTENTION THESE WERE MARKED AS 21 WHICH doesn't exist,They have been changed to 31, please check"
 
+df_all[df_all$tp_type=='YR'& df_all$time_period!=0,"time_period"]<- 0 # one line with 2 in Estonia all other have 0
+df_all[df_all$tp_type=='COMM'& df_all$time_period!=0,"tp_type"] <- "MON" # 4 lines where COMM is obvioulsy not YEAR
+df_all[df_all$tp_type=="Year" & !is.na(df_all$tp_type),"tp_type"] <- "YR"
+df_all[is.na(df_all$tp_type),"tp_type"] <- "YR" # 6 lines with historical data
+
+
+# in Estonia there are both SAL&TRS and NA, which correspond to sea damage unspecified.
+# I cannot have that, will report as Salmon, leave to the WGBAST to see how to handle this.
+df_all[!is.na(df_all$species) & df_all$species =="SAL&TRS","species"]<- "SAL"
+df_all[is.na(df_all$species) ,"species"]<- "SAL"
+df_all[df_all$species=="NA" ,"species"]<- "SAL"
+
+
+
+
 
 # create table of rivernames in WGBAST, do queries and manual search to join them
 # to our layer.
@@ -4212,8 +4227,8 @@ t_stock_sto_N = data.frame(
                            df_all_N$sub_div == "26"  ~  "27.3.d.26",
                            df_all_N$sub_div == "25"  ~  "27.3.d.25",
                            df_all_N$sub_div == "24"  ~  "27.3.d.24",
-                           df_all_N$sub_div == "23"  ~  "27.3.d.23",
-                           df_all_N$sub_div == "22"  ~  "27.3.d.22",
+                           df_all_N$sub_div == "23"  ~  "27.3.b.23",
+                           df_all_N$sub_div == "22"  ~  "27.3.c.22",
                            df_all_N$sub_div == "21"  ~  "27.3.d.31",# 3 Lines for sweden comment added
                            # here we allow for the two subdivision in the Baltic
                            df_all_N$sub_div == "28" & df_all_N$subdiv_ic == '27.3.d.28.1' ~ '27.3.d.28.1',
@@ -4259,10 +4274,13 @@ t_stock_sto_N = data.frame(
                            .default =  "Unknown"),
   sto_esm_code = NA
 )  
-dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_n")
-system.time(dbWriteTable(con_diaspara_admin, "temp_t_stock_sto_n", t_stock_sto_N[1:5000,]))
-system.time(dbWriteTable(con_local, "temp_t_stock_sto_n1", t_stock_sto_N,overwrite = TRUE))
-dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
+
+
+#dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_n")
+dbExecute(con_diaspara_local, "drop table if exists temp_t_stock_sto_n")
+system.time(dbWriteTable(con_diaspara_local, "temp_t_stock_sto_n", t_stock_sto_N)) # 27s
+dbExecute(con_diaspara_local, "DELETE FROM datbast.t_stock_sto")
+dbExecute(con_diaspara_local, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
           SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_n") 
 dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_n")
 

@@ -189,3 +189,4 @@ deduplicated AS (
 SELECT DISTINCT ON("version",  "year", "type", age, area, "location", metric, var_mod) *
 FROM extract_year )
 SELECT count(*), lastyear FROM deduplicated GROUP BY lastyear;
+
