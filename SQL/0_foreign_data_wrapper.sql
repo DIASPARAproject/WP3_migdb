@@ -60,9 +60,17 @@ IMPORT FOREIGN SCHEMA dbeel_nomenclature
     FROM SERVER eda_data_wrapper
     INTO nomenclature_eda;
 
+CREATE SCHEMA montepomi;
+
+IMPORT FOREIGN SCHEMA montepomi    
+    FROM SERVER eda_data_wrapper
+    INTO montepomi;
+
 CREATE SCHEMA nomenclature_eda;
 
-
+IMPORT FOREIGN SCHEMA dbeel_nomenclature    
+    FROM SERVER eda_data_wrapper
+    INTO nomenclature_eda;
 
 GRANT ALL PRIVILEGES ON SCHEMA nomenclature_eda TO diaspara_admin;
 SELECT * FROM pg_stat_get_activity(NULL::integer) 
