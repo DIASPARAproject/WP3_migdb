@@ -60,8 +60,11 @@ IMPORT FOREIGN SCHEMA dbeel_nomenclature
     FROM SERVER eda_data_wrapper
     INTO nomenclature_eda;
 
-CREATE SCHEMA nomenclature_eda;
+CREATE SCHEMA montepomi;
 
+IMPORT FOREIGN SCHEMA montepomi    
+    FROM SERVER eda_data_wrapper
+    INTO montepomi;
 
 
 GRANT ALL PRIVILEGES ON SCHEMA nomenclature_eda TO diaspara_admin;
