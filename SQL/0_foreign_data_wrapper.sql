@@ -62,19 +62,9 @@ IMPORT FOREIGN SCHEMA dbeel_nomenclature
 
 CREATE SCHEMA nomenclature_eda;
 
-CREATE SCHEMA nomenclature_eda;
 
-IMPORT FOREIGN SCHEMA dbeel_nomenclature    
-    FROM SERVER eda_data_wrapper
-    INTO nomenclature_eda;
 
-CREATE SCHEMA dbeel;
-IMPORT FOREIGN SCHEMA dbeel    
-    FROM SERVER eda_data_wrapper
-    INTO dbeel;
-
-  
-GRANT ALL PRIVILEGES ON SCHEMA dateda TO diaspara_admin;
+GRANT ALL PRIVILEGES ON SCHEMA nomenclature_eda TO diaspara_admin;
 SELECT * FROM pg_stat_get_activity(NULL::integer) 
 
 
