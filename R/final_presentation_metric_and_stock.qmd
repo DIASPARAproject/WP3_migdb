@@ -39,15 +39,12 @@ editor: visual
 
 ![](images/clipboard-4195111625.png)
 
-# Start by pointing to the different documents. Explain what they do.
-
-CEDRIC TODO
 
 # STOCK db
 
 ![](images/copilot_stock_model.png)
 
-# STOCK db
+# STOCK db (What have we done so far)
 
 -   Generalisation of metadata to define the variables used
 
@@ -72,6 +69,17 @@ CEDRIC TODO
 ![**SELECT** \* **FROM** ref.**get_parent_area**(7025, 'WGBAST');](images/clipboard-4250192328.png)
 
 ![-\> Some changes to align with new vocab (introduce stages WGNAS, maturity)](images/clipboard-3762430346.png)
+
+# Stock DB (Future WORK)
+
+# Stock DB (Future Work WGNAS)
+
+# Presentation of possibilities to go to lower level
+
+=> Jules explain, show that now we are based on area we can do it easily.
+
+
+
 
 # METRIC db
 
@@ -148,3 +156,30 @@ CEDRIC TODO
 7.  store data (all samples) in Rdata TAF.
 :::
 :::::
+
+
+# TODO WGNAS => lower level for WGNAS. 
+
+
+# Quality control (taken from previous dam presentation)
+
+::::: Columns
+::: {.column width="50%"}
+-   Need of DB input and output in TAF
+-   Data treatment
+-   Tried to follow the existing WG formats as closely as possible, to not destroy current work!
+:::
+
+::: {.column width="50%"}
+-   EXAMPLES
+-   Show Hennis or NAS
+-   What has been done in WGNAS
+-   Shiny treatment of the output to detect changes
+-   Pierre Yeves
+:::
+:::::
+
+# EXAMPLES FROM CEDRIC HERE
+
+-   WGBAST 2 databases are used
+-   WGNAS work briefly
