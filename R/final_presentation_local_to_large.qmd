@@ -168,8 +168,6 @@ A big reason why we needed habitat database
 (Jani reorder this as you want, I just put everything
 related to introduction in the same place. I think you'll need several slides, I'll try to find some nice pictures)
 
-# JULES to ADD SLIDES HERE
-
 ## Habitat DB hierarchical structure
 ![WGBAST Hierarchical structure](images/fig-area_hierarchy_bast.svg){#fig-hierbast}
 
@@ -678,8 +676,6 @@ load(file="data/presentation_dam_op.Rdata")
 ```
 # DAM DATABASE
 
-# DAM DATABASE
-
 ```{r}
 #| label: fig-obstruction_place
 #| echo: FALSE
@@ -754,13 +750,19 @@ l
 
 ```
 
+# DAM DATABASE
+
+Physical obstructions
+
+# DAM DATABASE
+
+assessment of passability
+
 
 # Migration Obstacles and electrofishing
 
 
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-
-
 
 
 # Electrofishing linking to habitat data
@@ -821,8 +823,9 @@ Everything is linked to Life History Trait data
 
 # Trend analysis - why do we need series?
 
--   Example from WGEEL (CEDRIC)
--   Example from WGNAS (CEDRIC)
+-   Example from WGEEL (check WGEEL REPORTS + Latest recruitment series)
+
+-   Example from WGNAS (WP2 Viktor to send some pictures.)
 
 ## This presentation
 
@@ -836,27 +839,7 @@ Everything is linked to Life History Trait data
 :::
 :::::
 
-# Quality control
 
-::::: Columns
-::: {.column width="50%"}
--   Need of DB input and output in TAF
--   Data treatment
--   Tried to follow the existing WG formats as closely as possible, to not destroy current work!
-:::
 
-::: {.column width="50%"}
--   EXAMPLES
--   Show Hennis or NAS
--   What has been done in WGNAS
--   Shiny treatment of the output to detect changes
--   Pierre Yeves
-:::
-:::::
-
-# EXAMPLES FROM CEDRIC HERE
-
--   WGBAST 2 databses are used
--   WGNAS work briefly
 
 # Thank you!
