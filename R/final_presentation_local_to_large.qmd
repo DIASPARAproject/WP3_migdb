@@ -39,11 +39,15 @@ editor: visual
 :::
 
 ::: {.column width="60%"}
--   [**Regional Models**]{style="font-size:45px"}
+[**Database development and:**]{style="font-size:45px"}
 
--   [**Data Examples**]{style="font-size:45px"}
+-   [**Regional and Global (Spatial) Models**]{style="font-size:40px"}
 
--   [**Biological and Biometric data**]{style="font-size:45px"}
+-   [**Migration obstacles and Electrofishing**]{style="font-size:40px"}
+
+-   [**Biological and Biometric data**]{style="font-size:40px"}
+
+-   [**Overall - Whole Stock**]{style="font-size:40px"}
 :::
 :::::
 
@@ -55,11 +59,17 @@ editor: visual
 :::
 
 ::: {.column width="60%"}
--   [**Regional Models**]{style="font-size:45px"}
+-   [**Regional and Global (Spatial) Models**]{style="font-size:45px"}
 
 A big reason why we needed habitat database
 :::
 :::::
+
+# Taking different regions into account
+
+**Remember from previous presentations:**
+
+![](images/clipboard-1502028863.png)
 
 # What amazing species! What a scientific challenge!
 
@@ -71,22 +81,25 @@ A big reason why we needed habitat database
     -   Assessment of management actions
 -   Large scale pressure can impact local dynamics (e.g. marine fisheries)
 
-# Taking different regions into account
-
-**Remember from previous presentations:**
-
-![](images/clipboard-1502028863.png)
-
 # The spatial / habitat model?
 
--   WGTRUTTA & WGEEL
--   Regional aspects in WGNAS and WGBAST
--   **CEDRIC TO ADD??**
+::::: columns
+::: {.column .incremental width="50%"}
+
+-   Regional aspects in WGBAST, WGNAS and WGBAST
+-   WGTRUTTA https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html
+:::
+
+::: {.column width="50%"}
+![](images/clipboard-1441936957.png)
+:::
+:::::
 
 # Scale of each model? Not known
 
 ::::: columns
 ::: {.column .incremental width="50%"}
+-   In the past, only marine habitat available -\> now marine and continental
 -   With this approach we can test different structures and levels
 -   Data to collected locally, used in (m)any needed scale
 :::
@@ -96,19 +109,26 @@ A big reason why we needed habitat database
 :::
 :::::
 
-# Different pressures, quantification issues?
+# Habitat DB to move from local to higher scale
 
-::::: columns
-::: {.column .incremental width="50%"}
--   Obstacles, turbines matched to habitat
--   E.g., WGTRUTTA work
-:::
+-   Data structured in regional level for SAM
+-   Need upscaling: need upscaling methods
+-   Identify similar areas, identify different areas
 
-::: {.column .incremental width="50%"}
--   Electrofishing similarly:
-    -   Linking to habitat
-:::
-:::::
+# What is the appropriate spatial scale? Not known yet? MERGE THIS ONE AND THREE OF THE SAME
+
+-   All have the structure to group things at regional level
+
+![](images/clipboard-3102186189.png)
+
+# INTRODUCE THE NEED FOR REGIONAL MODELS
+-   Examples from (Hilaire presentation) from EDA
+-    How are we going to do it: DAm and EF
+
+# JULES to ADD SLIDES HERE
+
+# Introduction about how we want to develop spatial model in EDA
+-   We need to do it, use EDA
 
 ## This presentation
 
@@ -118,11 +138,26 @@ A big reason why we needed habitat database
 :::
 
 ::: {.column width="60%"}
--   [**Data Examples**]{style="font-size:45px"}
-
-This is why we have worked with the habitat data so intensively
+-   [**Migration Obstacles and electrofishing**]{style="font-size:45px"}
 :::
 :::::
+
+# Different pressures, quantification issues?
+
+-   Obstacles, turbines matched to habitat
+-   E.g., WGTRUTTA work
+
+# Example FROM CEDRIC
+
+-   Rivers at the bottom, dams on top
+-   Dam db structure
+
+# Electrofishing linking to habitat data
+
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
+
 
 ## Dam Database
 
@@ -269,23 +304,6 @@ l <- leaflet::leaflet() |>
 
 ```
 
-# Currently (or rather: in the past), only marine habitat available
-
--   Now, shift from marine only to marine & continental
-
--   ANYTHING FROM JULES HERE
-
-# Habitat DB to move from local to higher scale
-
--   Data structured in regional level for SAM
--   Need upscaling: need upscaling methods
--   Identify similar areas, identify different areas
-
-# What is the appropriate spatial scale? Not known yet?
-
--   All have the structure to group things at regional level
-
-![](images/clipboard-3102186189.png)
 
 ## This presentation
 
@@ -297,7 +315,7 @@ l <- leaflet::leaflet() |>
 ::: {.column width="60%"}
 -   [**Biological and Biometric data**]{style="font-size:45px"}
 
-A new way to use available data
+Everything is linked to Life History Trait data
 :::
 :::::
 
@@ -320,5 +338,60 @@ A new way to use available data
 ![](images/clipboard-2516448368.png)
 :::
 :::::
+
+# BEFORE INTRODUCING THE METRIC DB 
+- relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
+- Maybe something from WGBAST
+
+# Example of group metrics
+
+-   EXAMPLE HERE
+
+# Example of individual metrics
+
+-   EXAMPLE HERE
+
+# Other parameters
+
+# Trend analysis - why do we need series?
+
+-   Example from WGEEL (CEDRIC)
+-   Example from WGNAS (CEDRIC)
+
+## This presentation
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+-   [**Overall - Whole Stock**]{style="font-size:45px"}
+:::
+:::::
+
+
+
+# Quality control
+
+::::: Columns
+::: {.column width="50%"}
+-   Need of DB input and output in TAF
+-   Data treatment
+-   Tried to follow the existing WG formats as closely as possible, to not destroy current work!
+:::
+
+::: {.column width="50%"}
+-   EXAMPLES
+-   Show Hennis or NAS
+-   What has been done in WGNAS
+-   Shiny treatment of the output to detect changes
+-   Pierre Yeves
+:::
+:::::
+
+# EXAMPLES FROM CEDRIC HERE
+-   WGBAST 2 databses are used
+-   WGNAS work briefly
 
 # Thank you!
