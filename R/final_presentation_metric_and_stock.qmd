@@ -85,7 +85,6 @@ CEDRIC TODO
 :::
 :::::
 
-
 # METRIC db and examples of use
 
 -   WGEEL base
@@ -142,7 +141,7 @@ CEDRIC TODO
 
 4.  integration end of TAF
 
-5.   run models
+5.  run models
 
 6.  Import outputs and calibrated variables
 

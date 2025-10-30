@@ -89,11 +89,15 @@ con_diaspara_admin <- dbConnect(Postgres(),
 :::
 
 ::: {.column width="60%"}
--   [**Regional Models**]{style="font-size:45px"}
+[**Database development and:**]{style="font-size:45px"}
 
--   [**Data Examples**]{style="font-size:45px"}
+-   [**Regional and Global (Spatial) Models**]{style="font-size:40px"}
 
--   [**Biological and Biometric data**]{style="font-size:45px"}
+-   [**Migration obstacles and Electrofishing**]{style="font-size:40px"}
+
+-   [**Biological and Biometric data**]{style="font-size:40px"}
+
+-   [**Overall - Whole Stock**]{style="font-size:40px"}
 :::
 :::::
 
@@ -105,11 +109,17 @@ con_diaspara_admin <- dbConnect(Postgres(),
 :::
 
 ::: {.column width="60%"}
--   [**Regional Models**]{style="font-size:45px"}
+-   [**Regional and Global (Spatial) Models**]{style="font-size:45px"}
 
 A big reason why we needed habitat database
 :::
 :::::
+
+# Taking different regions into account
+
+**Remember from previous presentations:**
+
+![](images/clipboard-1502028863.png)
 
 # What amazing species! What a scientific challenge!
 
@@ -121,22 +131,24 @@ A big reason why we needed habitat database
     -   Assessment of management actions
 -   Large scale pressure can impact local dynamics (e.g. marine fisheries)
 
-# Taking different regions into account
-
-**Remember from previous presentations:**
-
-![](images/clipboard-1502028863.png)
-
 # The spatial / habitat model?
 
--   WGTRUTTA & WGEEL
--   Regional aspects in WGNAS and WGBAST
--   **CEDRIC TO ADD??**
+::::: columns
+::: {.column .incremental width="50%"}
+-   Regional aspects in WGBAST, WGNAS and WGBAST
+-   WGTRUTTA https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html
+:::
+
+::: {.column width="50%"}
+![](images/clipboard-1441936957.png)
+:::
+:::::
 
 # Scale of each model? Not known
 
 ::::: columns
 ::: {.column .incremental width="50%"}
+-   In the past, only marine habitat available -\> now marine and continental
 -   With this approach we can test different structures and levels
 -   Data to collected locally, used in (m)any needed scale
 :::
@@ -146,39 +158,27 @@ A big reason why we needed habitat database
 :::
 :::::
 
-# Different pressures, quantification issues?
+# Habitat DB to move from local to higher scale
 
-::::: columns
-::: {.column .incremental width="50%"}
--   Obstacles, turbines matched to habitat
--   E.g., WGTRUTTA work
-:::
+-   Data structured in regional level for SAM
+-   Need upscaling: need upscaling methods
+-   Identify similar areas, identify different areas
 
-::: {.column .incremental width="50%"}
--   Electrofishing similarly:
-    -   Linking to habitat
-:::
-:::::
+# What is the appropriate spatial scale? Not known yet? MERGE THIS ONE AND THREE OF THE SAME
 
-## This presentation
+-   All have the structure to group things at regional level
 
-::::: columns
-::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-:::
+![](images/clipboard-3102186189.png)
 
-::: {.column width="60%"}
--   [**Data Examples**]{style="font-size:45px"}
+# INTRODUCE THE NEED FOR REGIONAL MODELS
 
-This is why we have worked with the habitat data so intensively
-:::
-:::::
+-   Examples from (Hilaire presentation) from EDA
+-   How are we going to do it: DAM and EF
+-   Give an example of regional model EDA
+-   Explain the need to have habitat models everywhere
+-   Show that we need to quantify mortality linked with dams (downstream migration)
 
-# Currently (or rather: in the past), only marine habitat available
-
--   Now, shift from marine only to marine & continental
-
--   ANYTHING FROM JULES HERE
+# JULES to ADD SLIDES HERE
 
 ## Habitat DB hierarchical structure
 ![WGBAST Hierarchical structure](images/fig-area_hierarchy_bast.svg){#fig-hierbast}
@@ -619,7 +619,192 @@ rownames = FALSE,
 
 -   All have the structure to group things at regional level
 
-![](images/clipboard-3102186189.png)
+# Introduction about how we want to develop spatial model in EDA
+
+-   We need to do it, use EDA
+
+
+# Different pressures, quantification issues?
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   Obstacles, turbines matched to habitat
+-   E.g., WGTRUTTA work
+:::
+
+# Development of regional model for
+
+-   Rivers at the bottom, dams on top
+-   Dam db structure
+
+# Migration Obstacles and electrofishing
+
+
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+-   [**Data Examples**]{style="font-size:45px"}
+
+This is why we have worked with the habitat data so intensively
+:::
+:::::
+
+# Currently (or rather: in the past), only marine habitat available
+
+# Electrofishing linking to habitat data
+
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
+
+## Dam Database
+
+```{r}
+#| label: tbl-obstruction_place
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| html-table-processing: none
+
+if(Sys.info()[["user"]] == 'joliviero'){
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") #
+load_library("htmltools") 
+load_library("leaflet")
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+dbGetQuery(con_diaspara, "SELECT 
+op_placename,
+op_op_id,
+op_id_original,
+op_country
+ FROM dam_france.obstruction_place limit 500;") |> 
+ DT::datatable(rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+   
+
+    tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    "))
+
+  )
+
+```
+
+# DAM DATABASE
+
+```{r}
+#| label: fig-obstruction_place
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+
+query <- "SELECT op_id_original,
+                 op_placename, 
+                 ob_height, 
+                 ot.no_code as type,                 
+                 geom 
+          FROM dam_france.obstruction_place op
+          JOIN dam_france.obstruction o
+             ON ob_op_id = op_id
+          JOIN nomenclature.obstruction_type ot
+             ON ob_obstruction_type_no_id = ot.no_id
+          JOIN refeel.tr_area_are are ON 
+          st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
+          WHERE are_code = 'FR_Bret'
+          AND ob_ending_date = '2035-01-01'
+          "
+query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
+          JOIN refeel.tr_area_are are2 ON 
+          st_intersects(are1.geom_line, are2.geom_polygon)
+          WHERE are2.are_code = 'FR_Bret'
+          AND  are1.are_lev_code = 'River_section'"
+
+
+layer <- st_read(dsn = con_diaspara, query = query) |> 
+         sf::st_transform(4326) 
+layer_riv <- st_read(dsn = con_diaspara, query = query2) 
+
+
+
+save(layer, file = "data/dammap_presentation.Rdata")
+load(file = "data/dammap_presentation.Rdata")
+layer <- layer |>
+          mutate(label = sprintf(
+            '%s <br>	
+             code: %s <br>
+             type: %s <br>				
+					   h: %1.2f,<br> ',
+            stringi::stri_trans_general(layer$op_placename, "latin-ascii"),
+            layer$op_id_original,
+            layer$type,            
+            layer$ob_height
+          )) 
+layer$size <-  1+log(layer$ob_height+1) #  range 1-13
+layer$size[is.na(layer$size)] <- 0.01
+layer$type[is.na(layer$type)]<-"NA"
+layer$type <- as.factor(layer$type)
+cols <- RColorBrewer::brewer.pal(length(levels(layer$type)),name ="Set1")
+colorfun <- leaflet::colorFactor(cols, layer$type)
+
+
+l <- leaflet::leaflet() |>
+     leaflet::addScaleBar(options = leaflet::scaleBarOptions(imperial = FALSE)) |>
+     leaflet::addProviderTiles(leaflet::providers$CartoDB.DarkMatter) |>
+     leaflet::addCircleMarkers(
+        data = layer[1:500,],
+        popup = ~label,
+        color = ~colorfun(type),       
+        radius = ~size       
+      ) |>
+      leaflet::addLegend(
+        position="topright",
+        colors = cols,
+        labels = levels(layer$type),
+        opacity = 1)
+    
+l
+
+```
 
 ## This presentation
 
@@ -631,7 +816,7 @@ rownames = FALSE,
 ::: {.column width="60%"}
 -   [**Biological and Biometric data**]{style="font-size:45px"}
 
-A new way to use available data
+Everything is linked to Life History Trait data
 :::
 :::::
 
@@ -654,5 +839,60 @@ A new way to use available data
 ![](images/clipboard-2516448368.png)
 :::
 :::::
+
+# BEFORE INTRODUCING THE METRIC DB
+
+-   relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
+-   Maybe something from WGBAST
+
+# Example of group metrics
+
+-   EXAMPLE HERE
+
+# Example of individual metrics
+
+-   EXAMPLE HERE
+
+# Other parameters
+
+# Trend analysis - why do we need series?
+
+-   Example from WGEEL (CEDRIC)
+-   Example from WGNAS (CEDRIC)
+
+## This presentation
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+-   [**Overall - Whole Stock**]{style="font-size:45px"}
+:::
+:::::
+
+# Quality control
+
+::::: Columns
+::: {.column width="50%"}
+-   Need of DB input and output in TAF
+-   Data treatment
+-   Tried to follow the existing WG formats as closely as possible, to not destroy current work!
+:::
+
+::: {.column width="50%"}
+-   EXAMPLES
+-   Show Hennis or NAS
+-   What has been done in WGNAS
+-   Shiny treatment of the output to detect changes
+-   Pierre Yeves
+:::
+:::::
+
+# EXAMPLES FROM CEDRIC HERE
+
+-   WGBAST 2 databses are used
+-   WGNAS work briefly
 
 # Thank you!
