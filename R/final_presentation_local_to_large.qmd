@@ -123,16 +123,16 @@ A big reason why we needed habitat database
 # INTRODUCE THE NEED FOR REGIONAL MODELS
 
 -   Examples from (Hilaire presentation) from EDA
--   How are we going to do it: DAM and EF
+-   How are we going to do it: we need hydro and DAM and EF
 -   Give an example of regional model EDA
 -   Explain the need to have habitat models everywhere
 -   Show that we need to quantify mortality linked with dams (downstream migration)
+- WG TRUTTA work
+
+(Jani reorder this as you want, I just put everything
+related to introduction in the same place. I think you'll need several slides, I'll try to find some nice pictures)
 
 # JULES to ADD SLIDES HERE
-
-# Introduction about how we want to develop spatial model in EDA
-
--   We need to do it, use EDA
 
 
 # Different pressures, quantification issues?
@@ -140,26 +140,11 @@ A big reason why we needed habitat database
 -   Obstacles, turbines matched to habitat
 -   E.g., WGTRUTTA work
 
-# Development of regional model for
+# DAM DATABASE
 
--   Rivers at the bottom, dams on top
--   Dam db structure
+insert a schema of the db. Explain the main tables.
 
-# Migration Obstacles and electrofishing
-
-
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-
-
-
-
-# Electrofishing linking to habitat data
-
--   Electrofishing similarly to migration obstacles
--   We are working on this db now
--   Templates to be tested
-
-## Dam Database
+# DAM DATABASE
 
 ```{r}
 #| label: tbl-obstruction_place
@@ -180,7 +165,7 @@ load_library("tidyverse")
 load_library("RPostgres")
 load_library("yaml")
 load_library("DBI")
-load_library("ggplot2")
+load_library(EDA"ggplot2")
 load_library("sf")
 load_library("janitor") #
 load_library("htmltools") 
@@ -192,12 +177,17 @@ con_diaspara <- dbConnect(Postgres(),
                           port = cred$port,
                           user = cred$userdiaspara,
                           password = cred$passworddiaspara)
-dbGetQuery(con_diaspara, "SELECT 
+dam <-dbGetQuery(con_diaspara, "SELECT 
 op_placename,
 op_op_id,
 op_id_original,
 op_country
- FROM dam_france.obstruction_place limit 500;") |> 
+ FROM dam_france.obstruction_place limit 500;")
+
+save(dam, file="data/presentation_dam_op.Rdata")
+load(file="data/presentation_dam_op.Rdata")
+
+ dam |> 
  DT::datatable(rownames = FALSE,
   options = list(
     pageLength = 7,        
@@ -230,6 +220,7 @@ op_country
   )
 
 ```
+# DAM DATABASE
 
 # DAM DATABASE
 
@@ -306,6 +297,22 @@ l <- leaflet::leaflet() |>
 l
 
 ```
+
+
+# Migration Obstacles and electrofishing
+
+
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+
+
+
+
+# Electrofishing linking to habitat data
+
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
+
 
 ## This presentation
 
