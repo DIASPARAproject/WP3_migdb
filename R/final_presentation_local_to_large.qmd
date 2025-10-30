@@ -85,7 +85,6 @@ A big reason why we needed habitat database
 
 ::::: columns
 ::: {.column .incremental width="50%"}
-
 -   Regional aspects in WGBAST, WGNAS and WGBAST
 -   WGTRUTTA https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html
 :::
@@ -122,42 +121,43 @@ A big reason why we needed habitat database
 ![](images/clipboard-3102186189.png)
 
 # INTRODUCE THE NEED FOR REGIONAL MODELS
+
 -   Examples from (Hilaire presentation) from EDA
--    How are we going to do it: DAm and EF
+-   How are we going to do it: DAM and EF
+-   Give an example of regional model EDA
+-   Explain the need to have habitat models everywhere
+-   Show that we need to quantify mortality linked with dams (downstream migration)
 
 # JULES to ADD SLIDES HERE
 
 # Introduction about how we want to develop spatial model in EDA
+
 -   We need to do it, use EDA
 
-## This presentation
-
-::::: columns
-::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-:::
-
-::: {.column width="60%"}
--   [**Migration Obstacles and electrofishing**]{style="font-size:45px"}
-:::
-:::::
 
 # Different pressures, quantification issues?
 
 -   Obstacles, turbines matched to habitat
 -   E.g., WGTRUTTA work
 
-# Example FROM CEDRIC
+# Development of regional model for
 
 -   Rivers at the bottom, dams on top
 -   Dam db structure
+
+# Migration Obstacles and electrofishing
+
+
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+
+
+
 
 # Electrofishing linking to habitat data
 
 -   Electrofishing similarly to migration obstacles
 -   We are working on this db now
 -   Templates to be tested
-
 
 ## Dam Database
 
@@ -254,9 +254,18 @@ query <- "SELECT op_id_original,
           WHERE are_code = 'FR_Bret'
           AND ob_ending_date = '2035-01-01'
           "
+query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
+          JOIN refeel.tr_area_are are2 ON 
+          st_intersects(are1.geom_line, are2.geom_polygon)
+          WHERE are2.are_code = 'FR_Bret'
+          AND  are1.are_lev_code = 'River_section'"
+
 
 layer <- st_read(dsn = con_diaspara, query = query) |> 
          sf::st_transform(4326) 
+layer_riv <- st_read(dsn = con_diaspara, query = query2) 
+
+
 
 save(layer, file = "data/dammap_presentation.Rdata")
 load(file = "data/dammap_presentation.Rdata")
@@ -274,8 +283,10 @@ layer <- layer |>
 layer$size <-  1+log(layer$ob_height+1) #  range 1-13
 layer$size[is.na(layer$size)] <- 0.01
 layer$type[is.na(layer$type)]<-"NA"
+layer$type <- as.factor(layer$type)
+cols <- RColorBrewer::brewer.pal(length(levels(layer$type)),name ="Set1")
+colorfun <- leaflet::colorFactor(cols, layer$type)
 
-colorfun <- leaflet::colorFactor(RColorBrewer::brewer.pal(length(unique(layer$type)),name ="Set1"), as.factor(layer$type))
 
 l <- leaflet::leaflet() |>
      leaflet::addScaleBar(options = leaflet::scaleBarOptions(imperial = FALSE)) |>
@@ -283,27 +294,18 @@ l <- leaflet::leaflet() |>
      leaflet::addCircleMarkers(
         data = layer[1:500,],
         popup = ~label,
-        color = ~colorfun(as.factor(type)),       
+        color = ~colorfun(type),       
         radius = ~size       
       ) |>
       leaflet::addLegend(
         position="topright",
-        colors = c("blue","cyan","darkgreen","limegreen","red","orange", "grey","black"),
-        labels = c("h=0, prod=NA", "h=0, prod !=NA", "Presence passe, prod=NA", "Presence passe, prod !=NA", "Pas de passe, prod=NA", "Pas de passe, prod!=NA", "h predite, prod NA", "h predite, prod!=NA"),
+        colors = cols,
+        labels = levels(layer$type),
         opacity = 1)
-    } 
-
-               
-                leaflet::addLegend("bottomleft",
-                    pal = pal,
-                    values = ~ pal(shp[[column]]),
-                    title = "Hauteurs cumulées (en m)",
-                    opacity = 1
-                )        if (output == "leaflet") {
-           
+    
+l
 
 ```
-
 
 ## This presentation
 
@@ -339,9 +341,10 @@ Everything is linked to Life History Trait data
 :::
 :::::
 
-# BEFORE INTRODUCING THE METRIC DB 
-- relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
-- Maybe something from WGBAST
+# BEFORE INTRODUCING THE METRIC DB
+
+-   relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
+-   Maybe something from WGBAST
 
 # Example of group metrics
 
@@ -370,8 +373,6 @@ Everything is linked to Life History Trait data
 :::
 :::::
 
-
-
 # Quality control
 
 ::::: Columns
@@ -391,6 +392,7 @@ Everything is linked to Life History Trait data
 :::::
 
 # EXAMPLES FROM CEDRIC HERE
+
 -   WGBAST 2 databses are used
 -   WGNAS work briefly
 
