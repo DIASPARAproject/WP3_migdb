@@ -124,6 +124,151 @@ This is why we have worked with the habitat data so intensively
 :::
 :::::
 
+## Dam Database
+
+```{r}
+#| label: tbl-obstruction_place
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| html-table-processing: none
+
+if(Sys.info()[["user"]] == 'joliviero'){
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") #
+load_library("htmltools") 
+load_library("leaflet")
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+dbGetQuery(con_diaspara, "SELECT 
+op_placename,
+op_op_id,
+op_id_original,
+op_country
+ FROM dam_france.obstruction_place limit 500;") |> 
+ DT::datatable(rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+   
+
+    tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    "))
+
+  )
+
+```
+
+# DAM DATABASE
+
+```{r}
+#| label: fig-obstruction_place
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+
+query <- "SELECT op_id_original,
+                 op_placename, 
+                 ob_height, 
+                 ot.no_code as type,                 
+                 geom 
+          FROM dam_france.obstruction_place op
+          JOIN dam_france.obstruction o
+             ON ob_op_id = op_id
+          JOIN nomenclature.obstruction_type ot
+             ON ob_obstruction_type_no_id = ot.no_id
+          JOIN refeel.tr_area_are are ON 
+          st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
+          WHERE are_code = 'FR_Bret'
+          AND ob_ending_date = '2035-01-01'
+          "
+
+layer <- st_read(dsn = con_diaspara, query = query) |> 
+         sf::st_transform(4326) 
+
+save(layer, file = "data/dammap_presentation.Rdata")
+load(file = "data/dammap_presentation.Rdata")
+layer <- layer |>
+          mutate(label = sprintf(
+            '%s <br>	
+             code: %s <br>
+             type: %s <br>				
+					   h: %1.2f,<br> ',
+            stringi::stri_trans_general(layer$op_placename, "latin-ascii"),
+            layer$op_id_original,
+            layer$type,            
+            layer$ob_height
+          )) 
+layer$size <-  1+log(layer$ob_height+1) #  range 1-13
+layer$size[is.na(layer$size)] <- 0.01
+layer$type[is.na(layer$type)]<-"NA"
+
+colorfun <- leaflet::colorFactor(RColorBrewer::brewer.pal(length(unique(layer$type)),name ="Set1"), as.factor(layer$type))
+
+l <- leaflet::leaflet() |>
+     leaflet::addScaleBar(options = leaflet::scaleBarOptions(imperial = FALSE)) |>
+     leaflet::addProviderTiles(leaflet::providers$CartoDB.DarkMatter) |>
+     leaflet::addCircleMarkers(
+        data = layer[1:500,],
+        popup = ~label,
+        color = ~colorfun(as.factor(type)),       
+        radius = ~size       
+      ) |>
+      leaflet::addLegend(
+        position="topright",
+        colors = c("blue","cyan","darkgreen","limegreen","red","orange", "grey","black"),
+        labels = c("h=0, prod=NA", "h=0, prod !=NA", "Presence passe, prod=NA", "Presence passe, prod !=NA", "Pas de passe, prod=NA", "Pas de passe, prod!=NA", "h predite, prod NA", "h predite, prod!=NA"),
+        opacity = 1)
+    } 
+
+               
+                leaflet::addLegend("bottomleft",
+                    pal = pal,
+                    values = ~ pal(shp[[column]]),
+                    title = "Hauteurs cumulées (en m)",
+                    opacity = 1
+                )        if (output == "leaflet") {
+           
+
+```
+
 # Currently (or rather: in the past), only marine habitat available
 
 -   Now, shift from marine only to marine & continental
