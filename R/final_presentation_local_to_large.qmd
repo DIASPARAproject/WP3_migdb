@@ -30,6 +30,42 @@ theme: solarized
 background-transition: fade
 editor: visual
 ---
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+if(Sys.info()[["user"]] == 'joliviero'){
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") #
+load_library("htmltools") 
+load_library("leaflet")
+cred <- read_yaml("../credentials.yml")
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+
+
+
+
+
+```
+
 
 ## This presentation
 
@@ -134,6 +170,449 @@ related to introduction in the same place. I think you'll need several slides, I
 
 # JULES to ADD SLIDES HERE
 
+## Habitat DB hierarchical structure
+![WGBAST Hierarchical structure](images/fig-area_hierarchy_bast.svg){#fig-hierbast}
+
+## Habitat DB hierarchical structure : Stock
+![WGBAST Stock level](images/fig-area_hierarchy_bast_stock.svg){#fig-hierbastsck}
+
+## Habitat DB hierarchical structure : Stock
+```{r}
+#| label: refbast.tr_area_are Stock level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the global Stock level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
+  WHERE are_lev_code = 'Stock'
+  ORDER BY are_id;")
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+```
+## Habitat DB hierarchical structure : Stock
+![](images/bast_stock.png "WGBAST Stock level")
+
+## Habitat DB hierarchical structure : Assessment_unit
+![WGBAST Assesment_unit level](images/fig-area_hierarchy_bast_au.svg){#fig-hierbastau}
+
+## Habitat DB hierarchical structure : Assessment_unit
+```{r}
+#| label: refbast.tr_area_are assessment unit level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the assessment unit level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
+  WHERE are_id = ANY(ARRAY[1,3]) OR are_lev_code = 'Assessment_unit' 
+  ORDER BY are_id;")
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+#knitr::kable(fstock_lvl) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Habitat DB hierarchical structure : Assessment_unit
+![](images/bast_au.png "WGBAST Assessment_unit level")
+
+## Habitat DB hierarchical structure : River
+![WGBAST River level](images/fig-area_hierarchy_bast_riv.svg){#fig-hierbastriv}
+
+## Habitat DB hierarchical structure : River
+```{r}
+#| label: refbast.tr_area_are main river level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the main river level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine, are_name FROM refbast.tr_area_are
+  WHERE are_id = ANY(ARRAY[1,3,13]) OR are_are_id = 13
+  ORDER BY are_id;")
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+#knitr::kable(fstock_lvl) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Habitat DB hierarchical structure : River
+![](images/bast_river.png "WGBAST River level")
+
+## Habitat DB hierarchical structure : River_section
+![WGBAST River_section level](images/fig-area_hierarchy_bast_rivsec.svg){#fig-hierbastrvsc}
+
+## Habitat DB hierarchical structure : River_section
+```{r}
+#| label: refbast.tr_area_are main river_section level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the main river level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine, are_name FROM refbast.tr_area_are
+  WHERE are_id = ANY(ARRAY[1,3,13,19]) OR are_are_id = 19
+  ORDER BY are_id;")
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+#knitr::kable(fstock_lvl) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Habitat DB hierarchical structure : River_section
+![](images/bast_rs.png "WGBAST River_section level")
+
+## Habitat DB hierarchical structure : Divison
+![WGBAST Division level](images/fig-area_hierarchy_bast_div.svg){#fig-hierbastdiv}
+
+## Habitat DB hierarchical structure : Divison
+```{r}
+#| label: refbast.tr_area_are ICES division level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the ICES division level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
+  WHERE are_id = ANY(ARRAY[1,2]) OR are_lev_code = 'Division'
+  ORDER BY are_id;")
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+```
+
+## Habitat DB hierarchical structure : Divison
+![](images/bast_div.png "WGBAST Division level")
+
+## Habitat DB hierarchical structure : Subdivision_grouping
+![WGBAST Subdivision_grouping level](images/fig-area_hierarchy_bast_subgrp.svg){#fig-hierbastsubgr}
+
+## Habitat DB hierarchical structure : Subdivision_grouping
+```{r}
+#| label: refbast.tr_area_are ICES subdivision_grouping level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the ICES subdivision grouping level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
+  WHERE are_id = ANY(ARRAY[1,2,7011]) OR are_lev_code = 'Subdivision_grouping'
+  ORDER BY are_id;")
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+#knitr::kable(fstock_lvl) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Habitat DB hierarchical structure : Subdivision_grouping
+![](images/bast_subgr.png "WGBAST Subdivision_grouping level")
+
+## Habitat DB hierarchical structure : Subdivision
+![WGBAST Subdivision level](images/fig-area_hierarchy_bast_subdiv.svg){#fig-hierbastsub}
+
+## Habitat DB hierarchical structure : Subdivision
+```{r}
+#| label: refbast.tr_area_are ICES subdivision level
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Structure of the ICES subdivision level in the referential table
+
+
+fstock_lvl <- dbGetQuery(con_diaspara, 
+  "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
+  WHERE are_id = ANY(ARRAY[1,2]) OR are_lev_code = ANY(ARRAY['Division', 'Subdivision'])
+  ORDER BY are_id;")
+
+# DT::datatable(fstock_lvl,
+#                 rownames = FALSE, 
+#                 class = "stripe hover compact", 
+#                 options = list(dom = 't',
+#                           pageLength = 100))
+
+DT::datatable(fstock_lvl,
+rownames = FALSE,
+  options = list(
+    pageLength = 7,        
+    scrollX= TRUE   
+  )
+) |>
+  htmltools::tagList(
+
+ 
+    htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+ 
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+ 
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    ")))
+
+#knitr::kable(fstock_lvl) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+
+## Habitat DB hierarchical structure : Subdivision
+![](images/bast_sub.png "WGBAST Subdivision level")
+
+## Habitat DB hierarchical structure : WGEEL
+![WGEEL Hierarchical structure](images/fig-area_hierarchy_wgeel.svg){#fig-hiereel}
+
+## Habitat DB hierarchical structure : Regional
+- EMUs are to be deprecated
+- Creating a new structure to assess data
+
+## Habitat DB hierarchical structure : Regional
+![](images/wgeel_baltic.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : Regional
+![](images/wgeel_norway.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : Regional
+![](images/wgeel_nsea.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : Regional
+![](images/wgeel_atlantic.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : Regional
+![](images/wgeel_med.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : Complex
+- Taking care of lagoons in the Mediterranean
+- Creating groups of lagoons
+- Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
+
+## Habitat DB hierarchical structure : Complex
+![](images/greece_complex.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : Complex
+![](images/french_complex.png "WGEEL Regional level")
+
+## Habitat DB hierarchical structure : WGNAS
+![WGNAS Hierarchical structure](images/fig-area_hierarchy_nas1.svg){#fig-hiernas}
+
+## Habitat DB hierarchical structure : Assessment_unit
+![](images/nas_aunit.png "WGNAS AU level")
+
+## Habitat DB hierarchical structure : River
+![](images/nas_riv.png "WGNAS River level")
+
+## Habitat DB hierarchical structure : River
+- Possibility to group river basins to create smaller assessment units
+
+# Habitat DB to move from local to higher scale
+
+-   Data structured in regional level for SAM
+-   Need upscaling: need upscaling methods
+-   Identify similar areas, identify different areas
+
+# What is the appropriate spatial scale? Not known yet?
+
+-   All have the structure to group things at regional level
+
+# Introduction about how we want to develop spatial model in EDA
+
+-   We need to do it, use EDA
+
 
 # Different pressures, quantification issues?
 
@@ -153,30 +632,7 @@ insert a schema of the db. Explain the main tables.
 #| warning: FALSE
 #| html-table-processing: none
 
-if(Sys.info()[["user"]] == 'joliviero'){
-  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-  datawd <- "D:/DIASPARA/wgbast"
-} else if (Sys.info()[["user"]] == 'cedric.briand'){
-  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
-}
-source("utilities/load_library.R")
-load_library("tidyverse")
-load_library("RPostgres")
-load_library("yaml")
-load_library("DBI")
-load_library(EDA"ggplot2")
-load_library("sf")
-load_library("janitor") #
-load_library("htmltools") 
-load_library("leaflet")
-cred <- read_yaml("../credentials.yml")
-con_diaspara <- dbConnect(Postgres(), 
-                          dbname = cred$dbnamediaspara,
-                          host = cred$hostdistant,
-                          port = cred$port,
-                          user = cred$userdiaspara,
-                          password = cred$passworddiaspara)
+
 dam <-dbGetQuery(con_diaspara, "SELECT 
 op_placename,
 op_op_id,
