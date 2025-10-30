@@ -839,6 +839,9 @@ Everything is linked to Life History Trait data
 :::
 :::::
 
+#conclusions
+-    Everything is online
+-   doing the integration takes a lot of time. If you need to do it again, this is needed
 
 
 
