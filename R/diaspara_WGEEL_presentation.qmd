@@ -129,7 +129,6 @@ digraph DatabaseRelations {
 }
 ```
 
-
 # DATA AND REFERENTIALS
 
 ```{dot}
@@ -249,7 +248,6 @@ digraph schema {
 
 }
 ```
-
 
 DATA AND REFERENTIALS
 
@@ -526,7 +524,6 @@ ser_description ser_locationdescription ser_hty_code ser_gea_code ser_ccm_wso_id
 -   san_qal_comment
 -   san_wkg_code
 -   san_ver_code
-
 
 # Conclusion
 

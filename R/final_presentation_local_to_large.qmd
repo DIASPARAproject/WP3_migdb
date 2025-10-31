@@ -619,9 +619,68 @@ rownames = FALSE,
 
 # DAM DATABASE
 
-insert a schema of the db. Explain the main tables.
 
-# DAM DATABASE
+::::: columns
+::: {.column width="50%"}
+```{mermaid}
+%%| fig-cap: Simplied structure of the dam database
+flowchart TB
+    A([Obstruction place]):::table
+    %% Short Path
+    A --> B([Obstruction]):::table
+    B -->|Upstream| F([fish passage]):::table
+    B -->|Downstream| C([Hydro Power Plant]):::table
+    C --> D([Turbine]):::table    
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
+:::
+
+::: {.column width="50%"}
+![](images/dam_spain.jpg)
+:::
+:::::
+
+
+## DAM DATABASE : Obstruction place
+
+::::: columns
+::: {.column width="50%"}
+```{mermaid}
+%%| fig-cap: Simplied structure of the dam database
+flowchart TB
+    A([Obstruction place]):::main
+    %% Short Path
+    A --> B([Obstruction]):::table
+    B -->|Upstream| F([fish passage]):::table
+    B -->|Downstream| C([Hydro Power Plant]):::table
+    C --> D([Turbine]):::table    
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
+:::
+
+::: {.column width="50%"}
+- Obstruction place is a point on the map
+- It has a hierarchy (dam related to other dams in braided network)
+- It belongs to a country (by inheritance), so dam data are filled in
+and replaced at the national level
+- Class following AMBER + sudoang
+```{mermaid}
+
+flowchart TB
+    A([Obstruction place]):::table
+    %% Short Path
+    A --> B([Obstuction place FR]):::table
+    A --> C([Obstuction place ES]):::table 
+    A --> D([Obstuction place ...]):::table      
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
+:::
+:::::
+
+## DAM DATABASE : Obstruction place
 
 ```{r}
 #| label: tbl-obstruction_place
@@ -631,14 +690,14 @@ insert a schema of the db. Explain the main tables.
 #| html-table-processing: none
 
 
-dam <-dbGetQuery(con_diaspara, "SELECT 
-op_placename,
-op_op_id,
-op_id_original,
-op_country
- FROM dam_france.obstruction_place limit 500;")
+# dam <-dbGetQuery(con_diaspara, "SELECT 
+# op_placename,
+# op_op_id,
+# op_id_original,
+# op_country
+#  FROM dam_france.obstruction_place limit 500;")
 
-save(dam, file="data/presentation_dam_op.Rdata")
+# save(dam, file="data/presentation_dam_op.Rdata")
 load(file="data/presentation_dam_op.Rdata")
 
  dam |> 
@@ -674,43 +733,46 @@ load(file="data/presentation_dam_op.Rdata")
   )
 
 ```
-# DAM DATABASE
+
+
+## DAM DATABASE : Obstruction place
 
 ```{r}
 #| label: fig-obstruction_place
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
+#| fig-cap: "A subsample of the dam database in France"
 
-query <- "SELECT op_id_original,
-                 op_placename, 
-                 ob_height, 
-                 ot.no_code as type,                 
-                 geom 
-          FROM dam_france.obstruction_place op
-          JOIN dam_france.obstruction o
-             ON ob_op_id = op_id
-          JOIN nomenclature.obstruction_type ot
-             ON ob_obstruction_type_no_id = ot.no_id
-          JOIN refeel.tr_area_are are ON 
-          st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
-          WHERE are_code = 'FR_Bret'
-          AND ob_ending_date = '2035-01-01'
-          "
-query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
-          JOIN refeel.tr_area_are are2 ON 
-          st_intersects(are1.geom_line, are2.geom_polygon)
-          WHERE are2.are_code = 'FR_Bret'
-          AND  are1.are_lev_code = 'River_section'"
-
-
-layer <- st_read(dsn = con_diaspara, query = query) |> 
-         sf::st_transform(4326) 
-layer_riv <- st_read(dsn = con_diaspara, query = query2) 
+# query <- "SELECT op_id_original,
+#                  op_placename, 
+#                  ob_height, 
+#                  ot.no_code as type,                 
+#                  geom 
+#           FROM dam_france.obstruction_place op
+#           JOIN dam_france.obstruction o
+#              ON ob_op_id = op_id
+#           JOIN nomenclature.obstruction_type ot
+#              ON ob_obstruction_type_no_id = ot.no_id
+#           JOIN refeel.tr_area_are are ON 
+#           st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
+#           WHERE are_code = 'FR_Bret'
+#           AND ob_ending_date = '2035-01-01'
+#           "
+# query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
+#           JOIN refeel.tr_area_are are2 ON 
+#           st_intersects(are1.geom_line, are2.geom_polygon)
+#           WHERE are2.are_code = 'FR_Bret'
+#           AND  are1.are_lev_code = 'River_section'"
 
 
+# layer <- st_read(dsn = con_diaspara, query = query) |> 
+#          sf::st_transform(4326) 
+# layer_riv <- st_read(dsn = con_diaspara, query = query2) 
 
-save(layer, file = "data/dammap_presentation.Rdata")
+
+
+# save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
 load(file = "data/dammap_presentation.Rdata")
 layer <- layer |>
           mutate(label = sprintf(
@@ -732,6 +794,10 @@ colorfun <- leaflet::colorFactor(cols, layer$type)
 
 
 l <- leaflet::leaflet() |>
+     leaflet::addPolylines(data= layer_riv, 
+     opacity=0.5,
+     fillOpacity = 0.2
+     ) |>
      leaflet::addScaleBar(options = leaflet::scaleBarOptions(imperial = FALSE)) |>
      leaflet::addProviderTiles(leaflet::providers$CartoDB.DarkMatter) |>
      leaflet::addCircleMarkers(
@@ -750,47 +816,353 @@ l
 
 ```
 
-# DAM DATABASE
-
-Physical obstructions
-
-# DAM DATABASE
-
-assessment of passability
-
-
-# Migration Obstacles and electrofishing
-
-
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-
-
-# Electrofishing linking to habitat data
-
--   Electrofishing similarly to migration obstacles
--   We are working on this db now
--   Templates to be tested
-
-
-## This presentation
+## DAM DATABASE : Physical obstruction
 
 ::::: columns
-::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+::: {.column width="50%"}
+```{mermaid}
+%%| fig-cap: Simplied structure of the dam database
+flowchart TB
+    A([Obstruction place]):::table
+    %% Short Path
+    A --> B([Obstruction]):::main
+    B -->|Upstream| F([fish passage]):::table
+    B -->|Downstream| C([Hydro Power Plant]):::table
+    C --> D([Turbine]):::table    
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
 :::
 
-::: {.column width="60%"}
--   [**Biological and Biometric data**]{style="font-size:45px"}
-
-Everything is linked to Life History Trait data
+::: {.column width="50%"}
+- Physical obstruction has date of start and end
+- Events (Erasement, change of height change dam period)
+- Fishway types
+- Downstream water depth
 :::
 :::::
 
-# New database - data available for use
+## DAM DATABASE : Physical obstruction
 
--   This is an example why it was important to use ICES Vocabulary as much as possible
+```{r}
+#| label: tbl-obstruction
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| html-table-processing: none
 
-![](images/clipboard-2022634687.png)
+
+# dam_ob <-dbGetQuery(con_diaspara, "SELECT 
+# * FROM dam_france.obstruction limit 100;")
+
+# save(dam_ob, file="data/presentation_dam_ob.Rdata")
+load(file="data/presentation_dam_ob.Rdata")
+
+ dam_ob |> 
+ DT::datatable(rownames = FALSE,
+  options = list(
+    pageLength = 5,        
+    scrollX= TRUE   
+  )
+)|>
+  htmltools::tagList(
+   
+
+     htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    "))
+
+  )
+
+```
+
+## DAM DATABASE : assessment of passability
+
+```{mermaid}
+%%| fig-cap: Simplied structure of the dam database
+flowchart TB
+    A([Obstruction place]):::table
+    %% Short Path
+    A --> B([Obstruction]):::table
+    B -->|Upstream| F([fish passage]):::main
+    B -->|Downstream| C([Hydro Power Plant]):::table
+    C --> D([Turbine]):::table    
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
+
+## DAM DATABASE : assessment of passability
+
+```{r}
+#| label: tbl-fishway
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| html-table-processing: none
+
+
+ dam_fi <-dbGetQuery(con_diaspara, "SELECT 
+ fi_id_original, 
+ species.no_name,
+ fi_presence_pass,
+ fi_date
+  FROM dam_france.fishway  
+  JOIN nomenclature.species on species.no_id=fi_species_id
+  limit 100;")
+
+ save(dam_fi, file="data/presentation_dam_fi.Rdata")
+load(file="data/presentation_dam_fi.Rdata")
+
+ dam_fi |> 
+ DT::datatable(rownames = FALSE,
+  options = list(
+    pageLength = 5,        
+    scrollX= TRUE   
+  )
+)|>
+  htmltools::tagList(
+   
+
+     htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    "))
+
+  )
+
+```
+
+## DAM DATABASE : Hydro Power Plants
+
+```{mermaid}
+%%| fig-cap: Simplied structure of the dam database
+flowchart TB
+    A([Obstruction place]):::table
+    %% Short Path
+    A --> B([Obstruction]):::table
+    B -->|Upstream| F([fish passage]):::table
+    B -->|Downstream| C([Hydro Power Plant]):::main
+    C --> D([Turbine]):::table    
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
+
+## DAM DATABASE : Hydro Power
+
+```{r}
+#| label: tbl-hpp
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| html-table-processing: none
+#| tbl-cap: Hydropower plant table
+
+
+ dam_hpp <-dbGetQuery(con_diaspara, "SELECT 
+ *
+  FROM dam_france.hpp   
+  limit 100;")
+
+ save(dam_hpp, file="data/presentation_dam_hpp.Rdata")
+load(file="data/presentation_dam_hpp.Rdata")
+
+ dam_hpp |> 
+ DT::datatable(rownames = FALSE,
+  options = list(
+    pageLength = 5,        
+    scrollX= TRUE   
+  )
+)|>
+  htmltools::tagList(
+   
+
+     htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    "))
+
+  )
+
+```
+
+
+## DAM DATABASE : Turbines
+
+```{mermaid}
+%%| fig-cap: Simplied structure of the dam database
+flowchart TB
+    A([Obstruction place]):::table
+    %% Short Path
+    A --> B([Obstruction]):::table
+    B -->|Upstream| F([fish passage]):::table
+    B -->|Downstream| C([Hydro Power Plant]):::table
+    C --> D([Turbine]):::main    
+    classDef table fill:#CD88
+    classDef main fill:#268073,color:white
+```
+
+## DAM DATABASE : Turbines
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+#| label: tbl-turbines
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| html-table-processing: none
+#| tbl-cap: Hydropower plant table
+
+
+ dam_turb <-dbGetQuery(con_diaspara, "SELECT 
+ *
+  FROM dam_france.turbine  
+  limit 100;")
+
+ save(dam_turb, file="data/presentation_dam_turb.Rdata")
+load(file="data/presentation_dam_turb.Rdata")
+
+ dam_turb |> 
+ DT::datatable(rownames = FALSE,
+  options = list(
+    pageLength = 5,        
+    scrollX= TRUE   
+  )
+)|>
+  htmltools::tagList(
+   
+
+     htmltools::tags$style(HTML("
+      /* Table cells */
+      table.dataTable td {
+        font-size: 0.6em;
+      }
+
+      /* Table headers */
+      table.dataTable th {
+        font-size: 0.65em;
+      }
+
+      /* Control bar: search input, pagination, etc. */
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.70em;
+      }
+    "))
+
+  )
+
+```
+:::
+::: {.column width="50%"}
+<br>
+<br>
+<html>
+<div style="overflow: auto; max-height: 500px; max-width: 100% ">
+<head>
+<meta charset="UTF-8"/><style>
+table {border: medium solid #6495ed;border-collapse: collapse;width: 100%;} th{font-family: monospace; border: thin solid #6495ed;padding: 5px;background-color: #D0E3FA;}th{text-align: left;font-size: 0.7em;}td{font-family: sans-serif;border: thin solid #6495ed;padding: 5px;text-align: center;font-size: 0.6em;}.odd{background:#e8edff;}img{padding:5px; border:solid; border-color: #dddddd #aaaaaa #aaaaaa #dddddd; border-width: 1px 2px 2px 1px; background-color:white;}</style>
+</head>
+<body>
+<table><tr><th colspan="4"><pre><code>Table turbine_type</code></pre></th></tr><tr><th>no_id</th><th>no_code</th><th>no_type</th><th>no_name</th></tr><tr class="odd"><td>242</td><td>&nbsp;</td><td>Turbine type</td><td>Horizontal axis Kaplan (bulb)</td></tr>
+<tr><td>243</td><td>&nbsp;</td><td>Turbine type</td><td>Other (please specify)</td></tr>
+<tr class="odd"><td>244</td><td>&nbsp;</td><td>Turbine type</td><td>Double Francis (spiral case)</td></tr>
+<tr><td>245</td><td>&nbsp;</td><td>Turbine type</td><td>Francis unspecified</td></tr>
+<tr class="odd"><td>246</td><td>&nbsp;</td><td>Turbine type</td><td>Turbine with fixed blade propeller and vertical axis</td></tr>
+<tr><td>247</td><td>&nbsp;</td><td>Turbine type</td><td>Kaplan not specified</td></tr>
+<tr class="odd"><td>248</td><td>&nbsp;</td><td>Turbine type</td><td>Pelton</td></tr>
+<tr><td>249</td><td>&nbsp;</td><td>Turbine type</td><td>Reversible</td></tr>
+<tr class="odd"><td>250</td><td>&nbsp;</td><td>Turbine type</td><td>Kaplan (model of S-turbine)</td></tr>
+<tr><td>251</td><td>&nbsp;</td><td>Turbine type</td><td>Turbine with fixed blade propeller and horizontal axis</td></tr>
+<tr class="odd"><td>252</td><td>&nbsp;</td><td>Turbine type</td><td>Unknown</td></tr>
+<tr><td>253</td><td>&nbsp;</td><td>Turbine type</td><td>Vertical axis Kaplan</td></tr>
+<tr class="odd"><td>254</td><td>&nbsp;</td><td>Turbine type</td><td>Francis without volute</td></tr>
+<tr><td>255</td><td>&nbsp;</td><td>Turbine type</td><td>Francis (spiral case)</td></tr>
+<tr class="odd"><td>256</td><td>&nbsp;</td><td>Turbine type</td><td>Banki-Michell (cross-flow)</td></tr>
+<tr><td>257</td><td>&nbsp;</td><td>Turbine type</td><td>VLH</td></tr>
+<tr class="odd"><td>258</td><td>&nbsp;</td><td>Turbine type</td><td>Archimedean screw turbine</td></tr>
+<tr><td>259</td><td>&nbsp;</td><td>Turbine type</td><td>Water wheel turbine (aqualienne)</td></tr>
+<tr class="odd"><td>260</td><td>&nbsp;</td><td>Turbine type</td><td>Water wheel turbine (others)</td></tr>
+<tr><td>261</td><td>&nbsp;</td><td>Turbine type</td><td>Propeller unspecified</td></tr>
+</table></body></div></html>
+
+
+
+
+:::
+:::::
+
+
+# Electrofishing
+
+
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="50%"}
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
+:::
+:::::
+
+# Biological and Biometric data 
+
+
+Everything is linked to Life History Trait data
+
+
+
 
 # All groups have identified this need, but it was not easily accessible
 
@@ -838,8 +1210,6 @@ Everything is linked to Life History Trait data
 -   [**Overall - Whole Stock**]{style="font-size:45px"}
 :::
 :::::
-
-
 
 
 # Thank you!

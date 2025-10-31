@@ -40,11 +40,24 @@ editor: visual
 ![](images/clipboard-4195111625.png)
 
 
+# The DIADROMOUS DATABASE
+
+- Use of a common structure and vocabularies
+
+![](images/clipboard-2022634687.png)
+
+
+## The DIADROMOUS DATABASE
+
+
+<a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#species-tr_species_spe" species>Open Link</a>
+
 # STOCK db
 
 ![](images/copilot_stock_model.png)
-
 # STOCK db (What have we done so far)
+
+-  
 
 -   Generalisation of metadata to define the variables used
 
