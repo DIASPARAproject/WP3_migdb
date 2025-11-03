@@ -36,23 +36,15 @@ editor: visual
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-
-#if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
-setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "D:/DIASPARA/wgbast"
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
-setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
 }
 source("utilities/load_library.R")
 load_library("tidyverse")
-load_library("knitr")
-load_library("kableExtra")
-load_library("icesVocab")
-load_library("readxl")
-load_library("janitor")
-load_library("skimr")
 load_library("RPostgres")
 load_library("yaml")
 load_library("DBI")
@@ -63,20 +55,17 @@ load_library("htmltools")
 load_library("leaflet")
 cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamehydro,
-                           host = cred$hostmercure,
-                           port = cred$port,
-                           user = cred$usermercure,
-                           password = cred$passwordmercure)
-# con_diaspara <- dbConnect(Postgres(), 
-#                           dbname = cred$dbnamediaspara,
-#                           host = cred$hostdistant,
-#                           port = cred$port,
-#                           user = cred$userdiaspara,
-#                           password = cred$passworddiaspara)
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+
+
+
+
 
 ```
-
 
 ## This presentation
 
@@ -149,9 +138,14 @@ A big reason why we needed habitat database
 
 ::::: columns
 ::: {.column .incremental width="50%"}
--   There is a need to have habitat models everywhere
--  Regional aspects in WGBAST, WGNAS and WGBAST
+<<<<<<< HEAD
+-   Regional aspects in WGBAST, WGNAS and WGBAST
 -   [WGTRUTTA](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html)
+=======
+-   There is a need to have habitat models everywhere
+-   Regional aspects in WGBAST, WGNAS and WGEEL
+-   WGTRUTTA https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html
+>>>>>>> d6c430d222428049d33e510228de9ac69b129ff8
 :::
 
 ::: {.column width="50%"}
@@ -190,6 +184,16 @@ A big reason why we needed habitat database
 
 # Regional aspects, EDA examples
 
+<<<<<<< HEAD
+-   Examples from (Hilaire presentation) from EDA
+-   How are we going to do it: we need hydro and DAM and EF
+-   Give an example of regional model EDA
+-   Explain the need to have habitat models everywhere
+-   Show that we need to quantify mortality linked with dams (downstream migration)
+-   WG TRUTTA work
+
+(Jani reorder this as you want, I just put everything related to introduction in the same place. I think you'll need several slides, I'll try to find some nice pictures)
+=======
 -   To quantify mortality linked with dams (downstream migration):
 
     ![](images/clipboard-373049954.png)
@@ -201,6 +205,7 @@ A big reason why we needed habitat database
 -   Figure of a trap, fishway or anything. Glasseel series
 -   how this is used by the WGEEL to get the
 -   WGEEL yellow eel maps etc.
+>>>>>>> d6c430d222428049d33e510228de9ac69b129ff8
 
 ## Habitat DB hierarchical structure
 
@@ -315,15 +320,8 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Assessment_unit
-::::: columns
-::: {.column .incremental width="50%"}
-- Gap below Assessment Unit 3
-- No Assessment Unit on the Western part
-:::
-::: {.column width="50%"}
+
 ![](images/bast_au.png "WGBAST Assessment_unit level")
-:::
-::::
 
 ## Habitat DB hierarchical structure : River
 
@@ -439,11 +437,6 @@ rownames = FALSE,
 
 ![](images/bast_rs.png "WGBAST River_section level")
 
-::: notes
-Here we only see the main stretch of river since what I'm showing right now is only the hierarchical structure. But within the DB, all tributaries are included. They are linked to the main stretch by an id.
-Within the RDBES the basin code, which is unique and the name of the river will be included.
-:::
-
 ## Habitat DB hierarchical structure : Divison
 
 ![WGBAST Division level](images/fig-area_hierarchy_bast_div.svg){#fig-hierbastdiv}
@@ -553,14 +546,8 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Subdivision_grouping
-::::: columns
-::: {.column .incremental width="50%"}
-- Useful for historical data. Used to be grouped in larger areas
-:::
-::: {.column width="50%"}
+
 ![](images/bast_subgr.png "WGBAST Subdivision_grouping level")
-:::
-::::
 
 ## Habitat DB hierarchical structure : Subdivision
 
@@ -621,26 +608,22 @@ rownames = FALSE,
 
 ```
 
-
-
 ## Habitat DB hierarchical structure : Subdivision
+
 ![](images/bast_sub.png "WGBAST Subdivision level")
 
 ## Habitat DB hierarchical structure : WGEEL
+
 ![WGEEL Hierarchical structure](images/fig-area_hierarchy_wgeel.svg){#fig-hiereel}
 
 ## Habitat DB hierarchical structure : Regional
-- EMUs are to be deprecated
-- Creating a new structure to assess data
-- Has been presented and disscussed during WGEEL meeting
+
+-   EMUs are to be deprecated
+-   Creating a new structure to assess data
 
 ## Habitat DB hierarchical structure : Regional
 
 ![](images/wgeel_baltic.png "WGEEL Regional level")
-
-::: notes
-For now data is reported for the whole Baltic Sea but it might change to a finer grain in the future. This will have to be discussed within the WG.
-:::
 
 ## Habitat DB hierarchical structure : Regional
 
@@ -659,9 +642,10 @@ For now data is reported for the whole Baltic Sea but it might change to a finer
 ![](images/wgeel_med.png "WGEEL Regional level")
 
 ## Habitat DB hierarchical structure : Complex
-- Taking care of lagoons in the Mediterranean
-- Creating groups of lagoons
-- Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
+
+-   Taking care of lagoons in the Mediterranean
+-   Creating groups of lagoons
+-   Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
 
 ## Habitat DB hierarchical structure : Complex
 
@@ -671,52 +655,49 @@ For now data is reported for the whole Baltic Sea but it might change to a finer
 
 ![](images/french_complex.png "WGEEL Regional level")
 
-## Habitat DB hierarchical structure : Lagoons
-![](images/wgeel_lag.png "WGEEL Lagoons level")
-
-## Habitat DB hierarchical structure : Lagoons
-- Lakes are to be added as well
-
 ## Habitat DB hierarchical structure : WGNAS
+
 ![WGNAS Hierarchical structure](images/fig-area_hierarchy_nas1.svg){#fig-hiernas}
 
 ## Habitat DB hierarchical structure : Assessment_unit
-::::: columns
-::: {.column .incremental width="50%"}
-- Electrofishing data will have to be reported at this level
-:::
-::: {.column width="50%"}
+
 ![](images/nas_aunit.png "WGNAS AU level")
-:::
-::::
 
 ## Habitat DB hierarchical structure : River
-::::: columns
-::: {.column .incremental width="50%"}
-- Possibility to work with river basins to work with smaller AU
-:::
-::: {.column width="50%"}
+
 ![](images/nas_riv.png "WGNAS River level")
-:::
-::::
 
 ## Habitat DB hierarchical structure : River
-- Possibility to group river basins to create smaller assessment units
+<<<<<<< HEAD
 
-::::: columns
-::: {.column .incremental width="40%"}
+-   Possibility to group river basins to create smaller assessment units
+
+# Habitat DB to move from local to higher scale
+
+-   Data structured in regional level for SAM
+-   Need upscaling: need upscaling methods
+-   Identify similar areas, identify different areas
+
+# What is the appropriate spatial scale? Not known yet?
+
+-   All have the structure to group things at regional level
+
+# Introduction about how we want to develop spatial model in EDA
+
+-   We need to do it, use EDA
+
+# Different pressures, quantification issues?
+
+-   Obstacles, turbines matched to habitat
+-   E.g., WGTRUTTA work
+=======
+
 -   Possibility to group river basins to create smaller assessment units
 -   Different pressures, quantification issues?
     -   Obstacles, turbines matched to habitat
-:::
-
-::: {.column width="60%"}
-![](images/nas_rivseg.png "WGNAS River_segment level")
-:::
-:::::
+>>>>>>> d6c430d222428049d33e510228de9ac69b129ff8
 
 # DAM DATABASE
-
 
 ::::: columns
 ::: {.column width="50%"}
@@ -738,7 +719,6 @@ flowchart TB
 ![](images/dam_spain.jpg)
 :::
 :::::
-
 
 ## DAM DATABASE : Obstruction place
 
@@ -832,7 +812,6 @@ load(file="data/presentation_dam_op.Rdata")
 
 ```
 
-
 ## DAM DATABASE : Obstruction place
 
 ```{r}
@@ -842,35 +821,35 @@ load(file="data/presentation_dam_op.Rdata")
 #| warning: FALSE
 #| fig-cap: "A subsample of the dam database in France"
 
-query <- "SELECT op_id_original,
-                 op_placename, 
-                 ob_height, 
-                 ot.no_code as type,                 
-                 geom 
-          FROM dam_france.obstruction_place op
-          JOIN dam_france.obstruction o
-             ON ob_op_id = op_id
-          JOIN nomenclature.obstruction_type ot
-             ON ob_obstruction_type_no_id = ot.no_id
-          JOIN refeel.tr_area_are are ON 
-          st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
-          WHERE are_code = 'FR_Bret'
-          AND ob_ending_date = '2035-01-01'
-          "
-query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
-          JOIN refeel.tr_area_are are2 ON 
-          st_intersects(are1.geom_line, are2.geom_polygon)
-          WHERE are2.are_code = 'FR_Bret'
-          AND  are1.are_lev_code = 'River_section'"
+# query <- "SELECT op_id_original,
+#                  op_placename, 
+#                  ob_height, 
+#                  ot.no_code as type,                 
+#                  geom 
+#           FROM dam_france.obstruction_place op
+#           JOIN dam_france.obstruction o
+#              ON ob_op_id = op_id
+#           JOIN nomenclature.obstruction_type ot
+#              ON ob_obstruction_type_no_id = ot.no_id
+#           JOIN refeel.tr_area_are are ON 
+#           st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
+#           WHERE are_code = 'FR_Bret'
+#           AND ob_ending_date = '2035-01-01'
+#           "
+# query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
+#           JOIN refeel.tr_area_are are2 ON 
+#           st_intersects(are1.geom_line, are2.geom_polygon)
+#           WHERE are2.are_code = 'FR_Bret'
+#           AND  are1.are_lev_code = 'River_section'"
 
 
-layer <- st_read(dsn = con_diaspara, query = query) |> 
-         sf::st_transform(4326) 
-layer_riv <- st_read(dsn = con_diaspara, query = query2) 
+# layer <- st_read(dsn = con_diaspara, query = query) |> 
+#          sf::st_transform(4326) 
+# layer_riv <- st_read(dsn = con_diaspara, query = query2) 
 
 
 
-save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
+# save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
 load(file = "data/dammap_presentation.Rdata")
 layer <- layer |>
           mutate(label = sprintf(
@@ -933,10 +912,10 @@ flowchart TB
 :::
 
 ::: {.column width="50%"}
-- Physical obstruction has date of start and end
-- Events (Erasement, change of height change dam period)
-- Fishway types
-- Downstream water depth
+-   Physical obstruction has date of start and end
+-   Events (Erasement, change of height change dam period)
+-   Fishway types
+-   Downstream water depth
 :::
 :::::
 
@@ -1129,7 +1108,6 @@ load(file="data/presentation_dam_hpp.Rdata")
 
 ```
 
-
 ## DAM DATABASE : Turbines
 
 ```{mermaid}
@@ -1147,7 +1125,7 @@ flowchart TB
 
 ## DAM DATABASE : Turbines
 
-::::: columns
+:::::: columns
 ::: {.column width="50%"}
 ```{r}
 #| label: tbl-turbines
@@ -1202,6 +1180,7 @@ load(file="data/presentation_dam_turb.Rdata")
 :::
 
 :::: {.column width="50%"}
+<<<<<<< HEAD
 <br> 
 <br>
 
@@ -1212,8 +1191,27 @@ load(file="data/presentation_dam_turb.Rdata")
 #| warning: FALSE
 #| html-table-processing: none
 #| tbl-cap: Hydropower plant table
+=======
+<br> <br>
 
+<html>
 
+::: {style="overflow: auto; max-height: 500px; max-width: 100% "}
+<head>
+
+<meta charset="UTF-8"/>
+
+<style>
+table {border: medium solid #6495ed;border-collapse: collapse;width: 100%;} th{font-family: monospace; border: thin solid #6495ed;padding: 5px;background-color: #D0E3FA;}th{text-align: left;font-size: 0.7em;}td{font-family: sans-serif;border: thin solid #6495ed;padding: 5px;text-align: center;font-size: 0.6em;}.odd{background:#e8edff;}img{padding:5px; border:solid; border-color: #dddddd #aaaaaa #aaaaaa #dddddd; border-width: 1px 2px 2px 1px; background-color:white;}</style>
+
+</head>
+
+<body>
+>>>>>>> d6c430d222428049d33e510228de9ac69b129ff8
+
+<table>
+
+<<<<<<< HEAD
  turb_type <-dbGetQuery(con_diaspara, "SELECT 
  *
   FROM nomenclature.turbine_type;")
@@ -1255,46 +1253,296 @@ load(file="data/presentation_turb_type.Rdata")
 
 ```
 
+=======
+<tr>
+
+<th colspan="4">
+
+<pre><code>Table turbine_type</code></pre>
+
+</th>
+
+</tr>
+
+<tr>
+
+<th>no_id</th>
+
+<th>no_code</th>
+
+<th>no_type</th>
+
+<th>no_name</th>
+
+</tr>
+
+<tr class="odd">
+
+<td>242</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Horizontal axis Kaplan (bulb)</td>
+
+</tr>
+
+<tr>
+
+<td>243</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Other (please specify)</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>244</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Double Francis (spiral case)</td>
+
+</tr>
+
+<tr>
+
+<td>245</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Francis unspecified</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>246</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Turbine with fixed blade propeller and vertical axis</td>
+
+</tr>
+
+<tr>
+
+<td>247</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Kaplan not specified</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>248</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Pelton</td>
+
+</tr>
+
+<tr>
+
+<td>249</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Reversible</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>250</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Kaplan (model of S-turbine)</td>
+
+</tr>
+
+<tr>
+
+<td>251</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Turbine with fixed blade propeller and horizontal axis</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>252</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Unknown</td>
+
+</tr>
+
+<tr>
+
+<td>253</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Vertical axis Kaplan</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>254</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Francis without volute</td>
+
+</tr>
+
+<tr>
+
+<td>255</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Francis (spiral case)</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>256</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Banki-Michell (cross-flow)</td>
+
+</tr>
+
+<tr>
+
+<td>257</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>VLH</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>258</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Archimedean screw turbine</td>
+
+</tr>
+
+<tr>
+
+<td>259</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Water wheel turbine (aqualienne)</td>
+
+</tr>
+
+<tr class="odd">
+
+<td>260</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Water wheel turbine (others)</td>
+
+</tr>
+
+<tr>
+
+<td>261</td>
+
+<td> </td>
+
+<td>Turbine type</td>
+
+<td>Propeller unspecified</td>
+
+</tr>
+
+</table>
+
+</body>
+:::
+
+</html>
+>>>>>>> d6c430d222428049d33e510228de9ac69b129ff8
 ::::
 ::::::
 
-# DIADROMOUS DATABASE
+# Electrofishing
 
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} 
-![](images/clipboard-639830824.png "electrofishing"){width="450"}
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
 
-## DIADROMOUS DATABASE (Metric DB DB)
+::: {.column width="50%"}
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
+:::
+:::::
 
- ![](images/DIAD2.0.png "MetricDB")
+# Biological and Biometric data
 
-## DIADROMOUS DATABASE (Stock DB)
-  - Structuration of data at the stock / assessment Unit level.
-
- ![](images/DIAD1.png "Stock DB ")
-
-
-## DIADROMOUS DATABASE (Metric DB)
-
- ![](images/DIAD2.1.png "Metric DB - detail of tables")
-
-
-
-## DIADROMOUS DATABASE (Stock DB)
-
- ![](images/DIAD1.1.png "Stock DB - Data input")
-
-## DIADROMOUS DATABASE (Stock DB)
-
- ![](images/DIAD1.3.png "Stock DB - metadata")
-
- ## DIADROMOUS DATABASE (Stock DB)
-
- ![](images/DIAD1.4.png "Stock DB - metadata")
-
-
- ## DIADROMOUS DATABASE (Data Flow)
-
-
+Everything is linked to Life History Trait data
 
 # All groups have identified this need, but it was not easily accessible
 
@@ -1334,19 +1582,14 @@ load(file="data/presentation_turb_type.Rdata")
 
 ## Stock DB
 
-::::: columns
-::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-:::
 
-::: {.column width="60%"}
--   [**Overall - Whole Stock**]{style="font-size:45px"}
-:::
-:::::
 
-#conclusions
+<<<<<<< HEAD
+=======
+#conclusions - Everything is online - doing the integration takes a lot of time. If you need to do it again, this is needed
+>>>>>>> d6c430d222428049d33e510228de9ac69b129ff8
 
--    Everything is online
--   doing the integration takes a lot of time. If you need to do it again, this is needed
+
+conclusions - Everything is online - doing the integration takes a lot of time. If you need to do it again, this is needed
 
 # Thank you!
