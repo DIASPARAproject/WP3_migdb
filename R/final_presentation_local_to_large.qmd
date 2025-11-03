@@ -286,7 +286,15 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Assessment_unit
+::::: columns
+::: {.column .incremental width="50%"}
+- Gap below Assessment Unit 3
+- No Assessment Unit on the Western part
+:::
+::: {.column width="50%"}
 ![](images/bast_au.png "WGBAST Assessment_unit level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : River
 ![WGBAST River level](images/fig-area_hierarchy_bast_riv.svg){#fig-hierbastriv}
@@ -500,7 +508,14 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Subdivision_grouping
+::::: columns
+::: {.column .incremental width="50%"}
+- Useful for historical data. Used to be grouped in larger areas
+:::
+::: {.column width="50%"}
 ![](images/bast_subgr.png "WGBAST Subdivision_grouping level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : Subdivision
 ![WGBAST Subdivision level](images/fig-area_hierarchy_bast_subdiv.svg){#fig-hierbastsub}
@@ -570,6 +585,7 @@ rownames = FALSE,
 ## Habitat DB hierarchical structure : Regional
 - EMUs are to be deprecated
 - Creating a new structure to assess data
+- Has been presented and disscussed during WGEEL meeting
 
 ## Habitat DB hierarchical structure : Regional
 ![](images/wgeel_baltic.png "WGEEL Regional level")
@@ -597,23 +613,47 @@ rownames = FALSE,
 ## Habitat DB hierarchical structure : Complex
 ![](images/french_complex.png "WGEEL Regional level")
 
+## Habitat DB hierarchical structure : Lagoons
+![](images/wgeel_lag.png "WGEEL Lagoons level")
+
+## Habitat DB hierarchical structure : Lagoons
+- Lakes are to be added as well
+
 ## Habitat DB hierarchical structure : WGNAS
 ![WGNAS Hierarchical structure](images/fig-area_hierarchy_nas1.svg){#fig-hiernas}
 
 ## Habitat DB hierarchical structure : Assessment_unit
+::::: columns
+::: {.column .incremental width="50%"}
+- Electrofishing data will have to be reported at this level
+:::
+::: {.column width="50%"}
 ![](images/nas_aunit.png "WGNAS AU level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : River
+::::: columns
+::: {.column .incremental width="50%"}
+- Possibility to work with river basins to work with smaller AU
+:::
+::: {.column width="50%"}
 ![](images/nas_riv.png "WGNAS River level")
-
-## Habitat DB hierarchical structure : River
-- Possibility to group river basins to create smaller assessment units
+:::
+::::
 
 # Habitat DB to move from local to higher scale
-
+::::: columns
+::: {.column .incremental width="40%"}
 -   Data structured in regional level for SAM
 -   Need upscaling: need upscaling methods
 -   Identify similar areas, identify different areas
+:::
+
+::: {.column width="60%"}
+![](images/nas_rivseg.png "WGNAS River_segment level")
+:::
+:::::
 
 # What is the appropriate spatial scale? Not known yet?
 
@@ -663,7 +703,7 @@ This is why we have worked with the habitat data so intensively
 ```{r}
 #| label: tbl-obstruction_place
 #| echo: FALSE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 #| html-table-processing: none
 
@@ -735,7 +775,7 @@ op_country
 ```{r}
 #| label: fig-obstruction_place
 #| echo: FALSE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 
 query <- "SELECT op_id_original,
