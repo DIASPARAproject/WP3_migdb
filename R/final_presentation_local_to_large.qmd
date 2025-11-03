@@ -62,21 +62,18 @@ load_library("janitor") #
 load_library("htmltools") 
 load_library("leaflet")
 cred <- read_yaml("../credentials.yml")
-con_diaspara1 <- dbConnect(Postgres(), 
+con_diaspara <- dbConnect(Postgres(), 
                            dbname = cred$dbnamehydro,
                            host = cred$hostmercure,
                            port = cred$port,
                            user = cred$usermercure,
                            password = cred$passwordmercure)
-con_diaspara <- dbConnect(Postgres(), 
-                          dbname = cred$dbnamediaspara,
-                          host = cred$hostdistant,
-                          port = cred$port,
-                          user = cred$userdiaspara,
-                          password = cred$passworddiaspara)
-
-
-
+# con_diaspara <- dbConnect(Postgres(), 
+#                           dbname = cred$dbnamediaspara,
+#                           host = cred$hostdistant,
+#                           port = cred$port,
+#                           user = cred$userdiaspara,
+#                           password = cred$passworddiaspara)
 
 ```
 
@@ -223,7 +220,7 @@ A big reason why we needed habitat database
 #| tbl-cap: Structure of the global Stock level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_lev_code = 'Stock'
   ORDER BY are_id;")
@@ -278,7 +275,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the assessment unit level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,3]) OR are_lev_code = 'Assessment_unit' 
   ORDER BY are_id;")
@@ -342,7 +339,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the main river level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine, are_name FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,3,13]) OR are_are_id = 13
   ORDER BY are_id;")
@@ -399,7 +396,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the main river level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine, are_name FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,3,13,19]) OR are_are_id = 19
   ORDER BY are_id;")
@@ -442,6 +439,11 @@ rownames = FALSE,
 
 ![](images/bast_rs.png "WGBAST River_section level")
 
+::: notes
+Here we only see the main stretch of river since what I'm showing right now is only the hierarchical structure. But within the DB, all tributaries are included. They are linked to the main stretch by an id.
+Within the RDBES the basin code, which is unique and the name of the river will be included.
+:::
+
 ## Habitat DB hierarchical structure : Divison
 
 ![WGBAST Division level](images/fig-area_hierarchy_bast_div.svg){#fig-hierbastdiv}
@@ -456,7 +458,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the ICES division level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,2]) OR are_lev_code = 'Division'
   ORDER BY are_id;")
@@ -511,7 +513,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the ICES subdivision grouping level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,2,7011]) OR are_lev_code = 'Subdivision_grouping'
   ORDER BY are_id;")
@@ -574,7 +576,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the ICES subdivision level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara1, 
+fstock_lvl <- dbGetQuery(con_diaspara, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,2]) OR are_lev_code = ANY(ARRAY['Division', 'Subdivision'])
   ORDER BY are_id;")
@@ -635,6 +637,10 @@ rownames = FALSE,
 ## Habitat DB hierarchical structure : Regional
 
 ![](images/wgeel_baltic.png "WGEEL Regional level")
+
+::: notes
+For now data is reported for the whole Baltic Sea but it might change to a finer grain in the future. This will have to be discussed within the WG.
+:::
 
 ## Habitat DB hierarchical structure : Regional
 
@@ -832,35 +838,35 @@ load(file="data/presentation_dam_op.Rdata")
 #| warning: FALSE
 #| fig-cap: "A subsample of the dam database in France"
 
-# query <- "SELECT op_id_original,
-#                  op_placename, 
-#                  ob_height, 
-#                  ot.no_code as type,                 
-#                  geom 
-#           FROM dam_france.obstruction_place op
-#           JOIN dam_france.obstruction o
-#              ON ob_op_id = op_id
-#           JOIN nomenclature.obstruction_type ot
-#              ON ob_obstruction_type_no_id = ot.no_id
-#           JOIN refeel.tr_area_are are ON 
-#           st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
-#           WHERE are_code = 'FR_Bret'
-#           AND ob_ending_date = '2035-01-01'
-#           "
-# query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
-#           JOIN refeel.tr_area_are are2 ON 
-#           st_intersects(are1.geom_line, are2.geom_polygon)
-#           WHERE are2.are_code = 'FR_Bret'
-#           AND  are1.are_lev_code = 'River_section'"
+query <- "SELECT op_id_original,
+                 op_placename, 
+                 ob_height, 
+                 ot.no_code as type,                 
+                 geom 
+          FROM dam_france.obstruction_place op
+          JOIN dam_france.obstruction o
+             ON ob_op_id = op_id
+          JOIN nomenclature.obstruction_type ot
+             ON ob_obstruction_type_no_id = ot.no_id
+          JOIN refeel.tr_area_are are ON 
+          st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
+          WHERE are_code = 'FR_Bret'
+          AND ob_ending_date = '2035-01-01'
+          "
+query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
+          JOIN refeel.tr_area_are are2 ON 
+          st_intersects(are1.geom_line, are2.geom_polygon)
+          WHERE are2.are_code = 'FR_Bret'
+          AND  are1.are_lev_code = 'River_section'"
 
 
-# layer <- st_read(dsn = con_diaspara, query = query) |> 
-#          sf::st_transform(4326) 
-# layer_riv <- st_read(dsn = con_diaspara, query = query2) 
+layer <- st_read(dsn = con_diaspara, query = query) |> 
+         sf::st_transform(4326) 
+layer_riv <- st_read(dsn = con_diaspara, query = query2) 
 
 
 
-# save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
+save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
 load(file = "data/dammap_presentation.Rdata")
 layer <- layer |>
           mutate(label = sprintf(
