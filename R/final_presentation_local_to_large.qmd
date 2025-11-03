@@ -67,6 +67,7 @@ con_diaspara <- dbConnect(Postgres(),
 
 ```
 
+
 ## This presentation
 
 ::::: columns
@@ -117,11 +118,29 @@ A big reason why we needed habitat database
     -   Assessment of management actions
 -   Large scale pressure can impact local dynamics (e.g. marine fisheries)
 
+# Scale of each model? Not known
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   In the past, only marine habitat available -\> now marine and continental
+-   With this approach we can test different structures and levels
+-   Data collected locally, used in (m)any needed scale(s)
+-   Data structured in regional level for SAM: all have this structure available
+-   Need upscaling: need upscaling methods
+-   Identify similar areas, identify different areas
+:::
+
+::: {.column width="50%"}
+![](images/clipboard-3523976769.png)
+:::
+:::::
+
 # The spatial / habitat model?
 
 ::::: columns
 ::: {.column .incremental width="50%"}
--   Regional aspects in WGBAST, WGNAS and WGBAST
+-   There is a need to have habitat models everywhere
+-  Regional aspects in WGBAST, WGNAS and WGBAST
 -   [WGTRUTTA](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html)
 :::
 
@@ -130,42 +149,48 @@ A big reason why we needed habitat database
 :::
 :::::
 
-# Scale of each model? Not known
+# Regional aspects, EDA examples
 
 ::::: columns
-::: {.column .incremental width="50%"}
--   In the past, only marine habitat available -\> now marine and continental
--   With this approach we can test different structures and levels
--   Data to collected locally, used in (m)any needed scale
+::: {.column .incremental width="40%"}
+![](images/clipboard-1546341554.png)
 :::
 
-::: {.column width="50%"}
-![](images/clipboard-3523976769.png)
+::: {.column width="60%"}
+![](images/clipboard-3112802258.png)
 :::
 :::::
 
-# Habitat DB to move from local to higher scale
+# Regional aspects, EDA examples
 
--   Data structured in regional level for SAM
--   Need upscaling: need upscaling methods
--   Identify similar areas, identify different areas
+-   Hydrographic network, obstacles and electrofishing information needed!
 
-# What is the appropriate spatial scale? Not known yet? MERGE THIS ONE AND THREE OF THE SAME
+:::: columns
+::: {.column .incremental width="60%"}
+![](images/clipboard-1171006118.png)
+:::
+::::
 
--   All have the structure to group things at regional level
+:::: columns
 
-![](images/clipboard-3102186189.png)
+::: {.column width="40%"}
+![](images/clipboard-2093853961.png)
+:::
+::::
 
-# INTRODUCE THE NEED FOR REGIONAL MODELS
+# Regional aspects, EDA examples
 
--   Examples from (Hilaire presentation) from EDA
--   How are we going to do it: we need hydro and DAM and EF
--   Give an example of regional model EDA
--   Explain the need to have habitat models everywhere
--   Show that we need to quantify mortality linked with dams (downstream migration)
--   WG TRUTTA work
+-   To quantify mortality linked with dams (downstream migration):
 
-(Jani reorder this as you want, I just put everything related to introduction in the same place. I think you'll need several slides, I'll try to find some nice pictures)
+    ![](images/clipboard-373049954.png)
+
+# BEFORE INTRODUCING THE METRIC DB
+
+-   relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
+-   Maybe something from WGBAST
+-   Figure of a trap, fishway or anything. Glasseel series
+-   how this is used by the WGEEL to get the
+-   WGEEL yellow eel maps etc.
 
 ## Habitat DB hierarchical structure
 
@@ -570,6 +595,8 @@ rownames = FALSE,
 
 ## Habitat DB hierarchical structure : Subdivision
 
+
+## Habitat DB hierarchical structure : Subdivision
 ![](images/bast_sub.png "WGBAST Subdivision level")
 
 ## Habitat DB hierarchical structure : WGEEL
@@ -628,29 +655,14 @@ rownames = FALSE,
 ![](images/nas_riv.png "WGNAS River level")
 
 ## Habitat DB hierarchical structure : River
+- Possibility to group river basins to create smaller assessment units
 
 -   Possibility to group river basins to create smaller assessment units
-
-# Habitat DB to move from local to higher scale
-
--   Data structured in regional level for SAM
--   Need upscaling: need upscaling methods
--   Identify similar areas, identify different areas
-
-# What is the appropriate spatial scale? Not known yet?
-
--   All have the structure to group things at regional level
-
-# Introduction about how we want to develop spatial model in EDA
-
--   We need to do it, use EDA
-
-# Different pressures, quantification issues?
-
--   Obstacles, turbines matched to habitat
--   E.g., WGTRUTTA work
+-   Different pressures, quantification issues?
+    -   Obstacles, turbines matched to habitat
 
 # DAM DATABASE
+
 
 ::::: columns
 ::: {.column width="50%"}
@@ -672,6 +684,7 @@ flowchart TB
 ![](images/dam_spain.jpg)
 :::
 :::::
+
 
 ## DAM DATABASE : Obstruction place
 
@@ -764,6 +777,7 @@ load(file="data/presentation_dam_op.Rdata")
   )
 
 ```
+
 
 ## DAM DATABASE : Obstruction place
 
@@ -865,10 +879,10 @@ flowchart TB
 :::
 
 ::: {.column width="50%"}
--   Physical obstruction has date of start and end
--   Events (Erasement, change of height change dam period)
--   Fishway types
--   Downstream water depth
+- Physical obstruction has date of start and end
+- Events (Erasement, change of height change dam period)
+- Fishway types
+- Downstream water depth
 :::
 :::::
 
@@ -1061,6 +1075,7 @@ load(file="data/presentation_dam_hpp.Rdata")
 
 ```
 
+
 ## DAM DATABASE : Turbines
 
 ```{mermaid}
@@ -1078,7 +1093,7 @@ flowchart TB
 
 ## DAM DATABASE : Turbines
 
-:::::: columns
+::::: columns
 ::: {.column width="50%"}
 ```{r}
 #| label: tbl-turbines
@@ -1191,6 +1206,7 @@ load(file="data/presentation_turb_type.Rdata")
 
 # Electrofishing
 
+
 ::::: columns
 ::: {.column width="50%"}
 ![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
@@ -1206,6 +1222,9 @@ load(file="data/presentation_turb_type.Rdata")
 # Biological and Biometric data
 
 Everything is linked to Life History Trait data
+
+
+
 
 # All groups have identified this need, but it was not easily accessible
 
@@ -1245,10 +1264,19 @@ Everything is linked to Life History Trait data
 
 ## Stock DB
 
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
 
+::: {.column width="60%"}
+-   [**Overall - Whole Stock**]{style="font-size:45px"}
+:::
+:::::
 
+#conclusions
 
-
-conclusions - Everything is online - doing the integration takes a lot of time. If you need to do it again, this is needed
+-    Everything is online
+-   doing the integration takes a lot of time. If you need to do it again, this is needed
 
 # Thank you!
