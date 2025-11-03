@@ -183,6 +183,14 @@ A big reason why we needed habitat database
 
     ![](images/clipboard-373049954.png)
 
+# BEFORE INTRODUCING THE METRIC DB
+
+-   relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
+-   Maybe something from WGBAST
+-   Figure of a trap, fishway or anything. Glasseel series
+-   how this is used by the WGEEL to get the
+-   WGEEL yellow eel maps etc.
+
 ## Habitat DB hierarchical structure
 
 ![WGBAST Hierarchical structure](images/fig-area_hierarchy_bast.svg){#fig-hierbast}
