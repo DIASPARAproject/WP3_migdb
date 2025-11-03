@@ -1291,62 +1291,17 @@ load(file="data/presentation_turb_type.Rdata")
 
  ![](images/DIAD1.4.png "Stock DB - metadata")
 
+ ## DIADROMOUS DATABASE (Summary)
+
+ ![](images/DIAD3.png "Stock DB - summary")
 
  ## DIADROMOUS DATABASE (Data Flow)
 
+ ![](images/processes.png "Data flow")
 
 
-# All groups have identified this need, but it was not easily accessible
-
-::::: columns
-::: {.column .incremental width="50%"}
--   Get the Biological data in a database
--   Use it for analysis
--   Understanding growth, fecundity, etc. **over time and spatially**
-:::
-
-::: {.column width="50%"}
-![](images/clipboard-2516448368.png)
-:::
-:::::
-
-# BEFORE INTRODUCING THE METRIC DB
-
--   relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
--   Maybe something from WGBAST
 
 
-# Example of group metrics
 
--   EXAMPLE HERE
-
-# Example of individual metrics
-
--   EXAMPLE HERE
-
-# Other parameters
-
-# Trend analysis - why do we need series?
-
--   Example from WGEEL (check WGEEL REPORTS + Latest recruitment series)
-
--   Example from WGNAS (WP2 Viktor to send some pictures.)
-
-## Stock DB
-
-::::: columns
-::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
-:::
-
-::: {.column width="60%"}
--   [**Overall - Whole Stock**]{style="font-size:45px"}
-:::
-:::::
-
-#conclusions
-
--    Everything is online
--   doing the integration takes a lot of time. If you need to do it again, this is needed
 
 # Thank you!
