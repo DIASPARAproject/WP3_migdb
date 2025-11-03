@@ -36,15 +36,23 @@ editor: visual
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
-  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-  datawd <- "D:/DIASPARA/wgbast"
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
-  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
 }
 source("utilities/load_library.R")
 load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
 load_library("RPostgres")
 load_library("yaml")
 load_library("DBI")
@@ -54,13 +62,18 @@ load_library("janitor") #
 load_library("htmltools") 
 load_library("leaflet")
 cred <- read_yaml("../credentials.yml")
+con_diaspara1 <- dbConnect(Postgres(), 
+                           dbname = cred$dbnamehydro,
+                           host = cred$hostmercure,
+                           port = cred$port,
+                           user = cred$usermercure,
+                           password = cred$passwordmercure)
 con_diaspara <- dbConnect(Postgres(), 
                           dbname = cred$dbnamediaspara,
                           host = cred$hostdistant,
                           port = cred$port,
                           user = cred$userdiaspara,
                           password = cred$passworddiaspara)
-
 
 
 
@@ -210,7 +223,7 @@ A big reason why we needed habitat database
 #| tbl-cap: Structure of the global Stock level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_lev_code = 'Stock'
   ORDER BY are_id;")
@@ -265,7 +278,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the assessment unit level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,3]) OR are_lev_code = 'Assessment_unit' 
   ORDER BY are_id;")
@@ -305,8 +318,15 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Assessment_unit
-
+::::: columns
+::: {.column .incremental width="50%"}
+- Gap below Assessment Unit 3
+- No Assessment Unit on the Western part
+:::
+::: {.column width="50%"}
 ![](images/bast_au.png "WGBAST Assessment_unit level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : River
 
@@ -322,7 +342,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the main river level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine, are_name FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,3,13]) OR are_are_id = 13
   ORDER BY are_id;")
@@ -379,7 +399,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the main river level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine, are_name FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,3,13,19]) OR are_are_id = 19
   ORDER BY are_id;")
@@ -436,7 +456,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the ICES division level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,2]) OR are_lev_code = 'Division'
   ORDER BY are_id;")
@@ -491,7 +511,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the ICES subdivision grouping level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,2,7011]) OR are_lev_code = 'Subdivision_grouping'
   ORDER BY are_id;")
@@ -531,8 +551,14 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Subdivision_grouping
-
+::::: columns
+::: {.column .incremental width="50%"}
+- Useful for historical data. Used to be grouped in larger areas
+:::
+::: {.column width="50%"}
 ![](images/bast_subgr.png "WGBAST Subdivision_grouping level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : Subdivision
 
@@ -548,7 +574,7 @@ rownames = FALSE,
 #| tbl-cap: Structure of the ICES subdivision level in the referential table
 
 
-fstock_lvl <- dbGetQuery(con_diaspara, 
+fstock_lvl <- dbGetQuery(con_diaspara1, 
   "SELECT are_id, are_are_id, are_code, are_lev_code, are_wkg_code, are_ismarine FROM refbast.tr_area_are
   WHERE are_id = ANY(ARRAY[1,2]) OR are_lev_code = ANY(ARRAY['Division', 'Subdivision'])
   ORDER BY are_id;")
@@ -593,20 +619,18 @@ rownames = FALSE,
 
 ```
 
-## Habitat DB hierarchical structure : Subdivision
 
 
 ## Habitat DB hierarchical structure : Subdivision
 ![](images/bast_sub.png "WGBAST Subdivision level")
 
 ## Habitat DB hierarchical structure : WGEEL
-
 ![WGEEL Hierarchical structure](images/fig-area_hierarchy_wgeel.svg){#fig-hiereel}
 
 ## Habitat DB hierarchical structure : Regional
-
--   EMUs are to be deprecated
--   Creating a new structure to assess data
+- EMUs are to be deprecated
+- Creating a new structure to assess data
+- Has been presented and disscussed during WGEEL meeting
 
 ## Habitat DB hierarchical structure : Regional
 
@@ -629,10 +653,9 @@ rownames = FALSE,
 ![](images/wgeel_med.png "WGEEL Regional level")
 
 ## Habitat DB hierarchical structure : Complex
-
--   Taking care of lagoons in the Mediterranean
--   Creating groups of lagoons
--   Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
+- Taking care of lagoons in the Mediterranean
+- Creating groups of lagoons
+- Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
 
 ## Habitat DB hierarchical structure : Complex
 
@@ -642,24 +665,49 @@ rownames = FALSE,
 
 ![](images/french_complex.png "WGEEL Regional level")
 
-## Habitat DB hierarchical structure : WGNAS
+## Habitat DB hierarchical structure : Lagoons
+![](images/wgeel_lag.png "WGEEL Lagoons level")
 
+## Habitat DB hierarchical structure : Lagoons
+- Lakes are to be added as well
+
+## Habitat DB hierarchical structure : WGNAS
 ![WGNAS Hierarchical structure](images/fig-area_hierarchy_nas1.svg){#fig-hiernas}
 
 ## Habitat DB hierarchical structure : Assessment_unit
-
+::::: columns
+::: {.column .incremental width="50%"}
+- Electrofishing data will have to be reported at this level
+:::
+::: {.column width="50%"}
 ![](images/nas_aunit.png "WGNAS AU level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : River
-
+::::: columns
+::: {.column .incremental width="50%"}
+- Possibility to work with river basins to work with smaller AU
+:::
+::: {.column width="50%"}
 ![](images/nas_riv.png "WGNAS River level")
+:::
+::::
 
 ## Habitat DB hierarchical structure : River
 - Possibility to group river basins to create smaller assessment units
 
+::::: columns
+::: {.column .incremental width="40%"}
 -   Possibility to group river basins to create smaller assessment units
 -   Different pressures, quantification issues?
     -   Obstacles, turbines matched to habitat
+:::
+
+::: {.column width="60%"}
+![](images/nas_rivseg.png "WGNAS River_segment level")
+:::
+:::::
 
 # DAM DATABASE
 
