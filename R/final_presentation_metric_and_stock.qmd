@@ -27,7 +27,8 @@ format:
         frametitle={Theorem},
         frametitlerule=true,
         frametitlebackgroundcolor=yellow!70!white,
-theme: solarized
+theme: 
+  - solarized
 background-transition: fade
 editor: visual
 ---
@@ -657,44 +658,199 @@ datbast  -> ref
 }
 ```
 
-# STOCK DB
+
+# STOCK db 
 
 ![](images/copilot_stock_model.png)
 
-# STOCK db (WGNAS)
+## STOCK db (WGNAS)
 
+```{=html}
 <!-- JANI : Can you explain the changes you have done to the WGNAS DB,
 and why it should not alter the flow of data -->
+```
+
+::: columns
+:::: {.column .incremental width="50%"}
+
+```{=html}
+<style>
+    .green-box {
+      background-color: green;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="green-box">
+    <b> DONE <i class="fas fa-check-circle"></i></b> <br>
+-  Metadata table <br>
+- Stock table <br>
+- Additional column for WGNAS <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#table-of-grouping-for-area-and-age-datnas.tg_additional_add"> source </a> 
+  </div>
+</body>
+```
 
 
+::::
 
-# STOCK db (WGNAS)
+
+:::
+
+## STOCK db (WGNAS)
 
 <!-- JANI : OK, but what consequence does it have on the shiny application (salmoglob) -->
 
-# STOCK db (WGEEL)
+
+
+::: columns
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .green-box {
+      background-color: green;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="green-box">
+    <b> DONE <i class="fas fa-check-circle"></i></b> <br>
+- Metadata table <br>
+- Stock table <br>
+- Additional column for WGNAS <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#table-of-grouping-for-area-and-age-datnas.tg_additional_add"> source </a> 
+</div>
+</body>
+```
+::::
+
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .orange-box {
+      background-color: orange;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="orange-box">
+  <b> TODO </b> <br>
+-   Include the archive db <br>
+-   Import in ICES DB <br>
+-   Adapt shiny app <br>
+    -   R package for common tools <br>
+    -   Adapt shiny <br>
+  </div>
+</body>
+```
+
+::::
+:::
+
+
+## STOCK db (WGEEL)
 
 <!-- JANI : Very weel for WGNAS, how does that work for WGEEL, which annexes have you kept -->
 
-# STOCK db (WBAST)
+::: columns
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .green-box {
+      background-color: green;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="green-box">
+    <b> DONE (test)<i class="fas fa-check-circle"></i></b> <br>
+- Metadata table <br>
+- Stock table <br>
+  </div>
+</body>
+```
+::::
+
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .orange-box {
+      background-color: orange;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="orange-box">
+  <b> TODO </b> <br>
+-   Latest import from WGEEL <br>
+  </div>
+</body>
+```
+
+::::
+:::
+
+## STOCK db (WBAST)
 
 <!-- JANI : From what we have seen there are three DB in WGBAST, how do you adapt to this ? -->
+
 ![](images/clipboard-3336618413.png)
 
-# STOCK db (What have we done so far)
 
 
--   Generalisation of metadata to define the variables used
+## STOCK db (WBAST)
 
--   Additional column for WGNAS (messy but adapted and will do nice for WGBAST) also type in metadata
+<!-- CEDRIC talk about the shiny app -->
 
--   Calendar data \< year in wgbast
+::: incremental
+-   Change from several values column to one
+-   Calendar data \< year
+-   Data source
+-   Qualifying the data
+:::
 
--   Data source in WGBAST
+## STOCK db (WBAST)
 
--   Habitat structure (Illustrate in detail the use of recursive queries to get habitat)
+<!-- How would you integrate the variables needed in the bayesian model ? -->
 
+## STOCK db (WBAST)
 
+<!-- Jani From what we have seen before, Now there is an area dimension in
+WGBAST, can you show us how that works ? -->
+
+## STOCK db (WBAST)
+**Habitat structure (Illustrate in detail the use of recursive queries to get habitat)**
 
 ## Example: River Daugava
 
@@ -702,29 +858,20 @@ and why it should not alter the flow of data -->
 
 ## Example: River Daugava & Gulf of Riga
 
-
-> SELECT * FROM ref.get_parent_area(310, 'WGBAST');
-
-
+```{=sql}
+SELECT * FROM ref.get_parent_area(310, 'WGBAST');
+```
 ![Parents from Gulf of Riga](images/clipboard-4250192328.png)
-
 
 ## Example: Gulf of Riga
 
-> SELECT * FROM ref.get_parent_area(7025, 'WGBAST');
-
+```{=sql}
+ SELECT * FROM ref.get_parent_area(7025, 'WGBAST');
+```
 ![Parents from Gulf of Riga](images/clipboard-3762430346.png)
 
 
-# Stock DB (Future WORK)
-
-## Stock DB (Future Work WGNAS)
-
-##  Presentation of possibilities to go to lower level
-
-=\> Jules explain, show that now we are based on area we can do it easily.
-
-## METRIC db
+# METRIC db
 
 ::::: columns
 ::: {.column .incremental width="40%"}
@@ -735,6 +882,112 @@ and why it should not alter the flow of data -->
 ![](images/clipboard-2784958256.png){width="450"}
 :::
 :::::
+
+## METRIC db (WGEEL)
+
+<!-- JANI : Can you show us some details of the way you have modified the wgeel metric db to  make it both simpler and more adapted to the possible needs -->
+
+::: columns
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .green-box {
+      background-color: green;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="green-box">
+    <b> DONE (test)<i class="fas fa-check-circle"></i></b> <br>
+- Referentials (metrics) <br>
+- Merging time series <br>
+  </div>
+</body>
+```
+::::
+
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .orange-box {
+      background-color: orange;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="orange-box">
+  <b> TODO </b> <br>
+-  Latest import from WGEEL <br>
+-  Work with data center
+  </div>
+</body>
+```
+
+::::
+:::
+
+## METRIC db (WGNAS)
+
+::: columns
+:::: {.column .incremental width="50%"}
+<br>
+<br>
+```{=html}
+<style>
+    .orange-box {
+      background-color: orange;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="orange-box">
+  <b> TODO </b> <br>
+-   Import WP2 (adapt to salmon) <br>
+-   There is an opportunity there <br>
+  </div>
+</body>
+```
+::::
+:::: {.column .incremental width="50%"}
+
+***INCLUDE PICTURE WP2***
+
+::::
+:::  
+
+## METRIC db (WGBAST)
+<!-- JANI : You have integrated the trutta database in the metric db, can you show us ? -->
+
+
+
+
+## METRIC db (WGTRUTTA)
+
+<!-- JANI Based on the exchange we had with WGTRUTTA, can you explain why the metric DB would fit their use -->
+
+
+<a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html#population-data"> source </a> 
+
+
 
 ## METRIC db and examples of use
 
@@ -778,7 +1031,7 @@ and why it should not alter the flow of data -->
 ::: {.column .incremental width="50%"}
 -   The roadmaps are in timeline (at least the latest)
 -   Integration ICES if accepted.
-    -   Otherwise we have a tool working in postgres as a backup
+-   Otherwise we have a tool working in postgres as a backup
 :::
 
 ::: {.column width="50%"}
@@ -816,11 +1069,8 @@ and why it should not alter the flow of data -->
 -   Show Hennis or NAS
 -   What has been done in WGNAS
 -   Shiny treatment of the output to detect changes
--   Pierre Yeves
+-   Pierre Yves
 :::
 :::::
 
-# EXAMPLES FROM CEDRIC HERE
 
--   WGBAST 2 databases are used
--   WGNAS work briefly
