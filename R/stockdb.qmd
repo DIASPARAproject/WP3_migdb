@@ -4249,7 +4249,7 @@ Henni have shown that this remains important. It will be adapted to ICES vocab
 Clearly the table of datasource will have to be revised and new methodologies
 added and 
 
-```{r datbast.t_stock_sto}
+```{r datbast.t_stock_sto_landings}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -4413,7 +4413,7 @@ df_all_W <- df_all |>
 # unit allows to avoid having NA in strings ... Here we put additional info in the comment from the content
 df_all_W$w_type2 <- df_all_W$w_type
 df_all_W$w_type2[!is.na(df_all_W$w_type)]<-paste0("W_type=",df_all_W$w_type2[!is.na(df_all_W$w_type)])
-df_all_N$w_type2[!is.na(df_all_N$notes)] <-paste0(", ",df_all_N$w_type2[!is.na(df_all_N$notes)])
+df_all_W$w_type2[!is.na(df_all_W$notes)] <- paste0(", ",df_all_W$w_type2[!is.na(df_all_W$notes)])
 df_all_W$w_type2[is.na(df_all_W$w_type)]<- ""
 df_all_W$notes2 <- df_all_W$notes
 df_all_W$notes2[is.na(df_all_W$notes2)] <- ""
@@ -4491,17 +4491,104 @@ dbExecute(con_diaspara_local, "drop table if exists temp_t_stock_sto_w")
 system.time(dbWriteTable(con_diaspara_local, "temp_t_stock_sto_w", t_stock_sto_W)) # 0.14
 dbExecute(con_diaspara_local, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
           SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_w") #17334
-dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_w")
+dbExecute(con_diaspara_local, "drop table temp_t_stock_sto_w")
 
 # Insert Effort
 
 
+df_all_e <- df_all |>
+  filter(!is.na(effort)) |>
+  mutate(f_type = ifelse(is.na(f_type), "HIST", f_type)) |>
+  mutate(sto_met_var = paste0("E_",f_type))
 
+# unit allows to avoid having NA in strings ... Here we put additional info in the comment from the content
+df_all_e$w_type2 <- df_all_e$w_type
+df_all_e$w_type2[!is.na(df_all_e$w_type)]<-paste0("W_type=",df_all_e$w_type2[!is.na(df_all_e$w_type)])
+df_all_e$w_type2[!is.na(df_all_e$notes)] <-paste0(", ",df_all_e$w_type2[!is.na(df_all_e$notes)])
+df_all_e$w_type2[is.na(df_all_e$w_type)]<- ""
+df_all_e$notes2 <- df_all_e$notes
+df_all_e$notes2[is.na(df_all_e$notes2)] <- ""
+df_all_e$notes2<- paste0(df_all_e$notes2,df_all_e$w_type2)
+df_all_e$notes2[df_all_e$notes2==""] <- NA
+
+t_stock_sto_e = data.frame(
+  sto_met_var = df_all_e$sto_met_var,
+  sto_year = df_all_e$year,
+  sto_spe_code = df_all_e$species,
+  sto_value = df_all_e$effort,
+  # if it's a river get the code of the river otherwise get other codes....
+  sto_are_code = case_when(!is.na(df_all_e$river) ~ df_all_e$riv_are_code,
+                           df_all_e$sub_div == "22-32" ~ "27.3.d", # correct, 3 lines corresponding to national survey Estonia
+                           df_all_e$sub_div == "200" ~ "27.3.d.22-29",
+                           df_all_e$sub_div == "300" ~ "27.3.d.30-31",
+                           df_all_e$sub_div == "32"  ~  "27.3.d.32",
+                           df_all_e$sub_div == "31"  ~  "27.3.d.31",
+                           df_all_e$sub_div == "30"  ~  "27.3.d.30",
+                           df_all_e$sub_div == "29"  ~  "27.3.d.29",
+                           df_all_e$sub_div == "27"  ~  "27.3.d.27",
+                           df_all_e$sub_div == "26"  ~  "27.3.d.26",
+                           df_all_e$sub_div == "25"  ~  "27.3.d.25",
+                           df_all_e$sub_div == "24"  ~  "27.3.d.24",
+                           df_all_e$sub_div == "23"  ~  "27.3.b.23",
+                           df_all_e$sub_div == "22"  ~  "27.3.c.22",
+                           df_all_e$sub_div == "21"  ~  "27.3.d.31",# 3 Lines for sweden comment added
+                           # here we allow for the two subdivision in the Baltic
+                           df_all_e$sub_div == "28" & df_all_e$subdiv_ic == '27.3.d.28.1' ~ '27.3.d.28.1',
+                           df_all_e$sub_div == "28" & df_all_e$subdiv_ic == '27.3.d.28.2' ~ '27.3.d.28.2',
+                           df_all_e$sub_div == "28"  ~  "27.3.d.28",
+                           is.na(df_all_e$sub_div)   ~   "27.3.d" # 12 rows with with comments corresponds all catches of the country and year concerned
+                           ),
+  sto_cou_code = df_all_e$country,
+  sto_lfs_code = 'A',
+  sto_hty_code = case_when(df_all_e$fishery == "O" ~ "MO",
+                           df_all_e$fishery == "C"~  "MC",
+                           df_all_e$fishery == "R" ~ "FW"),
+  sto_qal_code = 1,
+  sto_comment = df_all_e$notes2,
+  sto_datelastupdate = Sys.Date(),
+  sto_mis_code = NA,
+  sto_dta_code = "Public", # check this
+  sto_wkg_code = "WGBAST",
+  sto_ver_code = "WGBAST-2025-1",
+  sto_gear_code  = df_all_e$gea_code,
+  sto_tip_code  = case_when(df_all_e$tp_type == "YR" ~"Year",
+                            df_all_e$tp_type == "HYR" ~ "Half of Year",
+                            df_all_e$tp_type == "MON" ~ "Month",
+                            df_all_e$tp_type == "MONTH" ~ "Month",
+                            df_all_e$tp_type == "QTR" ~ "Quarter",
+                            df_all_e$tp_type == "COMM" ~ "Quarter", # this is an error
+                            is.na( df_all_e$tp_type) ~ "Year",
+                            .default = "Troube this will fail at insertion"),
+  sto_timeperiod = df_all_e$time_period,
+  
+  # in the notes some elements hint at surveys, but this will need a check up by WGBAST anyways.
+  sto_dts_code = case_when(df_all_e$n_type == "LOG" ~ "Logb",
+                                 df_all_e$n_type == "EXV" ~ "Exprt",
+                                 df_all_e$n_type == "EST" & (grepl("survey",tolower(df_all_e$notes)) | 
+                                                           grepl("question",tolower(df_all_e$notes)) |
+                                                           grepl("query", tolower(df_all_e$notes)) |
+                                                           grepl("web", tolower(df_all_e$notes))) ~ "SampDS", 
+                                df_all_e$n_type == "EXT" ~ NA),
+  sto_dtb_code = case_when(df_all_e$n_type == "LOG" ~ "Official",
+                           df_all_e$n_type == "EXV"  ~  "Estimated",
+                           df_all_e$n_type == "EST" ~ "Estimated",
+                           df_all_e$n_type == "EXT" ~ "Estimated",
+                           .default =  "Unknown"),
+  sto_esm_code = NA
+)  
+
+#dbExecute(con_diaspara_admin, "drop table if exists temp_t_stock_sto_e")
+dbExecute(con_diaspara_local, "drop table if exists temp_t_stock_sto_e")
+system.time(dbWriteTable(con_diaspara_local, "temp_t_stock_sto_e", t_stock_sto_e)) # 0.14
+dbExecute(con_diaspara_local, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
+          SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_e") #17334
+dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_e")
 
 
 # Insert N_CI
 
-
+# This is a bit too difficult, it's not always consistent. Could do when values are sepearated by a dash,
+# but it's not always the case. There aren't that many values, should be checked.
 
 # Insert W_CI
 
@@ -4513,8 +4600,10 @@ dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_w")
 ```
 
 
-```{r datbast.t_stock_sto}
+```{r datbast.t_stock_sto_young_fish}
 
+
+```
 ::::: questionbox
 :::: questionbox-header
 QUESTION WGBAST: corrections 
