@@ -102,7 +102,19 @@ pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdia
 
 pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema dam --schema nomenclature --schema dam_france --schema dattrutta --schema electrofishing -Fc -v -f "C:/temp/diaspara2.backup"
 pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara2.backup"
+psql --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara
+#CREATE EXTENSION IF NOT EXISTS ""uuid-ossp"
 
-pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema h_adriatic --schema h_baltic22to26 --schema h_baltic27to29_32 --schema h_baltic30to31 --schema h_barents --schema h_biscayiberian --schema h_blacksea  -Fc -v -f "C:/temp/diaspara2.backup"
-psql --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara -c "create extension "
-pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara2.backup"
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema h_adriatic --schema h_baltic22to26 --schema h_baltic27to29_32 --schema h_baltic30to31 --schema h_barents --schema h_biscayiberian --schema h_blacksea  -Fc -v -f "C:/temp/diaspara3.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara3.backup"
+
+
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema h_celtic --schema h_iceland --schema h_medcentral --schema h_medeast --schema h_medwest --schema h_norwegian --schema h_nseanorth  -Fc -v -f "C:/temp/diaspara4.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara4.backup"
+
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema h_nseasouth --schema h_nseauk --schema h_southatlantic --schema h_southmedcentral --schema h_southmedeast --schema h_southmedwest --schema h_svalbard  -Fc -v -f "C:/temp/diaspara5.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara5.backup"
+
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema tempo -Fc -v -f "C:/temp/diaspara6.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara6.backup"
+# there is a problem in having the schema tempo mandatory...

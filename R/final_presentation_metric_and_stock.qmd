@@ -4,7 +4,6 @@ author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
 filters:
   - quarto-kroki
-  - speakernotes
 title-slide-attributes:
   data-background-image: images/diaspara_background.png
   data-background-size: stretch
@@ -15,18 +14,6 @@ engine: knitr
 format: 
   revealjs :
     self-contained: true
-  pdf:
-    speakernotes:
-      displayNotes: true
-      customStyle: |
-        roundcorner=5pt,
-        subtitlebelowline=true,
-        subtitleaboveline=true,
-        subtitlebackgroundcolor=yellow!70!white,
-        backgroundcolor=blue!20!white,
-        frametitle={Theorem},
-        frametitlerule=true,
-        frametitlebackgroundcolor=yellow!70!white,
 theme: 
   - solarized
 background-transition: fade
@@ -40,6 +27,10 @@ editor: visual
 # Refresh from the previous presentations
 
 ![](images/clipboard-4195111625.png)
+
+::: {.notes}
+JANI : yesterday you presented the DB, how do that works in practise, can you tell us more about the structure of the DB. ?
+:::
 
 # The DIADROMOUS DATABASE
 
@@ -271,11 +262,15 @@ datbast  -> ref
 }
 ```
 
+::: notes
+OK don't be afraid ... We'll go to the details... As an introduction, the objective of this presentation is to highlight some elements of the DB, demontrate that the structure adapts to the need of all working groups. It might sometimes be a bit technical, as it is also intended to convey some technical aspects to ICES data centre.
+:::
+
 # The DIADROMOUS DATABASE
 
 ```{dot}
 //| label: fig-schema_diaspara_simplified
-//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate inheritance, pink or red colors indicate work in progress, blue color refers to the stock database, green color to the metric database.
+//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate inheritance.
 digraph schema {
 rankdir=TB;
 size="8,5"
@@ -389,6 +384,20 @@ datbast  -> ref
 
 }
 ```
+::: notes
+So if we ignore the content of referential tables, we can layout the structure.
+Remember from yesterday presentation, the DIADROMOUS database is made of two main components, the ***metric DB*** and the **stockDB**. Both structures make use of the same referential tables, while data are provided in specific shcema to each working group.
+
+***The DB uses inheritance***.
+An inherited table is a table containing all the columns from a mother table.
+A query in the mother table with show the content of daughter tables.
+In practise we have different shema with both referentials (dictionaries) and data.
+All the tables are created in the child schema (here refnas, datanas ...). This ensures that the DB has the same structure. Additional columns exist in some of the daughter tables, e.g. the datnas.t_stock_sto has the same columns as dat. t_stock_sto
+but it has some more.
+Constraints foreign keys are created in the working group schemas, so they might differ from one shema to the rest
+The structure of the DB will need to rely on views (instead of inheritance) when 
+transposed to SQL server.
+:::
 
 # The DIADROMOUS DATABASE
 
@@ -479,6 +488,13 @@ shape = cylinder];
 ```
 
 <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#species-tr_species_spe" species>Species referential</a>
+
+::: notes
+The DB uses common vocabularies, split in three parts here to be able to display.
+The colors indicate work in progress, elements that only refer to the metric db, or elements cominIt uses common vocabularies, too much to display there, aligning our dictionaries with The ICES vocab has been a large part of our work, done thanks to the help of ICES data center. 
+In the link, we have provided everything in the report, from our doubts and refexions, 
+exchange with ICES, with working groups, the sql code and the R code to import from ICES data. Part of FAIR is being findable, and accessible, we have strived to provide this in our html reports.
+:::
 
 # The DIADROMOUS DATABASE
 
@@ -658,19 +674,34 @@ datbast  -> ref
 }
 ```
 
+::: {.notes}
+So finally, if we ignore the vocabularies, we can see what has been developped so far, 
+we'll come back to this in the second part, but we can see that wgeel has the full set of tables, while ...
+:::
+
+
 # STOCK db
 
 ![](images/copilot_stock_model.png)
 
+::: {.notes}
+Remember from yesterday, the stock DB store several things :
+- regional input data aggregated at different levels but always corresponding to an area.
+- stock parameters, anything from input or output of the nimble variables used in the models.
+- These data might take several steps to be built, using scripts that should be transfered to TAF.
+:::
+
+
 ## STOCK db (WGNAS)
 
-```{=html}
-<!-- JANI : Can you explain the changes you have done to the WGNAS DB,
-and why it should not alter the flow of data -->
-```
+::: {.notes}
+ ***JANI*** : You started with the WGNAS database to create the stock DB, can you explain ?
+::: 
 
 :::: columns
-::: {.column .incremental width="50%"}
+::: {.column width="50%"}
+<br>
+<br>
 ```{=html}
 <style>
     .green-box {
@@ -695,9 +726,63 @@ and why it should not alter the flow of data -->
 :::
 ::::
 
+::: {.notes}
+
+- Metadata : 
+    - Really followed the structure, dimensions accounted in vector
+    - Nimble codes not completely consistent with naming by WGBAST
+    - Metadata  met_old_version / deprecated might indicate change in variable, some might exist historically and be superseeded.
+- stock :
+    -   Country / habitat type not used
+    -   Stage are more consistent than in the previous DB
+    - Additional column used for variables 'eggs','p_smolt', 'p_smolt_pr', 'prop_female' in that case it's age (click on additional)
+       'omega' needs an area (two columns with area) 
+    - The main change is the use of areas
+:::
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
+![](images/py/upload1.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
+![](images/py/upload2.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
+![](images/py/upload3.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+![](images/py/upload4.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+![](images/py/compare_db_WG.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
+![](images/py/review_chg1.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+![](images/py/review_chg2.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+![](images/py/db_coverage1.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+![](images/py/db_coverage2.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+![](images/py/db_coverage3.png){.stretch}
+
+## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
+::: {.notes}
+ ***JANI***  OK, but what consequences does the development have on this shiny application (salmoglob), will it still work ? -->
+:::
+
 ## STOCK db (WGNAS)
 
-<!-- JANI : OK, but what consequence does it have on the shiny application (salmoglob) -->
+
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -726,7 +811,7 @@ and why it should not alter the flow of data -->
 ```
 :::
 
-::: {.column .incremental width="50%"}
+::: {.column width="50%"}
 <br> <br>
 
 ```{=html}
@@ -755,9 +840,26 @@ and why it should not alter the flow of data -->
 :::
 :::::
 
+::: notes
+The database is implemented, as we see here, we need to include the archive DB,
+to make the shiny comparison work. 
+Now of course the development in ICES needs to be done.
+We would then have to adapt the shiny app with the new code
+In practise, the tools used to connect from the DB, interact with the DB, should be mutualised with a package. All WG could then use it.
+
+:::
+
 ## STOCK db (WGEEL)
 
-<!-- JANI : Very weel for WGNAS, how does that work for WGEEL, which annexes have you kept -->
+::: {.notes}
+ ***JANI*** 
+Very well for WGNAS, how does that work for WGEEL, which annexes of the data call have you kept ?
+:::
+
+
+## STOCK db (WGEEL)
+
+
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -812,13 +914,17 @@ and why it should not alter the flow of data -->
 
 ## STOCK db (WBAST)
 
-<!-- JANI : From what we have seen there are three DB in WGBAST, how do you adapt to this ? -->
-
 ![](images/clipboard-3336618413.png)
+
+
+::: {.notes}
+ ***JANI*** 
+JANI : From what we have seen there are three DB in WGBAST, how do you adapt to this ? 
+:::
 
 ## STOCK db (WBAST)
 
-<!-- CEDRIC talk about the shiny app -->
+
 
 ::: incremental
 -   Change from several values column to one
@@ -829,14 +935,19 @@ and why it should not alter the flow of data -->
 
 ## STOCK db (WBAST)
 
-<!-- How would you integrate the variables needed in the bayesian model ? -->
+::: {.notes}
+ ***JANI*** 
+ How would you integrate the variables needed in the bayesian model  ? 
+:::
+
 
 ## STOCK db (WBAST)
 
-```{=html}
-<!-- Jani From what we have seen before, Now there is an area dimension in
-WGBAST, can you show us how that works ? -->
-```
+::: {.notes}
+ ***JANI*** 
+  From what we have seen before, Now there is an area dimension in
+WGBAST, can you show us how that works ?
+:::
 
 ## STOCK db (WBAST)
 
@@ -873,8 +984,10 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
 :::::
 
 ## METRIC db (WGEEL)
-
-<!-- JANI : Can you show us some details of the way you have modified the wgeel metric db to  make it both simpler and more adapted to the possible needs -->
+::: {.notes}
+ ***JANI*** 
+Can you show us some details of the way you have modified the wgeel metric db to  make it both simpler and more adapted to the possible needs
+:::
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -956,101 +1069,25 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
 ```
 :::
 
-::: {.column .incremental width="50%"}
-***INCLUDE PICTURE WP2***
+::: {.column width="50%"}
+![Yellow eel time series (source WGEEL 2022)](images/yellow_eel_time_series.png)
 :::
 :::::
 
 ## METRIC db (WGBAST)
 
-<!-- JANI : You have integrated the trutta database in the metric db, can you show us ? -->
+::: {.notes}
+ ***JANI***  
+ You have integrated the trutta database in the metric db, can you show us ? 
+:::
 
 ## METRIC db (WGTRUTTA)
 
-<!-- JANI Based on the exchange we had with WGTRUTTA, can you explain why the metric DB would fit their use -->
+::: {.notes}
+ ***JANI***  
+  Based on the exchange we had with WGTRUTTA, can you explain why the metric DB would fit their use ?
+:::
 
 <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html#population-data"> source </a>
 
-## METRIC db and examples of use
-
--   WGEEL base
-
-    -   The WGBAST trout data is now adapted to this.
-
--   WP2: data tests done
-
--   Expand the WGNAS and WGBAST datasets to use of traps and e-fishing data
-
-# All WGs now able to go deeper in their process
-
--   WGEEL: spatial model possible
-
--   WGBAST: data structured better. The tools will be available and can fit into what they are doing.
-
--   WGNAS: Data management up to date.
-
--   All: Potential to have much more, without having to put a lot of effort
-
-## Keeping the data flow
-
--   The current db (WGEEL and WGBAST as examples)
-
-    -   This is what is currently asked in datacalls
-
--   We don't want to disrupt the data flow, so our objective is to provide structures very close to the current DB (with queries and views)
-
-    -   (show the current db and the final product)
-
--   These structures will be progressively replaced by data flows coming from the RDBES. the RDBES  will have upload, data checking, view and download tools to handle those data
-
-    -   (maybe agregate it ?.... Talk to Henrik)
-
-![](images/clipboard-55398605.png)
-
-# Keeping the data flow
-
-::::: columns
-::: {.column .incremental width="50%"}
--   The roadmaps are in timeline (at least the latest)
--   Integration ICES if accepted.
--   Otherwise we have a tool working in postgres as a backup
-:::
-
-::: {.column width="50%"}
-**Use in TAF with different steps.**
-
-1.  Data call or RDBES
-
-2.  Workflow TAF
-
-3.  data checks (shiny app)
-
-4.  integration end of TAF
-
-5.  run models
-
-6.  Import outputs and calibrated variables
-
-7.  store data (all samples) in Rdata TAF.
-:::
-:::::
-
-# TODO WGNAS =\> lower level for WGNAS.
-
-# Quality control (taken from previous dam presentation)
-
-::::: Columns
-::: {.column width="50%"}
--   Need of DB input and output in TAF
--   Data treatment
--   Tried to follow the existing WG formats as closely as possible, to not destroy current work!
-:::
-
-::: {.column width="50%"}
--   EXAMPLES
--   Show Hennis or NAS
--   What has been done in WGNAS
--   Shiny treatment of the output to detect changes
--   Pierre Yves
-:::
-:::::
+# Thank you !
