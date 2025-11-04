@@ -927,35 +927,35 @@ load(file="data/presentation_dam_op.Rdata")
 #| warning: FALSE
 #| fig-cap: "A subsample of the dam database in France"
 
-# query <- "SELECT op_id_original,
-#                  op_placename, 
-#                  ob_height, 
-#                  ot.no_code as type,                 
-#                  geom 
-#           FROM dam_france.obstruction_place op
-#           JOIN dam_france.obstruction o
-#              ON ob_op_id = op_id
-#           JOIN nomenclature.obstruction_type ot
-#              ON ob_obstruction_type_no_id = ot.no_id
-#           JOIN refeel.tr_area_are are ON 
-#           st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
-#           WHERE are_code = 'FR_Bret'
-#           AND ob_ending_date = '2035-01-01'
-#           "
-# query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
-#           JOIN refeel.tr_area_are are2 ON 
-#           st_intersects(are1.geom_line, are2.geom_polygon)
-#           WHERE are2.are_code = 'FR_Bret'
-#           AND  are1.are_lev_code = 'River_section'"
+query <- "SELECT op_id_original,
+                 op_placename, 
+                 ob_height, 
+                 ot.no_code as type,                 
+                 geom 
+          FROM dam_france.obstruction_place op
+          JOIN dam_france.obstruction o
+             ON ob_op_id = op_id
+          JOIN nomenclature.obstruction_type ot
+             ON ob_obstruction_type_no_id = ot.no_id
+          JOIN refeel.tr_area_are are ON 
+          st_intersects(st_transform(op.geom, 4326), are.geom_polygon)
+          WHERE are_code = 'FR_Bret'
+          AND ob_ending_date = '2035-01-01'
+          "
+query2 <- "SELECT are1.are_id, are1.geom_line FROM refnas.tr_area_are are1 
+          JOIN refeel.tr_area_are are2 ON 
+          st_intersects(are1.geom_line, are2.geom_polygon)
+          WHERE are2.are_code = 'FR_Bret'
+          AND  are1.are_lev_code = 'River_section'"
 
 
-# layer <- st_read(dsn = con_diaspara, query = query) |> 
-#          sf::st_transform(4326) 
-# layer_riv <- st_read(dsn = con_diaspara, query = query2) 
+layer <- st_read(dsn = con_diaspara, query = query) |> 
+         sf::st_transform(4326) 
+layer_riv <- st_read(dsn = con_diaspara, query = query2) 
 
 
 
-# save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
+save(layer, layer_riv, file = "data/dammap_presentation.Rdata")
 load(file = "data/dammap_presentation.Rdata")
 layer <- layer |>
           mutate(label = sprintf(
@@ -1340,6 +1340,11 @@ load(file="data/presentation_turb_type.Rdata")
 :::
 :::::
 
+<<<<<<< HEAD
+
+# Electrofishing linking to habitat data
+
+=======
 # Electrofishing
 
 ::::: columns
@@ -1358,11 +1363,19 @@ load(file="data/presentation_turb_type.Rdata")
 :::::
 
 ## This presentation
+>>>>>>> 79128deb98477112a94e1d04212dfaa45cc3fe50
 
 ::::: columns
 ::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} 
+![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
+<<<<<<< HEAD
+::: {.column .incremental width="40%"}
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
+=======
 
 ::: {.column width="60%"}
 [**Database development and:**]{style="font-size:45px"}
@@ -1370,9 +1383,11 @@ load(file="data/presentation_turb_type.Rdata")
 -   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
 
 Where the fish data go
-
+>>>>>>> 79128deb98477112a94e1d04212dfaa45cc3fe50
 :::
 :::::
+
+# DIADROMOUS DATABASE (Stock DB)
 
 ## DIADROMOUS DATABASE (Stock DB)
 

@@ -658,8 +658,7 @@ datbast  -> ref
 }
 ```
 
-
-# STOCK db 
+# STOCK db
 
 ![](images/copilot_stock_model.png)
 
@@ -670,9 +669,8 @@ datbast  -> ref
 and why it should not alter the flow of data -->
 ```
 
-::: columns
-:::: {.column .incremental width="50%"}
-
+:::: columns
+::: {.column .incremental width="50%"}
 ```{=html}
 <style>
     .green-box {
@@ -694,23 +692,17 @@ and why it should not alter the flow of data -->
   </div>
 </body>
 ```
-
-
-::::
-
-
 :::
+::::
 
 ## STOCK db (WGNAS)
 
 <!-- JANI : OK, but what consequence does it have on the shiny application (salmoglob) -->
 
+::::: columns
+::: {.column .incremental width="50%"}
+<br> <br>
 
-
-::: columns
-:::: {.column .incremental width="50%"}
-<br>
-<br>
 ```{=html}
 <style>
     .green-box {
@@ -732,11 +724,11 @@ and why it should not alter the flow of data -->
 </div>
 </body>
 ```
-::::
+:::
 
-:::: {.column .incremental width="50%"}
-<br>
-<br>
+::: {.column .incremental width="50%"}
+<br> <br>
+
 ```{=html}
 <style>
     .orange-box {
@@ -760,19 +752,17 @@ and why it should not alter the flow of data -->
   </div>
 </body>
 ```
-
-::::
 :::
-
+:::::
 
 ## STOCK db (WGEEL)
 
 <!-- JANI : Very weel for WGNAS, how does that work for WGEEL, which annexes have you kept -->
 
-::: columns
-:::: {.column .incremental width="50%"}
-<br>
-<br>
+::::: columns
+::: {.column .incremental width="50%"}
+<br> <br>
+
 ```{=html}
 <style>
     .green-box {
@@ -793,11 +783,11 @@ and why it should not alter the flow of data -->
   </div>
 </body>
 ```
-::::
+:::
 
-:::: {.column .incremental width="50%"}
-<br>
-<br>
+::: {.column .incremental width="50%"}
+<br> <br>
+
 ```{=html}
 <style>
     .orange-box {
@@ -817,17 +807,14 @@ and why it should not alter the flow of data -->
   </div>
 </body>
 ```
-
-::::
 :::
+:::::
 
 ## STOCK db (WBAST)
 
 <!-- JANI : From what we have seen there are three DB in WGBAST, how do you adapt to this ? -->
 
 ![](images/clipboard-3336618413.png)
-
-
 
 ## STOCK db (WBAST)
 
@@ -846,10 +833,13 @@ and why it should not alter the flow of data -->
 
 ## STOCK db (WBAST)
 
+```{=html}
 <!-- Jani From what we have seen before, Now there is an area dimension in
 WGBAST, can you show us how that works ? -->
+```
 
 ## STOCK db (WBAST)
+
 **Habitat structure (Illustrate in detail the use of recursive queries to get habitat)**
 
 ## Example: River Daugava
@@ -870,7 +860,6 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
 ```
 ![Parents from Gulf of Riga](images/clipboard-3762430346.png)
 
-
 # METRIC db
 
 ::::: columns
@@ -887,10 +876,10 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
 
 <!-- JANI : Can you show us some details of the way you have modified the wgeel metric db to  make it both simpler and more adapted to the possible needs -->
 
-::: columns
-:::: {.column .incremental width="50%"}
-<br>
-<br>
+::::: columns
+::: {.column .incremental width="50%"}
+<br> <br>
+
 ```{=html}
 <style>
     .green-box {
@@ -911,11 +900,11 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
   </div>
 </body>
 ```
-::::
+:::
 
-:::: {.column .incremental width="50%"}
-<br>
-<br>
+::: {.column .incremental width="50%"}
+<br> <br>
+
 ```{=html}
 <style>
     .orange-box {
@@ -936,16 +925,15 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
   </div>
 </body>
 ```
-
-::::
 :::
+:::::
 
 ## METRIC db (WGNAS)
 
-::: columns
-:::: {.column .incremental width="50%"}
-<br>
-<br>
+::::: columns
+::: {.column .incremental width="50%"}
+<br> <br>
+
 ```{=html}
 <style>
     .orange-box {
@@ -966,28 +954,22 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
   </div>
 </body>
 ```
-::::
-:::: {.column .incremental width="50%"}
+:::
 
+::: {.column .incremental width="50%"}
 ***INCLUDE PICTURE WP2***
-
-::::
-:::  
+:::
+:::::
 
 ## METRIC db (WGBAST)
+
 <!-- JANI : You have integrated the trutta database in the metric db, can you show us ? -->
-
-
-
 
 ## METRIC db (WGTRUTTA)
 
 <!-- JANI Based on the exchange we had with WGTRUTTA, can you explain why the metric DB would fit their use -->
 
-
-<a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html#population-data"> source </a> 
-
-
+<a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html#population-data"> source </a>
 
 ## METRIC db and examples of use
 
@@ -1072,5 +1054,3 @@ SELECT * FROM ref.get_parent_area(310, 'WGBAST');
 -   Pierre Yves
 :::
 :::::
-
-
