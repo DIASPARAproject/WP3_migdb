@@ -89,11 +89,11 @@ con_diaspara <- dbConnect(Postgres(),
 
 -   [**Regional and Global (Spatial) Models**]{style="font-size:40px"}
 
--   [**Migration obstacles and Electrofishing**]{style="font-size:40px"}
+-   [**Habitat data**]{style="font-size:40px"}
 
--   [**Biological and Biometric data**]{style="font-size:40px"}
+-   [**Migration obstacles**]{style="font-size:40px"}
 
--   [**Overall - Whole Stock**]{style="font-size:40px"}
+-   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
 :::
 :::::
 
@@ -231,6 +231,22 @@ A big reason why we needed habitat database
 # Biometrics and spatial aspects
 
 ![](images/clipboard-2272436302.png)
+
+## This presentation
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+[**Database development and:**]{style="font-size:45px"}
+
+-   [**Habitat data**]{style="font-size:40px"}
+
+The Base for everything
+:::
+:::::
 
 ## Habitat DB hierarchical structure
 
@@ -755,6 +771,22 @@ For now data is reported for the whole Baltic Sea but it might change to a finer
 
 ::: {.column width="60%"}
 ![](images/nas_rivseg.png "WGNAS River_segment level")
+:::
+:::::
+
+## This presentation
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+[**Database development and:**]{style="font-size:45px"}
+
+-   [**Migration obstacles**]{style="font-size:40px"}
+
+For habitat availability, mortality, ...
 :::
 :::::
 
@@ -1295,13 +1327,22 @@ load(file="data/presentation_turb_type.Rdata")
 :::
 :::::
 
-# DIADROMOUS DATABASE
+## This presentation
 
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="450"}
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
 
-## DIADROMOUS DATABASE (Metric DB DB)
+::: {.column width="60%"}
+[**Database development and:**]{style="font-size:45px"}
 
-![](images/DIAD2.0.png "MetricDB")
+-   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
+
+Where the fish data go
+
+:::
+:::::
 
 ## DIADROMOUS DATABASE (Stock DB)
 
