@@ -216,6 +216,19 @@ A big reason why we needed habitat database
 
 # Similarly in WGBAST![](images/clipboard-2918597239.png)
 
+# Any other series similarly!
+
+::::: columns
+::: {.column .incremental width="40%"}
+
+![](images/clipboard-1432957746.png)
+:::
+
+::: {.column width="60%"}
+![](images/clipboard-1142296634.png)
+:::
+:::::
+
 # Biometrics and spatial aspects
 
 ![](images/clipboard-961064370.png)
@@ -1327,23 +1340,39 @@ load(file="data/presentation_turb_type.Rdata")
 :::
 :::::
 
-
-# Electrofishing linking to habitat data
-
+# Electrofishing
 
 ::::: columns
 ::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} 
-![](images/clipboard-639830824.png "electrofishing"){width="370"}
+![](images/clipboard-2480369358.png){width="484"}
 :::
-::: {.column .incremental width="40%"}
--   Electrofishing similarly to migration obstacles
+
+::: {.column width="60%"}
+
+-   Electrofishing development halfway done (SUDOANG)
+
 -   We are working on this db now
--   Templates to be tested
+
+-   Templates to be generated and discussed
 :::
 :::::
 
-# DIADROMOUS DATABASE (Stock DB)
+## This presentation
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+:::
+
+::: {.column width="60%"}
+[**Database development and:**]{style="font-size:45px"}
+
+-   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
+
+Where the fish data go
+
+:::
+:::::
 
 ## DIADROMOUS DATABASE (Stock DB)
 
