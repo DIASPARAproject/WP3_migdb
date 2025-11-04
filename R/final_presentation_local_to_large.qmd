@@ -216,6 +216,19 @@ A big reason why we needed habitat database
 
 # Similarly in WGBAST![](images/clipboard-2918597239.png)
 
+# Any other series similarly!
+
+::::: columns
+::: {.column .incremental width="40%"}
+
+![](images/clipboard-1432957746.png)
+:::
+
+::: {.column width="60%"}
+![](images/clipboard-1142296634.png)
+:::
+:::::
+
 # Biometrics and spatial aspects
 
 ![](images/clipboard-961064370.png)
@@ -1327,6 +1340,23 @@ load(file="data/presentation_turb_type.Rdata")
 :::
 :::::
 
+# Electrofishing
+
+::::: columns
+::: {.column .incremental width="40%"}
+![](images/clipboard-2480369358.png){width="484"}
+:::
+
+::: {.column width="60%"}
+
+-   Electrofishing development halfway done (SUDOANG)
+
+-   We are working on this db now
+
+-   Templates to be generated and discussed
+:::
+:::::
+
 ## This presentation
 
 ::::: columns
@@ -1340,7 +1370,6 @@ load(file="data/presentation_turb_type.Rdata")
 -   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
 
 Where the fish data go
-
 :::
 :::::
 
