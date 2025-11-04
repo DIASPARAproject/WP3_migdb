@@ -99,3 +99,10 @@ pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostme
 pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara1.backup"
 pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema datbast -Fc -v -f "C:/temp/diaspara1.backup"
 pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara1.backup"
+
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema dam --schema nomenclature --schema dam_france --schema dattrutta --schema electrofishing -Fc -v -f "C:/temp/diaspara2.backup"
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara2.backup"
+
+pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema h_adriatic --schema h_baltic22to26 --schema h_baltic27to29_32 --schema h_baltic30to31 --schema h_barents --schema h_biscayiberian --schema h_blacksea  -Fc -v -f "C:/temp/diaspara2.backup"
+psql --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara -c "create extension "
+pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara2.backup"

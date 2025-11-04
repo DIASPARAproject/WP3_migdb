@@ -62,18 +62,18 @@ load_library("janitor") #
 load_library("htmltools") 
 load_library("leaflet")
 cred <- read_yaml("../credentials.yml")
-con_diaspara <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamehydro,
-                           host = cred$hostmercure,
-                           port = cred$port,
-                           user = cred$usermercure,
-                           password = cred$passwordmercure)
 # con_diaspara <- dbConnect(Postgres(), 
-#                           dbname = cred$dbnamediaspara,
-#                           host = cred$hostdistant,
-#                           port = cred$port,
-#                           user = cred$userdiaspara,
-#                           password = cred$passworddiaspara)
+#                            dbname = cred$dbnamehydro,
+#                            host = cred$hostmercure,
+#                            port = cred$port,
+#                            user = cred$usermercure,
+#                            password = cred$passwordmercure)
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
 
 ```
 
@@ -92,6 +92,8 @@ con_diaspara <- dbConnect(Postgres(),
 -   [**Habitat data**]{style="font-size:40px"}
 
 -   [**Migration obstacles**]{style="font-size:40px"}
+
+-   [**Electrofishing**]{style="font-size:40px"}
 
 -   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
 :::
@@ -172,19 +174,17 @@ A big reason why we needed habitat database
 
 # Regional aspects, EDA examples
 
+
 -   Hydrographic network, obstacles and electrofishing information needed!
 
-:::: columns
-::: {.column .incremental width="60%"}
-![](images/clipboard-1171006118.png)
-:::
-::::
+::: {.r-stack}
 
-:::: columns
-::: {.column width="40%"}
-![](images/clipboard-2093853961.png)
+![](images/clipboard-1171006118.png){.fragment height="300"} 
+
+![](images/clipboard-2093853961.png){.fragment height="400"} 
+
 :::
-::::
+
 
 # Regional aspects, EDA examples
 
@@ -1327,22 +1327,23 @@ load(file="data/presentation_turb_type.Rdata")
 :::
 :::::
 
-## This presentation
+
+# Electrofishing linking to habitat data
+
 
 ::::: columns
 ::: {.column .incremental width="40%"}
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="370"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} 
+![](images/clipboard-639830824.png "electrofishing"){width="370"}
 :::
-
-::: {.column width="60%"}
-[**Database development and:**]{style="font-size:45px"}
-
--   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
-
-Where the fish data go
-
+::: {.column .incremental width="40%"}
+-   Electrofishing similarly to migration obstacles
+-   We are working on this db now
+-   Templates to be tested
 :::
 :::::
+
+# DIADROMOUS DATABASE (Stock DB)
 
 ## DIADROMOUS DATABASE (Stock DB)
 
@@ -1362,15 +1363,15 @@ Where the fish data go
 
 ![](images/DIAD1.3.png "Stock DB - metadata")
 
-\## DIADROMOUS DATABASE (Stock DB)
+## DIADROMOUS DATABASE (Stock DB)
 
 ![](images/DIAD1.4.png "Stock DB - metadata")
 
-\## DIADROMOUS DATABASE (Summary)
+## DIADROMOUS DATABASE (Summary)
 
 ![](images/DIAD3.png "Stock DB - summary")
 
-\## DIADROMOUS DATABASE (Data Flow)
+## DIADROMOUS DATABASE (Data Flow)
 
 ![](images/processes.png "Data flow")
 
