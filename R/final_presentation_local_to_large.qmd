@@ -77,7 +77,6 @@ con_diaspara <- dbConnect(Postgres(),
 
 ```
 
-
 ## This presentation
 
 ::::: columns
@@ -150,7 +149,7 @@ A big reason why we needed habitat database
 ::::: columns
 ::: {.column .incremental width="50%"}
 -   There is a need to have habitat models everywhere
--  Regional aspects in WGBAST, WGNAS and WGBAST
+-   Regional aspects in WGBAST, WGNAS and WGBAST
 -   [WGTRUTTA](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html)
 :::
 
@@ -182,7 +181,6 @@ A big reason why we needed habitat database
 ::::
 
 :::: columns
-
 ::: {.column width="40%"}
 ![](images/clipboard-2093853961.png)
 :::
@@ -194,13 +192,45 @@ A big reason why we needed habitat database
 
     ![](images/clipboard-373049954.png)
 
-# BEFORE INTRODUCING THE METRIC DB
+# Series, Biometrics, and Spatial Aspects
 
--   relate to WGEEL recruitment trend analysis: analysis of silver eel or yellow eel.
--   Maybe something from WGBAST
--   Figure of a trap, fishway or anything. Glasseel series
--   how this is used by the WGEEL to get the
--   WGEEL yellow eel maps etc.
+# Example, WGEEL glasseel series
+
+![](images/clipboard-142218191.png)
+
+# Example, WGEEL glasseel series
+
+![](images/clipboard-1391266458.png)
+
+# Example, WGEEL glasseel series
+
+![](images/clipboard-4106761349.png)
+
+# Example, WGEEL glasseel series
+
+![](images/clipboard-3678211794.png)
+
+# Similarly in WGBAST
+
+# ![](images/clipboard-322677207.png)
+
+# Similarly in WGBAST![](images/clipboard-2918597239.png)
+
+# Biometrics and spatial aspects
+
+![](images/clipboard-961064370.png)
+
+# Biometrics and spatial aspects
+
+![](images/clipboard-3844943477.png)
+
+# Biometrics and spatial aspects
+
+![](images/clipboard-1163778959.png)
+
+# Biometrics and spatial aspects
+
+![](images/clipboard-2272436302.png)
 
 ## Habitat DB hierarchical structure
 
@@ -315,15 +345,17 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Assessment_unit
+
 ::::: columns
 ::: {.column .incremental width="50%"}
-- Gap below Assessment Unit 3
-- No Assessment Unit on the Western part
+-   Gap below Assessment Unit 3
+-   No Assessment Unit on the Western part
 :::
+
 ::: {.column width="50%"}
 ![](images/bast_au.png "WGBAST Assessment_unit level")
 :::
-::::
+:::::
 
 ## Habitat DB hierarchical structure : River
 
@@ -440,8 +472,7 @@ rownames = FALSE,
 ![](images/bast_rs.png "WGBAST River_section level")
 
 ::: notes
-Here we only see the main stretch of river since what I'm showing right now is only the hierarchical structure. But within the DB, all tributaries are included. They are linked to the main stretch by an id.
-Within the RDBES the basin code, which is unique and the name of the river will be included.
+Here we only see the main stretch of river since what I'm showing right now is only the hierarchical structure. But within the DB, all tributaries are included. They are linked to the main stretch by an id. Within the RDBES the basin code, which is unique and the name of the river will be included.
 :::
 
 ## Habitat DB hierarchical structure : Divison
@@ -553,14 +584,16 @@ rownames = FALSE,
 ```
 
 ## Habitat DB hierarchical structure : Subdivision_grouping
+
 ::::: columns
 ::: {.column .incremental width="50%"}
-- Useful for historical data. Used to be grouped in larger areas
+-   Useful for historical data. Used to be grouped in larger areas
 :::
+
 ::: {.column width="50%"}
 ![](images/bast_subgr.png "WGBAST Subdivision_grouping level")
 :::
-::::
+:::::
 
 ## Habitat DB hierarchical structure : Subdivision
 
@@ -621,18 +654,19 @@ rownames = FALSE,
 
 ```
 
-
-
 ## Habitat DB hierarchical structure : Subdivision
+
 ![](images/bast_sub.png "WGBAST Subdivision level")
 
 ## Habitat DB hierarchical structure : WGEEL
+
 ![WGEEL Hierarchical structure](images/fig-area_hierarchy_wgeel.svg){#fig-hiereel}
 
 ## Habitat DB hierarchical structure : Regional
-- EMUs are to be deprecated
-- Creating a new structure to assess data
-- Has been presented and disscussed during WGEEL meeting
+
+-   EMUs are to be deprecated
+-   Creating a new structure to assess data
+-   Has been presented and disscussed during WGEEL meeting
 
 ## Habitat DB hierarchical structure : Regional
 
@@ -659,9 +693,10 @@ For now data is reported for the whole Baltic Sea but it might change to a finer
 ![](images/wgeel_med.png "WGEEL Regional level")
 
 ## Habitat DB hierarchical structure : Complex
-- Taking care of lagoons in the Mediterranean
-- Creating groups of lagoons
-- Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
+
+-   Taking care of lagoons in the Mediterranean
+-   Creating groups of lagoons
+-   Available for Spain, France, Tunisia, Italia, Albania, Greece and Turkey
 
 ## Habitat DB hierarchical structure : Complex
 
@@ -672,36 +707,44 @@ For now data is reported for the whole Baltic Sea but it might change to a finer
 ![](images/french_complex.png "WGEEL Regional level")
 
 ## Habitat DB hierarchical structure : Lagoons
+
 ![](images/wgeel_lag.png "WGEEL Lagoons level")
 
 ## Habitat DB hierarchical structure : Lagoons
-- Lakes are to be added as well
+
+-   Lakes are to be added as well
 
 ## Habitat DB hierarchical structure : WGNAS
+
 ![WGNAS Hierarchical structure](images/fig-area_hierarchy_nas1.svg){#fig-hiernas}
 
 ## Habitat DB hierarchical structure : Assessment_unit
+
 ::::: columns
 ::: {.column .incremental width="50%"}
-- Electrofishing data will have to be reported at this level
+-   Electrofishing data will have to be reported at this level
 :::
+
 ::: {.column width="50%"}
 ![](images/nas_aunit.png "WGNAS AU level")
 :::
-::::
+:::::
 
 ## Habitat DB hierarchical structure : River
+
 ::::: columns
 ::: {.column .incremental width="50%"}
-- Possibility to work with river basins to work with smaller AU
+-   Possibility to work with river basins to work with smaller AU
 :::
+
 ::: {.column width="50%"}
 ![](images/nas_riv.png "WGNAS River level")
 :::
-::::
+:::::
 
 ## Habitat DB hierarchical structure : River
-- Possibility to group river basins to create smaller assessment units
+
+-   Possibility to group river basins to create smaller assessment units
 
 ::::: columns
 ::: {.column .incremental width="40%"}
@@ -716,7 +759,6 @@ For now data is reported for the whole Baltic Sea but it might change to a finer
 :::::
 
 # DAM DATABASE
-
 
 ::::: columns
 ::: {.column width="50%"}
@@ -738,7 +780,6 @@ flowchart TB
 ![](images/dam_spain.jpg)
 :::
 :::::
-
 
 ## DAM DATABASE : Obstruction place
 
@@ -831,7 +872,6 @@ load(file="data/presentation_dam_op.Rdata")
   )
 
 ```
-
 
 ## DAM DATABASE : Obstruction place
 
@@ -933,10 +973,10 @@ flowchart TB
 :::
 
 ::: {.column width="50%"}
-- Physical obstruction has date of start and end
-- Events (Erasement, change of height change dam period)
-- Fishway types
-- Downstream water depth
+-   Physical obstruction has date of start and end
+-   Events (Erasement, change of height change dam period)
+-   Fishway types
+-   Downstream water depth
 :::
 :::::
 
@@ -1129,7 +1169,6 @@ load(file="data/presentation_dam_hpp.Rdata")
 
 ```
 
-
 ## DAM DATABASE : Turbines
 
 ```{mermaid}
@@ -1201,9 +1240,8 @@ load(file="data/presentation_dam_turb.Rdata")
 ```
 :::
 
-:::: {.column width="50%"}
-<br> 
-<br>
+::: {.column width="50%"}
+<br> <br>
 
 ```{r}
 #| label: tbl-turbines_type
@@ -1254,54 +1292,45 @@ load(file="data/presentation_turb_type.Rdata")
   )
 
 ```
-
-::::
-::::::
+:::
+:::::
 
 # DIADROMOUS DATABASE
 
-![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} 
-![](images/clipboard-639830824.png "electrofishing"){width="450"}
+![](images/clipboard-550275409.png "Eel and brown trout"){width="370"} ![](images/clipboard-639830824.png "electrofishing"){width="450"}
 
 ## DIADROMOUS DATABASE (Metric DB DB)
 
- ![](images/DIAD2.0.png "MetricDB")
+![](images/DIAD2.0.png "MetricDB")
 
 ## DIADROMOUS DATABASE (Stock DB)
-  - Structuration of data at the stock / assessment Unit level.
 
- ![](images/DIAD1.png "Stock DB ")
+-   Structuration of data at the stock / assessment Unit level.
 
+![](images/DIAD1.png "Stock DB")
 
 ## DIADROMOUS DATABASE (Metric DB)
 
- ![](images/DIAD2.1.png "Metric DB - detail of tables")
-
-
+![](images/DIAD2.1.png "Metric DB - detail of tables")
 
 ## DIADROMOUS DATABASE (Stock DB)
 
- ![](images/DIAD1.1.png "Stock DB - Data input")
+![](images/DIAD1.1.png "Stock DB - Data input")
 
 ## DIADROMOUS DATABASE (Stock DB)
 
- ![](images/DIAD1.3.png "Stock DB - metadata")
+![](images/DIAD1.3.png "Stock DB - metadata")
 
- ## DIADROMOUS DATABASE (Stock DB)
+\## DIADROMOUS DATABASE (Stock DB)
 
- ![](images/DIAD1.4.png "Stock DB - metadata")
+![](images/DIAD1.4.png "Stock DB - metadata")
 
- ## DIADROMOUS DATABASE (Summary)
+\## DIADROMOUS DATABASE (Summary)
 
- ![](images/DIAD3.png "Stock DB - summary")
+![](images/DIAD3.png "Stock DB - summary")
 
- ## DIADROMOUS DATABASE (Data Flow)
+\## DIADROMOUS DATABASE (Data Flow)
 
- ![](images/processes.png "Data flow")
-
-
-
-
-
+![](images/processes.png "Data flow")
 
 # Thank you!
