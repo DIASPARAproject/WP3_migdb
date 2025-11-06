@@ -20,7 +20,56 @@ background-transition: fade
 editor: visual
 ---
 
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") #
+load_library("htmltools") 
+load_library("leaflet")
+cred <- read_yaml("../credentials.yml")
+# con_diaspara <- dbConnect(Postgres(), 
+#                            dbname = cred$dbnamehydro,
+#                            host = cred$hostmercure,
+#                            port = cred$port,
+#                            user = cred$usermercure,
+#                            password = cred$passwordmercure)
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+
+```
+
 # Refresh from the previous presentations
+
+
 
 ![](images/clipboard-154407505.png)
 
@@ -925,13 +974,11 @@ JANI : From what we have seen there are three DB in WGBAST, how do you adapt to 
 ## STOCK db (WBAST)
 
 
-
-::: incremental
 -   Change from several values column to one
 -   Calendar data \< year
 -   Data source
 -   Qualifying the data
-:::
+
 
 ## STOCK db (WBAST)
 
@@ -959,17 +1006,76 @@ WGBAST, can you show us how that works ?
 
 ## Example: River Daugava & Gulf of Riga
 
-```{=sql}
-SELECT * FROM ref.get_parent_area(310, 'WGBAST');
-```
+
+> SELECT * FROM ref.get_parent_area(310, 'WGBAST');
+
 ![Parents from Gulf of Riga](images/clipboard-4250192328.png)
 
 ## Example: Gulf of Riga
 
-```{=sql}
- SELECT * FROM ref.get_parent_area(7025, 'WGBAST');
-```
+> SELECT * FROM ref.get_parent_area(7025, 'WGBAST');
+
 ![Parents from Gulf of Riga](images/clipboard-3762430346.png)
+
+## STOCK db (WBAST)
+
+::::: columns
+::: {.column .incremental width="50%"}
+<br> <br>
+
+```{=html}
+<style>
+    .green-box {
+      background-color: green;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="green-box">
+    <b> DONE (test)<i class="fas fa-check-circle"></i></b> <br>
+- Metadata table (fisheries)<br>
+- Stock table (fisheries) <br>
+- Trutta dataset
+- Exchange on the variables
+  </div>
+</body>
+```
+:::
+
+::: {.column .incremental width="50%"}
+<br> <br>
+
+```{=html}
+<style>
+    .orange-box {
+      background-color: orange;
+      color: black;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="orange-box">
+  <b> TODO </b> <br>
+-   Young fish <br>
+-   Mark recapture data <br>
+-   ICES db coding <br>
+-   Data integration (fisheries)<br>
+-   Data integration (Young Fish)<br>
+  </div>
+</body>
+```
+:::
+:::::
+
 
 # METRIC db
 

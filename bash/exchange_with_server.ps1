@@ -117,4 +117,8 @@ pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdia
 
 pg_dump --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara  --schema tempo -Fc -v -f "C:/temp/diaspara6.backup"
 pg_restore --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara "C:/temp/diaspara6.backup"
+
+psql --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara -c "drop table datbast.t_stock_sto;"
+
+pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspara}/diaspara --table datbast.t_stock_sto -Fc -f "C:/temp/datbast.t_stock_sto" | pg_restore --dbname=postgresql://${env:usermercure}:${env:passmercure}@${env:hostmercure}/diaspara C:/temp/datbast.t_stock_sto
 # there is a problem in having the schema tempo mandatory...

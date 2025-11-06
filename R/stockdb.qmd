@@ -4582,7 +4582,7 @@ dbExecute(con_diaspara_local, "drop table if exists temp_t_stock_sto_e")
 system.time(dbWriteTable(con_diaspara_local, "temp_t_stock_sto_e", t_stock_sto_e)) # 0.14
 dbExecute(con_diaspara_local, "INSERT INTO datbast.t_stock_sto(sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code)
           SELECT sto_met_var, sto_year, sto_spe_code, sto_value, sto_are_code, sto_cou_code, sto_lfs_code, sto_hty_code, sto_qal_code, sto_comment, sto_datelastupdate, sto_mis_code, sto_dta_code, sto_wkg_code, sto_ver_code, sto_gear_code, sto_tip_code, sto_timeperiod, sto_dts_code, sto_dtb_code, sto_esm_code FROM temp_t_stock_sto_e") #17334
-dbExecute(con_diaspara_admin, "drop table temp_t_stock_sto_e")
+dbExecute(con_diaspara_local, "drop table temp_t_stock_sto_e")
 
 
 # Insert N_CI
