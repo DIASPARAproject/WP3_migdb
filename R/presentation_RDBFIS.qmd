@@ -91,9 +91,47 @@ load_library("leaflet")
 
 ![](images/fig_final_allcatchments.png)
 
-# JULES TO CONTINUE FROM HERE
+# WGEEL Hiarchichal structure
 
 ![](images/fig-area_hierarchy_wgeel.svg)
+
+# Regional level
+
+![](images/wgeel_med.png)
+
+::: notes
+- 4 Regions + Black Sea
+- Marine part created using GFCM Subarea
+- Inland part created by gatherning all catchments flowing into marine regions
+:::
+
+# Subdivision level
+
+![](images/rdbfis_subdiv.png)
+
+::: notes
+- Created with GFCM GSA (Geographical Sub-Area)
+:::
+
+# Complex level
+
+![](images/rdbfis_complex.png)
+
+::: notes
+- Complex are a gathering of lagoons. Used because some countries report at that level. 
+:::
+
+# Lagoon level
+
+![](images/rdbfis_lagoons.png)
+
+::: notes
+All lagoons from the GFCM database have been included. Some have actual polygons coming from national dataset. When polygons were missing, I created a small square to represent them.
+There is 3 different levels of details here
+- Polygons with no name
+- Polygons with name
+- Generated square with name
+:::
 
 # Briefly about Metric and Stock DB
 
@@ -131,7 +169,10 @@ load_library("leaflet")
 
 # Work to do in the future
 
-    ::::: columns
+```         
+::::: columns
+```
+
 ::: {.column .incremental width="50%"}
 -   E.g., commercial and recreational catch data from many sources to the WG
 -   Compilation of data from different sources: TAF, scripts
@@ -144,7 +185,7 @@ load_library("leaflet")
 ::: {.column .incremental width="50%"}
 ![](images/clipboard-1510054775.png)
 :::
+
 :::::
-    
 
 # Thank you !
