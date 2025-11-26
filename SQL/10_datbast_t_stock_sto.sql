@@ -2,7 +2,7 @@
 -- CREATE A TABLE INHERITED FROM dat.t_stock_sto.
 -- Table dat.stock_sto only gets data by inheritance.
 -- Here we have to build the constraints again.
-
+-- delete from datbast.t_stock_sto;
 DROP TABLE IF EXISTS datbast.t_stock_sto;
 CREATE TABLE datbast.t_stock_sto (
     sto_gear_code text,

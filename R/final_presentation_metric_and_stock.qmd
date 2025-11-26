@@ -378,7 +378,7 @@ shape = cylinder];
 
 refnas [fillcolor="limegreen"
 label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>refeel</b> </td> </tr>
+<tr> <td> <b>refnas</b> </td> </tr>
 <tr> <td align="left">
 <br align="left"/>
 </td> </tr> 
@@ -768,7 +768,6 @@ Remember from yesterday, the stock DB store several things :
     <b> DONE <i class="fas fa-check-circle"></i></b> <br>
 -  Metadata table <br>
 - Stock table <br>
-- Additional column for WGNAS <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#table-of-grouping-for-area-and-age-datnas.tg_additional_add"> source </a> 
   </div>
 </body>
 ```
@@ -854,7 +853,6 @@ Remember from yesterday, the stock DB store several things :
     <b> DONE <i class="fas fa-check-circle"></i></b> <br>
 - Metadata table <br>
 - Stock table <br>
-- Additional column for WGNAS <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#table-of-grouping-for-area-and-age-datnas.tg_additional_add"> source </a> 
 </div>
 </body>
 ```
@@ -881,8 +879,8 @@ Remember from yesterday, the stock DB store several things :
 -   Include the archive db <br>
 -   Import in ICES DB <br>
 -   Adapt shiny app <br>
-    -   R package for common tools <br>
-    -   Adapt shiny <br>
+    -   (1) R package for common tools <br>
+    -   (2) Adapt shiny <br>
   </div>
 </body>
 ```
@@ -1090,10 +1088,6 @@ WGBAST, can you show us how that works ?
 :::::
 
 ## METRIC db (WGEEL)
-::: {.notes}
- ***JANI*** 
-Can you show us some details of the way you have modified the wgeel metric db to  make it both simpler and more adapted to the possible needs
-:::
 
 ::::: columns
 ::: {.column .incremental width="50%"}

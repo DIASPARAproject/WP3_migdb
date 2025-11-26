@@ -276,11 +276,8 @@ editor: visual
 
 ::: {.column width="50%"}
 ![](images/ShinyAppExample.png)
-
 :::
 :::::
-
-
 
 # Are all data publicly available?
 

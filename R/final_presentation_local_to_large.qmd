@@ -49,18 +49,18 @@ load_library("janitor") #
 load_library("htmltools") 
 load_library("leaflet")
 cred <- read_yaml("../credentials.yml")
-con_diaspara <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamehydro,
-                           host = cred$hostmercure,
-                           port = cred$port,
-                           user = cred$usermercure,
-                           password = cred$passwordmercure)
 # con_diaspara <- dbConnect(Postgres(), 
-#                           dbname = cred$dbnamediaspara,
-#                           host = cred$hostdistant,
-#                           port = cred$port,
-#                           user = cred$userdiaspara,
-#                           password = cred$passworddiaspara)
+#                            dbname = cred$dbnamehydro,
+#                            host = cred$hostmercure,
+#                            port = cred$port,
+#                            user = cred$usermercure,
+#                            password = cred$passwordmercure)
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
 
 ```
 
