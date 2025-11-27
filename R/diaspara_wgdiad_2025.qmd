@@ -1,6 +1,6 @@
 ---
 title: "Diaspara WP3 & WGDIAD 2025"
-author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+author: "Jani Helminen, Cédric Briand, Jules Oliviéro, "
 fontsize: 20pt
 filters:
   - quarto-kroki
