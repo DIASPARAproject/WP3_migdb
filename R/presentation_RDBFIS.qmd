@@ -1,0 +1,181 @@
+---
+title: "DIASPARA, WGEEL, RDBFIS"
+author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+fontsize: 20pt
+filters:
+  - quarto-kroki
+title-slide-attributes:
+  data-background-image: images/diaspara_background.png
+  data-background-size: stretch
+  data-background-opacity: "0.5"
+logo: images/diaspara_participants_logo_withEUlogo.png
+footer: ""
+engine: knitr
+format: 
+  revealjs :
+    self-contained: true
+theme: 
+  - solarized
+background-transition: fade
+editor: visual
+---
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("icesVocab")
+load_library("readxl")
+load_library("janitor")
+load_library("skimr")
+load_library("RPostgres")
+load_library("yaml")
+load_library("DBI")
+load_library("ggplot2")
+load_library("sf")
+load_library("janitor") #
+load_library("htmltools") 
+load_library("leaflet")
+
+```
+
+# DIASPARA - DIAdromous Species: moving towards new PARadigms to achieve holistic scientific Advice
+
+-   2-years: May 2024-May 2026
+
+-   EMFAF-2023
+
+![](images/clipboard-725413065.png)
+
+# Background
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   All ICES DIADROMOUS groups (WGBAST, WGEEL, WGNAS +WGTRUTTA) have their own databases.
+-   Large data calls: many types of data
+    -   Biometrics, series, …
+    -   Fisheries data also submitted directly to these databases
+    -   Commercial & recreational
+    -   Marine & continental
+:::
+
+::: {.column .incremental width="50%"}
+![](images/clipboard-1207399477.png)
+:::
+:::::
+
+# DIASPARA project
+
+-   Aim: to have a **common database** for all migratory species
+-   Now: ”Stock” and ”Metric” databases for all diadromous data
+    -   ICES mapping: everything will use ICES language
+    -   ICES tools (Datsu etc.)
+-   Habitat database = ‘maps of continental habitat’
+    -   Data available on Zenodo
+
+# Continental habitat database
+
+![](images/fig_final_allcatchments.png)
+
+# WGEEL Hiarchichal structure
+
+![](images/fig-area_hierarchy_wgeel.svg)
+
+# Regional level
+
+![](images/wgeel_med.png)
+
+::: notes
+-   4 Regions + Black Sea
+-   Marine part created using GFCM Subarea
+-   Inland part created by gatherning all catchments flowing into marine regions
+:::
+
+# Subdivision level
+
+![](images/rdbfis_subdiv.png)
+
+::: notes
+-   Created with GFCM GSA (Geographical Sub-Area)
+:::
+
+# Complex level
+
+![](images/rdbfis_complex.png)
+
+::: notes
+-   Complex are a gathering of lagoons. Used because some countries report at that level.
+:::
+
+# Lagoon level
+
+![](images/rdbfis_lagoons.png)
+
+::: notes
+All lagoons from the GFCM database have been included. Some have actual polygons coming from national dataset. When polygons were missing, I created a small square to represent them. There is 3 different levels of details here - Polygons with no name - Polygons with name - Generated square with name
+:::
+
+# Briefly about Metric and Stock DB
+
+![](images/DIAD1.png)
+
+# Briefly about Metric and Stock DB
+
+![](images/DIAD1.3.png)
+
+# Briefly about Metric and Stock DB
+
+![](images/DIAD2.1.png)
+
+# CEDRIC to add
+
+-   What are we doing and how does it match RDBFIS
+-   Data checks
+-   Postgres
+
+# How does our work relate to RDBFIS
+
+::::: columns
+::: {.column .incremental width="50%"}
+-   Fisheries data (incl. Sampling data)
+    -   Makes sense that WG’s use catch/landings from the RDBES in the future, through TAF
+-   How can continental data be matched?
+    -   Using a common ID that corresponds to the habitat data
+    -   This approach in RDBES
+:::
+
+::: {.column .incremental width="50%"}
+![](images/clipboard-4103952801.png)
+:::
+:::::
+
+# Work to do in the future
+
+::: {.column .incremental width="50%"}
+-   E.g., commercial and recreational catch data from many sources to the WG
+-   Compilation of data from different sources: TAF, scripts
+-   Making sure all data match, find differences, make corrections
+-   Bycatch data and how is it applied?
+-   Another project in the future?
+    -   Integrating Mediterranean data
+:::
+
+::: {.column .incremental width="50%"}
+![](images/clipboard-1510054775.png)
+:::
+
+# Thank you !
