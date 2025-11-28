@@ -196,9 +196,7 @@ gantt
 
 ```
 
-
 # WGEEL plans
-
 
 ```{mermaid}
 gantt

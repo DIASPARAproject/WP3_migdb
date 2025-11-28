@@ -102,7 +102,7 @@ load_library("leaflet")
 ::: notes
 -   4 Regions + Black Sea
 -   Marine part created using GFCM Subarea
--   Inland part created by gatherning all catchments flowing into marine regions
+-   Inland part created by gathering all catchments flowing into marine regions
 :::
 
 # Subdivision level
@@ -141,40 +141,86 @@ All lagoons from the GFCM database have been included. Some have actual polygons
 
 ![](images/DIAD2.1.png)
 
-# CEDRIC to add
+# GFCM work on eel
 
--   What are we doing and how does it match RDBFIS
--   Data checks
--   Postgres
+![](images/GFCM1.png)
 
-# How does our work relate to RDBFIS
+# GFCM work on eel
+
+![](images/GFCM2.png)
+
+# GFCM work on eel
+
+![](images/GFCM3.png)
+
+# Discussion RDBFIS- DIASPARA- WGEEL (RDBES)
 
 ::::: columns
-::: {.column .incremental width="50%"}
--   Fisheries data (incl. Sampling data)
-    -   Makes sense that WG’s use catch/landings from the RDBES in the future, through TAF
--   How can continental data be matched?
+::: {.column .scrollable .incremental width="70%"}
+
+**RDBES and use of continental habitat referential ?**
+
+- We will prepare pg_dump of our spatial structure for eel.
+- These could be integrated in the RDBES like structure (as in the RDBES)
+- Integrating continental habitat in the RDBFIS
     -   Using a common ID that corresponds to the habitat data
-    -   This approach in RDBES
+    -   RDBFIS could use the same approach as RDBES this would allow a consistent framework at the stock level
+
 :::
 
-::: {.column .incremental width="50%"}
+::: {.column .incremental width="30%"}
 ![](images/clipboard-4103952801.png)
 :::
 :::::
 
-# Work to do in the future
+# Discussion RDBFIS- DIASPARA- WGEEL (Landings and effort)
 
-::: {.column .incremental width="50%"}
--   E.g., commercial and recreational catch data from many sources to the WG
--   Compilation of data from different sources: TAF, scripts
--   Making sure all data match, find differences, make corrections
--   Bycatch data and how is it applied?
--   Another project in the future?
-    -   Integrating Mediterranean data
+::::: columns
+::: {.column .scrollable .incremental width="70%"}
+
+
+**Access to landings and effort data**
+
+- **WGEEL** is an end user of scientific data.
+- Use of RDBFIS to query aggregated landings and effort (transversal aggregated data) at the stock unit level
+- Use of pre and post quality checks in TAF (use of QualiTrain RBBqc).
 :::
 
-::: {.column .incremental width="50%"}
+::: {.column .incremental width="30%"}
+![](images/clipboard-4103952801.png)
+:::
+:::::
+
+
+# Discussion RDBFIS- DIASPARA- WGEEL (biological sampling)
+
+::::: columns
+::: {.column .scrollable .incremental width="70%"}
+**Biological sampling data**
+
+- Access to biological sampling data ?
+- No stage currently
+- We have a database ready, should we use it instead ?
+:::
+
+::: {.column .incremental width="30%"}
+![](images/clipboard-4103952801.png)
+:::
+:::::
+
+# Discussion RDBFIS- DIASPARA- WGEEL (Future work ?)
+
+::: {.column .incremental width="50%" }
+-   E.g., commercial and recreational catch data from many sources to the WG
+-   Compilation of data from different sources: TAF, scripts, how would this be done in practise ?
+-   Making sure all data match, find differences, make corrections (our landings data)
+-   Develop data call quality checks (pre and post integration quality checks).
+-   Develop tools for regional models (lagoons, GFCM model).
+-   Bycatch data and how is it applied?
+-   Another project in the future?
+:::
+
+::: {.column  width="50%"}
 ![](images/clipboard-1510054775.png)
 :::
 
