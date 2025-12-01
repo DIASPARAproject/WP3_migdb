@@ -1,5 +1,5 @@
 ---
-title: "The metric and stock DB with example of their format and use for WNAS, WGEEL and WGBAST"
+title: "The metric and stock DB with example of their format and use for WGNAS, WGEEL and WGBAST"
 author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
 fontsize: 20pt
 filters:
@@ -19,7 +19,6 @@ theme:
 background-transition: fade
 editor: visual
 ---
-
 
 ```{r init}
 #| echo: FALSE
@@ -69,15 +68,13 @@ con_diaspara <- dbConnect(Postgres(),
 
 # Refresh from the previous presentations
 
-
-
 ![](images/clipboard-154407505.png)
 
 # Refresh from the previous presentations
 
 ![](images/clipboard-4195111625.png)
 
-::: {.notes}
+::: notes
 JANI : yesterday you presented the DB, how do that works in practise, can you tell us more about the structure of the DB. ?
 :::
 
@@ -433,19 +430,11 @@ datbast  -> ref
 
 }
 ```
-::: notes
-So if we ignore the content of referential tables, we can layout the structure.
-Remember from yesterday presentation, the DIADROMOUS database is made of two main components, the ***metric DB*** and the **stockDB**. Both structures make use of the same referential tables, while data are provided in specific shcema to each working group.
 
-***The DB uses inheritance***.
-An inherited table is a table containing all the columns from a mother table.
-A query in the mother table with show the content of daughter tables.
-In practise we have different shema with both referentials (dictionaries) and data.
-All the tables are created in the child schema (here refnas, datanas ...). This ensures that the DB has the same structure. Additional columns exist in some of the daughter tables, e.g. the datnas.t_stock_sto has the same columns as dat. t_stock_sto
-but it has some more.
-Constraints foreign keys are created in the working group schemas, so they might differ from one shema to the rest
-The structure of the DB will need to rely on views (instead of inheritance) when 
-transposed to SQL server.
+::: notes
+So if we ignore the content of referential tables, we can layout the structure. Remember from yesterday presentation, the DIADROMOUS database is made of two main components, the ***metric DB*** and the **stockDB**. Both structures make use of the same referential tables, while data are provided in specific shcema to each working group.
+
+***The DB uses inheritance***. An inherited table is a table containing all the columns from a mother table. A query in the mother table with show the content of daughter tables. In practise we have different shema with both referentials (dictionaries) and data. All the tables are created in the child schema (here refnas, datanas ...). This ensures that the DB has the same structure. Additional columns exist in some of the daughter tables, e.g. the datnas.t_stock_sto has the same columns as dat. t_stock_sto but it has some more. Constraints foreign keys are created in the working group schemas, so they might differ from one shema to the rest The structure of the DB will need to rely on views (instead of inheritance) when transposed to SQL server.
 :::
 
 # The DIADROMOUS DATABASE
@@ -539,10 +528,7 @@ shape = cylinder];
 <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#species-tr_species_spe" species>Species referential</a>
 
 ::: notes
-The DB uses common vocabularies, split in three parts here to be able to display.
-The colors indicate work in progress, elements that only refer to the metric db, or elements cominIt uses common vocabularies, too much to display there, aligning our dictionaries with The ICES vocab has been a large part of our work, done thanks to the help of ICES data center. 
-In the link, we have provided everything in the report, from our doubts and refexions, 
-exchange with ICES, with working groups, the sql code and the R code to import from ICES data. Part of FAIR is being findable, and accessible, we have strived to provide this in our html reports.
+The DB uses common vocabularies, split in three parts here to be able to display. The colors indicate work in progress, elements that only refer to the metric db, or elements cominIt uses common vocabularies, too much to display there, aligning our dictionaries with The ICES vocab has been a large part of our work, done thanks to the help of ICES data center. In the link, we have provided everything in the report, from our doubts and refexions, exchange with ICES, with working groups, the sql code and the R code to import from ICES data. Part of FAIR is being findable, and accessible, we have strived to provide this in our html reports.
 :::
 
 # The DIADROMOUS DATABASE
@@ -723,34 +709,28 @@ datbast  -> ref
 }
 ```
 
-::: {.notes}
-So finally, if we ignore the vocabularies, we can see what has been developped so far, 
-we'll come back to this in the second part, but we can see that wgeel has the full set of tables, while ...
+::: notes
+So finally, if we ignore the vocabularies, we can see what has been developped so far, we'll come back to this in the second part, but we can see that wgeel has the full set of tables, while ...
 :::
-
 
 # STOCK db
 
 ![](images/copilot_stock_model.png)
 
-::: {.notes}
-Remember from yesterday, the stock DB store several things :
-- regional input data aggregated at different levels but always corresponding to an area.
-- stock parameters, anything from input or output of the nimble variables used in the models.
-- These data might take several steps to be built, using scripts that should be transfered to TAF.
+::: notes
+Remember from yesterday, the stock DB store several things : - regional input data aggregated at different levels but always corresponding to an area. - stock parameters, anything from input or output of the nimble variables used in the models. - These data might take several steps to be built, using scripts that should be transfered to TAF.
 :::
-
 
 ## STOCK db (WGNAS)
 
-::: {.notes}
- ***JANI*** : You started with the WGNAS database to create the stock DB, can you explain ?
-::: 
+::: notes
+***JANI*** : You started with the WGNAS database to create the stock DB, can you explain ?
+:::
 
 :::: columns
 ::: {.column width="50%"}
-<br>
-<br>
+<br> <br>
+
 ```{=html}
 <style>
     .green-box {
@@ -774,18 +754,16 @@ Remember from yesterday, the stock DB store several things :
 :::
 ::::
 
-::: {.notes}
-
-- Metadata : 
-    - Really followed the structure, dimensions accounted in vector
-    - Nimble codes not completely consistent with naming by WGBAST
-    - Metadata  met_old_version / deprecated might indicate change in variable, some might exist historically and be superseeded.
-- stock :
+::: notes
+-   Metadata :
+    -   Really followed the structure, dimensions accounted in vector
+    -   Nimble codes not completely consistent with naming by WGBAST
+    -   Metadata met_old_version / deprecated might indicate change in variable, some might exist historically and be superseeded.
+-   stock :
     -   Country / habitat type not used
     -   Stage are more consistent than in the previous DB
-    - Additional column used for variables 'eggs','p_smolt', 'p_smolt_pr', 'prop_female' in that case it's age (click on additional)
-       'omega' needs an area (two columns with area) 
-    - The main change is the use of areas
+    -   Additional column used for variables 'eggs','p_smolt', 'p_smolt_pr', 'prop_female' in that case it's age (click on additional) 'omega' needs an area (two columns with area)
+    -   The main change is the use of areas
 :::
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
@@ -801,9 +779,11 @@ Remember from yesterday, the stock DB store several things :
 ![](images/py/upload3.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
 ![](images/py/upload4.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
 ![](images/py/compare_db_WG.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
@@ -811,26 +791,28 @@ Remember from yesterday, the stock DB store several things :
 ![](images/py/review_chg1.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
 ![](images/py/review_chg2.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
 ![](images/py/db_coverage1.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
 ![](images/py/db_coverage2.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
+
 ![](images/py/db_coverage3.png){.stretch}
 
 ## STOCK db (WGNAS - shiny tools- PY Hernvann)
 
-::: {.notes}
- ***JANI***  OK, but what consequences does the development have on this shiny application (salmoglob), will it still work ? -->
+::: notes
+***JANI*** OK, but what consequences does the development have on this shiny application (salmoglob), will it still work ? --\>
 :::
 
 ## STOCK db (WGNAS)
-
-
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -888,25 +870,16 @@ Remember from yesterday, the stock DB store several things :
 :::::
 
 ::: notes
-The database is implemented, as we see here, we need to include the archive DB,
-to make the shiny comparison work. 
-Now of course the development in ICES needs to be done.
-We would then have to adapt the shiny app with the new code
-In practise, the tools used to connect from the DB, interact with the DB, should be mutualised with a package. All WG could then use it.
-
+The database is implemented, as we see here, we need to include the archive DB, to make the shiny comparison work. Now of course the development in ICES needs to be done. We would then have to adapt the shiny app with the new code In practise, the tools used to connect from the DB, interact with the DB, should be mutualised with a package. All WG could then use it.
 :::
 
 ## STOCK db (WGEEL)
 
-::: {.notes}
- ***JANI*** 
-Very well for WGNAS, how does that work for WGEEL, which annexes of the data call have you kept ?
+::: notes
+***JANI*** Very well for WGNAS, how does that work for WGEEL, which annexes of the data call have you kept ?
 :::
 
-
 ## STOCK db (WGEEL)
-
-
 
 ::::: columns
 ::: {.column .incremental width="50%"}
@@ -963,35 +936,27 @@ Very well for WGNAS, how does that work for WGEEL, which annexes of the data cal
 
 ![](images/clipboard-3336618413.png)
 
-
-::: {.notes}
- ***JANI*** 
-JANI : From what we have seen there are three DB in WGBAST, how do you adapt to this ? 
+::: notes
+***JANI*** JANI : From what we have seen there are three DB in WGBAST, how do you adapt to this ?
 :::
 
 ## STOCK db (WBAST)
-
 
 -   Change from several values column to one
 -   Calendar data \< year
 -   Data source
 -   Qualifying the data
 
-
 ## STOCK db (WBAST)
 
-::: {.notes}
- ***JANI*** 
- How would you integrate the variables needed in the bayesian model  ? 
+::: notes
+***JANI*** How would you integrate the variables needed in the bayesian model ?
 :::
 
-
 ## STOCK db (WBAST)
 
-::: {.notes}
- ***JANI*** 
-  From what we have seen before, Now there is an area dimension in
-WGBAST, can you show us how that works ?
+::: notes
+***JANI*** From what we have seen before, Now there is an area dimension in WGBAST, can you show us how that works ?
 :::
 
 ## STOCK db (WBAST)
@@ -1004,14 +969,13 @@ WGBAST, can you show us how that works ?
 
 ## Example: River Daugava & Gulf of Riga
 
-
-> SELECT * FROM ref.get_parent_area(310, 'WGBAST');
+> SELECT \* FROM ref.get_parent_area(310, 'WGBAST');
 
 ![Parents from Gulf of Riga](images/clipboard-4250192328.png)
 
 ## Example: Gulf of Riga
 
-> SELECT * FROM ref.get_parent_area(7025, 'WGBAST');
+> SELECT \* FROM ref.get_parent_area(7025, 'WGBAST');
 
 ![Parents from Gulf of Riga](images/clipboard-3762430346.png)
 
@@ -1073,7 +1037,6 @@ WGBAST, can you show us how that works ?
 ```
 :::
 :::::
-
 
 # METRIC db
 
@@ -1176,16 +1139,16 @@ WGBAST, can you show us how that works ?
 
 ## METRIC db (WGBAST)
 
-::: {.notes}
- ***JANI***  
- You have integrated the trutta database in the metric db, can you show us ? 
+::: notes
+***JANI***\
+You have integrated the trutta database in the metric db, can you show us ?
 :::
 
 ## METRIC db (WGTRUTTA)
 
-::: {.notes}
- ***JANI***  
-  Based on the exchange we had with WGTRUTTA, can you explain why the metric DB would fit their use ?
+::: notes
+***JANI***\
+Based on the exchange we had with WGTRUTTA, can you explain why the metric DB would fit their use ?
 :::
 
 <a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/wgtrutta_database_description.html#population-data"> source </a>

@@ -161,17 +161,13 @@ A big reason why we needed habitat database
 
 # Regional aspects, EDA examples
 
-
 -   Hydrographic network, obstacles and electrofishing information needed!
 
-::: {.r-stack}
+::: r-stack
+![](images/clipboard-1171006118.png){.fragment height="300"}
 
-![](images/clipboard-1171006118.png){.fragment height="300"} 
-
-![](images/clipboard-2093853961.png){.fragment height="400"} 
-
+![](images/clipboard-2093853961.png){.fragment height="400"}
 :::
-
 
 # Regional aspects, EDA examples
 
@@ -207,7 +203,6 @@ A big reason why we needed habitat database
 
 ::::: columns
 ::: {.column .incremental width="40%"}
-
 ![](images/clipboard-1432957746.png)
 :::
 
@@ -254,26 +249,24 @@ The Base for everything
 ::: {.column width="40%"}
 ![Habitat Database](images/fig_final_allcatchments.png){#fig-hdb}
 :::
+
 ::: {.column .incremental width="60%"}
-- River network and catchments
-- Hierchical structure
-- Everything is on Zenodo (https://zenodo.org/records/15856191)
+-   River network and catchments
+-   Hierchical structure
+-   Everything is on Zenodo (https://zenodo.org/records/15856191)
 :::
-::::
+:::::
 
 ::: notes
-The Habitat Database is composed of a river network, with river segments and catchments, and some referentials to create a hierarchical structure. I am going to go over the hierarchical structure today and tomorrow we will show you examples of how it can be used.
-Everything is currently available on Zenodo if you want to have a look or try it out. I also made a webinar on how to access and use the data. Everything is available on the DIASPARA website
+The Habitat Database is composed of a river network, with river segments and catchments, and some referentials to create a hierarchical structure. I am going to go over the hierarchical structure today and tomorrow we will show you examples of how it can be used. Everything is currently available on Zenodo if you want to have a look or try it out. I also made a webinar on how to access and use the data. Everything is available on the DIASPARA website
 :::
 
 ## Habitat DB hierarchical structure
 
 ![WGBAST Hierarchical structure](images/fig-area_hierarchy_bast.svg){#fig-hierbast}
 
-::: {.notes}
-In order to work more efficently within the habitat database we decided to create a hierarchical structure. It goes from the highest level, which is the whole stock, to either river sections or divisions at sea.
-Each working group has its own structure but they share some similarities. They all have Stock levels and a country level.
-I'm going to go over the structure for each working group, starting with WGBAST where I'll go more into details so you can understand how it works.
+::: notes
+In order to work more efficently within the habitat database we decided to create a hierarchical structure. It goes from the highest level, which is the whole stock, to either river sections or divisions at sea. Each working group has its own structure but they share some similarities. They all have Stock levels and a country level. I'm going to go over the structure for each working group, starting with WGBAST where I'll go more into details so you can understand how it works.
 :::
 
 ## Habitat DB hierarchical structure : Stock
@@ -332,8 +325,7 @@ rownames = FALSE,
 ```
 
 ::: notes
-The table looks like this. On top you have the whole stock, then the marine stock and the last is the inland one.
-Each row has an id, an are_code which is either a name or an code for your level, then you have a are_lev_code which represent the hierarchical level, after there is the are_wkg_code which is the working group, then the are_ismarine to know if your working with inland or at sea data, then the are_name which will be the name of the data. Finally, going back to the second column, which is the most important to our hierarchy, is the are_are_id. For each data, the are_are_id refers to its higher hierarchical level. For instance, here the highest level is the whole stock which has an are_id of 1. That's why the are_are_id of both marine stock and inland stock is 1.
+The table looks like this. On top you have the whole stock, then the marine stock and the last is the inland one. Each row has an id, an are_code which is either a name or an code for your level, then you have a are_lev_code which represent the hierarchical level, after there is the are_wkg_code which is the working group, then the are_ismarine to know if your working with inland or at sea data, then the are_name which will be the name of the data. Finally, going back to the second column, which is the most important to our hierarchy, is the are_are_id. For each data, the are_are_id refers to its higher hierarchical level. For instance, here the highest level is the whole stock which has an are_id of 1. That's why the are_are_id of both marine stock and inland stock is 1.
 :::
 
 ## Habitat DB hierarchical structure : Stock
@@ -557,8 +549,7 @@ Here again, each river segment refers to its river basin.
 ![](images/bast_rs.png "WGBAST River_section level")
 
 ::: notes
-Here we only see the main stretch of river since what I'm showing right now is only the hierarchical structure. But within the DB, all tributaries are included. They are linked to the main stretch by an id.
-Also, within the RDBES the basin code, which is unique and the name of the river will be included.
+Here we only see the main stretch of river since what I'm showing right now is only the hierarchical structure. But within the DB, all tributaries are included. They are linked to the main stretch by an id. Also, within the RDBES the basin code, which is unique and the name of the river will be included.
 :::
 
 ## Habitat DB hierarchical structure : Divison
@@ -783,8 +774,7 @@ That was it for WGBAST. Now I'm going to go over the differences in for WGEEL. A
 -   Has been presented and disscussed during WGEEL meeting
 
 ::: notes
-The first level we are going to focus on is the Regional one. It is present in both Marine and Inland parts.
-We decided to create this level because EMUs are to be deprecated so we needed another structure to assess data. We discussed about this and worked on it during the WGEEL meeting last October in Rennes.
+The first level we are going to focus on is the Regional one. It is present in both Marine and Inland parts. We decided to create this level because EMUs are to be deprecated so we needed another structure to assess data. We discussed about this and worked on it during the WGEEL meeting last October in Rennes.
 :::
 
 ## Habitat DB hierarchical structure : Regional
@@ -796,9 +786,7 @@ We decided to create this level because EMUs are to be deprecated so we needed a
 ![](images/wgeel_baltic.png "WGEEL Regional level")
 
 ::: notes
-The way this level has been built was first to create a Regional level at sea. Then, the inland level was built agregating all catchments that are draining in said Marine regional level.
-Here you can see the grouping that has been decided for the Baltic.
-Even if for now data is reported for the whole Baltic Sea but it might change to a finer grain in the future. This will have to be discussed within the WG.
+The way this level has been built was first to create a Regional level at sea. Then, the inland level was built agregating all catchments that are draining in said Marine regional level. Here you can see the grouping that has been decided for the Baltic. Even if for now data is reported for the whole Baltic Sea but it might change to a finer grain in the future. This will have to be discussed within the WG.
 :::
 
 ## Habitat DB hierarchical structure : Regional
@@ -834,6 +822,7 @@ And finally we have the Mediterranean which is split in three, with the Adriatic
 :::
 
 ## Habitat DB hierarchical structure : Complex
+
 ![WGEEL Complex level](images/fig-area_hierarchy_wgeel_comp.svg){#fig-hiercompwgeel}
 
 ## Habitat DB hierarchical structure : Complex
@@ -863,8 +852,7 @@ In the Meditarranean lagoons play an important role for eels. Lagoons from Spain
 ![](images/wgeel_lag.png "WGEEL Lagoons level")
 
 ::: notes
-So going inside a complex it looks like this. Here we are around Martigues in France, and this complex groups 4 lagoons together.
-This structure allows you to report data either to the smallest level as shown here or to the complex if data is not precise enough.
+So going inside a complex it looks like this. Here we are around Martigues in France, and this complex groups 4 lagoons together. This structure allows you to report data either to the smallest level as shown here or to the complex if data is not precise enough.
 :::
 
 ## Habitat DB hierarchical structure : Lagoons
@@ -887,7 +875,7 @@ Finally we are moving to WGNAS. The main difference here is the importance of As
 
 ::::: columns
 ::: {.column .incremental width="40%"}
-- North American Assessment units are included
+-   North American Assessment units are included
 -   Electrofishing data will have to be reported at this level
 :::
 
@@ -897,8 +885,7 @@ Finally we are moving to WGNAS. The main difference here is the importance of As
 :::::
 
 ::: notes
-Also as you can see, North A. has been included in the database. We tried to recreate marine AU as close as possible to the ones used by WGNAS using ICES divisions and subdivisions.
-For now, electrofishing data will have to be reported at this level. Although, after talking with Etienne, we understood that in the future smaller AU might be used by WGNAS
+Also as you can see, North A. has been included in the database. We tried to recreate marine AU as close as possible to the ones used by WGNAS using ICES divisions and subdivisions. For now, electrofishing data will have to be reported at this level. Although, after talking with Etienne, we understood that in the future smaller AU might be used by WGNAS
 :::
 
 ## Habitat DB hierarchical structure : River
@@ -906,6 +893,7 @@ For now, electrofishing data will have to be reported at this level. Although, a
 ![WGNAS River level](images/fig-area_hierarchy_nasriv.svg){#fig-hiernasriv}
 
 ## Habitat DB hierarchical structure : River
+
 ::::: columns
 ::: {.column .incremental width="50%"}
 -   Possibility to work with river basins to work with smaller AU
@@ -1495,7 +1483,6 @@ load(file="data/presentation_turb_type.Rdata")
 :::
 
 ::: {.column width="60%"}
-
 -   Electrofishing development halfway done (SUDOANG)
 
 -   We are working on this db now
@@ -1517,7 +1504,6 @@ load(file="data/presentation_turb_type.Rdata")
 -   [**DIADROMOUS DATABASE (Metric DB, Stock DB)**]{style="font-size:40px"}
 
 Where the fish data go
-
 :::
 :::::
 

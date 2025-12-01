@@ -5,37 +5,18 @@ author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
 description: "Creation of metric db, version = final for WGEEL"
-title-block-banner: "images/diaspara_bandeau.png"
-title-block-banner-color: "white"
-format:
- html:
-  self-contained: true
-  theme: styles.scss
-  smooth-scroll: true
-  fontcolor: black
-  toc: true
-  toc-location: left
-  toc-title: Contents
-  toc-depth: 3
- pdf:
-  toc: true
-  toc-depth: 3
-  toc-title: Contents
-  number-sections: true
-  colorlinks: true
-  documentclass: scrreprt
-  pdf-engine: xelatex
-  use-rsvg-convert: false
-  pdf-engine-opts: ["-shell-escape"]
- latex:
-  documentclass: report   
-execute: 
- keep-md: true
+format: 
+  pdf:
+    toc: true
+    toc-depth: 3
+    toc-title: Contents
+    number-sections: true
+    colorlinks: true
+  latex:
+    documentclass: report   
 filters:
   - include-code-files
-reference-location: document
 bibliography: diaspara.bib
-include-after-body: "footer.html"
 ---
 
 
