@@ -14,13 +14,20 @@ trn_maxvalue NUMERIC,
   CONSTRAINT uk_trn_code UNIQUE (tra_code)
 ) INHERITS  (ref.tr_trait_tra);
 
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_id IS 'Integer, id of the trait';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_code IS 'Name of the trait';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_description IS 'Description of the fish trait';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_typemetric IS 'Is the metric a Group metric (group), or Individual metric (individual) or can be used in both tables (both) ?';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_uni_code IS 'Unit used, references tr_unit_uni';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_minvalue IS 'Minimum allowed value';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_maxvalue IS 'Maximum allowed value';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_id IS
+ 'Integer, id of the trait';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_code IS
+ 'Name of the trait';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_description IS
+ 'Description of the fish trait';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_typemetric IS
+ 'Is the metric a Group metric (group), or Individual metric (individual) or can be used in both tables (both) ?';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_uni_code IS
+ 'Unit used, references tr_unit_uni';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_minvalue IS
+ 'Minimum allowed value';
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_maxvalue IS
+ 'Maximum allowed value';
 
 
 GRANT ALL ON ref.tr_traitnumeric_trn TO diaspara_admin;
@@ -43,13 +50,20 @@ CREATE TABLE refeel.tr_traitnumeric_trn(
   CONSTRAINT uk_trn_code UNIQUE (tra_code)
 ) INHERITS  (ref.tr_traitnumeric_trn);
 
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_id IS 'Integer, id of the trait';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_code IS 'Name of the trait';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_description IS 'Description of the fish trait';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_typemetric IS 'Is the metric a Group metric (group), or Individual metric (individual) or can be used in both tables (both) ?';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_uni_code IS 'Unit used, references tr_unit_uni';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_minvalue IS 'Minimum allowed value';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_maxvalue IS 'Maximum allowed value';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_id IS
+ 'Integer, id of the trait';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_code IS 
+'Name of the trait';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_description IS
+ 'Description of the fish trait';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_typemetric IS
+ 'Is the metric a Group metric (group), or Individual metric (individual) or can be used in both tables (both) ?';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_uni_code IS
+ 'Unit used, references tr_unit_uni';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_minvalue IS
+ 'Minimum allowed value';
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_maxvalue IS 
+'Maximum allowed value';
 
 
 GRANT ALL ON refeel.tr_traitnumeric_trn TO diaspara_admin;

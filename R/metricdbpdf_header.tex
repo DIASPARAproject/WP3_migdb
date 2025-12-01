@@ -1,0 +1,34 @@
+% Custom Title Page
+\begin{titlepage}
+    \centering
+
+    % Top bandeau
+    \includegraphics[width=\textwidth]{images/diaspara_bandeau_2.png}\par
+    \vspace{2cm}
+
+    % Two-column layout: logo left, title block right
+    \begin{minipage}[t]{0.4\textwidth}
+         \centering
+          \vspace{2cm}
+         \includegraphics[width=\textwidth]{images/diaspara_logo.png}
+    \end{minipage}    
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+        \raggedright
+        {\Huge \bfseries DIASPARA DIADROMOUS FISH STOCK DATABASE\par}
+        \vspace{0.5cm}
+        {\Large DIASPARA WP3.2 working document  \par}
+        \vspace{1cm}
+        {\large Briand Cédric, Oliviero Jules, Helminen Jani \par}
+        \vspace{1cm}
+        {\large \today \par}
+    \end{minipage}
+    \vfill
+    % Bottom bandeau
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=south,yshift=0.5cm] at (current page.south) {
+            \includegraphics[width=0.7\paperwidth]{images/diaspara_participants_logo.png}
+        \par
+        };
+    \end{tikzpicture}
+\end{titlepage}% Custom Title Page

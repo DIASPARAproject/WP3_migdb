@@ -21,9 +21,12 @@ CREATE TABLE ref.tr_traitvaluequal_trv(
 );
 
 
-COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_id IS 'Integer, id of the qualitative used';
-COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_code IS 'Code of the qualitative trait';
-COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_description IS 'Description of the method';
+COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_id IS
+ 'Integer, id of the qualitative used';
+COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_code IS
+ 'Code of the qualitative trait';
+COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_description IS
+ 'Description of the method';
 
 GRANT ALL ON ref.tr_traitvaluequal_trv TO diaspara_admin;
 GRANT SELECT ON ref.tr_traitvaluequal_trv TO diaspara_read; 
@@ -38,9 +41,12 @@ DROP TABLE IF EXISTS refeel.tr_traitvaluequal_trv CASCADE
 ) INHERITS (ref.tr_traitvaluequal_trv);
 
 
-COMMENT ON COLUMN refeel.tr_traitvaluequal_trv.trv_id IS 'Integer, id of the qualitative used';
-COMMENT ON COLUMN refeel.tr_traitvaluequal_trv.trv_code IS 'Code of the qualitative trait';
-COMMENT ON COLUMN refeel.tr_traitvaluequal_trv.trv_description IS 'Description of the method';
+COMMENT ON COLUMN refeel.tr_traitvaluequal_trv.trv_id IS
+ 'Integer, id of the qualitative used';
+COMMENT ON COLUMN refeel.tr_traitvaluequal_trv.trv_code IS
+ 'Code of the qualitative trait';
+COMMENT ON COLUMN refeel.tr_traitvaluequal_trv.trv_description IS
+ 'Description of the method';
 
 GRANT ALL ON refeel.tr_traitvaluequal_trv TO diaspara_admin;
 GRANT SELECT ON refeel.tr_traitvaluequal_trv TO diaspara_read; 

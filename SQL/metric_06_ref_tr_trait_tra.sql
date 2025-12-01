@@ -23,11 +23,16 @@ CREATE TABLE ref.tr_trait_tra (
 );
 
 
-COMMENT ON COLUMN ref.tr_trait_tra.tra_id IS 'Integer, id of the trait';
-COMMENT ON COLUMN ref.tr_trait_tra.tra_code IS 'Name of the trait';
-COMMENT ON COLUMN ref.tr_trait_tra.tra_description IS 'Description of the fish trait';
-COMMENT ON COLUMN ref.tr_trait_tra.tra_typemetric IS 'Is the metric a group metric (group), or individual metric (individual) or can be used in both tables (both) ?';
-COMMENT ON COLUMN ref.tr_trait_tra.tra_qualitativeornumeric IS 'Indicate variable type, either Qualitative or Numeric';
+COMMENT ON COLUMN ref.tr_trait_tra.tra_id IS 
+'Integer, id of the trait';
+COMMENT ON COLUMN ref.tr_trait_tra.tra_code IS
+ 'Name of the trait';
+COMMENT ON COLUMN ref.tr_trait_tra.tra_description IS
+ 'Description of the fish trait';
+COMMENT ON COLUMN ref.tr_trait_tra.tra_typemetric IS 
+'Is the metric a group metric (group), or individual metric (individual) or can be used in both tables (both) ?';
+COMMENT ON COLUMN ref.tr_trait_tra.tra_qualitativeornumeric IS
+ 'Indicate variable type, either Qualitative or Numeric';
 
 
 

@@ -1,0 +1,49 @@
+---
+title: "Diaspara template main title"
+subtitle: "DIASPARA WPX working document"
+author: "List of names"
+date: last-modified
+date-format: "DD-MM-YYYY"
+description: "WPXX description of the work"
+title-block-banner: "images/diaspara_bandeau.png"
+title-block-banner-color: "white"
+format:
+ html:
+  self-contained: true
+  theme: cosmo
+  smooth-scroll: true
+  fontcolor: black
+  toc: true
+  toc-location: left
+  toc-title: Summary
+  toc-depth: 3
+reference-location: document
+bibliography: ../diaspara.bib
+---
+
+# What is this template for ?
+
+This template is intended to be used as source document.
+
+
+# What is this template for ?
+
+This template is intended to be used as source document.
+
+```{r init}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+}
+# You can find this file in WP3 https://github.com/DIASPARAproject/WP3_migdb/tree/main/R
+source("utilities/load_library.R")
+load_library("tidyverse")
+```

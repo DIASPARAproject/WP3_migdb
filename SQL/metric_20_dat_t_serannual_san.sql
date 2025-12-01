@@ -26,21 +26,32 @@ ON UPDATE CASCADE ON DELETE RESTRICT
   
 
 
-COMMENT ON TABLE dat.t_serannual_san IS 'Table of annual abundance data for series in dat.t_series_ser, these are recruitment or silver eel run data.  This table is inherited. It means that the data in dat is fed by
+COMMENT ON TABLE dat.t_serannual_san IS
+ 'Table of annual abundance data for series in dat.t_series_ser, these are recruitment or silver eel run data.  This table is inherited. It means that the data in dat is fed by
 the content of the tables in datfeel, datnas, datbast ';
 
-COMMENT ON COLUMN dat.t_serannual_san.san_ser_id IS 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
-COMMENT ON COLUMN dat.t_serannual_san.san_id IS 'INTEGER, autoincremented, unique for one working group';
-COMMENT ON COLUMN dat.t_serannual_san.san_year IS 'Year of monitoring, note that for some of the series this corresponds to the main migration season, 
+COMMENT ON COLUMN dat.t_serannual_san.san_ser_id IS
+ 'UUID, identifier of the series, primary key, references the table ref.tr_seriesvocab_svc (svc_id)';
+COMMENT ON COLUMN dat.t_serannual_san.san_id IS
+ 'INTEGER, autoincremented, unique for one working group';
+COMMENT ON COLUMN dat.t_serannual_san.san_year IS
+ 'Year of monitoring, note that for some of the series this corresponds to the main migration season, 
 For glass eel, months from september y-1 to august y should be denoted year y / For silver eel, months from june y to may y+1 should be denoted year y / For yellow eels, use the calendar year), see the series metadata for more details.';
-COMMENT ON COLUMN dat.t_serannual_san.san_comment IS 'Comment on the annual value of the series';
-COMMENT ON COLUMN dat.t_serannual_san.san_effort IS 'Eventually a measure of effort to collect the series, e.g. number of nr haul, nr fyke.day,
+COMMENT ON COLUMN dat.t_serannual_san.san_comment IS
+ 'Comment on the annual value of the series';
+COMMENT ON COLUMN dat.t_serannual_san.san_effort IS
+ 'Eventually a measure of effort to collect the series, e.g. number of nr haul, nr fyke.day,
 check the t_metadataannual table for the unit used';
-COMMENT ON COLUMN dat.t_serannual_san.san_datelastupdate IS 'Date of last update on the annual data';
-COMMENT ON COLUMN dat.t_serannual_san.san_qal_id IS 'Quality ID code of the series';
-COMMENT ON COLUMN dat.t_serannual_san.san_qal_comment IS 'Comment related to data quality, e.g. why this year the series should not be used, or used with caution.';
-COMMENT ON COLUMN dat.t_serannual_san.san_wkg_code IS 'Code of the working group, one ofWGBAST, WGEEL, WGNAS, WKTRUTTA';
-COMMENT ON COLUMN dat.t_serannual_san.san_ver_code IS 'Version code sourced from ref.tr_version_ver the data call e.g. WGNAS_2020_1, WGEEL_2016_1';
+COMMENT ON COLUMN dat.t_serannual_san.san_datelastupdate IS
+ 'Date of last update on the annual data';
+COMMENT ON COLUMN dat.t_serannual_san.san_qal_id IS
+ 'Quality ID code of the series';
+COMMENT ON COLUMN dat.t_serannual_san.san_qal_comment IS
+ 'Comment related to data quality, e.g. why this year the series should not be used, or used with caution.';
+COMMENT ON COLUMN dat.t_serannual_san.san_wkg_code IS
+ 'Code of the working group, one ofWGBAST, WGEEL, WGNAS, WKTRUTTA';
+COMMENT ON COLUMN dat.t_serannual_san.san_ver_code IS
+ 'Version code sourced from ref.tr_version_ver the data call e.g. WGNAS_2020_1, WGEEL_2016_1';
 
 
 ALTER TABLE dateel.t_serannual_san DROP  CONSTRAINT  fk_san_ver_code

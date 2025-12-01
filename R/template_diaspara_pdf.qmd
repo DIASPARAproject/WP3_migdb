@@ -1,24 +1,21 @@
 ---
-title: "Diaspara template main title"
-subtitle: "DIASPARA WPX working document"
-author: "List of names"
-date: last-modified
+title-block: false
 date-format: "DD-MM-YYYY"
 description: "WPXX description of the work"
 title-block-banner: "images/diaspara_bandeau.png"
 title-block-banner-color: "white"
 format:
- html:
-  self-contained: true
-  theme: cosmo
-  smooth-scroll: true
-  fontcolor: black
+ pdf:
+  include-before-body: "../tex/template_diaspara_header.tex"
   toc: true
-  toc-location: left
-  toc-title: Summary
   toc-depth: 3
+  toc-title: Contents
+  number-sections: true
+  colorlinks: true    
+  use-rsvg-convert: false
+  pdf-engine-opts: ["-shell-escape"]
 reference-location: document
-bibliography: ../diaspara.bib
+bibliography: diaspara.bib
 ---
 
 # What is this template for ?
@@ -27,7 +24,7 @@ This template is intended to be used as source document.
 
 ```{r init}
 #| echo: TRUE
-#| eval:
+#| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'

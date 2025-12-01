@@ -11,7 +11,8 @@ CREATE TABLE ref.tr_traitqualitative_trq (
   ) INHERITS (ref.tr_trait_tra);
 
 
-COMMENT ON TABLE ref.tr_traitqualitative_trq IS 'Table of qualitative trait parameters';
+COMMENT ON TABLE ref.tr_traitqualitative_trq IS 
+'Table of qualitative trait parameters';
 
 GRANT ALL ON ref.tr_traitqualitative_trq TO diaspara_admin;
 GRANT SELECT ON ref.tr_traitqualitative_trq TO diaspara_read; 
@@ -29,7 +30,8 @@ CREATE TABLE refeel.tr_traitqualitative_trq (
   ) INHERITS (ref.tr_traitqualitative_trq);
 
 
-COMMENT ON TABLE refeel.tr_traitqualitative_trq IS 'Table of qualitative trait parameters';
+COMMENT ON TABLE refeel.tr_traitqualitative_trq IS 
+'Table of qualitative trait parameters';
 
 GRANT ALL ON refeel.tr_traitqualitative_trq TO diaspara_admin;
 GRANT SELECT ON refeel.tr_traitqualitative_trq TO diaspara_read; 

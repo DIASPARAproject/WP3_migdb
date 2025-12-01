@@ -8,7 +8,8 @@ ON UPDATE CASCADE ON DELETE CASCADE,
 
 COMMENT ON TABLE refeel.tr_version_ver
 IS 'Table of data or variable version, essentially one datacall or advice, inherits ref.tr_version_ver';
-ALTER TABLE refeel.tr_version_ver ALTER COLUMN ver_wkg_code SET DEFAULT 'WGEEL';
+ALTER TABLE refeel.tr_version_ver ALTER COLUMN ver_wkg_code 
+SET DEFAULT 'WGEEL';
 
 COMMENT ON TABLE refeel.tr_version_ver
 IS 'Table of data or variable version, essentially one datacall or advice, inherits ref.tr_version_ver';

@@ -14,11 +14,15 @@ CREATE TABLE ref.tr_seriesvocab_svc (
 
 
 
-COMMENT ON TABLE ref.tr_seriesvocab_svc IS 'Table of time series vocabulary, or sampling data identifier. This corresponds to a multi-annual data collection design.
+COMMENT ON TABLE ref.tr_seriesvocab_svc IS
+ 'Table of time series vocabulary, or sampling data identifier. This corresponds to a multi-annual data collection design.
 It can correspond to time series data or individual metrics collection or both.';
-COMMENT ON COLUMN ref.tr_seriesvocab_svc.svc_id IS 'UUID, identifier of the series';
-COMMENT ON COLUMN ref.tr_seriesvocab_svc.svc_code IS 'Code of the series unique';
-COMMENT ON COLUMN ref.tr_seriesvocab_svc.svc_code IS 'Description of the series';
+COMMENT ON COLUMN ref.tr_seriesvocab_svc.svc_id IS
+ 'UUID, identifier of the series';
+COMMENT ON COLUMN ref.tr_seriesvocab_svc.svc_code IS
+ 'Code of the series unique';
+COMMENT ON COLUMN ref.tr_seriesvocab_svc.svc_code IS
+ 'Description of the series';
 
 GRANT ALL ON ref.tr_seriesvocab_svc TO diaspara_admin;
 GRANT SELECT ON ref.tr_seriesvocab_svc TO diaspara_read; 

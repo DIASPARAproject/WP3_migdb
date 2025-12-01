@@ -92,7 +92,7 @@ digraph DatabaseRelations {
 # DATA AND REFERENTIALS
 
 ```{dot}
-//| label: fig-schema_diaspara
+//| label: fig-schema_diadromous_db
 //| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
 digraph schema {
 	rankdir=TB;

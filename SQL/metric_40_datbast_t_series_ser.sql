@@ -51,36 +51,62 @@ CREATE TABLE datbast.t_series_ser (
 -- In the wgeel schema the default is WGEEL
 ALTER TABLE datbast.t_series_ser ALTER COLUMN ser_wkg_code SET DEFAULT 'WGBAST';  
 
-COMMENT ON TABLE datbast.t_series_ser IS 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
+COMMENT ON TABLE datbast.t_series_ser IS
+ 'Table of time series, or sampling data identifier. This corresponds to a multi-annual data collection design.
 It can correspond to time series data or individual metrics collection or both. This table is inherited from dat ';
-COMMENT ON COLUMN dat.t_series_ser.ser_id IS 'UUID, identifier of the series, primary key';
-COMMENT ON COLUMN dat.t_series_ser.ser_code IS 'Code of the series, use country_code + name series (4 letters) + stage';
-COMMENT ON COLUMN dat.t_series_ser.ser_name IS 'Name of the series';
-COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS 'Species, one of SAL, ELE, TRT, ALA, ALF, SLP, RLP  ... references ref.tr_species_spe, the species can be null but
+COMMENT ON COLUMN dat.t_series_ser.ser_id IS
+ 'UUID, identifier of the series, primary key';
+COMMENT ON COLUMN dat.t_series_ser.ser_code IS
+ 'Code of the series, use country_code + name series (4 letters) + stage';
+COMMENT ON COLUMN dat.t_series_ser.ser_name IS
+ 'Name of the series';
+COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS
+ 'Species, one of SAL, ELE, TRT, ALA, ALF, SLP, RLP  ... references ref.tr_species_spe, the species can be null but
 it should correspond to the main species target by the sampling';
-COMMENT ON COLUMN dat.t_series_ser.ser_lfs_code  IS 'Life stage see tr_lifestage_lfs,Code of the lifestage see tr_lifestage_lfs,  the constraint is set on 
+COMMENT ON COLUMN dat.t_series_ser.ser_lfs_code  IS
+ 'Life stage see tr_lifestage_lfs,Code of the lifestage see tr_lifestage_lfs,  the constraint is set on 
 both lfs_code, and lfs_spe_code (as two species can have the same lifestage code. The lifestage can be NULL but it should correspond to the main lifestage targeted by the series;';
-COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS 'Code of the working group, one of WGBAST, WGEEL, WGNAS, WKTRUTTA';
-COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS 'Version code from ref.tr_version_ver the data call e.g. WGNAS_2020_1, WGEEL_2016_1';
-COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS 'Code of the country';
-COMMENT ON COLUMN dat.t_series_ser.ser_wltyp_code IS 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), T (Transitional water), FW (Freshwater), null accepted';
-COMMENT ON COLUMN dat.t_series_ser.ser_hab_code IS 'Code of the habitat, see tr_habitat_hab';
-COMMENT ON COLUMN dat.t_series_ser.ser_are_code IS 'Code of the area, areas are geographical sector most often corresponding to stock units, see tr_area_are.';
-COMMENT ON COLUMN dat.t_series_ser.ser_uni_code IS 'Annual value Unit, references table tr_unit_uni.';
-COMMENT ON COLUMN dat.t_series_ser.ser_effort_uni_code IS 'Annual data collection effort unit code, references table tr_unit_uni.';
-COMMENT ON COLUMN dat.t_series_ser.ser_description IS  'Concise description of the series. Should include species, stage targeted, location and gear. e.g. Glass eel monitoring in the Vilaine estuary (France) with a trapping ladder.';
-COMMENT ON COLUMN dat.t_series_ser.ser_locationdescription IS 'This should provide a description of the site, e.g. if ist far inland, in the middle of a river, near a dam etc. Also please specify the adjectant marine region (Baltic, North Sea) etc.
+COMMENT ON COLUMN dat.t_series_ser.ser_wkg_code IS
+ 'Code of the working group, one of WGBAST, WGEEL, WGNAS, WKTRUTTA';
+COMMENT ON COLUMN dat.t_series_ser.ser_ver_code IS
+ 'Version code from ref.tr_version_ver the data call e.g. WGNAS_2020_1, WGEEL_2016_1';
+COMMENT ON COLUMN dat.t_series_ser.ser_cou_code IS
+ 'Code of the country';
+COMMENT ON COLUMN dat.t_series_ser.ser_wltyp_code IS
+ 'Code of the habitat type, one of MO (marine open), MC (Marine coastal), T (Transitional water), FW (Freshwater), null accepted';
+COMMENT ON COLUMN dat.t_series_ser.ser_hab_code IS
+'Code of the habitat, see tr_habitat_hab';
+COMMENT ON COLUMN dat.t_series_ser.ser_are_code IS
+ 'Code of the area, areas are geographical sector most often corresponding to stock units, see tr_area_are.';
+COMMENT ON COLUMN dat.t_series_ser.ser_uni_code IS
+ 'Annual value Unit, references table tr_unit_uni.';
+COMMENT ON COLUMN dat.t_series_ser.ser_effort_uni_code IS
+ 'Annual data collection effort unit code, references table tr_unit_uni.';
+COMMENT ON COLUMN dat.t_series_ser.ser_description IS
+  'Concise description of the series. Should include species, stage targeted, location and gear. e.g. Glass eel monitoring in the Vilaine estuary (France) with a trapping ladder.';
+COMMENT ON COLUMN dat.t_series_ser.ser_locationdescription IS
+ 'This should provide a description of the site, e.g. if ist far inland, in the middle of a river, near a dam etc. Also please specify the adjectant marine region (Baltic, North Sea) etc.
 (e.g.  `Bresle river trap 3 km from the sea` or `IYFS/IBTS sampling in the Skagerrak-Kattegat`';
-COMMENT ON COLUMN dat.t_series_ser.ser_gea_code IS 'Code of the gear used, see tr_gear_gea';
-COMMENT ON COLUMN dat.t_series_ser.ser_fiw_code IS 'Code the fishway, eg PO for pool type fishway';
-COMMENT ON COLUMN dat.t_series_ser.ser_mon_code IS 'Code the Monitoring device, eg SO for Sonar';
-COMMENT ON COLUMN dat.t_series_ser.ser_stocking IS 'Boolean, Is there restocking (for eel) or artifical reproduction in the river / basin, affecting the series ? ';
-COMMENT ON COLUMN dat.t_series_ser.ser_stockingcomment IS 'Comment on stocking';
-COMMENT ON COLUMN dat.t_series_ser.ser_protocol IS 'Describe sampling protocol';
-COMMENT ON COLUMN dat.t_series_ser.ser_samplingstrategy IS 'Describe sampling strategy';
-COMMENT ON COLUMN dat.t_series_ser.ser_datarightsholder IS 'Code of the data rights holder of the series, this field will be used in DATSU to acknowledge the source of data';
-COMMENT ON COLUMN dat.t_series_ser.ser_datelastupdate IS 'Last modification in the series, from a trigger';
-COMMENT ON COLUMN dat.t_series_ser.geom IS 'Series geometry column EPSG 4326, can be more detailed than the geometry for station';
+COMMENT ON COLUMN dat.t_series_ser.ser_gea_code IS
+ 'Code of the gear used, see tr_gear_gea';
+COMMENT ON COLUMN dat.t_series_ser.ser_fiw_code IS
+ 'Code the fishway, eg PO for pool type fishway';
+COMMENT ON COLUMN dat.t_series_ser.ser_mon_code IS
+ 'Code the Monitoring device, eg SO for Sonar';
+COMMENT ON COLUMN dat.t_series_ser.ser_stocking IS
+ 'Boolean, Is there restocking (for eel) or artifical reproduction in the river / basin, affecting the series ? ';
+COMMENT ON COLUMN dat.t_series_ser.ser_stockingcomment IS
+ 'Comment on stocking';
+COMMENT ON COLUMN dat.t_series_ser.ser_protocol IS
+ 'Describe sampling protocol';
+COMMENT ON COLUMN dat.t_series_ser.ser_samplingstrategy IS
+ 'Describe sampling strategy';
+COMMENT ON COLUMN dat.t_series_ser.ser_datarightsholder IS
+ 'Code of the data rights holder of the series, this field will be used in DATSU to acknowledge the source of data';
+COMMENT ON COLUMN dat.t_series_ser.ser_datelastupdate IS
+ 'Last modification in the series, from a trigger';
+COMMENT ON COLUMN dat.t_series_ser.geom IS
+'Series geometry column EPSG 4326, can be more detailed than the geometry for station';
 
 GRANT ALL ON datbast.t_series_ser TO diaspara_admin;
 GRANT SELECT ON datbast.t_series_ser TO diaspara_read; 

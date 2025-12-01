@@ -91,18 +91,30 @@ GRANT ALL ON dateel.t_indivtrait_int TO diaspara_admin;
 GRANT SELECT ON dateel.t_indivtrait_int TO diaspara_read; 
 
 
-COMMENT ON TABLE dateel.t_indivtrait_int IS 'Table joining fish and traits';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_ser_id IS 'Series UUID';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_wkg_code IS 'Working ind on of WGEEL, WGNAS, WGBAST ...';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_spe_code IS 'Species code here ANG';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_id IS 'ID, integer, unique for wkg_code';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_fi_id IS 'ID of the fish';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_tra_code IS 'Code of the trait, e.g. Lengthmm';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_value IS 'Value for numeric';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_trv_code IS 'Value for qualitative see refeel.tr_traitvaluequal_trv';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_trm_code IS 'Method see refeel.tr_traimethod_trm';
+COMMENT ON TABLE dateel.t_indivtrait_int IS
+ 'Table joining fish and traits';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_ser_id IS
+ 'Series UUID';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_wkg_code IS
+ 'Working ind on of WGEEL, WGNAS, WGBAST ...';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_spe_code IS
+ 'Species code here ANG';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_id IS
+ 'ID, integer, unique for wkg_code';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_fi_id IS
+ 'ID of the fish';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_tra_code IS
+ 'Code of the trait, e.g. Lengthmm';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_value IS
+ 'Value for numeric';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_trv_code IS
+ 'Value for qualitative see refeel.tr_traitvaluequal_trv';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_trm_code IS
+ 'Method see refeel.tr_traimethod_trm';
 COMMENT ON COLUMN dateel.t_indivtrait_int.int_last_update IS 'date last update';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_qal_code IS 'Quality code references ref.tr_quality_qal';
-COMMENT ON COLUMN dateel.t_indivtrait_int.int_ver_code IS 'version e.g. WGEEL_2024_1';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_qal_code IS
+ 'Quality code references ref.tr_quality_qal';
+COMMENT ON COLUMN dateel.t_indivtrait_int.int_ver_code IS
+ 'version e.g. WGEEL_2024_1';
 
 -- TODO trigger on date
