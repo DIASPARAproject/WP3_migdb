@@ -1,5 +1,5 @@
 ---
-title: "DIASPAR WP3 timeline"
+title: "DIASPARA WP3 timeline"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"

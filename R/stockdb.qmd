@@ -1,6 +1,6 @@
 ---
 title: "DIADROMOUS FISH STOCK DATABASE"
-subtitle: "DIASPARA WP3.2 working document"
+subtitle: "DIASPARA WP3.4 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
@@ -265,41 +265,14 @@ access to diaspara.
 
 <summary>SQL code to additional data schema</summary>
 
-``` {#lst-schema .sql lst-cap="Building additional schema"}
---| echo: TRUE
---| eval: FALSE
-
-
--- this one is straight into sql ... 
-
-DROP SCHEMA IF EXISTS dat CASCADE;
-CREATE SCHEMA dat;
-ALTER SCHEMA dat OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance';
-
-DROP SCHEMA IF EXISTS dateel CASCADE;
-CREATE SCHEMA dateel;
-ALTER SCHEMA dateel OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dateel IS 'SCHEMA for WGEEL';
-
-DROP SCHEMA IF EXISTS dateel CASCADE;
-CREATE SCHEMA dateel;
-ALTER SCHEMA dateel OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dateel IS 'SCHEMA for WGNAS';
-
-DROP SCHEMA IF EXISTS datbast CASCADE;
-CREATE SCHEMA datbast;
-ALTER SCHEMA datbast OWNER TO diaspara_admin;
-COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST';
-
-
-DROP SCHEMA IF EXISTS dattrutta CASCADE;
-CREATE SCHEMA dattrutta;
-ALTER SCHEMA dattrutta OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA';
+``` {.sql include="../SQL/1_schema.sql"}
 ```
 
 </details>
+
+![Conceptual schema of the diadromous database](images/fig-schema_diadromous_db.svg "A schema showing the structure of the database"){#fig-schema_diadromous_db}
+
+
 
 Now the database has been created with different schema
 (@fig-schema_diadromousdb). The main schema for dictionaries is ref, and a
@@ -308,233 +281,6 @@ Schema refwgeel is a schema created with a foreign data wrapper to get
 the data from wgeel, the same schema exists for wgnas. We'll see later
 for wgbast and wgtrutta.
 
-```{dot}
-//| label: fig-schema_diadromous_db
-//| fig-cap: Structure of the schema in diaspara. Dashed arrow indicate an import of data from existing 
-digraph schema {
-rankdir=TB;
-size="8,5"
-node [style=filled, fillcolor=gray, shape = record];
-ref [fillcolor="gray"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>ref</b> </td> </tr>
-<tr> <td align="left">
-"ref"."Deprecated"  <br align="left"/>
-"ref"."EDMO" <br align="left"/>
-"ref"."MSTAT" <br align="left"/>
-"ref"."PRGOV" <br align="left"/>
-"ref"."PURPM" <br align="left"/>
-"ref"."StationDictionary" <br align="left"/>
-"ref"."Station_DTYPE" <br align="left"/>
-"ref"."WLTYP" <br align="left"/>
-"ref".riversegments <br align="left"/>
-"ref".tr_age_age <br align="left"/>
-"ref".tr_area_are <br align="left"/>
-"ref".tr_category_cat <br align="left"/>
-"ref".tr_country_cou <br align="left"/>
-"ref".tr_dataaccess_dta <br align="left"/>
-"ref".tr_databasis_dtb <br align="left"/>
-"ref".tr_datasource_dts <br align="left"/>
-"ref".tr_destination_des <br align="left"/>
-"ref".tr_estimationmethod_esm <br align="left"/>
-"ref".tr_fishingarea_fia <br align="left"/>
-"ref".tr_fishway_fiw <br align="left"/>
-<font color="pink">
-"ref".tr_gear_gea <br align="left"/>
-</font>
-"ref".tr_habitat_hab <br align="left"/>
-"ref".tr_habitatlevel_lev <br align="left"/>
-"ref".tr_habitattype_hty <br align="left"/>
-"ref".tr_icworkinggroup_wkg <br align="left"/>
-"ref".tr_lifestage_lfs <br align="left"/>
-"ref".tr_maturity_mat <br align="left"/>
-"ref".tr_metric_mtr <br align="left"/>
-"ref".tr_missvalueqal_mis <br align="left"/>
-"ref".tr_monitoring_mon <br align="left"/>
-"ref".tr_nimble_nim <br align="left"/>
-<font color="pink">
-"ref".tr_objecttype_oty <br align="left"/>
-</font>
-"ref".tr_outcome_oco <br align="left"/>
-"ref".tr_quality_qal <br align="left"/>
-"ref".tr_rivernames_riv <br align="left"/>
-"ref".tr_sex_sex <br align="left"/>
-"ref".tr_species_spe <br align="left"/>
-"ref".tr_timeperiod_tip <br align="left"/>
-<font color="lightgreen">
-"ref".tr_trait_tra <br align="left"/>
-"ref".tr_traitmethod_trm <br align="left"/>
-"ref".tr_traitnumeric_trn <br align="left"/>
-"ref".tr_traitqualitative_trq <br align="left"/>
-"ref".tr_traitvaluequal_trv <br align="left"/>
-"ref".tr_units_uni <br align="left"/>
-"ref".tr_version_ver
-</font>
-... <br align="left"/> </td> </tr> 
-</table>> 
-shape = cylinder]; 
-
-dat [fillcolor="gray"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>dat</b> </td> </tr>
-<tr> <td align="left">
-<font color="lightblue">
-dat.t_stock_sto<br align="left"/>
-dat.t_metadata_met<br align="left"/>
-</font>
-dat.t_series_ser <br align="left"/>
-dat.t_serannual_san <br align="left"/>
-dat.t_group_gr <br align="left"/>
-dat.t_grouptrait_grt <br align="left"/>
-dat.t_fish_fi <br align="left"/>
-... <br align="left"/> </td> </tr> 
-</table>> 
-shape = cylinder]; 
-
-refeel [fillcolor="pink"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>refeel</b> </td> </tr>
-<tr> <td align="left">
-refeel.tg_trait_tra<br align="left"/>
-refeel.tr_area_are<br align="left"/>
-refeel.tr_traitmethod_trm<br align="left"/>
-refeel.tr_traitnumeric_trn<br align="left"/>
-refeel.tr_traitqualitative_trq<br align="left"/>
-refeel.tr_traitvaluequal_trv<br align="left"/>
-refeel.tr_version_ver
-<br align="left"/>
-</td> </tr> 
-</table>> 
-shape = cylinder];
-
-dateel [fillcolor="pink"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>dateel</b> </td> </tr>
-<tr> <td align="left">
-<font color="blue">dateel.t_metadata_met</font> <br align="left"/>
-<font color="blue">dateel.t_stock_sto</font> <br align="left"/>
-dateel.t_series_ser <br align="left"/>
-dateel.t_serannual_san <br align="left"/>
-dateel.t_group_gr <br align="left"/>
-dateel.t_grouptrait_grt <br align="left"/>
-dateel.t_fish_fi <br align="left"/>
-dateel.tj_seriesstation_ses <br align="left"/> </td> </tr>
-</table>> 
-shape = cylinder];
-
-refbast [fillcolor="purple"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b><font color="white">refbast</font></b> </td> </tr>
-<tr> <td align="left">
-<font color="white">
-refbast.tr_area_are <br align="left"/> 
-refbast.tr_estimationmethod_esm <br align="left"/> 
-refbast.tr_rivernames_riv <br align="left"/> 
-refbast.tr_version_ver <br align="left"/> 
-</font>
-<font color="pink">
-refbast.tr_traitmethod_trm<br align="left"/>
-refbast.tr_traitnumeric_trn<br align="left"/>
-refbast.tr_traitqualitative_trq<br align="left"/>
-refbast.tr_traitvaluequal_trv<br align="left"/>
-</font>
-</td> </tr> 
-</table>> 
-shape = cylinder];
-
-datbast [fillcolor="purple"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b><font color="white">datbast</font></b> </td> </tr>
-<tr> <td align="left">
-<font color="lightblue">
-    datbast.t_stock_sto <br align="left"/>
-    datbast.t_metadata_met <br align="left"/>
-</font>
-<font color="white">
-    datbast.t_series_ser <br align="left"/>
-    datbast.t_serannual_san <br align="left"/>
-    datbast.t_group_gr <br align="left"/>
-    datbast.t_grouptrait_grt <br align="left"/>
-    datbast.t_fish_fi <br align="left"/>
-</font> 
- </td> </tr>
-</table>> 
-shape = cylinder];
-
-refnas [fillcolor="limegreen"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>refnas</b> </td> </tr>
-<tr> <td align="left">
-<font color="blue">
-refnas.tg_additional_add <br align="left"/>
-</font>
-refnas.tr_area_are <br align="left"/>
-refnas.tr_rivernames_riv <br align="left"/>
-refnas.tr_version_ver <br align="left"/>
-
-</td> </tr> 
-</table>> 
-shape = cylinder];
-
-datnas [fillcolor="limegreen"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>datnas</b> </td> </tr>
-<tr> <td align="left">
-<font color="blue">
-datnas.t_stock_sto <br align="left"/>
-datnas.t_metadata_met <br align="left"/>
-</font>
-<font color="red">
-datnas.t_archive_ar <br align="left"/>
-</font>
-
-</td> </tr>
-</table>> 
-shape = cylinder];  
-
-reftrutta [fillcolor="tan1"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>reftrutta</b> </td> </tr>
-<tr> <td align="left">
-<br align="left"/>
-<br align="left"/>
-</td> </tr> 
-</table>> 
-shape = cylinder];
-
-dattrutta [fillcolor="tan1"
-label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
-<tr> <td> <b>dattrutta</b> </td> </tr>
-<tr> <td align="left">
-<br align="left"/>
-<br align="left"/>
-</td> </tr> 
-</table>> 
-shape = cylinder];   
-
- # this in an archive
-
-
-refeel -> ref [style="dashed"]
-refbast -> ref [style="dashed"]
-refnas -> ref [style="dashed"]
-reftrutta -> ref [style="dashed"]
-dateel -> dat [style="dashed"]
-datnas -> dat [style="dashed"]
-datbast -> dat [style="dashed"]
-dattrutta -> dat [style="dashed"]
-dateel -> refeel
-datnas -> refnas
-dattrutta -> reftrutta
-datbast  -> refbast
-dateel -> ref
-datnas -> ref
-dattrutta -> ref
-datbast  -> ref
-
-
-}
-```
 
 Now the database has been created with different schema
 (@fig-schema_diadromous_db). The main schema for dictionaries is ref, and a
@@ -968,6 +714,7 @@ Then we standarize using ICES codes, it takes a while to scroll through
 the vocab. Sometimes several vocab are available for the same thing. We
 used the p06 as the most common source. Hopefully that was the right
 choices ?
+</details>
 
 ```{r}
 #| label: unit
@@ -1092,7 +839,7 @@ dbExecute(con_diaspara_admin,  query)
 
 ```
 
-</details>
+
 
 ```{r}
 #| label: tbl-unit
@@ -1101,16 +848,21 @@ dbExecute(con_diaspara_admin,  query)
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: tr_units_uni table, check missing values currently not found in ICES Vocab
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")|> 
+knitr::kable() |>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 Some of the values are missing from ICES vocab (Table @tbl-unit).
 
 ::::: questionbox
+
 :::: questionbox-header
+::: questionbox-icon
+:::
 QUESTION ICES: missing values for units, what do we do ?
 ::::
-::: questionbox-body
+:::: questionbox-body
 What do we do with units without correspondance? These come from FAO (if
 I remember well). Do we try to search for those in the wgeel database,
 and then remove if not existing or try to change existing values ?
@@ -1123,7 +875,8 @@ very related to sampling box, basket. And it's not the number of
 haul.
 
 -   Before working any further I would like your opinion there.
-:::
+
+::::
 :::::
 
 ## Parameters
@@ -1324,6 +1077,8 @@ The DB will be held in ICES server. Create a procedure to save the
 database at each working group to be able to run past versions of the
 model.
 
+:::
+
 <details>
 
 <summary>SQL code to create tables</summary>
@@ -1334,7 +1089,7 @@ model.
 </details>
 
 
-:::
+
 
 ```{r }
 #| label: tr_version_ver_insert
@@ -1645,7 +1400,9 @@ dbExecute(con_diaspara_admin,"UPDATE ref.tr_habitatlevel_lev
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Geographical level tr_habitatlevel_lev
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|> 
+knitr::kable() |> 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1689,113 +1446,7 @@ dbGetQuery(con_diaspara, "SELECT are_id,
 
 ```
 
-```{dot}
-//| label: fig-area_hierarchy
-//| fig-cap: The nested structure layed out in table tr_area_area, dotted box indicate that the level is optional. This table will be created specifically for each group.
-
-
-digraph {
-compound=true;
-newrank=true;
-
-subgraph clusterA {
-label = Panpopulation
-style=full
-color=black
-center=true
-
-subgraph clusterB {
-label = Complex
-style=dashed
-color=black
-center=true
-
-subgraph clusterC {
-label = Stock
-style=dashed
-color=black
-center=true
-
-subgraph clusterD {
-label = Country
-style=dashed
-color=firebrick
-fontcolor=firebrick
-center=true
-
-subgraph clusterE {
-label = Assessment_unit
-style=full
-color=green 
-fontcolor=green
-
-subgraph clusterF {
-label = Regional;
-style=dashed
-color=green4
-fontcolor=green4
-
-subgraph clusterG {
-label = River
-style=dashed
-color=green3
-fontcolor=green3
-
-subgraph clusterH {
-label = River_section
-style=dashed
-color=green2
-fontcolor=green2
-section [
-label=data,
-shape=box, 
-style =invis
-]
-}
-}
-}
-}
-}
-}
-subgraph clusterZ{
-label=Major
-style=dashed
-color=royalblue4
-fontcolor=royalblue4
-
-subgraph clusterY{
-label=Subareas
-style=dashed
-color=royalblue3
-fontcolor=royalblue3
-
-subgraph clusterX{
-label=Division
-style=dashed
-color=royalblue2
-fontcolor=royalblue2
-
-subgraph clusterW{
-label=Sudivision
-style=full
-color=royalblue1
-fontcolor=royalblue1
-
-subgraph clusterV{
-label=Unit
-style=dashed
-color=deepskyblue
-fontcolor=deepskyblue
-
-Fishing [
-style=invis]
-}
-}
-}
-}            
-}          
-}}}
-```
+![First concepts of the hierarchy ](fig-area_hierarchy.svg "A schema showing the possible hierarchy from stock level to river"){#fig-area_hierarchy}
 
 ## Data access (tr_dataaccess_dta)
 
@@ -1832,6 +1483,18 @@ dbExecute(con_diaspara_admin,
 
 
 
+```
+
+```{r}
+#| label: tbl-dataaccess
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Data access
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_dataaccess_dta ;")|>
+  knitr::kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Missing data (tr_missvalueqal_mis)

@@ -1,8 +1,5 @@
 ---
-title: "DIADROMOUS FISH STOCK DATABASE"
-subtitle: "DIASPARA WP3.2 working document"
-author: "Briand Cédric, Oliviero Jules, Helminen Jani"
-date: last-modified
+title-block: false
 date-format: "DD-MM-YYYY"
 description: "DIADROMOUS FISH DATABASE : Scripts to create StockDB (import of data from WGNAS, WGEEL and WGBAST). Creation of referentials (dictionaries)."
 number-sections: true
@@ -266,43 +263,13 @@ access to diaspara.
 
 <summary>SQL code to additional data schema</summary>
 
-``` {#lst-schema .sql lst-cap="Building additional schema"}
---| echo: TRUE
---| eval: FALSE
-
-
--- this one is straight into sql ... 
-
-DROP SCHEMA IF EXISTS dat CASCADE;
-CREATE SCHEMA dat;
-ALTER SCHEMA dat OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dat IS 'SCHEMA common to all migratory fish, filled by inheritance';
-
-DROP SCHEMA IF EXISTS dateel CASCADE;
-CREATE SCHEMA dateel;
-ALTER SCHEMA dateel OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dateel IS 'SCHEMA for WGEEL';
-
-DROP SCHEMA IF EXISTS dateel CASCADE;
-CREATE SCHEMA dateel;
-ALTER SCHEMA dateel OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dateel IS 'SCHEMA for WGNAS';
-
-DROP SCHEMA IF EXISTS datbast CASCADE;
-CREATE SCHEMA datbast;
-ALTER SCHEMA datbast OWNER TO diaspara_admin;
-COMMENT ON SCHEMA datbast IS 'SCHEMA for WGBAST';
-
-
-DROP SCHEMA IF EXISTS dattrutta CASCADE;
-CREATE SCHEMA dattrutta;
-ALTER SCHEMA dattrutta OWNER TO diaspara_admin;
-COMMENT ON SCHEMA dattrutta IS 'SCHEMA for WKTRUTTA';
+``` {.sql include="../SQL/1_schema.sql"}
 ```
 
 </details>
 
-![Conceptual schema of the diadromous database](fig-schema_diadromous_db.svg"A schema showing the structure of the database"){#fig-schema_diadromous_db}
+
+![Conceptual schema of the diadromous database](images/fig-schema_diadromous_db.svg "A schema showing the structure of the database"){#fig-schema_diadromous_db}
 
 Now the database has been created with different schema
 (@fig-schema_diadromous_db). The main schema for dictionaries is ref, and a
@@ -757,6 +724,8 @@ the vocab. Sometimes several vocab are available for the same thing. We
 used the p06 as the most common source. Hopefully that was the right
 choices ?
 
+</details>
+
 ```{r}
 #| label: unit
 #| echo: TRUE
@@ -884,7 +853,7 @@ dbExecute(con_diaspara_admin,  query)
 
 ```
 
-</details>
+
 
 ```{r}
 #| label: tbl-unit
@@ -1120,6 +1089,8 @@ The DB will be held in ICES server. Create a procedure to save the
 database at each working group to be able to run past versions of the
 model.
 
+:::
+
 <details>
 
 <summary>SQL code to create tables</summary>
@@ -1130,7 +1101,7 @@ model.
 </details>
 
 
-:::
+
 
 ```{r }
 #| label: tr_version_ver_insert
@@ -1304,6 +1275,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") |>
 Here Hilaire say that naming the table "outcome" wasn't ideal so I've
 followed his suggestion
 :::
+
 ## Area (tr_area_are)
 
 This table will be created further in the habitat repository... But here we are 
@@ -1449,7 +1421,9 @@ dbExecute(con_diaspara_admin,"UPDATE ref.tr_habitatlevel_lev
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Geographical level tr_habitatlevel_lev
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|>
+ knitr::kable() |> 
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1534,6 +1508,19 @@ dbExecute(con_diaspara_admin,
 
 
 ```
+
+```{r}
+#| label: tbl-dataaccess
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| tbl-cap: Data access
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_dataaccess_dta ;")|>
+  knitr::kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
 
 ## Missing data (tr_missvalueqal_mis)
 
@@ -3014,7 +3001,7 @@ The code for creating metadata is listed below
 #| warning: FALSE
 #| tbl-cap: metadata
 
-dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;") |> 
+dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met limit 50;") |> 
 knitr::kable()|>
 kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 

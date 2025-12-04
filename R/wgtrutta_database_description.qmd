@@ -1,6 +1,6 @@
 ---
 title: "wgtrutta database description"
-subtitle: "DIASPARA WP3.2 working document"
+subtitle: "DIASPARA WP3.4 working document"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
