@@ -18,8 +18,7 @@ ALTER TABLE ref.tr_age_age OWNER TO diaspara_admin;
 GRANT SELECT ON ref.tr_age_age  TO diaspara_read;
 
 
-
-INSERT INTO ref.tr_age_age VALUES (1, 'Freshwater', '0FW', '0 year in freshwater','Age of juvenile fish in their first year in Freshwater');
+INSERT INTO ref.tr_age_age VALUES (0, 'Freshwater', '0FW', '0 year in freshwater','Age of juvenile fish in their first year in Freshwater');
 INSERT INTO ref.tr_age_age VALUES (1, 'Freshwater', '1FW', '1 year in freshwater',NULL);
 INSERT INTO ref.tr_age_age VALUES (2, 'Freshwater', '2FW', '2 years in freshwater',NULL);
 INSERT INTO ref.tr_age_age VALUES (3, 'Freshwater', '3FW', '3 years in freshwater',NULL);
@@ -29,6 +28,9 @@ INSERT INTO ref.tr_age_age VALUES (6, 'Freshwater', '6FW', '6 years in freshwate
 INSERT INTO ref.tr_age_age VALUES (1, 'Seawater', '1SW', '1 year in seawater',NULL);
 INSERT INTO ref.tr_age_age VALUES (2, 'Seawater', '2SW', '2 years in seawater',NULL);
 INSERT INTO ref.tr_age_age VALUES (NULL, 'Seawater', 'MSW', 'Two years or more in seawater',NULL);
+INSERT INTO ref.tr_age_age VALUES (NULL, 'Seawater', 'MSW', 'Two years or more in seawater',NULL);
+INSERT INTO "ref".tr_age_age (age_envir,age_code,age_description,age_definition)
+  VALUES ('Freshwater','1+','Older than one year in freshwater','Groups all fishes older than one year in freshwater');
 
 
 COMMENT ON TABLE ref.tr_age_age IS 'Table of ages for salmonids';
