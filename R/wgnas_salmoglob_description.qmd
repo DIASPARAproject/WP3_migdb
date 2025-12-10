@@ -157,7 +157,7 @@ Here we search for locations related to fisheries.
 The following entries corresponding to fishery in column location can be dropped.
 
 ```{r }
-#| label: TRUE
+#| label: location_fisheries
 #| echo: TRUE
 #| warning: FALSE
 #| message: FALSE
