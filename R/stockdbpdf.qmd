@@ -28,25 +28,43 @@ editor:
     wrap: 72
 ---
 
+Note : If you are reading this file as a pdf you should try to open it on the 
+diaspara website, as some code does not render well as a pdf :
+[stock database](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html)
+
 \listoftables
+
+Despite legal commitments for their conservation, the Atlantic salmon and the European eel are currently endangered. This is partly due to their ecological characteristics. First, the two species share their life cycle between marine and continental ecosystems, in and outside Europe. Despite behaving like independent units during their continental phase, they are biologically mixed during their marine phases, requiring to orchestrate regional and international management and assessment process (data collection and availability, use of appropriate assessment methods). Moreover, the species are submitted to many human impacts (e.g. fisheries, habitat degradation and fragmentation). In this context, building on pre-existing road maps, DIASPARA aims at providing tools to enhance the coherence of the scientific assessment process from data collection to assessment, with the final objective of supporting more holistic advice and to better inform a regional management. In the second work package, DIASPARA has done an inventory of available data and make recommendations for potential improvement in the collection, based on a spatiotemporal analysis of key biological parameters. In the current work package (WP3), DIASPARA has to develop database structures in order to store data required for the assessment. This was created to include biological data, fisheries data, but also data to monitor the impact of dams and hydropower plants. 
+
+Currently, both ICES WGEEL (Working group on eel) and WGNAS (Working group on North Atlantic Salmon) have developed “home-made” databases stored in local institutions, alongside interactive applications to explore and integrate the data. WGBAST (Working group on the Baltic Atlantic Salmon and Sea Trout) relies on a very extensive set of tables collated in excel to run various models. This situation is far from optimal in terms of operability, data availability, data security and transparency. Moving towards a transparent assessment framework (TAF) procedure requires simpler and more transparent ways of querying several central databases to get the raw data and do the assessment. The objective of this WP is to create database structures to store data to feed models that are currently in use, as well as data that will be useful in the future to support a holistic and transparent assessment. 
+
+The first part of the work has been to exchange with the different working groups 
+and analyze the content of their databases as well as their working processes.
+
+The reports are available for [WGNAS](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/rep1.html), [WGBAST](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/rep2.html), [WGTRUTTA](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/rep3.html). 
+WGEEL database was developed largely by the leaders of this work package, and was not 
+described.
 
 The main structure of the database has been proposed during the online
 DIASPARA meeting : [database
 structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1).
-This stucture would allow to store the data necessary to run the
-international stock models for the different working groups working on
-diadromous fishes. The structure of the proposed database and the
-structure of the wgeel database are very similar. This documents creates
-the diaspara database, first creating referential table for the
+
+This structure allows to store the data necessary to run the
+international stock models for the different working groups giving advice or scientific reports
+on diadromous fishes. The structure is similar to both the WGEEL and the WGNAS databases. 
+
+
+This documents creates the diaspara database, first creating referential table for the
 different types proposed, and then populates the database with the
-contents of the wgeel and wgnas database. All chunks are run
-sequentially to run the database, but some are later marked with eval =
+contents of the WGEEL and WGNAS database. All chunks have been run
+sequentially to create the database, but some are later marked with eval =
 FALSE to speed up the process of running the quarto document.
 The diadromous fish database is made of two main structures.
-The first is called *** Stock Database*** and holds values aggregated at the
+The first is called ***Stock Database*** and holds values aggregated at the
 scale of the assessment unit, or stock unit. This scale has been created using
 a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
-
+The script to create this report can be found in diaspara github [code of the report](https://github.com/DIASPARAproject/WP3_migdb/blob/main/R/stockdb.qmd), the SQL codes are found in the following link
+ [SQL code](https://github.com/DIASPARAproject/WP3_migdb/tree/main/SQL).
 
 # Hierarchical structure of the database {#sec-hierarchical}
 
@@ -55,9 +73,14 @@ corresponding to all data. Then three tables are created, one per
 Working group  Since SQL server does not handle inheritance, once the table built, some of
 those will have to be replaced with views or partitioned views.
 
+::: {.callout-note appearance="simple"}
+<h3>Code for SQL Server </h3>
+SQL server used by ICES does not use inheritance, the same structure (schema)
+can be followed and the mother table will correspond to a view either as a UNION or
+JOIN of the tables
+:::
+
 ## Referential tables
-
-
 
 Similarly, referential tables are created with a mother table  from
 which specific (or wg specific) tables inherit. All mother tables
@@ -74,19 +97,27 @@ unique constraint. As some values would be null, creating unique
 constraints with indexes would be necessary. These allow to have
 different levels of constraints for instance the unique constraint would be
 defined for : (`year, age, area, parameter`) (`year, age, parameter`)
-(`year, area, parameter`) (`year, parameter`)
+(`year, area, parameter`) (`year, parameter`). 
+Age is used by WGNAS and WGBAST but not WGEEL, and WGBAST has two additional 
+fields not found in the other databases : period (month, half of year, ...),
+with the value, and the estimation method.
+Using different structures in the inherited table is a way to deal with the differences
+between working groups while keeping most of the structure common.
 
-One of the table will have to contain twice the area it will have to be
-treated separately. (`year, area, area, parameter`)
+In WGNAS because of the presence of matrix (area x area)
+the area might appear twice, this will be dealt with the use of
+an additional column (both for WGBAST and WGNAS). There might be a
+need for a trigger to check the unicity
+ (`year, area, area, parameter`)
 
 ## Creating the diaspara database
 
-All along this document, the database will be named `diaspara`. The
-database is created with postgres.
+All along this document, the database will be named `DiadromousDB`. The
+database is created with postgresSQL.
 
 **Some rules**
 
--   By default values will be capitalised for the first letter e.g.
+-   By default values are be capitalised for the first letter e.g.
 `Public` for the code in dataaccess.
 
 -   Code ELE, ANG, TRS are capitalized, as are the working group names
@@ -94,9 +125,8 @@ WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
 
--   All integer used for primary keys are called `id` all text used for
-primary keys are called `code`, the text is always called
-`description`.
+-   Column naming : all integer used for primary keys are called `xxx_id` all columns containing 
+text used for primary keys are called `xxx_code`, the column with definition, or description is always called `xxx_description` where xxx is the three letter code for the table.
 
 -   All tables end with a 3 letter summary which allows to identify the
 source of one column so the table dataaccess will be called
@@ -122,10 +152,20 @@ contraints `uk_columnname`
 -   All tables and column have a definition, we will ask the working
 groups to check those.
 
--   Column and table name are ALWAYS LOWERCASE, the underscore is only
+-   Use of "snake_case" : Column and table name are ALWAYS LOWERCASE, the underscore is only
 used to separate type of table and table shortcode t_table_abc. In
 column is separates table code abc_def_code (table abc will
-reference the column def_code in table def).
+reference the column def_code in table def). Some exceptions to this rule
+are made when the table was imported straight from ICES
+
+::: {.callout-note appearance="simple"}
+<h3>Another code in ICES </h3>
+ICES uses CamelCase and not snake_case, but using upper case in postgres is
+difficult, and requires the use of double quotes, when using SQL strings in 
+R it then becomes very difficult to write SQL. So we followed a more postgres
+compatible case here. This will change once the format will be created in ICES.
+:::
+
 
 ```{r init}
 #| echo: FALSE
@@ -296,21 +336,16 @@ and inherited tables comming from the different schema.
 
 # Creating referentials
 
-This script holds all referentials necesary for the metricDB and the stockDB.
+This script holds all referentials necessary for both  the metricDB and the stockDB.
 
 ## species (tr_species_spe)
 
-The first thing is to create a referential table for species. Anyways,
-we searched a bit for other species, even if we don't plan to start
-storing data on Alosa and Lamprey it's good to prepare the database.
+The first thing is to create a referential table for species. At the moment
+the structure doesn't integrate schema for Alosa and Lamprey but the species
+have been created.
 There are no code in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 **Petromyzon marinus**, **Lampetra fluviatilis**.
 
-Note Cédric : Thinking later about this, I chose to get rid of `ELE` and
-select `ANG`. This column with species will be everywhere. We want to
-avoid generations of researchers to avoid what `ELE` is (apart from
-elephants). For the others I've taken as close as possible to the latin
-name.
 
 :::::: questionbox
 :::: questionbox-header
@@ -357,10 +392,19 @@ In our database we also have a field “salmonid” for circumstances where peop
 ::::::
 
 
-<details>
+::: {.callout-note appearance="simple"}
+<h3>An eel is not an elephant </h3>
+To avoid generations of researchers looking at the columns and wondering
+the meaning of `ELE` (the current code for eel in ICES) and wondering 
+about the secret link between eels and elephants we have used `ANG`.
+ This column with species will be everywhere.
+ For the others we've taken as close as possible to the latin
+name. Finally despite using TRT initially following Iain advice
+we have also used both current code for sea trout `TRS` and `TRT` as data
+have already been entered in RDBES with the `TRS` code.
+:::
 
-<summary>Creating a referential table for species - code and queries to
-ICES</summary>
+
 
 ```{r tbl-icesVocabspecies}
 #| echo: TRUE
@@ -371,8 +415,9 @@ ICES</summary>
 #| tbl-subcap :
 #|    - Code found in IC_species
 #|    - Three letter code for species. Should we use ang instead of ele ?
-
-# No code for Lampetra, Alosa, petromyzon
+#| code-fold: TRUE
+#| code-summary: Creating a referential table for species - code and queries to ICES
+#| 
 sp <- getCodeList("IC_species")
 grep("Lampetra", sp$description)
 grep("Petromyzon", sp$description)
@@ -382,20 +427,15 @@ bind_rows(
   ele <- getCodeDetail("IC_species","ELE")$detail,
   sal <- getCodeDetail("IC_species","SAL")$detail,
   trs <- getCodeDetail("IC_species","TRS")$detail) |>
-  knitr::kable(caption = "Codes for migratory species in ICES, 
-  no code found for other species (Lamprey, Alosa ...)") |>
-   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable(caption = "Codes for migratory species in ICES, no code found for other species (Lamprey, Alosa ...)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
     species_list <- tibble(
       spe_code = c("SAL", "ANG", "TRS", "ALA", "ALF", "PET", "LAM"),
       spe_icspecieskey = c("SAL", "ELE", "TRS", NA,NA,NA,NA),
-      spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", 
-      "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
-      spe_scientificname = c("Salmo salar", "Anguilla anguilla", 
-      "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", 
-      "Lampetra fluviatilis")
+      spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
+      spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
     )
     tr_species_spe_temp <- species_list |>
       rowwise() |>
@@ -405,8 +445,7 @@ if (file.exists("data/tr_species_spe_temp.Rdata")) {
       ungroup()
     save(tr_species_spe_temp, file = "data/tr_species_spe_temp.Rdata")
   }
-knitr::kable(tr_species_spe_temp) |> 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable(tr_species_spe_temp) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -886,6 +925,21 @@ haul.
 -   Before working any further I would like your opinion there.
 :::
 :::::
+
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+Answer ICES
+::::
+
+::: answerbox-body
+https://github.com/ices-eg/DIG/issues/737
+:::
+::::::
+
+
 
 ## Parameters
 

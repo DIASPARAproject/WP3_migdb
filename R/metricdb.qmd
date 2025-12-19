@@ -1,10 +1,10 @@
 ---
-title: "diaspara metric database creation script"
-subtitle: "DIASPARA WP3.4 working document"
+title: "DIASPARA WP3.4 FISH STOCK DATABASE"
+subtitle: "METRIC DB final report"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
-description: "Creation of metric db, version = final for WGEEL"
+description: "version = pre-release, for review. Still have to integrate salmon from WP2"
 title-block-banner: "images/diaspara_bandeau.png"
 title-block-banner-color: "white"
 format:
