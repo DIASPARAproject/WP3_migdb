@@ -15,7 +15,7 @@ IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_year 
 IS 'Year of assessement.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_spe_code 
-IS 'Species code e.g. 'SAL' references tr_species_spe.';
+IS 'Species code e.g. ''127186'' references tr_species_spe.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_stockkeylabel 
 IS 'Ver_stockkeylabel e.g. ele.2737.nea.';
 COMMENT ON COLUMN refnas.tr_version_ver.ver_datacalldoi 

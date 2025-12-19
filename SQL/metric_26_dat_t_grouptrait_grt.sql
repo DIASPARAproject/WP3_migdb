@@ -98,7 +98,7 @@ COMMENT ON COLUMN dateel.t_grouptrait_grt.grt_ser_id IS
 COMMENT ON COLUMN dateel.t_grouptrait_grt.grt_wkg_code IS
  'Working group on of WGEEL, WGNAS, WGBAST ...';
 COMMENT ON COLUMN dateel.t_grouptrait_grt.grt_spe_code IS
- 'Species code here ANG';
+ 'Species code here ''127186''';
 COMMENT ON COLUMN dateel.t_grouptrait_grt.grt_id IS
  'ID, integer, unique for wkg_code';
 COMMENT ON COLUMN dateel.t_grouptrait_grt.grt_gr_id IS

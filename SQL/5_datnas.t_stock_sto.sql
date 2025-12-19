@@ -9,7 +9,8 @@ CREATE TABLE datnas.t_stock_sto (
    CONSTRAINT fk_sto_add_code FOREIGN KEY (sto_add_code) 
    REFERENCES refnas.tg_additional_add (add_code), 
   CONSTRAINT fk_sto_met_var_met_spe_code
-    FOREIGN KEY (sto_met_var, sto_spe_code) REFERENCES datnas.t_metadata_met(met_var,met_spe_code) 
+    FOREIGN KEY (sto_met_var, sto_spe_code) 
+    REFERENCES datnas.t_metadata_met(met_var,met_spe_code) 
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_sto_are_code FOREIGN KEY (sto_are_code)
     REFERENCES refnas.tr_area_are (are_code) 
@@ -39,15 +40,16 @@ CREATE TABLE datnas.t_stock_sto (
   REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
   ON UPDATE CASCADE ON DELETE RESTRICT, 
   CONSTRAINT c_uk_sto_id_sto_wkg_code UNIQUE (sto_id, sto_wkg_code),
-  CONSTRAINT ck_notnull_value_and_mis_code CHECK ((((sto_mis_code IS NULL) AND (sto_value IS NOT NULL)) OR 
+  CONSTRAINT ck_notnull_value_and_mis_code 
+  CHECK ((((sto_mis_code IS NULL) AND (sto_value IS NOT NULL)) OR 
   ((sto_mis_code IS NOT NULL) AND (sto_value IS NULL))))
 )
 inherits (dat.t_stock_sto) ;
 
 -- This table will always be for SALMON and WGNAS
 
-ALTER TABLE datnas.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT 'SAL';
-ALTER TABLE datnas.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='SAL');
+ALTER TABLE datnas.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT '127186';
+ALTER TABLE datnas.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='127186');
 ALTER TABLE datnas.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGNAS';
 ALTER TABLE datnas.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGNAS');
 
@@ -72,6 +74,7 @@ var_mod in the salmoglob database and eel_typ_id in the wgeel database, there is
 on the pair of column sto_spe_code, sto_met_var';
 -- note if we end up with a single table, then the constraint will  have to be set
 -- on sto_wkg_code, sto_spe_code and sto_met_code.
+COMMENT ON COLUMN datnas.t_stock_sto.sto_spe_code IS 'Species default ''127186'' Salmo salar, check always equal to ''127186''';
 COMMENT ON COLUMN datnas.t_stock_sto.sto_year IS 'Year';
 COMMENT ON COLUMN datnas.t_stock_sto.sto_value IS 'Value if null then provide a value in sto_mis_code to explain why not provided';
 COMMENT ON COLUMN datnas.t_stock_sto.sto_are_code IS 'Code of the area, areas are geographical sector most often corresponding to stock units, 

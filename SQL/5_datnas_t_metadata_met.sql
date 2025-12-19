@@ -22,7 +22,7 @@ ALTER TABLE datnas.t_metadata_met ADD
   ON UPDATE CASCADE;
 
  ALTER TABLE datnas.t_metadata_met ADD
-    CONSTRAINT ck_met_spe_code CHECK (met_spe_code='SAL'); 
+    CONSTRAINT ck_met_spe_code CHECK (met_spe_code='127186'); 
 
  ALTER TABLE datnas.t_metadata_met ADD
     CONSTRAINT fk_met_wkg_code FOREIGN KEY (met_wkg_code)
@@ -80,7 +80,7 @@ COMMENT ON TABLE datnas.t_metadata_met IS
 COMMENT ON COLUMN refnas.t_metadata_met.met_var 
 IS 'Variable code, primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_spe_code 
-IS 'Species, SAL primary key on both met_spe_code and met_var.';
+IS 'Species, 127186 primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_ver_code 
 IS 'Code on the version of the model, see table tr_version_ver.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_oty_code 
@@ -123,4 +123,5 @@ GRANT SELECT ON datnas.t_metadata_met TO diaspara_read;
 
 
 
-
+  
+    

@@ -19,7 +19,7 @@ IS 'Version code, wkg-year-version.';
 COMMENT ON COLUMN refeel.tr_version_ver.ver_year 
 IS 'Year of assessement.';
 COMMENT ON COLUMN refeel.tr_version_ver.ver_spe_code 
-IS 'Species code e.g. ANG references tr_species_spe.';
+IS 'Species code e.g. ''127186'' Anguilla anguilla references tr_species_spe.';
 COMMENT ON COLUMN refeel.tr_version_ver.ver_wkg_code 
 IS 'Code of the working group,  WGEEL';
 COMMENT ON COLUMN refeel.tr_version_ver.ver_stockkeylabel 

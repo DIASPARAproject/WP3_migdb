@@ -9,9 +9,9 @@ CREATE TABLE ref.tr_version_ver(
 ver_code TEXT PRIMARY KEY,
 ver_year INTEGER NOT NULL,
 ver_spe_code CHARACTER VARYING(3),
-CONSTRAINT fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
+/*CONSTRAINT fk_ver_spe_code FOREIGN KEY (ver_spe_code) 
 REFERENCES ref.tr_species_spe(spe_code)
-ON UPDATE CASCADE ON DELETE RESTRICT,
+ON UPDATE CASCADE ON DELETE RESTRICT,*/
 ver_wkg_code TEXT NOT NULL,
 CONSTRAINT fk_ver_wkg_code  FOREIGN KEY (ver_wkg_code)
 REFERENCES ref.tr_icworkinggroup_wkg(wkg_code)
@@ -30,7 +30,7 @@ IS 'Version code, stockkey-year-version.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_year 
 IS 'Year of assessement.';
 COMMENT ON COLUMN ref.tr_version_ver.ver_spe_code 
-IS 'Species code e.g. ''ANG'' or ''SAL,TRT'' the reference name should be in tr_species_spe, comma separated';
+IS 'Species code e.g. ''Anguilla anguilla'' or ''Salmo salar,Salmo trutta'' the reference name should be in tr_species_spe, comma separated';
 COMMENT ON COLUMN ref.tr_version_ver.ver_wkg_code 
 IS 'Code of the working group, one of WGBAST, WGEEL, WGNAS, WKTRUTTA';
 --COMMENT ON COLUMN ref.tr_version_ver.ver_stockkey 
@@ -57,4 +57,7 @@ GRANT SELECT ON ref.tr_version_ver TO diaspara_read;
 ALTER TABLE ref.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
 ALTER TABLE refnas.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
 ALTER TABLE refeel.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
+ALTER TABLE refbast.tr_version_ver DROP CONSTRAINT fk_ver_spe_code;
 ALTER TABLE ref.tr_version_ver ALTER COLUMN ver_spe_code type TEXT;
+
+

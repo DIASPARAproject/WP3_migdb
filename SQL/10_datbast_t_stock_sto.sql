@@ -64,7 +64,7 @@ inherits (dat.t_stock_sto) ;
 -- This table will always be for WGBAST
 
 ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT NULL;
-ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='SAL' OR sto_spe_code='TRS');
+ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='127186' OR sto_spe_code='127187');
 ALTER TABLE datbast.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGBAST';
 ALTER TABLE datbast.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGBAST');
 

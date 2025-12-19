@@ -37,7 +37,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.mei_fi_id = a2.mei_fi_id)
 SELECT 
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
-'ANG' AS int_spe_code,
+'127186' AS int_spe_code,
 fi_id AS int_id, 
 meiser.mei_fi_id AS int_fi_id, 
 CASE WHEN mei_mty_id = 1 THEN 'Lengthmm'
@@ -98,7 +98,7 @@ WITH fatmeter AS (
 SELECT 
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
-'ANG' AS int_spe_code,
+'127186' AS int_spe_code,
 fi_id AS int_id, 
 meiser.mei_fi_id AS int_fi_id, 
 CASE WHEN mei_mty_id = 10 THEN  'Muscle_lipid' 
@@ -164,7 +164,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.mei_fi_id = a2.mei_fi_id)
 SELECT 
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
-'ANG' AS int_spe_code,
+'127186' AS int_spe_code,
 mei_id AS int_id, 
 meisa.mei_fi_id AS int_fi_id, 
 CASE WHEN mei_mty_id = 1 THEN 'Lengthmm'
@@ -222,7 +222,7 @@ WITH fatmeter AS (
 SELECT 
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
-'ANG' AS int_spe_code,
+'127186' AS int_spe_code,
 mei_id AS int_id, 
 meisa.mei_fi_id AS int_fi_id, 
 CASE WHEN mei_mty_id = 10 THEN  'Muscle_lipid' 
@@ -287,7 +287,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.mei_fi_id = a2.mei_fi_id)
 SELECT 
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
-'ANG' AS int_spe_code,
+'127186' AS int_spe_code,
 fi_id AS int_id, 
 meiser.mei_fi_id AS int_fi_id, 
 CASE 
@@ -371,7 +371,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.mei_fi_id = a2.mei_fi_id)
 SELECT 
 tss2.ser_id AS int_ser_id,
 'WGEEL' AS int_wkg_code,
-'ANG' AS int_spe_code,
+'127186' AS int_spe_code,
 mei_id AS int_id, 
 meisa.mei_fi_id AS int_fi_id, 
 CASE 

@@ -8,7 +8,7 @@ SELECT
 eel_id AS  sto_id
 , m.met_var AS sto_met_var
 , e.eel_year AS sto_year
-, 'ANG' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , e.eel_value AS sto_value
 , CASE WHEN e.eel_emu_nameshort ilike '%total' THEN eel_cou_code
        WHEN e.eel_emu_nameshort IS NULL THEN eel_cou_code 
@@ -73,7 +73,7 @@ SELECT
 eel_id AS sto_id
 , m.met_var AS sto_met_var
 , e.eel_year AS sto_year
-, 'ANG' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , e.eel_value AS sto_value
 , CASE WHEN e.eel_emu_nameshort ilike '%total' THEN eel_cou_code
        WHEN e.eel_emu_nameshort IS NULL THEN eel_cou_code 
@@ -146,7 +146,7 @@ SELECT
 eel_id AS sto_id
 , m.met_var AS sto_met_var
 , e.eel_year AS sto_year
-, 'ANG' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , e.eel_value AS sto_value
 , CASE WHEN eel_emu_nameshort = 'FR_Rhon' THEN '37.1.2.7' 
   ELSE 'STOP' END AS sto_are_code
@@ -540,7 +540,7 @@ SELECT
 eel_id AS sto_id
 , m.met_var AS sto_met_var
 , e.eel_year AS sto_year
-, 'ANG' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , e.eel_value AS sto_value
 , emu_div.area_code AS sto_are_code
 --, e.eel_area_division 
@@ -623,7 +623,7 @@ SELECT
 eel_id AS sto_id
 , m.met_var AS sto_met_var
 , e.eel_year AS sto_year
-, 'ANG' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , e.eel_value AS sto_value
 , emu_null.area_code AS sto_are_code
 --, e.eel_area_division 

@@ -24,7 +24,7 @@ COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_id IS 'Integer, primary key of the ta
 COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_code IS 'The code of lifestage';
 COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_name IS 'The english name of lifestage';
 COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_spe_code IS 'The code of the species referenced from
-tr_species_spe : one of SAL, ELE, TRT, ALA, ALF, SLP, RLP ';
+tr_species_spe : use aphiaID eg ''126281'' for eel ';
 COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_description IS 'Definition of the lifestage';
 COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_icesvalue IS 'Code for the lifestage in the ICES database';
 COMMENT ON COLUMN ref.tr_lifestage_lfs.lfs_icesguid IS 'GUID in the ICES database';

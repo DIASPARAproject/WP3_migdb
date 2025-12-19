@@ -33,7 +33,8 @@ COMMENT ON COLUMN ref.tr_trait_tra.tra_typemetric IS
 'Is the metric a group metric (group), or individual metric (individual) or can be used in both tables (both) ?';
 COMMENT ON COLUMN ref.tr_trait_tra.tra_qualitativeornumeric IS
  'Indicate variable type, either Qualitative or Numeric';
-
+COMMENT ON COLUMN ref.tr_trait_tra.tra_spe_code IS
+ 'AphiaID of the species code TEXT (e.g''127186'' Salmo salar )';
 
 
 GRANT ALL ON ref.tr_trait_tra TO diaspara_admin;

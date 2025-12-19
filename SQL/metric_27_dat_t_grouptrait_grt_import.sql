@@ -40,7 +40,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.meg_gr_id = a2.meg_gr_id)
 SELECT 
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 megser.meg_gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id = 1 THEN 'Lengthmm'
@@ -134,7 +134,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.meg_gr_id = a2.meg_gr_id)
 SELECT 
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 megsa.meg_gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id = 1 THEN 'Lengthmm'
@@ -221,7 +221,7 @@ fatmeter AS (
 SELECT 
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 megsa.meg_gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id = 1 THEN 'Lengthmm'
@@ -319,7 +319,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.meg_gr_id = a2.meg_gr_id)
 SELECT DISTINCT ON (meg_id)
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 gr.gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id IN (18, 21) THEN 'Lengthmm'
@@ -349,7 +349,7 @@ JOIN dateel.t_series_ser AS tss2 ON ser_code= sai_id::text
 LEFT JOIN mm ON megsa.meg_gr_id = mm.meg_gr_id -- joining subquery
 JOIN (SELECT gr_id, gr_ser_id, gr_year, gr_lfs_code FROM dateel.t_group_gr WHERE gr_sex_code = 'M') gr
 ON (gr.gr_ser_id, COALESCE(gr.gr_year,1), gr_lfs_code) = ( tss2.ser_id, COALESCE(grsa.gr_year,1),grsa.grsa_lfs_code)
-WHERE meg_mty_id IN (18,19,20); --544 Cédric pi fort
+WHERE meg_mty_id IN (18,19,20); --544 Cï¿½dric pi fort
 
 -- GROUP metrics FOR females   sampling
 SELECT count(*) FROM  datwgeel.t_metricgroupseries_megser megsa
@@ -391,7 +391,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.meg_gr_id = a2.meg_gr_id)
 SELECT DISTINCT ON (meg_id)
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 gr.gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id IN (18, 21) THEN 'Lengthmm'
@@ -461,7 +461,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.meg_gr_id = a2.meg_gr_id)
 SELECT DISTINCT ON (meg_id)
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 gr.gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id IN (18, 21) THEN 'Lengthmm'
@@ -533,7 +533,7 @@ FROM  a1 FULL OUTER JOIN a2 ON a1.meg_gr_id = a2.meg_gr_id)
 SELECT DISTINCT ON (meg_id)
 tss2.ser_id AS grt_ser_id,
 'WGEEL' AS grt_wkg_code,
-'ANG' AS grt_spe_code,
+'127186' AS grt_spe_code,
 meg_id AS grt_id, 
 gr.gr_id AS grt_gr_id, 
 CASE WHEN meg_mty_id IN (18, 21) THEN 'Lengthmm'

@@ -98,7 +98,7 @@ COMMENT ON COLUMN dateel.t_indivtrait_int.int_ser_id IS
 COMMENT ON COLUMN dateel.t_indivtrait_int.int_wkg_code IS
  'Working ind on of WGEEL, WGNAS, WGBAST ...';
 COMMENT ON COLUMN dateel.t_indivtrait_int.int_spe_code IS
- 'Species code here ANG';
+ 'Species code here ''127186''';
 COMMENT ON COLUMN dateel.t_indivtrait_int.int_id IS
  'ID, integer, unique for wkg_code';
 COMMENT ON COLUMN dateel.t_indivtrait_int.int_fi_id IS

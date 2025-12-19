@@ -43,8 +43,8 @@ inherits (dat.t_stock_sto) ;
 
 -- This table will always be for EEL (ang) and WGEEL
 
-ALTER TABLE dateel.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT 'ANG';
-ALTER TABLE dateel.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='ANG');
+ALTER TABLE dateel.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT '126281';
+ALTER TABLE dateel.t_stock_sto ADD CONSTRAINT ck_spe_code CHECK (sto_spe_code='126281');
 ALTER TABLE dateel.t_stock_sto ALTER COLUMN sto_wkg_code SET DEFAULT 'WGEEL';
 ALTER TABLE dateel.t_stock_sto ADD CONSTRAINT ck_wkg_code CHECK (sto_wkg_code='WGEEL');
 

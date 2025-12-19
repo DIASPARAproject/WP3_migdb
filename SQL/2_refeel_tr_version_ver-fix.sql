@@ -2,7 +2,7 @@
 -- add 2025 data call
 
 INSERT INTO refeel.tr_version_ver (ver_code,ver_year,ver_spe_code,ver_stockkeylabel,ver_datacalldoi,ver_version,ver_description)
-  VALUES ('WGEEL-2025-2',2025,'ANG','ele','https://doi.org/10.17895/ices.pub.29254589',2,'WGEEL Data call 2025: Joint ICES/GFCM/EIFAAC eel data call');
+  VALUES ('WGEEL-2025-2',2025,'127186','ele','https://doi.org/10.17895/ices.pub.29254589',2,'WGEEL Data call 2025: Joint ICES/GFCM/EIFAAC eel data call');
 UPDATE refeel.tr_version_ver
   SET ver_description='Joint EIFAAC/GFCM/ICES Eel Data Call 2016',ver_stockkeylabel='ele.2737.nea',ver_datacalldoi=''
   WHERE ver_code='WGEEL-2016-1';

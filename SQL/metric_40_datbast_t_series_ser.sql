@@ -61,7 +61,7 @@ COMMENT ON COLUMN dat.t_series_ser.ser_code IS
 COMMENT ON COLUMN dat.t_series_ser.ser_name IS
  'Name of the series';
 COMMENT ON COLUMN dat.t_series_ser.ser_spe_code  IS
- 'Species, one of SAL, ELE, TRT, ALA, ALF, SLP, RLP  ... references ref.tr_species_spe, the species can be null but
+ 'Species, one of use aphiaID eg ''127186'' for Salmon and ''127187''for Trutta. references ref.tr_species_spe, the species can be null but
 it should correspond to the main species target by the sampling';
 COMMENT ON COLUMN dat.t_series_ser.ser_lfs_code  IS
  'Life stage see tr_lifestage_lfs,Code of the lifestage see tr_lifestage_lfs,  the constraint is set on 

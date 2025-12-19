@@ -121,7 +121,7 @@ database is created with postgresSQL.
 -   By default values are be capitalised for the first letter e.g.
 `Public` for the code in dataaccess.
 
--   Code ELE, ANG, TRS are capitalized, as are the working group names
+-   Code are capitalized, e.g working group names
 WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
@@ -367,6 +367,7 @@ ANSWER ICES : Maria
 For species, we would recommend that you use AphiaIDs (a copy of which
 is SpecWoRMs). You can also use the FAO ASFIS list, or both, but we
 would recommend having the AphiaIDs for sure.
+=> DONE
 :::
 ::::::
 
@@ -384,6 +385,8 @@ I would suggest the common name for Salmo Trutta should just be trout (as you no
 In our database we also have a field “salmonid” for circumstances where people electrofish very early in the year and it isn’t readily possible to separate trout and salmon fry.
 :::
 ::::::
+
+
 
 
 
@@ -414,7 +417,7 @@ bind_rows(
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
     species_list <- tibble(
-      spe_code = c("SAL", "ELE", "TRS", "ALA", "ALF", "PET", "LAM"),
+      spe_code = c("127186", "126281", "127187", "126413", "126415", "101174", "101172"),
       spe_icspecieskey = c("SAL", "ELE", "TRS", NA,NA,NA,NA),
       spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
       spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
@@ -453,7 +456,7 @@ dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species
 dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
 dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE  ref.tr_species_spe IS 
-'Table of fish species, spe_code SAL, ELE, TRS, ALA, ALF, PET, LAM with 
+'Table of fish species, spe_code using AphiaID as the reference with 
 reference to ICES vocabularies.'")
 
 ```
@@ -1158,7 +1161,7 @@ model.
 tr_version_ver <- data.frame(
   ver_code = paste0("WGNAS-",2020:2024,"-1"),
   ver_year = 2020:2024,
-  ver_spe_code = "SAL",
+  ver_spe_code = "127186",
   ver_wkg_code = "WGNAS",
   ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
   ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
@@ -1798,24 +1801,24 @@ portal](https://bioportal.bioontology.org/ontologies/SALMON).
 lfs <- tribble(
   ~lfs_code, ~lfs_name, ~lfs_spe_code, ~lfs_description, 
   ~lfs_icesvalue, ~lfs_icesguid, ~lfs_icestablesource,
-  "E",   "Egg", "SAL" , "In fish, the term egg usually refers to female haploid gametes.", 
+  "E",   "Egg", "127186" , "In fish, the term egg usually refers to female haploid gametes.", 
   "E",   "0424ae90-03aa-4e73-8cda-e8745d0b8158", "TS_DevStage",
-  "EE",   "Eyed egg", "SAL" , "Eyed eggs are fertilized eggs that have developed to the stage where the eyes of the fish can easily be seen with naked eyes through the translucent egg shell. They might be used for stocking purpose.", 
+  "EE",   "Eyed egg", "127186" , "Eyed eggs are fertilized eggs that have developed to the stage where the eyes of the fish can easily be seen with naked eyes through the translucent egg shell. They might be used for stocking purpose.", 
   NA,  NA , NA,
-  "ALV",   "Alevin with the yolk sac", "SAL" , "Larval salmon that have hatched but have not yet completely absorbed their yolk sacs and usually have not yet emerged from the gravel.  http://purl.dataone.org/odo/SALMON_00000403", 
+  "ALV",   "Alevin with the yolk sac", "127186" , "Larval salmon that have hatched but have not yet completely absorbed their yolk sacs and usually have not yet emerged from the gravel.  http://purl.dataone.org/odo/SALMON_00000403", 
   NA,  NA , NA,
-  "FR",   "Fry", "SAL" , "A young salmonid at the post-larval stage who has resorbed the yolk sac but remains buried in the gravel.  The stage starts at the end of dependence on the yolk sac as the primary source of nutrition to dispersal from the redd.", 
+  "FR",   "Fry", "127186" , "A young salmonid at the post-larval stage who has resorbed the yolk sac but remains buried in the gravel.  The stage starts at the end of dependence on the yolk sac as the primary source of nutrition to dispersal from the redd.", 
   NA,  NA , NA,
-  "P", "Parr", "SAL", 
+  "P", "Parr", "127186", 
   "A young salmonid with parr-marks before migration to the sea and after dispersal from the redd. 	http://purl.dataone.org/odo/SALMON_00000649",
   NA, NA, NA,
-  "SM", "Smolt", "SAL", "A young salmonid which has undergone the transformation to adapt to salt water, has developed silvery coloring on its sides, obscuring the parr marks, and is about to migrate or has just migrated into the sea.",
+  "SM", "Smolt", "127186", "A young salmonid which has undergone the transformation to adapt to salt water, has developed silvery coloring on its sides, obscuring the parr marks, and is about to migrate or has just migrated into the sea.",
   NA, NA, NA,
-  "PS", "Post Smolt", "SAL", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
+  "PS", "Post Smolt", "127186", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
   NA, NA, NA,
-  "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
-  "AL", "All stages", "SAL", "All life stages are concerned.", NA, NA, NA,
-  "_", "No life stage", "SAL", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
+  "A", "Adult", "127186", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
+  "AL", "All stages", "127186", "All life stages are concerned.", NA, NA, NA,
+  "_", "No life stage", "127186", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
 )
 dbWriteTable(con_diaspara_admin, "temp_lfs", lfs, overwrite = TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_lifestage_lfs;")#24
@@ -1845,9 +1848,9 @@ dbExecute(con_diaspara_admin, "DROP TABLE temp_lfs")
 #| code-summary: Code to import stages from WGEEL databases.
 
 
-dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_lifestage_lfs WHERE lfs_spe_code ='ANG';")
+dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_lifestage_lfs WHERE lfs_spe_code ='126281';")
 dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs (lfs_code,lfs_name,lfs_description, lfs_spe_code)
-SELECT lfs_code,initcap(lfs_name),lfs_definition, 'ANG' 
+SELECT lfs_code,initcap(lfs_name),lfs_definition, '126281' 
 FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 ```
@@ -1869,12 +1872,12 @@ dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs
     SELECT 
     lfs_code, 
     lfs_name, 
-    'TRSS' AS lfs_spe_code,
+    '127187' AS lfs_spe_code,
     lfs_description,
     lfs_icesvalue, 
     lfs_icesguid::uuid, 
     lfs_icestablesource
-    FROM ref.tr_lifestage_lfs WHERE lfs_spe_code = 'SAL';")
+    FROM ref.tr_lifestage_lfs WHERE lfs_spe_code = '127186';")
 
 
 ```
@@ -3067,7 +3070,7 @@ res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met;")
 t_metadata_met <-
   data.frame(
     met_var = metadata$var_mod,
-    met_spe_code = "SAL",
+    met_spe_code = "127186",
     met_wkg_code = "WGNAS",
     met_ver_code = "SAL-2024-1", # no data on version in metadata
     met_oty_code = metadata$type_object,
@@ -3193,7 +3196,7 @@ The same table `t_stock_sto` is created in `datnas`. It is inherited, so
 this means that all the column are coming from `dat.t_stock_sto` but we
 have to recreate all the constraints, as constraints are never
 inherited. Two additional check constraint are created, the value for
-species will always be `SAL` and the value for wkg (expert group) will
+species will always be `127186` and the value for wkg (expert group) will
 always be `WGNAS`.
 
 <details>
@@ -3282,7 +3285,7 @@ SELECT
 nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
 , d.var_mod AS sto_met_var
 , d.year AS sto_year
-, 'SAL' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , d.value AS sto_value
 , d.area AS sto_are_code
 , NULL AS sto_cou_code -- OK can be NULL
@@ -3398,7 +3401,7 @@ View(typ)
 t_metadata_met <-
   data.frame(
     met_var = typ$typ_name,
-    met_spe_code = "ANG",
+    met_spe_code = "126281",
     met_wkg_code = "WGEEL",
     met_ver_code = "WGEEL-2025-1", 
     met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3566,7 +3569,7 @@ is WGNAS when compared to WGEEL, we need to do the same and allow for three addi
 tr_version_ver <- data.frame(
   ver_code = paste0("WGNAS-",2020:2024,"-1"),
   ver_year = 2020:2024,
-  ver_spe_code = "SAL",
+  ver_spe_code = "127186",
   ver_wkg_code = "WGNAS",
   ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
   ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
@@ -3649,8 +3652,8 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_esmr")
 ## Create datbast.t_metadata_met
 
 Note there is a slight different here, I need to add twice the variables for salmon,
-and then for trutta. These are no duplicates as the primary key is set on both TRS
-and SAL. Later on, there should be variables only with SAL (at the second step
+and then for trutta. These are no duplicates as the primary key is set on both 127187 (Salmo trutta)
+and 127186 (Salmon salar). Later on, there should be variables only with 127186  (at the second step
 of the integration process.)
 
 ```{r datbast.t_metadata_met}
@@ -3785,7 +3788,7 @@ uni_code <- case_when(uni_code == "E" ~ "nd",
 # but when the variables are in common, then need to be repeated.
 t_metadata_met_TRS  <- data.frame(
     met_var = typ,
-    met_spe_code = "TRS",
+    met_spe_code = "127187",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3831,7 +3834,7 @@ met_deprecated = NA
 # not integrating any of the deprecated data
 )
 t_metadata_met_SAL <- t_metadata_met_TRS
-t_metadata_met_SAL$met_spe_code<- "SAL"
+t_metadata_met_SAL$met_spe_code<- "127186"
 
 
 t_metadata_met <- bind_rows(t_metadata_met_TRS,t_metadata_met_SAL)
@@ -3862,7 +3865,7 @@ array <- read_csv("data/WGBAST vectors_arrays1.csv")
 array <- janitor::clean_names(array)
 t_metadata_met_a  <- data.frame(
     met_var = array$variable_name,
-    met_spe_code = "SAL",
+    met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3893,7 +3896,7 @@ met_deprecated = NA
 )
 t_metadata_met_s  <- data.frame(
     met_var = scalar$name,
-    met_spe_code = "SAL",
+    met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code =  "Single_value",  
@@ -3992,9 +3995,9 @@ df_all[is.na(df_all$tp_type),"tp_type"] <- "YR" # 6 lines with historical data
 
 # in Estonia there are both SAL&TRS and NA, which correspond to sea damage unspecified.
 # I cannot have that, will report as Salmon, leave to the WGBAST to see how to handle this.
-df_all[!is.na(df_all$species) & df_all$species =="SAL&TRS","species"]<- "SAL"
-df_all[is.na(df_all$species) ,"species"]<- "SAL"
-df_all[df_all$species=="NA" ,"species"]<- "SAL"
+df_all[!is.na(df_all$species) & df_all$species =="SAL&TRS","species"]<- "127186"
+df_all[is.na(df_all$species) ,"species"]<- "127186"
+df_all[df_all$species=="NA" ,"species"]<- "127186"
 
 
 
