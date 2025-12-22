@@ -2284,7 +2284,7 @@ SELECT distinct on (ser_code)
  ser_samplingstrategy,
  ser_datarightsholder,
  ser_datelastupdate::date
-FROM t_series_ser_temp") # 25 
+FROM t_series_ser_temp") # 2
 
 
 
@@ -2292,23 +2292,116 @@ FROM t_series_ser_temp") # 25
 
 ::: {.callout-note appearance="simple"}
 
-## Notes to Viktor :
+## Notes to Viktor (WP2) :
 
-Some of the columns will be removed from the exchange format, I'm keeping them
-here while importing but in the future them should be in reports attached to DOI.
+Some of the columns (location, location description, protocol) will be removed 
+from the exchange format currently developped with ICES as they cannot be standardized,
+I'm keeping them
+here while importing but in the future they will be in reports describing all the
+series and attached to DOI.
 
 For lifestages `S` spawner is `A` Adult 
 
 The code of the area is the river.
 
+:::
+
+
+::: {.callout-note appearance="caution"}
+
+## TODO
+
+Create Geom for x and Y
+
+:::
+
+
+```{r}
+#| label: tbl-datnas.t_series_ser
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show series table (burishoole example).
+#| tbl-cap: Table datnas.t_series_ser first 20 lines
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_series_ser limit 20;")|>
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+### Import t_seriesannual_san
+
+<details>
+
+<summary> SQL code to create table `datnas.tj_seriesstation_ses`
+</summary>
+
+``` {.sql include="../SQL/metric_51_datnas.tj_seriesstation_ses.sql"}
+```
+
+</details>
+
+
+## Creating inherited table for annual series
+
+
+<details>
+
+<summary>SQL code to create tables `datnas.t_serannual_san`</summary>
+
+``` {.sql include="../SQL/metric_52_datnas_t_serannual_san.sql"}
+```
+
+</details>
+
+::: {.callout-note appearance="simple"}
+
+## Notes 
+
+Currently there is no annual series in WP2 only group and individual metrics,
+ the the table is created but no import is done.
 
 :::
 
 
 
+# Creating group metrics
+
+## Create group table
+
+:::{.callout-note appearance="simple"}
+## Note for group metrics
+Need a foreign key on both species and lfs code.
+:::
 
 
-# Import to ICES (TODO)
+## Create group table for datnas
+
+<details>
+
+<summary>SQL code to create table `datnas.t_group_gr`</summary>
+
+``` {.sql include="../SQL/metric_53_datnas_t_group_gr.sql"}
+```
+
+</details>
+
+## Import data for group
+
+
+TODO HERE :
+
+<details>
+
+<summary>SQL code to Import data </summary>
+
+``` {.sql include="../SQL/metric_54_datnas_t_group_gr_insert.sql"}
+```
+
+</details>
+
+
 
 
 
