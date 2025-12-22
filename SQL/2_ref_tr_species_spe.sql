@@ -76,3 +76,7 @@ IS 'Species, ''126281'' primary key on both met_spe_code and met_var.';
 ALTER TABLE dateel.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT '126281';
 ALTER TABLE datnas.t_stock_sto ALTER COLUMN sto_spe_code SET DEFAULT '127186';
 -- no default for datbast
+
+COMMENT ON TABLE  ref.tr_species_spe IS 
+'Table of fish species, spe_code using AphiaID as the reference with 
+reference to ICES vocabularies.'

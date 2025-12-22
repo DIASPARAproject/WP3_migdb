@@ -36,11 +36,11 @@ include-after-body: "footer.html"
 
 #if (!grepl("montepomi", getwd())) {
 if(Sys.info()[["user"]] == 'joliviero'){
-setwd("D:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "D:/DIASPARA/wgbast"
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
 } else if (Sys.info()[["user"]] == 'cedric.briand'){
-setwd("C:/workspace/DIASPARA_WP3_migdb/R")
-datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
 }
 source("utilities/load_library.R")
 load_library("tidyverse")
@@ -59,11 +59,11 @@ load_library("janitor") # clean_names
 load_library("uuid")
 cred <- read_yaml("../credentials.yml")
 con_diaspara <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamediaspara,
-                           host = cred$hostdistant,
-                           port = cred$port,
-                           user = cred$userdiaspara,
-                           password = cred$passworddiaspara)
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostdistant,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
 con_diaspara_admin <- dbConnect(Postgres(), 
                                 dbname = cred$dbnamediaspara,
                                 host = cred$hostdistant,
@@ -77,11 +77,11 @@ con_salmoglob <- dbConnect(Postgres(),
                            user = cred$usersalmo,
                            password = cred$passwordsalmo)
 con_wgeel_distant <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamedistant,
-                           host = cred$hostdistant,
-                           port = cred$port,
-                           user = cred$userdistant,
-                           password = cred$passworddistant)
+                               dbname = cred$dbnamedistant,
+                               host = cred$hostdistant,
+                               port = cred$port,
+                               user = cred$userdistant,
+                               password = cred$passworddistant)
 # con_wgeel_local <- dbConnect(Postgres(), 
 #                            dbname = "wgeel",
 #                            host = "127.0.0.1",
@@ -94,7 +94,7 @@ con_wgeel_distant <- dbConnect(Postgres(),
 
 Aside the main db report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. In the project these correspond to LHT, but additionally, the data should also correspond to the time series and the sampling db developed by WGEEL. The two latter data structure (series and sampling) are very similar and they both hold very similar group metrics and individual metrics.
 
- The first was developed initially to store data about the series used in recruitment. In practice, it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
+The first was developed initially to store data about the series used in recruitment. In practice, it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
 Finally, we can link individual metrics. The individual metrics are all detailed for one fish. And they concern metrics like size, weight, sex, but also can hold data about quality, contamination. So these are in essence the Life History traits analysed by WP2 in DIASPARA  (Figure @fig-series_diagram_wgeel - in pink).
 
 ![Diagram for series](images/series_diagram_wgeel.png "A sql diagram of the relations of tables for series"){#fig-series_diagram_wgeel}
@@ -152,7 +152,7 @@ straight as they are in our template database.
 #| tbl-cap: Semantic relation
 SemanticRelation <- getCodeList("SemanticRelation")
 knitr::kable(SemanticRelation)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 ```{r icesVocabRelation}
@@ -166,7 +166,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "SemanticRelation", PRGOV)
 dbExecute(con_diaspara, 'ALTER TABLE "SemanticRelation" SET SCHEMA ref;') 
 dbExecute(con_diaspara,
- 'ALTER TABLE ref."SemanticRelation" ADD CONSTRAINT semanticrelation_pkey PRIMARY KEY ("Key");') 
+          'ALTER TABLE ref."SemanticRelation" ADD CONSTRAINT semanticrelation_pkey PRIMARY KEY ("Key");') 
 
 ```
 
@@ -183,7 +183,7 @@ dbExecute(con_diaspara,
 
 PRGOV <- getCodeList("PRGOV")
 knitr::kable(PRGOV)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ```{r icesPRGOV}
@@ -197,7 +197,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "PRGOV", PRGOV)
 dbExecute(con_diaspara, 'ALTER TABLE "PRGOV" SET SCHEMA ref;') 
 dbExecute(con_diaspara, 
-'ALTER TABLE ref."PRGOV" ADD CONSTRAINT prgov_pkey PRIMARY KEY ("Key");') 
+          'ALTER TABLE ref."PRGOV" ADD CONSTRAINT prgov_pkey PRIMARY KEY ("Key");') 
 ```
 
 ### EDMO
@@ -213,8 +213,8 @@ dbExecute(con_diaspara,
 
 
 EDMO <- getCodeList("EDMO")|>slice_head(n=10)  |>
-knitr::kable() |>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -237,7 +237,7 @@ To request a new EDMO an organisation needs to send an email to info@maris.nl
 dbWriteTable(con_diaspara, "EDMO", EDMO)
 dbExecute(con_diaspara, 'ALTER TABLE "EDMO" SET SCHEMA ref;')  
 dbExecute(con_diaspara, 
-'ALTER TABLE ref."EDMO" ADD CONSTRAINT edmo_pkey PRIMARY KEY ("Key");')  
+          'ALTER TABLE ref."EDMO" ADD CONSTRAINT edmo_pkey PRIMARY KEY ("Key");')  
 ```
 
 ### PURPM
@@ -254,7 +254,7 @@ dbExecute(con_diaspara,
 
 PURPM <- getCodeList("PURPM")
 knitr::kable(PURPM)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ```{r icesPURPM}
@@ -267,7 +267,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "PURPM", PURPM)
 dbExecute(con_diaspara, 'ALTER TABLE "PURPM" SET SCHEMA ref;')
 dbExecute(con_diaspara, 
-'ALTER TABLE ref."PURPM" ADD CONSTRAINT purm_pkey PRIMARY KEY ("Key");')    
+          'ALTER TABLE ref."PURPM" ADD CONSTRAINT purm_pkey PRIMARY KEY ("Key");')    
 ```
 
 ### DTYPE
@@ -282,7 +282,7 @@ dbExecute(con_diaspara,
 #| tbl-cap: Station dictionary data type
 Station_DTYPE <- getCodeList("Station_DTYPE")
 knitr::kable(Station_DTYPE)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ```{r icesStation_DTYPE}
@@ -296,7 +296,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 dbWriteTable(con_diaspara, "Station_DTYPE", Station_DTYPE)
 dbExecute(con_diaspara, 'ALTER TABLE "Station_DTYPE" SET SCHEMA ref;')  
 dbExecute(con_diaspara, 
-'ALTER TABLE ref."Station_DTYPE" ADD CONSTRAINT station_dtype_pkey PRIMARY KEY ("Key");') 
+          'ALTER TABLE ref."Station_DTYPE" ADD CONSTRAINT station_dtype_pkey PRIMARY KEY ("Key");') 
 ```
 
 ### WLTYP
@@ -311,7 +311,7 @@ dbExecute(con_diaspara,
 #| tbl-cap: Water and Land Station Type
 WLTYP <- getCodeList("WLTYP")
 knitr::kable(WLTYP)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 ```{r icesStation_WLTYP}
 #| echo: TRUE
@@ -325,9 +325,9 @@ dbExecute(con_diaspara, 'DROP TABLE IF EXISTS ref."WLTYP";')
 WLTYP$Key[is.na(WLTYP$Key)] <- "NA"
 dbWriteTable(con_diaspara, "WLTYP", WLTYP)
 dbExecute(con_diaspara, 
-'ALTER TABLE "WLTYP" SET SCHEMA ref;') 
+          'ALTER TABLE "WLTYP" SET SCHEMA ref;') 
 dbExecute(con_diaspara, 
-'ALTER TABLE ref."WLTYP" ADD CONSTRAINT wltype_pkey PRIMARY KEY ("Key");') 
+          'ALTER TABLE ref."WLTYP" ADD CONSTRAINT wltype_pkey PRIMARY KEY ("Key");') 
 
 ```
 
@@ -345,7 +345,7 @@ dbExecute(con_diaspara,
 
 MSTAT <- getCodeList("MSTAT")
 knitr::kable(MSTAT)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ```{r icesStation_MSTAT}
@@ -357,7 +357,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 #| code-summary: Code to import ices MSTAT.
 dbWriteTable(con_diaspara, "MSTAT", MSTAT)
 dbExecute(con_diaspara, 
-'ALTER TABLE ref."MSTAT" ADD CONSTRAINT mstat_pkey PRIMARY KEY ("Key");')   
+          'ALTER TABLE ref."MSTAT" ADD CONSTRAINT mstat_pkey PRIMARY KEY ("Key");')   
 ```
 
 
@@ -374,7 +374,7 @@ dbExecute(con_diaspara,
 #| tbl-cap: Deprecated
 Deprecated <- getCodeList("Deprecated")
 knitr::kable(Deprecated)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Habitat
@@ -430,13 +430,13 @@ values <- getNodeSet(xml_data, "//value")
 extract_info <- function(node) {
   id <- XML::xmlGetAttr(node, "id")
   code <- gsub("http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/",
-  x= id,replacement = "")
+               x= id,replacement = "")
   label <- XML::xmlValue(node[["label"]])
   #defintion <- XML::xmlValue(node[["defintion"]])
   status_node <- XML::getNodeSet(node, ".//status/label")[[1]]
   status <- XML::xmlValue(status_node)
   return(data.frame(id = id, code = code, label = label,
-  status = status, stringsAsFactors = FALSE))
+                    status = status, stringsAsFactors = FALSE))
 }
 
 habitat <- do.call(rbind, lapply(values, extract_info))
@@ -450,10 +450,10 @@ dbExecute(con_diaspara, 'DELETE FROM ref.tr_habitat_hab;')
 dbWriteTable(con_diaspara, "habitat_temp", habitat)
 
 dbExecute(con_diaspara, 
-'INSERT INTO "ref".tr_habitat_hab SELECT code, label, id, NULL,
+          'INSERT INTO "ref".tr_habitat_hab SELECT code, label, id, NULL,
  NULL, NULL FROM habitat_temp;') #58
 dbExecute(con_diaspara, "DROP TABLE habitat_temp")#0
- 
+
 ```
 
 ```{r tbl-habitat}
@@ -467,7 +467,7 @@ dbExecute(con_diaspara, "DROP TABLE habitat_temp")#0
 
 habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
 knitr::kable(habitat)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Fishway type ref.tr_fishway_fiw
@@ -494,7 +494,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_fishway_fiw;")
 knitr::kable(habitat)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Fish migration monitoring  ref.tr_monitoring_mon
@@ -520,9 +520,9 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 #| tbl-cap: Fishway vocab proposed to ICES.
 
 habitat <- dbGetQuery(con_diaspara, 
-"SELECT * FROM ref.tr_monitoring_mon;")
+                      "SELECT * FROM ref.tr_monitoring_mon;")
 knitr::kable(habitat)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Fish Traits  ref.tr_trait_tra
@@ -588,51 +588,51 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 # we will include group metric names later
 tra <- tra[(!grepl("mean", tra$mty_name) | 
-            tra$mty_name =='eye_diam_meanmm' |
-            tra$mty_name == 'teq'),]
+              tra$mty_name =='eye_diam_meanmm' |
+              tra$mty_name == 'teq'),]
 # we will also include method later
 tra <- tra[!grepl("method", tra$mty_name),]
 res <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_trait_tra")
 #clipr::write_clip(colnames(res))
 tranum <- data.frame(
-"tra_id" = tra$mty_id,
-"tra_code" = stringi::stri_trans_totitle(tra$mty_name),
-"tra_description" = tra$mty_description,
-"tra_wkg_code" = 'WGEEL',
-"Tra_spe_code" = 'ANG',
-"trn_uni_code" = tra$mty_uni_code,
-"tra_typemetric"=stringi::stri_trans_totitle(tra$mty_group),
-"tra_qualitativeornumeric"='Numeric',
-"trn_minvalue" = tra$mty_min,
-"trn_maxvalue" = tra$mty_max)
+  "tra_id" = tra$mty_id,
+  "tra_code" = stringi::stri_trans_totitle(tra$mty_name),
+  "tra_description" = tra$mty_description,
+  "tra_wkg_code" = 'WGEEL',
+  "Tra_spe_code" = 'ANG',
+  "trn_uni_code" = tra$mty_uni_code,
+  "tra_typemetric"=stringi::stri_trans_totitle(tra$mty_group),
+  "tra_qualitativeornumeric"='Numeric',
+  "trn_minvalue" = tra$mty_min,
+  "trn_maxvalue" = tra$mty_max)
 
 
 # the proportions will be numeric for group and qualitative for individual (
 # e.g. evex presence)
 
 tranum[tranum$tra_typemetric=="Both" & grepl("proportion",tranum$tra_code),
-c("tra_typemetric")] <- "Group"
+       c("tra_typemetric")] <- "Group"
 
 
 # view(tranum)
 # fix names
 tranum$tra_description[tranum$tra_code=="Lengthmm"] <-
-'Total body length in millimeters (mm) or mean total body length for group'
+  'Total body length in millimeters (mm) or mean total body length for group'
 tranum$tra_description[tranum$tra_code=="Differentiated_proportion"] <-
- 'Proportion of differentiated eel (between 0 and 1)'
+  'Proportion of differentiated eel (between 0 and 1)'
 
 tranum$tra_description[tranum$tra_code=="Female_proportion"] <-
- 'Female proportion in the population female/(male+female) for group (between 0 and 1)'
+  'Female proportion in the population female/(male+female) for group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Anguillicola_proportion"] <-
- 'Prevalence of Anguillicola in proportion in group (between 0 and 1)'
+  'Prevalence of Anguillicola in proportion in group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Evex_proportion"] <-
- 'EVE and EVEX proportion in the group (between 0 and 1)'
+  'EVE and EVEX proportion in the group (between 0 and 1)'
 tranum$tra_description[tranum$tra_code=="Hva_proportion"] <-
- 'HVA proportion in the group (between 0 and 1)'
+  'HVA proportion in the group (between 0 and 1)'
 # duplicated, now two methods
 tranum <- tranum[tranum$tra_id!=11,] 
 tranum$tra_description[tranum$tra_id==10] <-
-"Lipid percentage or mean muscle lipid percentage for group"
+  "Lipid percentage or mean muscle lipid percentage for group"
 tranum[tranum$tra_id==10,"tra_code"] <- "Muscle_lipid"
 
 dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
@@ -662,8 +662,8 @@ trn_maxvalue
  FROM tr_traitnumeric_trn_temp") #18
 
 
- dbExecute(con_diaspara_admin, 
- "INSERT INTO refeel.tr_traitnumeric_trn (tra_id,tra_code,tra_description,
+dbExecute(con_diaspara_admin, 
+          "INSERT INTO refeel.tr_traitnumeric_trn (tra_id,tra_code,tra_description,
  tra_wkg_code,tra_spe_code,tra_typemetric,tra_qualitativeornumeric,
  trn_uni_code,trn_minvalue,trn_maxvalue)
 	VALUES (27,'Eye_diam_vert_mm','Eye diameter (vertical) in mm','WGEEL',
@@ -676,7 +676,7 @@ trn_uni_code,trn_minvalue,trn_maxvalue)
 ") #18
 
 
- dbExecute(con_diaspara_admin,  "UPDATE refeel.tr_traitnumeric_trn
+dbExecute(con_diaspara_admin,  "UPDATE refeel.tr_traitnumeric_trn
 	SET tra_code='Eye_diam_mean_mm'
 	WHERE tra_id=4;")
 
@@ -693,8 +693,8 @@ trn_uni_code,trn_minvalue,trn_maxvalue)
 #| code-summary: Code to show trait numeric table.
 #| tbl-cap: Quantitative parameters parameters
 dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;") |>
-   knitr::kable()|>
-   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -721,19 +721,19 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;") |>
 tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
 # we will include group metric names later
 tra <- tra[grepl("is_", tra$mty_individual_name) |
- grepl("presence", tra$mty_individual_name),]
+             grepl("presence", tra$mty_individual_name),]
 # we will also include method later
 
 #clipr::write_clip(colnames(res))
 traqal <- data.frame(
-"tra_id" = tra$mty_id,
-"tra_code" = stringi::stri_trans_totitle(tra$mty_individual_name),
-"tra_description" = tra$mty_description,
-"tra_wkg_code" = 'WGEEL',
-"Tra_spe_code" = 'ANG',
-"tra_uni_code" = tra$mty_uni_code,
-"tra_typemetric"='Individual',
-"tra_qualitativeornumeric"='Qualitative'
+  "tra_id" = tra$mty_id,
+  "tra_code" = stringi::stri_trans_totitle(tra$mty_individual_name),
+  "tra_description" = tra$mty_description,
+  "tra_wkg_code" = 'WGEEL',
+  "Tra_spe_code" = 'ANG',
+  "tra_uni_code" = tra$mty_uni_code,
+  "tra_typemetric"='Individual',
+  "tra_qualitativeornumeric"='Qualitative'
 )
 
 
@@ -747,24 +747,24 @@ traqal$tra_individualname <- traqal$tra_code
 # fix names
 
 traqal$tra_description[traqal$tra_code=="Is_differentiated"] <- 
-'Is the eel differentiated (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+  'Is the eel differentiated (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
 traqal$tra_description[traqal$tra_code=="Sex"] <-
- 'Sex (F Female,
+  'Sex (F Female,
  H Hermaphordite,
 I Immature attempt made,M Male, 
 T Transitional, 
 U Undetermined no attempt made, 
 X Mixed)'
 traqal$tra_description[traqal$tra_code=="Anguillicola_presence"] <-
- 'Presence of Anguillicola (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+  'Presence of Anguillicola (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
 traqal$tra_description[traqal$tra_code=="Evex_presence"] <-
- 'EVE or EVEX presence (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+  'EVE or EVEX presence (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
 traqal$tra_description[traqal$tra_code=="Hva_presence"] <-
- 'HVA presence (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
+  'HVA presence (Y Yes, N No, NA Not applicable,P probable, U Unknown)'
 # view(traqal)
 
 dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp",
- traqal, overwrite =TRUE)
+             traqal, overwrite =TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitqualitative_trq");
 dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitqualitative_trq(
 tra_id,
@@ -804,19 +804,19 @@ SELECT
 'Qualitative'") 
 # duplicated for variables which were both group and 
 dbExecute(con_diaspara_admin,
- "UPDATE refeel.tr_traitqualitative_trq SET tra_id = 34 
+          "UPDATE refeel.tr_traitqualitative_trq SET tra_id = 34 
  WHERE tra_code='Hva_presence';")
 dbExecute(con_diaspara_admin, 
-"UPDATE refeel.tr_traitqualitative_trq SET tra_id = 33 
+          "UPDATE refeel.tr_traitqualitative_trq SET tra_id = 33 
 WHERE tra_code='Evex_presence';")
 dbExecute(con_diaspara_admin, 
-"UPDATE refeel.tr_traitqualitative_trq SET tra_id= 32 
+          "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 32 
 WHERE tra_code='Anguillicola_presence';")
 dbExecute(con_diaspara_admin, 
-"UPDATE refeel.tr_traitqualitative_trq SET tra_id= 31 
+          "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 31 
 WHERE tra_code='Is_differentiated'")
 dbExecute(con_diaspara_admin,
- "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 30 
+          "UPDATE refeel.tr_traitqualitative_trq SET tra_id= 30 
  WHERE tra_code='Sex';")
 ```
 
@@ -830,9 +830,9 @@ dbExecute(con_diaspara_admin,
 #| code-summary: Code to show qualitative trait table.
 #| tbl-cap: Qualitative parameters
 dbGetQuery(con_diaspara,
- "SELECT * FROM refeel.tr_traitqualitative_trq;") |> 
- knitr::kable() |>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+           "SELECT * FROM refeel.tr_traitqualitative_trq;") |> 
+  knitr::kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -874,20 +874,20 @@ trq <- data.frame(
     rep(trq$tra_code[5],5),
     rep(trq$tra_code[6],7)),
   "trv_code"=c(c("VA","VB","VIA0","VIA1","VIA2",
-  "VIA3","VIA4","VIB","VII", "mix_VIA1_VIA4",
-   "mix_VA_VB", "U","NA"),
-   rep(c("N","NA","U","Y","P"),4),
-   c("F","I","M","T","U","X","H")),
+                 "VIA3","VIA4","VIB","VII", "mix_VIA1_VIA4",
+                 "mix_VA_VB", "U","NA"),
+               rep(c("N","NA","U","Y","P"),4),
+               c("F","I","M","T","U","X","H")),
   "trv_description" = c(
-  "No pigmentation except a spot on the caudal fin",
-  "Early development of the pigmentation on the skull,
+    "No pigmentation except a spot on the caudal fin",
+    "Early development of the pigmentation on the skull,
    no superficial piment beyond the cerebral spot.",
-  "Development of dorsal pigmentation along the base of dorsal fin",
-  "The dosal pigmentation is complete from head to tail",
-  "Presence of medio lateral pigmentation but
+   "Development of dorsal pigmentation along the base of dorsal fin",
+   "The dosal pigmentation is complete from head to tail",
+   "Presence of medio lateral pigmentation but
    it does not reach the beginning of the dorsal fin",
-  "The medio-lateral pigmentation reaches the beginning of the dorsal fin",
-  "Ventro lateral pigmentation distributed along the myosepta. 
+   "The medio-lateral pigmentation reaches the beginning of the dorsal fin",
+   "Ventro lateral pigmentation distributed along the myosepta. 
   Pigments are still distinct.",
   "Pigments are no longer distinct in the ventro lateral region",
   "Loss of transparency, the abdominal cavity takes a silvery color.
@@ -899,10 +899,10 @@ trq <- data.frame(
   rep(c("No","Not Applicable", "Unknown","Yes", "Probable"), 4),
   "Female", "Immature - attempt made but sex could not be destinguished",
   "Male", "Transitional", "Undetermined - no attempt made", "Mixed",
-   "Hermaphrodite"
+  "Hermaphrodite"
   ))
 dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_trv_temp", trq,
-overwrite =TRUE)
+             overwrite =TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM refeel.tr_traitvaluequal_trv");
 dbExecute(con_diaspara_admin, "INSERT INTO refeel.tr_traitvaluequal_trv
 SELECT 
@@ -1018,7 +1018,7 @@ trm_description
 
 trm <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitmethod_trm;")
 knitr::kable(trm)|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -1028,7 +1028,7 @@ Series will be linked to one or several stations.
 
 The station are loaded into a table that will not be
 exactly like ICES's since I cannot load the full tables, and don't want to replicate the full complexity of stations. For instance currently station 1000 has several parents for "Station_DTYPE" which I agregate like EW~EU~NU~CW,
- in my table. But the vocab is here.
+in my table. But the vocab is here.
 
 
 <details>
@@ -1057,7 +1057,7 @@ The following chunk creates a vocab with 14086 stations.
 
 library(icesStation)
 system.time(
-station <- getListStation())
+  station <- getListStation())
 # user     system      spent
 #    268.09        9.06     1402.47 
 save(station, file = "data/station.Rdata")
@@ -1105,8 +1105,8 @@ SELECT
 "Station_Notes", 
 "Station_Deprecated" 
  FROM temp_station') #14086
- dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
-  
+dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
+
 ```
 
 
@@ -1123,9 +1123,9 @@ SELECT
 
 library(icesStation)
 system.time(
-station <- getListStation())
+  station <- getListStation())
 #      user     system      spent
- #    268.09        9.06     1402.47 
+#    268.09        9.06     1402.47 
 save(station, file = "data/station.Rdata")
 # load(file = "data/station.Rdata")
 initcap <- function(X) paste0(substring(X,1,1),tolower(substring(X,2, length(X))))
@@ -1171,8 +1171,8 @@ SELECT
 "Station_Notes", 
 "Station_Deprecated" 
  FROM temp_station') #14086
- dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
-  
+dbExecute(con_diaspara_admin, "DROP TABLE if exists temp_station")
+
 ```
 
 
@@ -1208,7 +1208,7 @@ This table is the same as in wgnas, it is inherited from ref.
 #| code-summary: Code to insert values into the tr_version_ver table
 
 
- 
+
 # get the latest version from the server
 ver <- dbGetQuery(con_wgeel_distant, "select * from ref.tr_datasource_dts")
 save(ver, file= "data/tr_datasource_dts.Rdata")
@@ -1218,26 +1218,26 @@ dcyear <- as.integer(lapply(strsplit(dc,"_"), function(X)X[2]))
 wgeel <- ver[grepl("wgeel", ver$dts_datasource), "dts_datasource"]
 wgeelyear <- as.integer(lapply(strsplit(wgeel,"_"), function(X)X[2]))
 tr_version_ver <- data.frame(
-ver_code = paste0(rep("ANG-", 11),
-         c(wgeelyear, dcyear, 2025),c("-1","-2",rep("-1", 9))),
-ver_year = c(wgeelyear, dcyear, 2025,2025),
-ver_spe_code = "ANG",
-ver_datacalldoi=c(rep(NA, 10), 
-"https://doi.org/10.17895/ices.pub.25816738.v2",
-"https://doi.org/10.17895/ices.pub.25816738.v2",
-"https://doi.org/10.17895/ices.pub.29254589"), 
-ver_stockkeylabel =c("ele.2737.nea"), 
-ver_version=c(1,2,rep(1,19),2), 
-ver_description=ver$dts_description) # 
+  ver_code = paste0(rep("ANG-", 11),
+                    c(wgeelyear, dcyear, 2025),c("-1","-2",rep("-1", 9))),
+  ver_year = c(wgeelyear, dcyear, 2025,2025),
+  ver_spe_code = "ANG",
+  ver_datacalldoi=c(rep(NA, 10), 
+                    "https://doi.org/10.17895/ices.pub.25816738.v2",
+                    "https://doi.org/10.17895/ices.pub.25816738.v2",
+                    "https://doi.org/10.17895/ices.pub.29254589"), 
+  ver_stockkeylabel =c("ele.2737.nea"), 
+  ver_version=c(1,2,rep(1,19),2), 
+  ver_description=ver$dts_description) # 
 
 DBI::dbWriteTable(con_diaspara_admin, "temp_tr_version_ver", tr_version_ver, 
-overwrite = TRUE)
+                  overwrite = TRUE)
 dbExecute(con_diaspara_admin, 
-"INSERT INTO refeel.tr_version_ver(ver_code,ver_year,ver_spe_code,
+          "INSERT INTO refeel.tr_version_ver(ver_code,ver_year,ver_spe_code,
  ver_datacalldoi,ver_stockkeylabel,ver_version, ver_description) 
  SELECT ver_code,ver_year,ver_spe_code, ver_datacalldoi,
  ver_stockkeylabel,ver_version, ver_descriptio FROM temp_tr_version_ver;") # 5
- DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
+DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 
 ```
@@ -1252,8 +1252,8 @@ dbExecute(con_diaspara_admin,
 #| tbl-cap: Version
 
 dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_version_ver;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1374,31 +1374,31 @@ ser_are_code DROP NOT NULL")
 dbExecute(con_diaspara_admin, "ALTER TABLE dateel.t_series_ser ALTER COLUMN  
 ser_cou_code DROP NOT NULL")
 dbExecute(con_diaspara_admin, 
-"ALTER TABLE dateel.t_series_ser DROP CONSTRAINT uk_ser_name")
+          "ALTER TABLE dateel.t_series_ser DROP CONSTRAINT uk_ser_name")
 
 t_series_ser <-
   data.frame(
-   "ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
-   "ser_code" = ser$ser_nameshort,
+    "ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
+    "ser_code" = ser$ser_nameshort,
     "ser_name"  = ser$ser_namelong,
-   "ser_spe_code" = "ANG",
-   "ser_lfs_code" = ser$ser_lfs_code,
-   "ser_are_code" = ser$ser_emu_nameshort,
-   "ser_wkg_code" = "WGEEL",
-   "ser_ver_code" = case_when(ser$ser_dts_datasource =="dc_2019" ~ "ANG-2019-1",
-                              ser$ser_dts_datasource =="dc_2021" ~ "ANG-2021-1",
-                              ser$ser_dts_datasource =="dc_2022" ~ "ANG-2022-1",
-                              ser$ser_dts_datasource =="dc_2023" ~ "ANG-2023-1",
-                              ser$ser_dts_datasource =="dc_2024" ~ "ANG-2024-1",
-                              .default = "ANG-2018-1"),
-   "ser_cou_code" = ser$ser_cou_code,
-   "ser_hab_code" = NA,
-   "ser_gea_code" = ser$gea_issscfg_code,
-   "ser_fiw_code" = NA,
-   "ser_mon_code" = NA,
-   "ser_uni_code" = ser$ser_uni_code,
-   "ser_effort_uni_code" = ser$ser_effort_uni_code,
-   "ser_description" = ser$ser_comment,
+    "ser_spe_code" = "ANG",
+    "ser_lfs_code" = ser$ser_lfs_code,
+    "ser_are_code" = ser$ser_emu_nameshort,
+    "ser_wkg_code" = "WGEEL",
+    "ser_ver_code" = case_when(ser$ser_dts_datasource =="dc_2019" ~ "ANG-2019-1",
+                               ser$ser_dts_datasource =="dc_2021" ~ "ANG-2021-1",
+                               ser$ser_dts_datasource =="dc_2022" ~ "ANG-2022-1",
+                               ser$ser_dts_datasource =="dc_2023" ~ "ANG-2023-1",
+                               ser$ser_dts_datasource =="dc_2024" ~ "ANG-2024-1",
+                               .default = "ANG-2018-1"),
+    "ser_cou_code" = ser$ser_cou_code,
+    "ser_hab_code" = NA,
+    "ser_gea_code" = ser$gea_issscfg_code,
+    "ser_fiw_code" = NA,
+    "ser_mon_code" = NA,
+    "ser_uni_code" = ser$ser_uni_code,
+    "ser_effort_uni_code" = ser$ser_effort_uni_code,
+    "ser_description" = ser$ser_comment,
     "ser_locationdescription" = ser$ser_locationdescription,
     "ser_wltyp_code" = case_when(ser$ser_hty_code == "T" ~ "T",
                                  ser$ser_hty_code == "C" ~ "MC",
@@ -1446,32 +1446,32 @@ SELECT
 FROM t_series_ser_temp") # 294 
 
 sai <- dbGetQuery(con_wgeel_distant, 
-"SELECT sai.* FROM datawg.t_samplinginfo_sai sai;
+                  "SELECT sai.* FROM datawg.t_samplinginfo_sai sai;
 ")
 
 t_series_ser2 <-
   data.frame(
-   "ser_id" = uuid::UUIDgenerate(n=nrow(sai)),
-   "ser_code" = sai$sai_id,
+    "ser_id" = uuid::UUIDgenerate(n=nrow(sai)),
+    "ser_code" = sai$sai_id,
     "ser_name"  = sai$sai_name,
-   "ser_spe_code" = "ANG",
-   "ser_lfs_code" = NA,
-   "ser_are_code" = NA, # TODO sai_emu_nameshort sai_area_division
-   "ser_wkg_code" = "WGEEL",
-   "ser_ver_code" = case_when(sai$sai_dts_datasource =="dc_2019" ~ "WGEEL-2019-1",
-                              sai$sai_dts_datasource =="dc_2021" ~ "WGEEL-2021-1",
-                              sai$sai_dts_datasource =="dc_2022" ~ "WGEEL-2022-1",
-                              sai$sai_dts_datasource =="dc_2023" ~ "WGEEL-2023-1",
-                              sai$sai_dts_datasource =="dc_2024" ~ "WGEEL-2024-1",
-                              .default = "WGEEL-2018-1"),
-   "ser_cou_code" = sai$sai_cou_code,
-   "ser_hab_code" = NA,
-   "ser_gea_code" = NA,
-   "ser_fiw_code" = NA,
-   "ser_mon_code" = NA,
-   "ser_uni_code" = NA,
-   "ser_effort_uni_code" = NA,
-   "ser_description" = sai$sai_comment,
+    "ser_spe_code" = "ANG",
+    "ser_lfs_code" = NA,
+    "ser_are_code" = NA, # TODO sai_emu_nameshort sai_area_division
+    "ser_wkg_code" = "WGEEL",
+    "ser_ver_code" = case_when(sai$sai_dts_datasource =="dc_2019" ~ "WGEEL-2019-1",
+                               sai$sai_dts_datasource =="dc_2021" ~ "WGEEL-2021-1",
+                               sai$sai_dts_datasource =="dc_2022" ~ "WGEEL-2022-1",
+                               sai$sai_dts_datasource =="dc_2023" ~ "WGEEL-2023-1",
+                               sai$sai_dts_datasource =="dc_2024" ~ "WGEEL-2024-1",
+                               .default = "WGEEL-2018-1"),
+    "ser_cou_code" = sai$sai_cou_code,
+    "ser_hab_code" = NA,
+    "ser_gea_code" = NA,
+    "ser_fiw_code" = NA,
+    "ser_mon_code" = NA,
+    "ser_uni_code" = NA,
+    "ser_effort_uni_code" = NA,
+    "ser_description" = sai$sai_comment,
     "ser_locationdescription" = NA,
     "ser_wltyp_code" = case_when(sai$sai_hty_code == "T" ~ "T",
                                  sai$sai_hty_code == "C" ~ "MC",
@@ -1529,8 +1529,8 @@ FROM t_series_ser_temp2") # 252
 #| code-summary: Code to show series table.
 #| tbl-cap: Table t_series_ser for series first 20 lines
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_series_ser limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -1581,8 +1581,8 @@ clipr::write_clip(colnames(res))
 
 das0$das_dts_datasource[is.na(das0$das_dts_datasource)] <- "WGEEL-2016"
 das0$das_dts_datasource <- 
-paste0(gsub(pattern = "dc_", replacement = "WGEEL-", 
-       x= das0$das_dts_datasource), "-1")
+  paste0(gsub(pattern = "dc_", replacement = "WGEEL-", 
+              x= das0$das_dts_datasource), "-1")
 das0$das_qal_id[is.na(das0$das_qal_id)] <- 1
 
 nrow(das0) # 6523
@@ -1590,9 +1590,9 @@ das0 <- das0 |> filter(das0$das_qal_id <5)
 nrow(das0) # 6402
 
 ser <-  dbGetQuery(con_diaspara, 
-"SELECT ser_id, ser_code FROM dateel.t_series_ser")
+                   "SELECT ser_id, ser_code FROM dateel.t_series_ser")
 ser0 <- dbGetQuery(con_wgeel_distant, 
-"SELECT ser_id, ser_nameshort as ser_code FROM datawg.t_series_ser ser;")
+                   "SELECT ser_id, ser_nameshort as ser_code FROM datawg.t_series_ser ser;")
 
 # adding ser_code to the series.
 das <- das0 |> rename(ser_id = das_ser_id) |>
@@ -1646,8 +1646,8 @@ FROM t_serannual_san_temp") # 6402
 #| code-summary: Code to show series table.
 #| tbl-cap: Table t_serannual_san for annual values  first 20 lines
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_serannual_san limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Creating table joining series and station
@@ -1707,9 +1707,9 @@ are currently not transfered.
 #| code-summary: Code to show series metadata table.
 #| tbl-cap: Table t_recruitmentmetadata_met for additional values collected during wkeeldata
 dbGetQuery(con_diaspara, 
-"SELECT * FROM dateel.t_recruitmentmetadata_met limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+           "SELECT * FROM dateel.t_recruitmentmetadata_met limit 20;")|>
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 
@@ -1772,8 +1772,8 @@ so see if need removing.
 #| code-summary: Code to show group table.
 #| tbl-cap: Table t_group_gr, group related to annual values first 20 lines
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_group_gr limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 # Grouptrait table 
@@ -1816,8 +1816,8 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 #| code-summary: Code to show t_grouptrait_grt table.
 #| tbl-cap: Table t_grouptrait_grt, group metrics (t_grouptrait_grt)
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")|> 
-knitr::kable() |>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 # Creating ind metrics 
@@ -1853,8 +1853,8 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 #| code-summary: Code to show fish table.
 #| tbl-cap: Table t_fish_fi, fish table
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_fish_fi limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Table t_indtrait_int
@@ -1888,8 +1888,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_fish_fi limit 20;")|>
 #| code-summary: Code to show fish table.
 #| tbl-cap: Table t_indivtrait_int, fish metric table
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_indivtrait_int limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 [TODO] Link the ccm wso_id to the hydroshed db identifiers of the basins to get the best fit from tr_area_are.
@@ -1936,13 +1936,13 @@ So the metric release will be after wgeel, the work will be finished and this ca
 #| code-summary: Code to import to to refeel.tr_series_ser
 
 ser <- readxl::read_xlsx(file.path(datawd,
- "WGBAST_TRS_densities2024filled.xlsx"), sheet = "dane")
+                                   "WGBAST_TRS_densities2024filled.xlsx"), sheet = "dane")
 ser <- janitor::clean_names(ser)
 ser <- ser[,1:9]
 # res <- dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_series_ser")
 # clipr::write_clip(colnames(res))
 riv <- dbGetQuery(con_diaspara_admin,
- "SELECT are_code, riv_rivername  FROM refbast.tr_rivernames_riv 
+                  "SELECT are_code, riv_rivername  FROM refbast.tr_rivernames_riv 
                   JOIN refbast.tr_area_are on are_code = riv_are_code")
 riv$riv = stringi::stri_trans_general(riv$riv_rivername, "latin-ascii")
 ser$riv <-  stringi::stri_trans_general(ser$river, "latin-ascii")
@@ -1952,25 +1952,25 @@ ser <- ser |> inner_join(riv, by= join_by(riv))
 save(ser, file = "data/ser_wgbast.Rdata")
 t_series_ser <-
   data.frame(
-   "ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
-   "ser_code" = paste0(ser$country, "_", 
-   substr(stringi::stri_trans_general(ser$river, "latin-ascii"),1,4),"_P_TRS"),
+    "ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
+    "ser_code" = paste0(ser$country, "_", 
+                        substr(stringi::stri_trans_general(ser$river, "latin-ascii"),1,4),"_P_TRS"),
     "ser_name"  = ser$river,
-   "ser_spe_code" = "TRS",
-   "ser_lfs_code" = "P",
-   "ser_are_code" = ser$are_code,
-   "ser_wkg_code" = "WGBAST",
-   "ser_ver_code" = "WGBAST-2025-1",
-   "ser_cou_code" = ser$country,
-   "ser_hab_code" = NA, # TODO integrate habitats from eiunis https://eunis.eea.europa.eu/habitats-code-browser.jsp?expand=58,66,79,17#level_17
-   "ser_gea_code" = '10.4', # electric fishing
-   "ser_fiw_code" = NA,
-   "ser_mon_code" = NA,
-   "ser_uni_code" = "nr",
-   "ser_effort_uni_code" = "nr/m2",
-   "ser_description" = NA,
+    "ser_spe_code" = "TRS",
+    "ser_lfs_code" = "P",
+    "ser_are_code" = ser$are_code,
+    "ser_wkg_code" = "WGBAST",
+    "ser_ver_code" = "WGBAST-2025-1",
+    "ser_cou_code" = ser$country,
+    "ser_hab_code" = NA, # TODO integrate habitats from eiunis https://eunis.eea.europa.eu/habitats-code-browser.jsp?expand=58,66,79,17#level_17
+    "ser_gea_code" = '10.4', # electric fishing
+    "ser_fiw_code" = NA,
+    "ser_mon_code" = NA,
+    "ser_uni_code" = "nr",
+    "ser_effort_uni_code" = "nr/m2",
+    "ser_description" = NA,
     "ser_locationdescription" = 
-    paste0("main_river"=ser$main_river,", river = ",ser$river,",
+      paste0("main_river"=ser$main_river,", river = ",ser$river,",
      sub_div= ",ser$sub_div),
     "ser_wltyp_code" =  "FW",
     "ser_stocking" = NA,
@@ -2032,8 +2032,8 @@ be created.
 #| code-summary: Code to show series table for wbast (this is just an example).
 #| tbl-cap: Table t_series_ser for series first 20 lines
 dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_series_ser limit 20;")|> 
-knitr::kable()|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 ## Creating table joining series and station
@@ -2082,9 +2082,9 @@ load(file = "data/ser_wgbast.Rdata") #ser
 
 ser0 <- dbGetQuery(con_diaspara_admin, "SELECT * FROM datbast.t_series_ser")
 ser <- ser |> mutate(ser_code =  
-paste0(ser$country, "_", substr(
- stringi::stri_trans_general(ser$river, "latin-ascii"),1,4),"_P_TRS")) |>
- inner_join(ser0)
+                       paste0(ser$country, "_", substr(
+                         stringi::stri_trans_general(ser$river, "latin-ascii"),1,4),"_P_TRS")) |>
+  inner_join(ser0)
 
 t_serannual_san_temp <-
   data.frame(
@@ -2103,7 +2103,7 @@ t_serannual_san_temp <-
 
 
 dbWriteTable(con_diaspara_admin, "t_serannual_san_temp", 
-                    t_serannual_san_temp, overwrite = TRUE)
+             t_serannual_san_temp, overwrite = TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM  datbast.t_serannual_san;")
 dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_serannual_san 
 SELECT 
@@ -2139,9 +2139,174 @@ to replace NULL.
 #| code-summary: Code to show series table.
 #| tbl-cap: Table databast.t_serannual_san for annual values  first 20 lines
 dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_serannual_san limit 20;")|>
- knitr::kable()|>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+
+# WGNAS
+
+Here we import files from WP2
+
+
+## series table t_series_ser
+
+
+### Creating inherited series
+
+
+<details>
+
+<summary>SQL code to create table `datnas.t_series_ser`</summary>
+
+``` {.sql include="../SQL/metric_50_datnas_t_series_ser.sql"}
+```
+
+</details>
+
+
+
+
+### Import t_series_ser example data (WP2)
+
+```{r refnas.t_series_ser}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to to refnas.tr_series_ser
+
+ser <- readxl::read_xlsx(file.path(datawd,
+"../wgnas/burishoole.xlsx"),
+sheet = "sampling_info",
+col_types = c(rep("text",4),"numeric", rep("text", 8), rep("numeric", 2), "text")
+)
+# note I have manually added sai_x and sai_y to sampling_info
+# below I'm getting the river code with a spatial query
+ser <- ser[1:2,] 
+ser <- st_as_sf(ser, coords = c("sai_x", "sai_y"), crs = 4326, remove = FALSE)
+
+st_write(ser, con_diaspara, "series_temp")
+
+temp = dbGetQuery(con_diaspara,
+"SELECT * FROM series_temp join refnas.tr_area_are on 
+          st_intersects(geometry, geom_polygon) WHERE
+          are_lev_code = 'River'")$are_code
+
+# Here check that we don't return two intersects or none (which might happen)
+
+stopifnot(nrow(temp) == nrow(ser))
+if (any(is.na(temp$are_code))) stop ("problem with projection, check location")
+
+
+ser$are_code <- temp$are_code
+
+# this was to get the name of the lfs code for name, I'm ignoring it currently
+# stage = dbGetQuery(con_diaspara,
+# "SELECT * FROM ref.tr_lifestage_lfs where lfs_spe_code = '127186'")
+
+# ser$sai_lfs_code[ser$sai_lfs_code == 'S'] <- 'A'
+# ser <- ser |> st_drop_geometry() |> left_join(stage|> select(lfs_code,lfs_name),
+#  by = join_by(sai_lfs_code==lfs_code))
+
+# create verion for diaspara
+dbExecute(con_diaspara, "INSERT INTO refnas.tr_version_ver (ver_code,ver_year,ver_spe_code,ver_version,ver_description,ver_wkg_code)
+	VALUES (
+ 'DIASPARA-2025-1',
+ 2025,
+ 'Salmo salar',
+ 1,
+'WP2 data call for diaspara on LHT',
+'WGNAS');"
+)
+
+
+# Need to add electrofishing types to gear
+save(ser, file = "data/ser_burishoole.Rdata")
+t_series_ser <-
+data.frame(
+"ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
+"ser_code" = ser$sai_name,
+"ser_name"  = ser$sai_name,
+"ser_spe_code" = "127186",
+"ser_lfs_code" = ser$sai_lfs_code,
+"ser_are_code" = ser$are_code, # got from spatial query
+"ser_wkg_code" = "WGNAS",
+"ser_ver_code" = "DIASPARA-2025-1",
+"ser_cou_code" = ser$sai_cou_code,
+"ser_hab_code" = NA, # TODO remove 
+"ser_gea_code" = NA, # electric fishing
+"ser_fiw_code" = NA,
+"ser_mon_code" = NA,
+"ser_uni_code" = "nr",
+"ser_effort_uni_code" = NA,
+"ser_description" = NA,
+"ser_locationdescription" = NA, # TODO remove
+"ser_wltyp_code" =  case_when(ser$sai_hty_code == "T" ~ "T",
+ser$sai_hty_code == "C" ~ "MC",
+ser$sai_hty_code == "F" ~ "FW",
+ser$sai_hty_code == "MO" ~ "MO"),
+"ser_stocking" = ser$"sai_riverorigin(0=reared,1=wild,2=mixed)" %in% c(0,2),
+"ser_stockingcomment" = NA,
+"ser_protocol" = ser$sai_protocol,
+"ser_samplingstrategy" = ser$sai_samplingstrategy,
+"ser_datarightsholder" = NA,
+"ser_datelastupdate" = Sys.Date() #,
+# geom
+)
+
+res <- dbWriteTable(con_diaspara, "t_series_ser_temp", 
+t_series_ser, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM  datnas.t_series_ser;")
+dbExecute(con_diaspara_admin, "INSERT INTO datnas.t_series_ser 
+SELECT distinct on (ser_code)
+ ser_id::uuid,
+ ser_code,
+ ser_name,
+ ser_spe_code,
+ ser_lfs_code,
+ ser_are_code::TEXT,
+ ser_wkg_code,
+ ser_ver_code,
+ ser_cou_code,
+ ser_hab_code,
+ ser_gea_code,
+ ser_fiw_code,
+ ser_mon_code,
+ ser_uni_code,
+ ser_effort_uni_code,
+ ser_description,
+ ser_locationdescription,
+ ser_wltyp_code,
+ ser_stocking,
+ ser_stockingcomment,
+ ser_protocol,
+ ser_samplingstrategy,
+ ser_datarightsholder,
+ ser_datelastupdate::date
+FROM t_series_ser_temp") # 25 
+
+
+
+```
+
+::: {.callout-note appearance="simple"}
+
+## Notes to Viktor :
+
+Some of the columns will be removed from the exchange format, I'm keeping them
+here while importing but in the future them should be in reports attached to DOI.
+
+For lifestages `S` spawner is `A` Adult 
+
+The code of the area is the river.
+
+
+:::
+
+
+
+
 
 # Import to ICES (TODO)
 

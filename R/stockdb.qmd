@@ -1768,6 +1768,7 @@ kable(TS_MATURITY, caption = "TS_MATURITY") |> kable_styling(bootstrap_options =
 kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
+
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -1910,6 +1911,14 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs;") |>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+::: {.callout-note appearance="note"}
+## Follow up in ICES vocab
+You can follow up this issue in ICES
+[DIASPARA: Diadromous fish life stages \#885](https://github.com/ices-eg/DIG/issues/885)
+:::
+
+
 
 ## Maturity (ts_maturity_mat)
 

@@ -1909,7 +1909,7 @@ So the metric release will be after wgeel, the work will be finished and this ca
 
 <details>
 
-<summary>SQL code to create table `dateel.t_series_ser`</summary>
+<summary>SQL code to create table `datbast.t_series_ser`</summary>
 
 ``` {.sql include="../SQL/metric_40_datbast_t_series_ser.sql"}
 ```
@@ -1921,13 +1921,13 @@ So the metric release will be after wgeel, the work will be finished and this ca
 
 ### Import t_series_ser from trutta database
 
-```{r refeel.t_series_ser_import_trutta}
+```{r refbast.t_series_ser_import_trutta}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import to to refeel.tr_series_ser
+#| code-summary: Code to import to to refbast.tr_series_ser
 
 ser <- readxl::read_xlsx(file.path(datawd,
  "WGBAST_TRS_densities2024filled.xlsx"), sheet = "dane")
@@ -2136,9 +2136,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_serannual_san limit 20;")|>
  knitr::kable()|>
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
-
-# Import to ICES (TODO)
-
 
 
 # Acknowledgements
