@@ -2210,6 +2210,36 @@ Table tr_quality_qal used by the wgeel
 :::
 
 
+::: {.callout-tip}
+### ICES (Maria)
+We have this quality flag code type from [seadatanet](https://vocab.ices.dk/?codetypeguid=036cc995-415d-4859-8f2d-739c12d84250).
+:::
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+ANSWER DIASPARA
+::::
+
+::: answerbox-body
+OK we need to adapt there 
+- 0 in wgeel becomes 9
+- 1 is OK
+- 2 becomes 5
+- 3 becomes 4
+- 4 becomes 3
+
+Values other than 0 1 2 3 4 will have to be ignored?  or considered as historical ?
+Currently I'm keeping them but we'll probably copy all those lines in another table
+kept only by WGEEL. Figure @fig-schema_tr_quality_qal shows which tables 
+will be updated after the change.
+:::
+::::::
+
+
+
 ### Code to create the table
 
 The code for creating `tr_quality_qal` is shown below.
@@ -2234,20 +2264,38 @@ code :
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import quality from WGEEL. 
+#| code-summary: Code to import quality from WGEEL and SeaDataNet flags
 
 
-
-dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal;")
-dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_quality_qal (qal_code, qal_description, qal_definition, qal_kept)
-SELECT qal_id, qal_level, qal_text, qal_kept FROM refwgeel.tr_quality_qal ;")
-# 13
-# changing one definition linked to wgeel
-dbExecute(con_diaspara_admin, "UPDATE ref.tr_quality_qal set qal_definition = 'the data passed the quality checks and is considered as good quality' WHERE qal_code = 1")
-# This one only causes problems.... Remove.
-dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_quality_qal WHERE qal_code = 0")
+ SDN_FLAGS<- icesVocab::getCodeList('SDN_FLAGS')
+dbWriteTable(conn = con_diaspara,name = "temp_sdn_flags", value = SDN_FLAGS) 
+# old code deprecated, see next sql
+# dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal;")
+# dbExecute(con_diaspara, "ALTER TABLE ref.tr")
+# 
+# dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_quality_qal (qal_code, qal_description, qal_definition, qal_kept)
+# SELECT qal_id, qal_level, qal_text, qal_kept FROM refwgeel.tr_quality_qal ;")
+# # 13
+# # changing one definition linked to wgeel
+# dbExecute(con_diaspara_admin, "UPDATE ref.tr_quality_qal set qal_definition = 'the data passed the quality checks and is considered as good quality' WHERE qal_code = 1")
+# # This one only causes problems.... Remove.
+# dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_quality_qal WHERE qal_code = 0")
 
 ```
+
+<details>
+
+<summary>SQL code to modify table `tr_quality_qal`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_quality_qal_modification.sql"}
+```
+
+</details>
+
+
+
+![diagram of tr_quality_qal](images/diagram_tr_quality_qal.png "A schema showing the link of
+tr_quality_qal with other tables"){#fig-schema_tr_quality_qal}
 
 ```{r}
 #| label: tbl-tr_quality_qal
@@ -2262,6 +2310,12 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") |>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+::: {.callout-warning}
+To WGEEL values 3 (bad quality) and 4 (Warnings) have been inverted !
+This means that all scripts will have to be adapted.
+Also 2 (modified by wgeel becomes 5)
+:::
 
 ## Age (tr_age_age)
 
