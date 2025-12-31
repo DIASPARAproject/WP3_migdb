@@ -130,4 +130,15 @@ qal_kept, qal_icesvalue, qal_icesguid, qal_icestablesource)
  'SDN_FLAGS' AS qal_icestablesource 
  FROM public.temp_sdn_flags WHERE "Key" in ('2', '6', '7', '8'); --4
  
-
+UPDATE "ref".tr_quality_qal
+  SET qal_description='probably good'
+  WHERE qal_code=2;
+UPDATE "ref".tr_quality_qal
+  SET qal_description='below detection'
+  WHERE qal_code=6;
+UPDATE "ref".tr_quality_qal
+  SET qal_description='above detection'
+  WHERE qal_code=7;
+UPDATE "ref".tr_quality_qal
+  SET qal_description='interpolated'
+  WHERE qal_code=8;
