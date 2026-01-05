@@ -9,13 +9,13 @@ format:
     include-in-header:  
       - text: |
             \usepackage{tikz}
-    include-before-body: stockdbpdf_header.tex
+    include-before-body: metricdbpdf_header.tex
     toc: true
-    toc-depth: 3
+    toc-depth: 4
     toc-title: Contents
     number-sections: true
     colorlinks: true    
-    use-rsvg-convert: false
+    use-rsvg-convert: true
     pdf-engine-opts: ["-shell-escape"]
 execute: 
  keep-md: true
@@ -120,7 +120,7 @@ database is created with postgresSQL.
 -   By default values are be capitalised for the first letter e.g.
 `Public` for the code in dataaccess.
 
--   Code ELE, ANG, TRS are capitalized, as are the working group names
+-   Code are capitalized, e.g working group names
 WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
@@ -158,7 +158,7 @@ column is separates table code abc_def_code (table abc will
 reference the column def_code in table def). Some exceptions to this rule
 are made when the table was imported straight from ICES
 
-::: {.callout-note appearance="simple"}
+::: {.callout-caution appearance="simple"}
 <h3>Another code in ICES </h3>
 ICES uses CamelCase and not snake_case, but using upper case in postgres is
 difficult, and requires the use of double quotes, when using SQL strings in 
@@ -239,7 +239,7 @@ given specific rights.
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA technical note</h3>
-need to edit the pb_hba.conf on the server if not in localhost to allow
+When installing diaspara on a server with external connexion, there is a need to edit the pb_hba.conf on the server if not in localhost to allow
 access to diaspara.
 :::
 
@@ -299,26 +299,8 @@ access to diaspara.
 
 ```
 
-<details>
-
-<summary>SQL code to additional data schema</summary>
-
-``` {.sql include="../SQL/1_schema.sql"}
-```
-
-</details>
-
 
 ![Conceptual schema of the diadromous database](images/fig-schema_diadromous_db.svg "A schema showing the structure of the database"){#fig-schema_diadromous_db}
-
-Now the database has been created with different schema
-(@fig-schema_diadromous_db). The main schema for dictionaries is ref, and a
-schema is created per working group for specific referential tables. The
-Schema refwgeel is a schema created with a foreign data wrapper to get
-the data from wgeel, the same schema exists for wgnas. We'll see later
-for wgbast and wgtrutta.
-
-
 
 Now the database has been created with different schema
 (@fig-schema_diadromous_db). The main schema for dictionaries is ref, and a
@@ -373,6 +355,7 @@ ANSWER ICES : Maria
 For species, we would recommend that you use AphiaIDs (a copy of which
 is SpecWoRMs). You can also use the FAO ASFIS list, or both, but we
 would recommend having the AphiaIDs for sure.
+=> DONE
 :::
 ::::::
 
@@ -392,17 +375,7 @@ In our database we also have a field “salmonid” for circumstances where peop
 ::::::
 
 
-::: {.callout-note appearance="simple"}
-<h3>An eel is not an elephant </h3>
-To avoid generations of researchers looking at the columns and wondering
-the meaning of `ELE` (the current code for eel in ICES) and wondering 
-about the secret link between eels and elephants we have used `ANG`.
- This column with species will be everywhere.
- For the others we've taken as close as possible to the latin
-name. Finally despite using TRT initially following Iain advice
-we have also used both current code for sea trout `TRS` and `TRT` as data
-have already been entered in RDBES with the `TRS` code.
-:::
+
 
 
 
@@ -416,12 +389,14 @@ have already been entered in RDBES with the `TRS` code.
 #|    - Code found in IC_species
 #|    - Three letter code for species. Should we use ang instead of ele ?
 #| code-fold: TRUE
-#| code-summary: Creating a referential table for species - code and queries to ICES
-#| 
+#| code-summary: Code used to create a referential table for species - code and queries to ICES
+ 
 sp <- getCodeList("IC_species")
-grep("Lampetra", sp$description)
-grep("Petromyzon", sp$description)
-grep("Alosa",  sp$description)
+
+#The following lines show that there is no code in IC_species 
+#grep("Lampetra", sp$description) # nothing
+#grep("Petromyzon", sp$description) # nothing
+#grep("Alosa",  sp$description) # nothing
 
 bind_rows(
   ele <- getCodeDetail("IC_species","ELE")$detail,
@@ -432,7 +407,7 @@ bind_rows(
 if (file.exists("data/tr_species_spe_temp.Rdata")) {
   load("data/tr_species_spe_temp.Rdata") } else {
     species_list <- tibble(
-      spe_code = c("SAL", "ANG", "TRS", "ALA", "ALF", "PET", "LAM"),
+      spe_code = c("127186", "126281", "127187", "126413", "126415", "101174", "101172"),
       spe_icspecieskey = c("SAL", "ELE", "TRS", NA,NA,NA,NA),
       spe_commonname = c("Atlantic salmon", "European eel", "Sea trout", "Twait shad", "Allis shad", "Sea lamprey", "European river lamprey"),
       spe_scientificname = c("Salmo salar", "Anguilla anguilla", "Salmo trutta", "Alosa alosa", "Alosa fallax", "Petromyzon marinus", "Lampetra fluviatilis")
@@ -464,14 +439,16 @@ knitr::kable(tr_species_spe_temp) |> kable_styling(bootstrap_options = c("stripe
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
-
-dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", 
-value = tr_species_spe_temp, overwrite = TRUE)
+#| code-fold: TRUE
+#| code-summary: Creating a referential table for species - code and queries to ICES
+#| 
+dbWriteTable(conn=con_diaspara, name = "tr_species_spe_temp", value = tr_species_spe_temp, overwrite = TRUE)
 dbExecute(con_diaspara,"INSERT INTO ref.tr_species_spe SELECT * FROM tr_species_spe_temp")#7
 dbExecute(con_diaspara,"DROP TABLE tr_species_spe_temp")
 dbExecute(con_diaspara_admin, "COMMENT ON TABLE  ref.tr_species_spe IS 
-'Table of fish species, spe_code SAL, ANG, TRS, ALA, ALF, PET, LAM, with 
+'Table of fish species, spe_code using AphiaID as the reference with 
 reference to ICES vocabularies.'")
+
 ```
 
 </details>
@@ -482,17 +459,19 @@ reference to ICES vocabularies.'")
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Working groups table in the diaspara DB
-tr_icworkinggroup_wkg <-
- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_species_spe")
-knitr::kable(tr_icworkinggroup_wkg) |>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_species_spe")
+knitr::kable(tr_icworkinggroup_wkg) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
+
+![diagram of tr_species_spe](images/schema_tr_species_spe.png "A schema showing the link of
+tr_species_spe with other tables, arrows indicate inheritance, click to enlarge"){#fig-schema_tr_species_spe .lightbox}
 
 ## Working group (tr_icworkinggroup_wkg)
 
-species is not enough. Data will be split by working groups. Several
-working groups working on the same species. There is a table for working
-group. Proposed table is @tbl-icworkinggroup but need confirmation for
+Species is necessary to separate data within the same working group (WGBAST works
+on both Trutta and Salmon). Furthermore two working groups might be working on the
+ same species. For this reason we need to have a "working group" entry in most of the tables.
+ There is aready a table for working group. Proposed table is @tbl-icworkinggroup but need confirmation for
 WKTRUTTA2.
 
 :::::: questionbox
@@ -524,6 +503,17 @@ There is a vocab for all groups, it's expertgroup. WGTRUTTA is not there
 but we will add it.
 :::
 ::::::
+
+
+::: {.callout-note appearance="simple"}
+## Note from Hilaire
+
+The working groups might change over time, referencing a working group
+there is probably not the best. 
+> Cédric : Added stockkeylabel, this table is necessary to aggregate data 
+> as species is not enough.
+:::
+
 
 <details>
 
@@ -583,15 +573,18 @@ dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_icworkinggroup_wkg;")
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Working groups table in the diaspara DB
-tr_icworkinggroup_wkg <- 
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_icworkinggroup_wkg")
+tr_icworkinggroup_wkg <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_icworkinggroup_wkg")
 knitr::kable(tr_icworkinggroup_wkg) |>
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+![diagram of tr_icworkinggroup_wkg, click to enlarge](images/schema_tr_icworkinggroup_wkg.png "A schema showing the link of
+tr_icworkinggroup_wkg with other tables, arrows indicate inheritance"){#fig-schema_tr_icworkinggroup_wkg .lightbox}
+
 ## Country (tr_country_cou)
 
-Countries are mostly OK in the wgeel database but we need to add
+Countries are taken from the wgeel database where everything is almost OK and
+streamlined with ICES. But we need to add
 american countries. The shapefiles have been downloaded from
 https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries
 source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered
@@ -686,6 +679,7 @@ WHERE nuts.\"CNTR_ID\" = tr_country_cou.cou_code;") # 40
 #| message: FALSE
 #| tbl-cap: Country table in the diaspara DB
 #| code-fold: TRUE
+#| code-summary: Code display current referental table.
 tr_country_cou <- dbGetQuery(con_diaspara, "SELECT cou_code,cou_country,cou_order, cou_iso3code FROM ref.tr_country_cou order by cou_order")
 knitr::kable(tr_country_cou) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
@@ -760,8 +754,7 @@ First we import from wgeel
 
 Then we standarize using ICES codes, it takes a while to scroll through
 the vocab. Sometimes several vocab are available for the same thing. We
-used the p06 as the most common source. Hopefully that was the right
-choices ?
+used the p06 as the most common source.
 
 </details>
 
@@ -771,7 +764,8 @@ choices ?
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
-
+#| code-fold: TRUE
+#| code-summary: Code to insert existing values from WGEEL
 dbExecute(con_diaspara_admin,"INSERT INTO ref.tr_units_uni (
 uni_code, uni_description)
 SELECT * FROM refwgeel.tr_units_uni;")#25
@@ -833,9 +827,7 @@ dbExecute(con_diaspara_admin,
 IS NOT NULL AND
 uni_icestablesource IS NULL;") # 16
 
-query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, 
-uni_icesvalue, uni_icestablesource,uni_icesguid)
- VALUES ('%s','%s','%s','%s','%s'::uuid);", 
+query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
                  "gd", 
                  "Gear days for fyke/trap nets",
                  "gd", 
@@ -880,9 +872,7 @@ dbExecute(con_diaspara_admin, "GRANT SELECT ON TABLE ref.tr_units_uni
           to diaspara_read;")
 #for WGBAST
 #
-query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description,
- uni_icesvalue, uni_icestablesource,uni_icesguid)
-  VALUES ('%s','%s','%s','%s','%s'::uuid);", 
+query <- sprintf("INSERT INTO ref.tr_units_uni (uni_code,uni_description, uni_icesvalue, uni_icestablesource,uni_icesguid) VALUES ('%s','%s','%s','%s','%s'::uuid);", 
                  "nd", 
                  "Net-days (fisheries)",
                  "nd", 
@@ -896,21 +886,29 @@ dbExecute(con_diaspara_admin,  query)
 
 ```{r}
 #| label: tbl-unit
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: tr_units_uni table, check missing values currently not found in ICES Vocab
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+#| code-fold: TRUE
+#| code-summary: Code to show table
+
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_units_uni;")|> 
+knitr::kable() |>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
 Some of the values are missing from ICES vocab (Table @tbl-unit).
 
 ::::: questionbox
+
 :::: questionbox-header
+::: questionbox-icon
+:::
 QUESTION ICES: missing values for units, what do we do ?
 ::::
-::: questionbox-body
+:::: questionbox-body
 What do we do with units without correspondance? These come from FAO (if
 I remember well). Do we try to search for those in the wgeel database,
 and then remove if not existing or try to change existing values ?
@@ -923,7 +921,8 @@ very related to sampling box, basket. And it's not the number of
 haul.
 
 -   Before working any further I would like your opinion there.
-:::
+
+::::
 :::::
 
 
@@ -931,14 +930,18 @@ haul.
 :::: answerbox-header
 ::: answerbox-icon
 :::
+
 Answer ICES
 ::::
 
 ::: answerbox-body
-https://github.com/ices-eg/DIG/issues/737
+[WGEEL: New MUNIT codes \#737](https://github.com/ices-eg/DIG/issues/737)
 :::
 ::::::
 
+
+![diagram of tr_units_uni](images/schema_tr_units_uni.png "A schema showing the link of
+tr_units_uni with other tables, arrows indicate inheritance"){#fig-schema_tr_units_uni}
 
 
 ## Parameters
@@ -960,8 +963,9 @@ We can have a look at the metadata in the analysis done on the WGNAS
 database [WGNAS
 description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
 
-There is a problem in the "order or the dimensions which need to be
-aligned. For instance a column can hold year, or age. This is not good.
+There is a problem with some columns with mutiple dimenstions which need to be
+aligned. For instance a column can hold year, or age. This will be solved by using an
+additional column where data can be of several types (see tg_additional_add in @sec-additional).
 The description could be used within a type
 [array](https://www.postgresql.org/docs/current/arrays.html). SQL server
 does not work with array so it's not a good idea to use those.
@@ -979,7 +983,7 @@ packages</summary>
 #| tbl-cap: Access to the advice using icesAdvice
 
 # install.packages('icesAdvice', repos = c('https://ices-tools-prod.r-universe.dev', 'https://cloud.r-project.org'))
-#install.packages("icesSD", repos = c("https://ices-tools-prod.r-universe.dev", "https://cloud.r-project.org"))
+# install.packages("icesSD", repos = c("https://ices-tools-prod.r-universe.dev", "https://cloud.r-project.org"))
 
 library('icesAdvice')
 library('icesSAG')
@@ -1002,19 +1006,18 @@ sd[ww,] |> kable()
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
 
-Not yet completely sure about this .... Environment (sea, transition
+Environment (sea, transition
 ...), age, life stage and complex are in the metadata. But they are also
-in the main table. To start with, we remove them to reduce complexity
-and avoid errors. The `complex` will be derived from the spatial
+in the main table. The `complex` will be derived from the spatial
 structure still in construction
 :::
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
 
-As in the diagram, added a category (data type in figure @fig-metadata).
+As in the diagram, we added a category (data type in figure @fig-metadata).
 The idea is to be able to get quickly all parameters related to a type,
-e.g. catch, mortality, biomass. Please check and also check definitions.
+e.g. catch, mortality, biomass.
 :::
 
 ::: {.callout-note appearance="simple"}
@@ -1022,8 +1025,7 @@ e.g. catch, mortality, biomass. Please check and also check definitions.
 
 WGBAST, WGNAS, WGEEL, WGTRUTTA will have to check definitions in
 tr_destination_dest. Note this is just a column in t_metadata_met not
-in the main table. Check if it could not simply be removed if the
-definition of the parameter is clear ?
+in the main table.
 :::
 
 ## Object type (tr_objectype_oty)
@@ -1046,18 +1048,17 @@ This table (@tbl-objectype) is used in metadata
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Object type
-
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")|>
- knitr::kable() |> 
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+#| code-fold: TRUE
+#| code-summary: Code to show table
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 
 ```
 
 ## Type of parm / data (tr_nimble_nim)
 
-In the salmoglob db, this table (@tbl-nimble) corresponded to both
-tables status and nimble which most often contained the same
+In the salmoglob database (WGNAS), this table (@tbl-nimble) corresponds to both
+tables [`status`](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-8) and [`nimble`](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-2) which most often contain the same
 information.
 
 <details>
@@ -1076,33 +1077,44 @@ information.
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Nimble
-
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")|> 
-knitr::kable() |> 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+#| code-fold: TRUE
+#| code-summary: Code to show table
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 ## Version (tr_version_ver)
 
-Currently in the salmoglob metadata there is no information about
-version. The version number is in the table itself. It seems to
-correspond to different versions of the same parameter. While currently
-this information is stored in the `database` and `database_archive` it
-seems to that metadata should also contain information about historical
-variables. For instance we create a new variable, so we know when it was
-introduced. So in addition with the data in the main table I'm adding a
-version number to metadata, Some variables might get deprecated over
-time. The year will be the year when the variable was introduced. All
-variables in this version of the DB in metadata will start with
-SAL-2024-1, the tr_version_ver should be able to store a version number
-but currently I need to understand to what it corresponds.
+Currently in the salmoglob information about
+version only correspond to different versions of the same parameter 
+[see WGNAS analysis report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#version). 
+The  `database` only contains the variables used to run the salmoglob model, at
+the time of the working group, any updated value is copied to the `database_archive`
+which then contains historical values.
+From this it might be possible to rebuild historical states of the database but 
+it is not straightforward, as the archive database can hold, for the same year,
+multiple values of the same variable, if the corrections or updates were made
+several times.
+The dates (column date_time) used in the `database` and `database_archive` give information
+about the latest update. An analysis with Pierre Yves Hernwann on unique values for
+tupples \[version, year, type, age, area, location, metric, var_mod\] shows that some 
+duplicates are present in the archive database in 2021 and 2022, so by using the 
+latest date in the year it is possible to reproduce the state of the database
+at the moment of the working group.
+Still it was agreed that a clear versioning would ease up the work (as in WGEEL).
+It was also agreed that metadata should also contain information about historical
+variables For instance we create a new variable, so we know when it was
+introduced. So the version column was added to we added to both metadata 
+(`t_metadata_met`) table and stock table (`t_stock_sto`). 
+Some variables might get deprecated over
+time.
 
-Note that the version (@tbl-version) contains both reference to the
-datacall (when data are loaded) and to the advice. The advice might
-still be null at the time the values will be entered into the database.
-The version will be handled in inherited tables for WGNAS, WGEEL and
-WGBAST. Here I'm currently entering the WGNAS data.
+::: {.callout-note appearance="simple"}
+<h3>DIASPARA</h3>
+Note that the version (@tbl-version) contains reference to the
+datacall. The version will be handled in an inherited table for WGNAS, WGEEL and
+WGBAST. 
+:::
 
 :::::: questionbox
 :::: questionbox-header
@@ -1113,8 +1125,7 @@ Question to WNGAS
 ::::
 
 ::: questionbox-body
-Check that this is correct, original values in the table metadata were
-"Const_nimble" "Data_nimble" "Output" "other"
+Can you explain the versions
 :::
 ::::::
 
@@ -1137,11 +1148,12 @@ the best way to re-run the model at that stage.
 ::::::
 
 ::: {.callout-note appearance="simple"}
-<h3>TODO</h3>
+<h3>TODO ICES </h3>
 
-The DB will be held in ICES server. Create a procedure to save the
+The DB will be held in ICES server. We will need a procedure to save the
 database at each working group to be able to run past versions of the
-model.
+model. This means keeping a database_archive for each working groups. 
+It's a straightforward copy of the `t_stock_sto` for each working group.
 
 :::
 
@@ -1174,7 +1186,7 @@ model.
 tr_version_ver <- data.frame(
   ver_code = paste0("WGNAS-",2020:2024,"-1"),
   ver_year = 2020:2024,
-  ver_spe_code = "SAL",
+  ver_spe_code = "127186",
   ver_wkg_code = "WGNAS",
   ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
   ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
@@ -1189,22 +1201,6 @@ DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 ```
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
-
-Question to WNGAS / ICES
-::::
-
-::: questionbox-body
--   Check there is just one version per year
--   Provide descriptions of the version of the model
--   Questions sent to ICES to provide access to historical DOI
--   Exchanges currently on this (17/03/2025) with Etienne / Pierre Yves
-Hernvann
-:::
-::::::
 
 ```{r}
 #| label: tbl-version
@@ -1213,10 +1209,9 @@ Hernvann
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Version
-
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")|>
- knitr::kable() |>
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+#| code-fold: TRUE
+#| code-summary: Code to show table
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1225,11 +1220,11 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")|>
 ::: questionbox-icon
 :::
 
-QUESTION ICES: What is the vocabulary for datacalls
+QUESTION to ICES: What is the vocabulary for datacalls ?
 ::::
 
 ::: questionbox-body
-I would like to access to this table : [datacall (see link in ICES
+We would like to access to this table : [datacall (see link in ICES
 webpage)](https://data.ices.dk/DataCalls/listDataCalls). Currently we
 see the current year, this is nice, how do we access to historical data,
 is there a way to get it using a query ? We've found a link for advice
@@ -1254,24 +1249,27 @@ or stocks but not data calls.
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap : Metric, type of parm used in the model
-
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")|> knitr::kable() |> 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+#| code-fold: TRUE
+#| code-summary: Code to show table
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")|> 
+knitr::kable() |>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 ::: {.callout-note appearance="simple"}
 <h3>NOTE</h3>
 
-This list is probably incomplete. But the metric can be NULL in case of
-a number of fish released, not of the above (@tbl-metric) will apply.
+This list currenly correspond to the needs of both WGNAS and WGBAST.
+ But the metric can be NULL, for instance in case of a number of fish released, 
+ none of the above (@tbl-metric) would apply. 
 :::
 
 ## Category (tr_category_cat)
 
-categories @Tbl-category were in the salmoglob metadata, we have
-simplified to reduce the number of categories and be able to get for
-instance all parameters dealing with catch.
+Categories @Tbl-category were in the salmoglob metadata, here they were
+simplified to be able to get groups of parameters, for instance all parameters 
+dealing with catch.
 
 <details>
 
@@ -1289,17 +1287,14 @@ instance all parameters dealing with catch.
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: category of parameters
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")|>
- knitr::kable() |>
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 ## Destination (tr_destination_dest)
 
-A bit cumbersome this table, the idea is "what becomes of this fish".
-Different types of landings. But it's just in metatdata and we need need
-in WGBAST
+This table was added for WGBAST. The idea is "what becomes of this fish".
+It allows to integrate discards, releases and seal damages.
 
 <details>
 
@@ -1318,23 +1313,21 @@ in WGBAST
 #| message: FALSE
 #| tbl-cap: category of parameters
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") |> 
-  knitr::kable() |> 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+  knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 ::: {.callout-note appearance="simple"}
 <h3>NOTE DIASPARA</h3>
 
-Here Hilaire say that naming the table "outcome" wasn't ideal so I've
+Here Hilaire say that naming the table "outcome" wasn't ideal so we've
 followed his suggestion
 :::
 
 ## Area (tr_area_are)
 
-This table will be created further in the habitat repository... But here we are 
-laying out the foundations. Not assessment unit correpsond to 'Unit' level in the 
-for the Baltic.
+This table has been created here but see the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html) for the full
+habitat referential creation.
 
 ### Habitat level (tr_habitatlevel_lev)
 
@@ -1374,8 +1367,7 @@ dbExecute(con_diaspara_admin,
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_habitatlevel_lev VALUES( 
   'Stock',
-  'Correspond to stock units for which advices are provided in ICES,
-   this can be the level of the panpopulation,
+  'Correspond to stock units for which advices are provided in ICES, this can be the level of the panpopulation,
   or another level e.g. .'  
   );")
 
@@ -1460,8 +1452,7 @@ dbExecute(con_diaspara_admin,
   );")
 
 dbExecute(con_diaspara_admin,"UPDATE ref.tr_habitatlevel_lev
-	SET lev_description='Corresponds to an assessment unit in the Baltic sea,
-   and area for WGNAS, and EMU for WGEEL.'
+	SET lev_description='Corresponds to an assessment unit in the Baltic sea, and area for WGNAS, and EMU for WGEEL.'
 	WHERE lev_code='Assessment_unit'"); # remove spaces ...
 
 
@@ -1475,15 +1466,17 @@ dbExecute(con_diaspara_admin,"UPDATE ref.tr_habitatlevel_lev
 #| warning: FALSE
 #| message: FALSE
 #| tbl-cap: Geographical level tr_habitatlevel_lev
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|>
- knitr::kable() |> 
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|> 
+knitr::kable() |> 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 
 
 ### Area (tr_area_are)
+
+Again, this table has been created in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html).
 
 <details>
 
@@ -1495,13 +1488,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitatlevel_lev;")|>
 </details>
 
 
-::: {.callout-note appearance="simple"}
-## Note from Hilaire
-
-The working groups might change over time, referencing a working group
-there is probably not the best. Cédric : Added stockkeylabel, this table
-is necessary to aggregate data (species is not enough).
-:::
 
 ```{r}
 #| label: tbl-area
@@ -1521,10 +1507,24 @@ dbGetQuery(con_diaspara, "SELECT are_id,
 
 ```
 
-![First concepts of the hierarchy ](fig-area_hierarchy.svg "A schema showing the possible hierarchy from stock level to river"){#fig-area_hierarchy}
+![First concepts of the hierarchy](images/fig-area_hierarchy.svg "A schema showing the possible hierarchy from stock level to river"){#fig-area_hierarchy}
 
+::: {.callout-note appearance="simple"}
+<h3>NOTE DIASPARA</h3>
 
+Areas are specific to each working group (see @fig-schema_tr_area_are)
+:::
 
+::: {layout-nrow=2}
+![WGBAST](images/fig-area_hierarchy_bast.svg){#fig-area_hierarchy_bast}
+
+![WGNAS](images/fig-area_hierarchy_nas1.svg){#fig-area_hierarchy_nas1}
+
+![WGEEL](images/fig-area_hierarchy_wgeel.svg){#fig-area_hierarchy_wgeel}
+:::
+
+![diagram of tr_area_are](images/schema_tr_area_are.png "A schema showing the link of
+tr_area_area with other tables, arrows indicate inheritance"){#fig-schema_tr_area_are}
 
 ## Data access (tr_dataaccess_dta)
 
@@ -1575,6 +1575,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_dataaccess_dta ;")|>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+![diagram of tr_dataaccess_dta](images/schema_tr_dataaccess_dta.png "A schema showing the link of
+tr_dataaccess_dta with other tables, arrows indicate inheritance"){#fig-schema_tr_dataaccess_dta}
 
 ## Missing data (tr_missvalueqal_mis)
 
@@ -1588,7 +1590,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_dataaccess_dta ;")|>
 
 </details>
 
-This comes from wgeel.
 
 ```{r}
 #| label: missvaluequal
@@ -1607,24 +1608,19 @@ dbExecute(con_diaspara_admin,
 SELECT
 'NR',
 'Not reported',	
-'Data or activity exist but numbers are not reported to authorities 
-(for example for commercial confidentiality reasons).';")
+'Data or activity exist but numbers are not reported to authorities (for example for commercial confidentiality reasons).';")
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_missvalueqal_mis 
 SELECT
 'NC',	
 'Not collected',	
-'Activity / habitat exists but data are not collected by authorities 
-(for example where a fishery exists but the catch data are not collected at
- the relevant level or at all).';")
+'Activity / habitat exists but data are not collected by authorities (for example where a fishery exists but the catch data are not collected at the relevant level or at all).';")
 dbExecute(con_diaspara_admin,
           "INSERT INTO ref.tr_missvalueqal_mis 
 SELECT
 'NP',	
 'Not pertinent',
-'Where the question asked does not apply to the individual case 
-(for example where catch data are absent as there is no fishery or
- where a habitat type does not exist in a stock unit).';")
+'Where the question asked does not apply to the individual case (for example where catch data are absent as there is no fishery or where a habitat type does not exist in a stock unit).';")
 
 
 ```
@@ -1642,14 +1638,30 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_missvalueqal_mis;") |>
 
 ```
 
+::: {.callout-caution appearance="simple"}
+<h3>TODO ICES</h3>
+
+This is used in the t_stock_sto table by both WGEEL and WGBAST. 
+Either a value is provided or this field has to be provided (conditional 
+mandatory in the format).
+:::
+
+
 ## Life stages (tr_lifestage_lfs)
 
 Life stages cannot easily be shared among all species, they are species
 specific, probably similar between Sea trout and Salmon, but there is a
 large gap between a leptocephalus and a parr.
 
-Creating a life stage referential is a challenging issue that will
-require inputs from the working groups for validation.
+::: {.callout-important appearance="simple"}
+<h3>CREATE A STEERING GROUP IN WGDIAD</h3>
+The following definitions have been checked by the working groups and a draft
+of this referential has been created in ICES : [DIASPARA : Diadromous fish life stage \#885](https://github.com/ices-eg/DIG/issues/885).
+However, as for some other new referential created in ICES, they will need to be validated. 
+It was proposed during the final DIASPARA meeting 
+that this steering group is created within WGDIAD to discuss these issues.
+
+:::
 
 ### Considerations about the database structure
 
@@ -1681,35 +1693,17 @@ So they are not used as a separate column to describe the data. But in
 the eel database they are and so we will need to add this dimension to
 the table structure.
 
-::: {.callout-caution appearance="simple"}
+::: {.callout-tip appearance="simple"}
 <h3>Adding a stage dimension</h3>
 
-Currently the stage is used by WGEEL and not by WGNAS or WGBAST landings
-data. For WGBAST it is used to describe the numbers release from
-hatchery at various stages. Spatial information, and information about
-the age are used to split the dataset, not the stage. We have two
-solutions : 1 / ignore the stage for WGBAST and WGNAS and only have the
-stage as a new column in the wgeel database when the inherited table is
-created. 2/ Add it everywhere and populate the column using the metadata
-(which should not be too hard) but with no practical use in the table
-since the information is not used currently. Our preference would go for
-the second because having a single data structure should make the common
-shiny development more easy, what do you think ?
+Currently the stage is used by WGEEL, not by WGNAS and not directly in WGBAST.
+Indeed for WGBAST there is no column stage in landings data. 
+There is an age column in the juvenile data used to describe the number released from
+hatchery at various stages ([age in the juvenile database](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#tbl-readyoungfishdbage)). 
+Spatial information, and information about the age are used to split the dataset, not the stage, but the differentdatasets (landings, juvenile) do correspond to different stages.
+ We have chosen to add stages everywhere and populate the column using the metadata
+even if for WGNAS there is no practical use the information is not used currently.
 :::
-
-:::::: answerbox
-:::: answerbox-header
-::: answerbox-icon
-:::
-
-Answer from Etienne (WGNAS)
-::::
-
-::: answerbox-body
-Yes, we could probably live with an additional maturity column, I don't
-think their is any big issues with this. 
-:::
-::::::
 
 ### Use of lifestages to include other information
 
@@ -1757,6 +1751,20 @@ graphs ?
 :::
 ::::::
 
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+Answer WGEEL (Cédric)
+::::
+
+::: answerbox-body
+Stages OG and QG will be marked as deprecated for the stock, but they will be 
+probably be used in the release database that needs to be created for EDA.
+:::
+::::::
+
 ### Code to create the stage table
 
 The code for creating `tr_lifestage_lfs` is shown below, it also
@@ -1773,9 +1781,12 @@ includes the import of the WGEEL stage table.
 
 ### Existing stages in ICES dictionaries
 
+You can run the following code to see the candidate tables in ICES, in summary
+none fitted and this part is skipped to shorten the report. 
+
 ```{r }
 #| echo: TRUE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 #| code-fold: TRUE
 #| message: FALSE
@@ -1795,13 +1806,10 @@ TS_DevStage <- icesVocab::getCodeList('TS_DevStage')
 DevScale <- icesVocab::getCodeList('DevScale')
 # At the present the codetypes target Eggs and Larvae surveys
 # This is a description of scales types using different publications => not for use()
-kable(TS_MATURITY, caption = "TS_MATURITY") |>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
-kable(TS_DevStage,
- caption = "Devstage scale, this seems to be about shrimp 
- (berried seems to an egg which looks at you with eyes in shrimps....)") |>
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(TS_MATURITY, caption = "TS_MATURITY") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
+
 
 :::::: questionbox
 :::: questionbox-header
@@ -1836,24 +1844,24 @@ portal](https://bioportal.bioontology.org/ontologies/SALMON).
 lfs <- tribble(
   ~lfs_code, ~lfs_name, ~lfs_spe_code, ~lfs_description, 
   ~lfs_icesvalue, ~lfs_icesguid, ~lfs_icestablesource,
-  "E",   "Egg", "SAL" , "In fish, the term egg usually refers to female haploid gametes.", 
+  "E",   "Egg", "127186" , "In fish, the term egg usually refers to female haploid gametes.", 
   "E",   "0424ae90-03aa-4e73-8cda-e8745d0b8158", "TS_DevStage",
-  "EE",   "Eyed egg", "SAL" , "Eyed eggs are fertilized eggs that have developed to the stage where the eyes of the fish can easily be seen with naked eyes through the translucent egg shell. They might be used for stocking purpose.", 
+  "EE",   "Eyed egg", "127186" , "Eyed eggs are fertilized eggs that have developed to the stage where the eyes of the fish can easily be seen with naked eyes through the translucent egg shell. They might be used for stocking purpose.", 
   NA,  NA , NA,
-  "ALV",   "Alevin with the yolk sac", "SAL" , "Larval salmon that have hatched but have not yet completely absorbed their yolk sacs and usually have not yet emerged from the gravel.  http://purl.dataone.org/odo/SALMON_00000403", 
+  "ALV",   "Alevin with the yolk sac", "127186" , "Larval salmon that have hatched but have not yet completely absorbed their yolk sacs and usually have not yet emerged from the gravel.  http://purl.dataone.org/odo/SALMON_00000403", 
   NA,  NA , NA,
-  "FR",   "Fry", "SAL" , "A young salmonid at the post-larval stage who has resorbed the yolk sac but remains buried in the gravel.  The stage starts at the end of dependence on the yolk sac as the primary source of nutrition to dispersal from the redd.", 
+  "FR",   "Fry", "127186" , "A young salmonid at the post-larval stage who has resorbed the yolk sac but remains buried in the gravel.  The stage starts at the end of dependence on the yolk sac as the primary source of nutrition to dispersal from the redd.", 
   NA,  NA , NA,
-  "P", "Parr", "SAL", 
+  "P", "Parr", "127186", 
   "A young salmonid with parr-marks before migration to the sea and after dispersal from the redd. 	http://purl.dataone.org/odo/SALMON_00000649",
   NA, NA, NA,
-  "SM", "Smolt", "SAL", "A young salmonid which has undergone the transformation to adapt to salt water, has developed silvery coloring on its sides, obscuring the parr marks, and is about to migrate or has just migrated into the sea.",
+  "SM", "Smolt", "127186", "A young salmonid which has undergone the transformation to adapt to salt water, has developed silvery coloring on its sides, obscuring the parr marks, and is about to migrate or has just migrated into the sea.",
   NA, NA, NA,
-  "PS", "Post Smolt", "SAL", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
+  "PS", "Post Smolt", "127186", "A salmonid at sea, after its migration to the sea as smolt. For salmon it usually refer to fishes during their between the smolt migration in spring and the first winter at sea.",
   NA, NA, NA,
-  "A", "Adult", "SAL", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
-  "AL", "All stages", "SAL", "All life stages are concerned.", NA, NA, NA,
-  "_", "No life stage", "SAL", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
+  "A", "Adult", "127186", " Salmonids that have fully developed morphological and meristic characters and that have attained sexual maturity. For salmon this might refer to fishes during their migration back to coastal waters for the reproduction, or to spawning adults in freshwater. More details can be given on the sexual maturity of the fish using the maturity scale.", NA, NA, NA,
+  "AL", "All stages", "127186", "All life stages are concerned.", NA, NA, NA,
+  "_", "No life stage", "127186", "Reserved when the life stage makes no sense for the variable stored in the database, e.g. a parameter setting the number of years in the model", NA, NA, NA
 )
 dbWriteTable(con_diaspara_admin, "temp_lfs", lfs, overwrite = TRUE)
 dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_lifestage_lfs;")#24
@@ -1883,11 +1891,9 @@ dbExecute(con_diaspara_admin, "DROP TABLE temp_lfs")
 #| code-summary: Code to import stages from WGEEL databases.
 
 
-dbExecute(con_diaspara_admin,
-"DELETE FROM ref.tr_lifestage_lfs WHERE lfs_spe_code ='ANG';")
-dbExecute(con_diaspara_admin,
- "INSERT INTO ref.tr_lifestage_lfs (lfs_code,lfs_name,lfs_description, lfs_spe_code)
-SELECT lfs_code,initcap(lfs_name),lfs_definition, 'ANG' 
+dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_lifestage_lfs WHERE lfs_spe_code ='126281';")
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs (lfs_code,lfs_name,lfs_description, lfs_spe_code)
+SELECT lfs_code,initcap(lfs_name),lfs_definition, '126281' 
 FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 ```
@@ -1904,19 +1910,17 @@ FROM refwgeel.tr_lifestage_lfs ;") # 8
 
 
 
-dbExecute(con_diaspara_admin, 
-"INSERT INTO ref.tr_lifestage_lfs 
-    (lfs_code, lfs_name, lfs_spe_code, lfs_description, lfs_icesvalue, 
-    lfs_icesguid, lfs_icestablesource)
+dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs 
+    (lfs_code, lfs_name, lfs_spe_code, lfs_description, lfs_icesvalue, lfs_icesguid, lfs_icestablesource)
     SELECT 
     lfs_code, 
     lfs_name, 
-    'TRSS' AS lfs_spe_code,
+    '127187' AS lfs_spe_code,
     lfs_description,
     lfs_icesvalue, 
     lfs_icesguid::uuid, 
     lfs_icestablesource
-    FROM ref.tr_lifestage_lfs WHERE lfs_spe_code = 'SAL';")
+    FROM ref.tr_lifestage_lfs WHERE lfs_spe_code = '127186';")
 
 
 ```
@@ -1928,8 +1932,10 @@ WGTRUTTA Comment (Iain Malcolm)
 ::::
 ::::{.answerbox-body}
 In terms of stage, we would need alevin, fry (YoY, 0+), parr (>0+). In the Marine Directorate database lifestage is called “field recorded lifestage” to separate from lifestage derived from ageing by scale reading.
+
 > DIASPARA : OK this seems to fit to our current vocabulary. For scale reading we have prepared a different field
 > in the individual metric database. It will not be used in the stock database.
+
 ::::
 :::
 
@@ -1937,18 +1943,43 @@ In terms of stage, we would need alevin, fry (YoY, 0+), parr (>0+). In the Marin
 
 ### Content of the tr_lifestage_lfs table
 
-```{r tbl_tr_lifestage_lfs}
+```{r tbl_tr_lifestage_lfs_salmon}
 #| echo: TRUE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| tbl-cap: Code for missing values
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs;") |> 
-  knitr::kable() |> 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+#| tbl-cap: Content of the lifestage table (Atlantic salmon)
+
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs where lfs_spe_code = '127186';") |> 
+knitr::kable()|>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+```{r tbl_tr_lifestage_lfs_eel}
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| tbl-cap: Content of the lifestage table (European eel)
+
+
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_lifestage_lfs where lfs_spe_code = '126281';") |> 
+knitr::kable()|>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+::: {.callout-tip appearance="note"}
+## Follow up in ICES vocab
+You can follow up this issue in ICES
+[DIASPARA: Diadromous fish life stages \#885](https://github.com/ices-eg/DIG/issues/885)
+:::
+
+![diagram of tr_lifestage_lfs](images/schema_tr_lifestage_lfs.png "A schema showing the link of
+tr_lifestage_lfs with other tables, arrows indicate inheritance"){#fig-schema_tr_lifestage_lfs}
 
 ## Maturity (ts_maturity_mat)
 
@@ -1964,8 +1995,8 @@ include information on maturity.
 
 </details>
 
-The information about the stage mixes information on stage and maturity.
-The use of SMSF vocabulary stage is made mandatory for all countries
+In Salmoglob information about the stage mixes information on stage and maturity.
+The use of SMSF vocabulary has been made mandatory for all countries
 since 2020 and WGBIOP [@ices_wgbiop_2024] has revised the referential
 and emphasized the need of its use for a consistent stock assessment.
 
@@ -2057,11 +2088,20 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_maturity_mat;") |>
 
 ```
 
+
+::: {.callout-caution appearance="simple"}
+## Add maturity to metadata in WGNAS
+We still have to modify the metadata in WGNAS, create a new column for maturity and
+link it. This has to be done by WGNAS :
+[Metadata : integrate the maturity referential #27](https://github.com/DIASPARAproject/WP3_migdb/issues/27)
+
+:::
+
 ## Habitat type (tr_habitattype_hty)
 
 This table (Table @tbl-habitat_type_vocab) is used in RDBES, and those
-stages are consistent with WGBAST and WGEEL. I remember when creating
-this for WGEEL, we tried to follow the ICES vocab at the time, so it's
+stages are consistent with WGBAST and WGEEL. when creating habitat types
+for WGEEL, we tried to follow the ICES vocab at the time, so it's
 mostly similar except that `C` (coastal) in WGEEL is
 `C (WFD Coastal water)` in WLTYP but is also reported as
 `MC (Marine Coastal)` in the RDBES and freshwater is `F` instead of
@@ -2110,8 +2150,7 @@ WLTYP <- icesVocab::getCodeList('WLTYP')
 
 # At the present the codetypes target Eggs and Larvae surveys
 # This is a description of scales types using different publications => not for use()
-kable(WLTYP, caption = "WLTYP") |>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(WLTYP, caption = "WLTYP") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
 ### Code to create the habitat type table.
@@ -2217,6 +2256,30 @@ How do you work in ICES to keep historical data ?
 :::
 ::::::
 
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+Answer ICES (Carlos)
+::::
+
+::: answerbox-body
+Normally we don't .... 
+:::
+::::::
+
+::: {.callout-tip  appearance="simple"}
+## We need an archive
+It was further agreed during the final meeting
+and several other informal meetings that an archive format will
+be created to adapt to the needs of the Working groups (shiny using the
+archive table to check for changes ... ). Currently historical values are kept in WGEEL, 
+and we have kept the existing codes 18, 19 ... These data will be removed
+at the end and we will see how we deal with this when fully transfering to ICES database.
+Probably we will keep some table with in our records (WGEEL).
+:::
+
 
 ::: {#tbl-tr_quality_qalwgeel}
 
@@ -2239,6 +2302,36 @@ Table tr_quality_qal used by the wgeel
 | 24 | discarded_wgeel 2024 | This data has either been removed from the database in favour of new data, or corresponds to new data not kept in the database during datacall 2024 |
 
 :::
+
+
+::: {.callout-tip  appearance="simple"}
+### ICES (Maria)
+We have this quality flag code type from [seadatanet](https://vocab.ices.dk/?codetypeguid=036cc995-415d-4859-8f2d-739c12d84250).
+:::
+
+:::::: answerbox
+:::: answerbox-header
+::: answerbox-icon
+:::
+
+ANSWER DIASPARA
+::::
+
+::: answerbox-body
+OK we need to adapt there 
+- 0 in wgeel becomes 9
+- 1 is OK
+- 2 becomes 5
+- 3 becomes 4
+- 4 becomes 3
+
+Values other than 0 1 2 3 4 will have to be ignored?  or considered as historical ?
+Currently I'm keeping them but we'll probably copy all those lines in another table
+kept only by WGEEL. Figure @fig-schema_tr_quality_qal shows which tables 
+will be updated after the change.
+:::
+::::::
+
 
 
 ### Code to create the table
@@ -2265,23 +2358,36 @@ code :
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
-#| code-summary: Code to import quality from WGEEL. 
+#| code-summary: Code to import quality from WGEEL and SeaDataNet flags
 
 
-
-dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal;")
-dbExecute(con_diaspara_admin, 
-"INSERT INTO ref.tr_quality_qal (qal_code, qal_description, qal_definition, qal_kept)
-SELECT qal_id, qal_level, qal_text, qal_kept FROM refwgeel.tr_quality_qal ;")
-# 13
-# changing one definition linked to wgeel
-dbExecute(con_diaspara_admin, 
-"UPDATE ref.tr_quality_qal set qal_definition = 'the data passed the quality checks and is considered as good quality' WHERE qal_code = 1")
-# This one only causes problems.... Remove.
-dbExecute(con_diaspara_admin, 
-"DELETE FROM ref.tr_quality_qal WHERE qal_code = 0")
+ SDN_FLAGS<- icesVocab::getCodeList('SDN_FLAGS')
+dbWriteTable(conn = con_diaspara,name = "temp_sdn_flags", value = SDN_FLAGS) 
+# old code deprecated, see next sql
+# dbExecute(con_diaspara_admin,"DELETE FROM ref.tr_quality_qal;")
+# dbExecute(con_diaspara, "ALTER TABLE ref.tr")
+# 
+# dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_quality_qal (qal_code, qal_description, qal_definition, qal_kept)
+# SELECT qal_id, qal_level, qal_text, qal_kept FROM refwgeel.tr_quality_qal ;")
+# # 13
+# # changing one definition linked to wgeel
+# dbExecute(con_diaspara_admin, "UPDATE ref.tr_quality_qal set qal_definition = 'the data passed the quality checks and is considered as good quality' WHERE qal_code = 1")
+# # This one only causes problems.... Remove.
+# dbExecute(con_diaspara_admin, "DELETE FROM ref.tr_quality_qal WHERE qal_code = 0")
 
 ```
+
+<details>
+
+<summary>SQL code to modify table `tr_quality_qal`</summary>
+
+``` {.sql include="../SQL/2_ref_tr_quality_qal_modification.sql"}
+```
+
+</details>
+
+
+
 
 ```{r}
 #| label: tbl-tr_quality_qal
@@ -2296,6 +2402,16 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") |>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+::: {.callout-warning  appearance="simple"}
+To WGEEL values 3 (bad quality) and 4 (Warnings) have been inverted !
+This means that all scripts will have to be adapted.
+Also 2 (modified by wgeel becomes 5)
+:::
+
+
+![diagram of tr_quality_qal](images/schema_tr_quality_qal.png "A schema showing the link of
+tr_quality_qal with other tables, currently quality is used in stock and group metrics tabmes"){#fig-schema_tr_quality_qal}
 
 ## Age (tr_age_age)
 
@@ -2357,8 +2473,7 @@ There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-
 
 
 TS_SEXCO <- icesVocab::getCodeList('SEXCO')
-kable(TS_SEXCO, caption = "TS_SEXCO") |> 
-kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
+kable(TS_SEXCO, caption = "TS_SEXCO") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
 <details>
@@ -2477,7 +2592,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_gear_gea;") |>
 
 ```
 
-:::{.callout-tip appearance="simple"}
+:::{.callout-tip appearance="simple" appearance="simple"}
 ## Other dictionaries in ICES
 The [geartype](https://vocab.ices.dk/?codetypeguid=6f65b819-57ca-4904-a961-2d55699008d5)
 which corresponds to metier 4 is sourced by the DCF and maintained by
@@ -2486,7 +2601,7 @@ The Sampler type [SMTYP](https://vocab.ices.dk/?codetypeguid=e034756c-999a-40cb-
 provides a dictionary of the scientific gear used in monitoring, this one can be updated 
 :::
 
-:::{.callout-tip appearance="simple"}
+:::{.callout-tip appearance="simple" appearance="simple"}
 ## Other source of definition (if needed)
  Method used to monitor eel in the mediterranean are referenced in detail in this 
  [report](https://openknowledge.fao.org/handle/20.500.14283/cc7252en).
@@ -2820,7 +2935,7 @@ dev.off()
 ICES,
 GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing subdivision"){#fig-fishingareas_subdivision}
 
-## Time period (ref.tr_timeperiod_tip) WGBAST
+## Time period (ref.tr_timeperiod_tip)
 
 WGBAST reports data per month, quarter, or half year.
 There is a vocabulary for quarters, couldn't find a vocab for half of year.
@@ -2878,7 +2993,13 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_timeperiod_tip;") |>
 
 ```
 
-## Data source (ref.tr_datasource_dts) WGBAST {#sec-datasource}
+::: {.callout-warning appearance="simple"}
+## Only in WGBAST
+Currently the time period are not used in WGEEL and WGNAS (where time period
+is always year), the referential is only used in WGBAST.
+:::
+
+## Data source (ref.tr_datasource_dts) {#sec-datasource}
 
 
 The source of fishery data is included in WGBAST see : [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
@@ -2956,7 +3077,12 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_datasource_dts;") |>
 
 ```
 
-## Data basis ref.tr_databasis_dtb (WGBAST)
+::: {.callout-warning appearance="simple"}
+## Only in WGBAST
+Currently the data source are only for WGBAST
+:::
+
+## Data basis (ref.tr_databasis_dtb)
 
 
 <details>
@@ -3023,11 +3149,17 @@ sto_dtb_code = 'Estimated'
 </details>
 
 
+::: {.callout-warning appearance="simple"}
+## Only in WGBAST
+Currently the estimation method are only for WGBAST
+:::
+
 ::: {.callout-note appearance="simple"}
 ## Note
 
-The estimationmethod are set in each working group table, they are inherited.
-see refbast.tr_estimationmethod_esm
+The estimation method are inherited, so there is a common table
+and estimation methods are created in daughter tables in each working group,
+ they are inherited. see @sec-datbast.tr_estimationmethod_esm
 :::
 
 # Metadata
@@ -3055,19 +3187,20 @@ The code for creating metadata is listed below
 #| warning: FALSE
 #| tbl-cap: metadata
 
-dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met limit 50;") |> 
-knitr::kable()|>
-kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met limit 30;") |>
+ knitr::kable()|>
+ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
 
-[//]: # (------------------------WGNAS SECTION -------------------------------)
+
 
 
 # WGNAS 
 
-The WGNAS database is created in schemas refnas and datna (see @sec-hierarchical)
+The WGNAS database is created in schemas refnas and datna (see @sec-hierarchical).
+This section contains the code to import WGNAS to the DIADROMOUS DB.
 
 ## Create referential for WGNAS
 
@@ -3116,7 +3249,7 @@ res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met;")
 t_metadata_met <-
   data.frame(
     met_var = metadata$var_mod,
-    met_spe_code = "SAL",
+    met_spe_code = "127186",
     met_wkg_code = "WGNAS",
     met_ver_code = "SAL-2024-1", # no data on version in metadata
     met_oty_code = metadata$type_object,
@@ -3204,8 +3337,8 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_temp CASCADE;")
 ```
 
 After integration, the table of metadata from WGNAS is not changed
-much, apart from adapting to the new referentials. The table is show in
-Table @tbl-metadatawgnas.
+much, apart from adapting to the new referentials. The table is shown in
+Table @tbl-metadatawgnas below.
 
 ```{r}
 #| label: tbl-metadatawgnas
@@ -3217,9 +3350,7 @@ Table @tbl-metadatawgnas.
 #| code-summary: table metadata
 #| tbl-cap: Content of the datnas metadata table
 
-dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met limit 10;")|>
- knitr::kable() |> 
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met limit 10;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -3244,7 +3375,7 @@ The same table `t_stock_sto` is created in `datnas`. It is inherited, so
 this means that all the column are coming from `dat.t_stock_sto` but we
 have to recreate all the constraints, as constraints are never
 inherited. Two additional check constraint are created, the value for
-species will always be `SAL` and the value for wkg (expert group) will
+species will always be `127186` and the value for wkg (expert group) will
 always be `WGNAS`.
 
 <details>
@@ -3256,33 +3387,39 @@ always be `WGNAS`.
 
 </details>
 
-While creating the table, we stumbled on some issues (which we have put
-on the github site for details):
+::: {.callout-caution appearance="simple"}
+## duplicated values in archive
 
--   [duplicated values in archive
-DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
+see github 
+[duplicated values in archive DB](https://github.com/DIASPARAproject/WP3_migdb/issues/15)
+:::
 
+::: {.callout-caution appearance="simple"}
 Some of the variables in salmoglob have no `year` dimension, this leads
 to dropping the non null constraint on year. We need to check for
 possible impact in the eel db see issue #14 : [NULL values allowed for
 year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
+:::
 
-## Table of grouping for area and age : datnas.tg_additional_add 
-
-Before doing the import of t_stock_sto are a couple of issues to be fixed.
+## Table of grouping for area and age : datnas.tg_additional_add {#sec-additional}
 
 The year column does not always contain year. In fact the database that
 we have created is not suited to store transfer matrix where the
 dimensions have area x area. We only have one area column.
 
 This will be for parameter `omega` [see location paragraph in WGNAS
-database
-description](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#location).
+database description](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#location).
 
 Another problem is the age column. When looking at the analysis [see age in WGNAS
 database description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#age)
 
 Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age.
+
+::: {.callout-tip appearance="simple"}
+This was solved using the tg_additional_add column. The stucture for WGBAST
+sent by Becky indicates that they too could use this additional column to
+store some of the matrix output.
+:::
 
 
 <details>
@@ -3304,8 +3441,8 @@ Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age
 #| tbl-cap: Content of the refnas additional table
 
 dbGetQuery(con_diaspara, "SELECT * FROM refnas.tg_additional_add;")|> 
-knitr::kable() |>
- kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+knitr::kable() |> 
+kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -3335,7 +3472,7 @@ SELECT
 nextval('dat.t_stock_sto_sto_id_seq'::regclass) AS sto_id
 , d.var_mod AS sto_met_var
 , d.year AS sto_year
-, 'SAL' AS  sto_spe_code
+, '127186' AS  sto_spe_code
 , d.value AS sto_value
 , d.area AS sto_are_code
 , NULL AS sto_cou_code -- OK can be NULL
@@ -3385,15 +3522,20 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")|>
 
 
 
-[//]: # (------------------------WGEEL SECTION -------------------------------)
 
 
 
 # WGEEL
 
+The main difficulty in transfering the WGEEL database to the DIADROMOUS database
+lies in the way the data are linked to areas in the marine habitat.
+Currently we have kept all historical data with the "historical" EMU as
+the reference. This will probably change once we start to build the model
+and the habitat DB proposes a structure of [eel habitat](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8/habitatdb.html#creating-a-hierarchical-structure-for-wgeel)
+
 ## refeel.tr_version_ver
 
-Done see metricDB report
+See [metricDB report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11/metricdb.html#creating-the-version-table-refeel.tr_version_ver)
 
 
 ## dateel.t_metadata_met
@@ -3405,14 +3547,15 @@ Done see metricDB report
 ```
 </details>
 
-Note : 
+::: {.callout-note appearance="simple"}
+We currently consider that SumH, and Biom are "Output", the result of model.
+:::
 
-* We currently consider that SumH, and Biom are "Output", the result of model.
-
-*    type is not a referential, but used for legacy in WGNAS 
+::: {.callout-note appearance="simple"}
+type is not a referential, but used for legacy in WGNAS 
     see [type table](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4)
-    so I'm leaving it empty currently
-    
+    so it's currently empty in the table
+:::   
 
 
 ```{r dateel.t_metadata_met}
@@ -3451,7 +3594,7 @@ View(typ)
 t_metadata_met <-
   data.frame(
     met_var = typ$typ_name,
-    met_spe_code = "ANG",
+    met_spe_code = "126281",
     met_wkg_code = "WGEEL",
     met_ver_code = "WGEEL-2025-1", 
     met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3534,9 +3677,8 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_met_wgeel_temp CASCADE;")
 
 ```
 
-::: {.callout-note appearance="simple"}
-<h3>TODO DIASPARA</h3>
-
+::: {.callout-warning appearance="simple"}
+## TODO DIASPARA
 We still need to add units to the metadata table
 :::
 
@@ -3558,7 +3700,8 @@ We still need to add units to the metadata table
 </details>
 
 
-[//]: # (------------------------WGBAST SECTION -------------------------------)
+
+
 
 
 # WGBAST
@@ -3619,7 +3762,7 @@ is WGNAS when compared to WGEEL, we need to do the same and allow for three addi
 tr_version_ver <- data.frame(
   ver_code = paste0("WGNAS-",2020:2024,"-1"),
   ver_year = 2020:2024,
-  ver_spe_code = "SAL",
+  ver_spe_code = "127186",
   ver_wkg_code = "WGNAS",
   ver_datacalldoi=c(NA,NA,NA,NA,"https://doi.org/10.17895/ices.pub.25071005.v3"), 
   ver_stockkeylabel =c("sal.neac.all"), # sugested by Hilaire. 
@@ -3649,6 +3792,8 @@ dbExecute(con_diaspara_admin, "INSERT INTO refbast.tr_version_ver(ver_code, ver_
 DBI::dbExecute(con_diaspara_admin, "DROP TABLE temp_tr_version_ver;")
 
 ```
+
+## Create datbast.tr_estimationmethod_esm {#sec-datbast.tr_estimationmethod_esm}
 
 <details>
 
@@ -3697,13 +3842,24 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_esmr")
 
 ```
 
+::: {.callout-important appearance="simple"}
+
+The full WGEEL database was imported in 2025. In 2026 there will be one last
+datacall using the previous database and shiny interface before switching to the 
+new format.
+
+The remaining issues are here :
+
+[Integrate the latest version of WGEEL database #29](https://github.com/DIASPARAproject/WP3_migdb/issues/29)
+
+:::
 
 
 ## Create datbast.t_metadata_met
 
 Note there is a slight different here, I need to add twice the variables for salmon,
-and then for trutta. These are no duplicates as the primary key is set on both TRS
-and SAL. Later on, there should be variables only with SAL (at the second step
+and then for trutta. These are no duplicates as the primary key is set on both 127187 (Salmo trutta)
+and 127186 (Salmon salar). Later on, there should be variables only with 127186  (at the second step
 of the integration process.)
 
 ```{r datbast.t_metadata_met}
@@ -3838,7 +3994,7 @@ uni_code <- case_when(uni_code == "E" ~ "nd",
 # but when the variables are in common, then need to be repeated.
 t_metadata_met_TRS  <- data.frame(
     met_var = typ,
-    met_spe_code = "TRS",
+    met_spe_code = "127187",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3884,7 +4040,7 @@ met_deprecated = NA
 # not integrating any of the deprecated data
 )
 t_metadata_met_SAL <- t_metadata_met_TRS
-t_metadata_met_SAL$met_spe_code<- "SAL"
+t_metadata_met_SAL$met_spe_code<- "127186"
 
 
 t_metadata_met <- bind_rows(t_metadata_met_TRS,t_metadata_met_SAL)
@@ -3915,7 +4071,7 @@ array <- read_csv("data/WGBAST vectors_arrays1.csv")
 array <- janitor::clean_names(array)
 t_metadata_met_a  <- data.frame(
     met_var = array$variable_name,
-    met_spe_code = "SAL",
+    met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
@@ -3946,7 +4102,7 @@ met_deprecated = NA
 )
 t_metadata_met_s  <- data.frame(
     met_var = scalar$name,
-    met_spe_code = "SAL",
+    met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code =  "Single_value",  
@@ -4045,9 +4201,9 @@ df_all[is.na(df_all$tp_type),"tp_type"] <- "YR" # 6 lines with historical data
 
 # in Estonia there are both SAL&TRS and NA, which correspond to sea damage unspecified.
 # I cannot have that, will report as Salmon, leave to the WGBAST to see how to handle this.
-df_all[!is.na(df_all$species) & df_all$species =="SAL&TRS","species"]<- "SAL"
-df_all[is.na(df_all$species) ,"species"]<- "SAL"
-df_all[df_all$species=="NA" ,"species"]<- "SAL"
+df_all[!is.na(df_all$species) & df_all$species =="SAL&TRS","species"]<- "127186"
+df_all[is.na(df_all$species) ,"species"]<- "127186"
+df_all[df_all$species=="NA" ,"species"]<- "127186"
 
 
 
@@ -4366,39 +4522,29 @@ dbExecute(con_diaspara_local, "drop table temp_t_stock_sto_e")
 ```
 
 
-```{r datbast.t_stock_sto_young_fish}
-
-
-```
-::::: questionbox
-:::: questionbox-header
-QUESTION WGBAST: corrections 
-::::
-::: questionbox-body
+::: {.callout-warning appearance="simple"}
+## WGBAST corrections made to the dataset 
 3 lines with area 21 (which do not exists) =>
 It's in sweden for TRS is it correct to assign it to 31 ?
 To be checked during integration.
 
-tp_type has 89 lines with COMM =>
-Assigned to Year to be checked
+tp_type has 89 lines with COMM (it should be a time period) => Assigned to Year, please check
 :::
-:::::
-
-::::: questionbox
-:::: questionbox-header
-QUESTION WGBAST: Would the data access be restricted
-::::
-::: questionbox-body
-Data access can be Resticted or Public. 
-:::
-:::::
 
 
 ::::: questionbox
 :::: questionbox-header
-TODO WGBAST : n_type and w_type
+QUESTION WGBAST: Would the data access be restricted ?
 ::::
 ::: questionbox-body
+
+> Data access can be Resticted or Public. 
+
+:::
+:::::
+
+::: {.callout-important appearance="simple"}
+## TODO WGBAST : n_type and w_type
 Current we cannot easily translate all values LOG" "EST" "EXV" "EXT"
 values with ICES vocab. While Logbook is OK. We think that you will need
 to create a dictionary of possible estimation methods (we could have more), and then
@@ -4410,11 +4556,59 @@ SampDS. If you look at the tr_datasource_dts you will see a table of
 values in the ICES vocab. Among possible candidates are OthDF Other declarative forms (i.e. landing declarations and national declarative forms),
 or SampDC	Commercial sampling data (sampling methodologies specific to each country). This refers to sampling in commercial vessels, not only for commercial species, or SampDS	Survey sampling data (sampling methodologies specific to each country).
 :::
-:::::
 
-This document is still in construction ![Structure of the db (still in
-construction)](images\diaspara-ref.png){#fig-ref}
+
+# Final diagram
+
+Full diagram of the diadromous DB including both stock and metric databases![click to enlarge](images\diaspara-ref.png){.lightbox #fig-ref}
+
+# Conclusion
+
+A database was created for WGNAS, WGBAST, WGEEL, it could easily
+have a similar format for WGTRUTTA and other working groups working with lampreys and 
+shads. It will allow for the
+integration of data calls files using DATSU, the habitat database is currently
+ported to RDBES has been proposed in RDBFIS to allow for the inclusion of data in the
+continental part of the range for migratory fishes.
+Starting with the creation of formats for metrics in the summer 2025, this database will progressively 
+be handed over to ICES 
+since it was programmed in Postgres, this will require some
+work. 
+In the long run however, the use of a common database and ICES tools will simplify
+the learning needs of experts when shifting between different diadromous expert groups,
+allow to provide a more streamlined data flow between national and international level,
+enhance accessibility and interoperability.
+
+::: {.callout-caution appearance="simple"}
+The shift to the new database will start in 2026 for WGEEL (metric DB) and
+probably 2028 for WGNAS and WGBAST depending on ressources to make the change.
+Changing from one database to another system will break the R code,
+ which will need to be reviewed  
+:::
+
+
+::: {.callout-important appearance="simple"}
+
+From now on everywhere in the db Atlantic salmon will be 127186 and eel 126281.
+Sorry about that. Please bookmark the link to this paragraph in your browser to find it again.
+
+| spe_code | spe_commonname | 	spe_scientificname |
+|127186 |	Atlantic salmon |	Salmo salar |	127186|
+|126413 |	Twait shad |	Alosa alosa |	126413|
+|126415 |	Allis shad |	Alosa fallax |	126415 |	
+|101174 |	Sea lamprey |	Petromyzon marinus |	101174|
+|101172 |	European river lamprey | Lampetra  fluviatilis |	101172|
+|126281 |	European eel |	Anguilla anguilla |	126281|
+|127187 |	Sea trout |	Salmo trutta |	127187|
+
+:::
 
 # Acknowledgements
 
 -   Data source : EuroGeographics and UN-FAO for countries
+
+
+
+
+
+

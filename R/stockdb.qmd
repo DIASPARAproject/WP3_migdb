@@ -3191,7 +3191,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;") |> DT::datatable(c
 ```
 
 
-[//]: # (------------------------WGNAS SECTION -------------------------------)
 
 
 # WGNAS 
@@ -3698,8 +3697,6 @@ We still need to add units to the metadata table
 
 
 
-
-[//]: # (------------------------WGBAST SECTION -------------------------------)
 
 
 # WGBAST
@@ -4556,9 +4553,52 @@ or SampDC	Commercial sampling data (sampling methodologies specific to each coun
 :::
 
 
+# Final diagram
 
 
 Full diagram of the diadromous DB including both stock and metric databases![click to enlarge](images\diaspara-ref.png){.lightbox #fig-ref}
+
+
+# Conclusion
+
+A database was created for WGNAS, WGBAST, WGEEL, it could easily
+have a similar format for WGTRUTTA and other working groups working with lampreys and 
+shads. It will allow for the
+integration of data calls files using DATSU, the habitat database is currently
+ported to RDBES has been proposed in RDBFIS to allow for the inclusion of data in the
+continental part of the range for migratory fishes.
+Starting with the creation of formats for metrics in the summer 2025, this database will progressively 
+be handed over to ICES 
+since it was programmed in Postgres, this will require some
+work. 
+In the long run however, the use of a common database and ICES tools will simplify
+the learning needs of experts when shifting between different diadromous expert groups,
+allow to provide a more streamlined data flow between national and international level,
+enhance accessibility and interoperability.
+
+::: {.callout-caution appearance="simple"}
+The shift to the new database will start in 2026 for WGEEL (metric DB) and
+probably 2028 for WGNAS and WGBAST depending on ressources to make the change.
+Changing from one database to another system will break the R code,
+ which will need to be reviewed  
+:::
+
+
+::: {.callout-important appearance="simple"}
+
+From now on everywhere in the db Atlantic salmon will be 127186 and eel 126281.
+Sorry about that. Please bookmark the link to this paragraph in your browser to find it again.
+
+| spe_code | spe_commonname | 	spe_scientificname |
+|127186 |	Atlantic salmon |	Salmo salar |	127186|
+|126413 |	Twait shad |	Alosa alosa |	126413|
+|126415 |	Allis shad |	Alosa fallax |	126415 |	
+|101174 |	Sea lamprey |	Petromyzon marinus |	101174|
+|101172 |	European river lamprey | Lampetra  fluviatilis |	101172|
+|126281 |	European eel |	Anguilla anguilla |	126281|
+|127187 |	Sea trout |	Salmo trutta |	127187|
+
+:::
 
 # Acknowledgements
 
