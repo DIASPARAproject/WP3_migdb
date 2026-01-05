@@ -101,7 +101,7 @@ QUESTION WGTRUTTA: River basin
 ::::
 ::::{.questionbox-body}
 Do you have specific frame for this, like in the Baltic, not all basins have Sea Trouts, so how do we proceed there ? Would there be regional units (quite large) like those of WGNAS or do you intend this to be specific river codes (which we intend to provide) soon in WP3.1.
-Note you might want to have a look at how we plan to handle [hierarchies](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/midb.html#fig-area_hierarchy) theoretically, and practically the integration of river basins in this [report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8/habitatdb.html)
+Note you might want to have a look at how we plan to handle [hierarchies](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7stock/midb.html#fig-area_hierarchy) theoretically, and practically the integration of river basins in this [report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8hab/habitatdb.html)
 
 ::::
 :::
@@ -283,7 +283,7 @@ The ordering of site > river > basin is straithforward. With proper postgis tabl
 Gis attributes (geometries) should allow constraint to check wheter a site is within the basin.
 A river (Mondego) or basin can belong to many countries, country is related to the `<sampling id>`. For this reason there is no link between site and country.
 You can have a look at the format envisioned for the migratory fishes database
-for [areas](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/midb.html#area-tr_area_are).
+for [areas](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7stock/midb.html#area-tr_area_are).
 
 ## Population data
 

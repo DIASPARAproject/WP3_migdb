@@ -1338,7 +1338,7 @@ followed his suggestion
 
 ## Area (tr_area_are)
 
-This table has been created here but see the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html) for the full
+This table has been created here but see the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/stockdb.html) for the full
 habitat referential creation.
 
 ### Habitat level (tr_habitatlevel_lev)
@@ -1488,7 +1488,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ### Area (tr_area_are)
 
-Again, this table has been created in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html).
+Again, this table has been created in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/stockdb.html).
 
 <details>
 
@@ -3527,11 +3527,11 @@ The main difficulty in transfering the WGEEL database to the DIADROMOUS database
 lies in the way the data are linked to areas in the marine habitat.
 Currently we have kept all historical data with the "historical" EMU as
 the reference. This will probably change once we start to build the model
-and the habitat DB proposes a structure of [eel habitat](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8/habitatdb.html#creating-a-hierarchical-structure-for-wgeel)
+and the habitat DB proposes a structure of [eel habitat](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html#creating-a-hierarchical-structure-for-wgeel)
 
 ## refeel.tr_version_ver
 
-See [metricDB report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11/metricdb.html#creating-the-version-table-refeel.tr_version_ver)
+See [metricDB report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/metricdb.html#creating-the-version-table-refeel.tr_version_ver)
 
 
 ## dateel.t_metadata_met
@@ -3593,10 +3593,10 @@ t_metadata_met <-
     met_spe_code = "126281",
     met_wkg_code = "WGEEL",
     met_ver_code = "WGEEL-2025-1", 
-    met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
+    met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
     met_nim_code =  case_when(    
       typ$typ_id %in% c(4:12,32,33)   ~ "Data",
-      .default = "Output"), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+      .default = "Output"), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -3977,7 +3977,7 @@ met_type <- substring(typ, 3,nchar(typ)) #COMM COMM, ....,
 uni_code <- substring(typ, 1,1)
 uni_code <- case_when(uni_code == "E" ~ "nd", 
                       uni_code == "W" ~ "kg",
-                      uni_code == "N" ~ "nr") #see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#unit-tr_units_uni
+                      uni_code == "N" ~ "nr") #see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#unit-tr_units_uni
 
 
 
@@ -3992,8 +3992,8 @@ t_metadata_met_TRS  <- data.frame(
     met_spe_code = "127187",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
-    met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  "Data", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+    met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
+    met_nim_code =  "Data", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -4019,7 +4019,7 @@ t_metadata_met_TRS  <- data.frame(
       met_type == "SEAL" ~ "Seal damaged",
       met_type == "BMS" ~ "Discarded",
       .default = NA),
-      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#destination-tr_destination_dest
+      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#destination-tr_destination_dest
     met_uni_code = uni_code,
     met_cat_code = case_when(
        met_type == "COMM" ~ "Catch",
@@ -4069,8 +4069,8 @@ t_metadata_met_a  <- data.frame(
     met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
-    met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+    met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
+    met_nim_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
     met_dim = paste0(
       "{", array$dim1, ",",
        ifelse(is.na(array$dim2), 0,array$dim2), ",",
@@ -4088,7 +4088,7 @@ t_metadata_met_a  <- data.frame(
     met_fishery = NA, # not a referential
     met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = NA,
-      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#destination-tr_destination_dest
+      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#destination-tr_destination_dest
     met_uni_code = NA,
     met_cat_code = NA, # TODO
 met_definition = "TODO",
@@ -4101,7 +4101,7 @@ t_metadata_met_s  <- data.frame(
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code =  "Single_value",  
-    met_nim_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#type-of-parm-data-tr_nimble_nim
+    met_nim_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -4119,7 +4119,7 @@ t_metadata_met_s  <- data.frame(
     met_fishery = NA, # not a referential
     met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = NA,
-      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/midb.html#destination-tr_destination_dest
+      # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#destination-tr_destination_dest
     met_uni_code = NA,
     met_cat_code = NA, # TODO
 met_definition = "TODO",

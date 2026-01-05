@@ -216,7 +216,7 @@ The database structure could be simplified to the following structure
 ![](images\SAM_database.png)
 
 ::: footer
-[Report on DB build](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/rep4.html)
+[Report on DB build](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7stock/rep4.html)
 :::
 
 # Group and individual metric DB

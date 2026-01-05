@@ -24,7 +24,7 @@ bibliography: diaspara.bib
 
 Note : If you are reading this file as a pdf you should try to open it on the 
 diaspara website, as some code does not render well as a pdf :
-[metric database](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11/rep11.html)
+[metric database](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/rep11.html)
 
 
 ```{r init}

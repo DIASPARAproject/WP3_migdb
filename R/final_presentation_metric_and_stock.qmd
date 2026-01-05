@@ -525,7 +525,7 @@ shape = cylinder];
 }
 ```
 
-<a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#species-tr_species_spe" species>Species referential</a>
+<a href="https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/stockdb.html#species-tr_species_spe" species>Species referential</a>
 
 ::: notes
 The DB uses common vocabularies, split in three parts here to be able to display. The colors indicate work in progress, elements that only refer to the metric db, or elements cominIt uses common vocabularies, too much to display there, aligning our dictionaries with The ICES vocab has been a large part of our work, done thanks to the help of ICES data center. In the link, we have provided everything in the report, from our doubts and refexions, exchange with ICES, with working groups, the sql code and the R code to import from ICES data. Part of FAIR is being findable, and accessible, we have strived to provide this in our html reports.

@@ -23,7 +23,7 @@ More details here :
 
 [issues](https://github.com/DIASPARAproject/WP3_habitat/issues)
 
-[main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8/rep5.html)
+[main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p8hab/rep5.html)
 
 ```{mermaid}
 gantt
@@ -91,7 +91,7 @@ More details here :
 
 [issues](https://github.com/DIASPARAproject/WP3_migdb/issues)
 
-[main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7/rep4.html)
+[main report](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p7stock/rep4.html)
 
 ```{mermaid}
     gantt
