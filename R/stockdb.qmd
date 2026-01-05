@@ -68,7 +68,7 @@ The diadromous fish database is in fact made of two main structures.
 The first is called ***Stock Database*** and holds values aggregated at the
 scale of the assessment unit, or stock unit. The second is the ***Metric Database*** 
 and allows to have time series of data, group and individual metrics to store life
-history traits data. The report for the metric can found (here)[https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/rep11.html].
+history traits data. The report for the metric can found [here]([https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/rep11.html).
 
 This habitat used to support both structures has been created using
 a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
