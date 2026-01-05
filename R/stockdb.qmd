@@ -346,7 +346,7 @@ There are no codes in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 ::: questionbox-icon
 :::
 
-QUESTION ICES: species code
+QUESTION to ICES: species codes
 ::::
 
 ::: questionbox-body
@@ -360,7 +360,7 @@ SpecWoRMS or is Aphia OK ?
 ::: answerbox-icon
 :::
 
-ANSWER ICES : Maria
+ANSWER ICES: Maria
 ::::
 
 ::: answerbox-body

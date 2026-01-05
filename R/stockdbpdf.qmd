@@ -334,11 +334,11 @@ There are no codes in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 ::: questionbox-icon
 :::
 
-QUESTION ICES: species code
+QUESTION to ICES: species codes
 ::::
 
 ::: questionbox-body
-ANG, ALA, ALF, PET, LAM are these internal code OK ? Should we use
+ANG, ALA, ALF, PET, LAM are these internal codes OK ? Should we use
 SpecWoRMS or is Aphia OK ?
 :::
 ::::::
@@ -348,7 +348,7 @@ SpecWoRMS or is Aphia OK ?
 ::: answerbox-icon
 :::
 
-ANSWER ICES : Maria
+ANSWER ICES: Maria
 ::::
 
 ::: answerbox-body
@@ -483,9 +483,9 @@ QUESTION ICES/ WGTRUTTA/ DIASPARA
 ::::
 
 ::: questionbox-body
-what is the latest working group for WGTRUTTA, I found a WKTRUTTA2 but
+what is the latest working group for WGTRUTTA? I found a WKTRUTTA2 but
 that is quite old. Do we want to refer to other groups on diadromous
-fishes there ? The name of the WGEEL is wrong in the referential, needs
+fishes there? The name of the WGEEL is wrong in the referential, needs
 to reference GFCM... JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
 :::
 ::::::
