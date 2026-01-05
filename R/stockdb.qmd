@@ -35,9 +35,9 @@ editor:
 
 \listoftables
 
-Despite legal commitments for their conservation, the Atlantic salmon and the European eel are currently endangered. This is partly due to their ecological characteristics. First, the two species share their life cycle between marine and continental ecosystems, in and outside Europe. Despite behaving like independent units during their continental phase, they are biologically mixed during their marine phases, requiring to orchestrate regional and international management and assessment process (data collection and availability, use of appropriate assessment methods). Moreover, the species are submitted to many human impacts (e.g. fisheries, habitat degradation and fragmentation). In this context, building on pre-existing road maps, DIASPARA aims at providing tools to enhance the coherence of the scientific assessment process from data collection to assessment, with the final objective of supporting more holistic advice and to better inform a regional management. In the second work package, DIASPARA has done an inventory of available data and make recommendations for potential improvement in the collection, based on a spatiotemporal analysis of key biological parameters. In the current work package (WP3), DIASPARA has to develop database structures in order to store data required for the assessment. This was created to include biological data, fisheries data, but also data to monitor the impact of dams and hydropower plants. 
+Despite legal commitments for their conservation, the Atlantic salmon and the European eel are currently endangered. This is partly due to their ecological characteristics. First, the two species share their life cycle between marine and continental ecosystems, in and outside Europe. Despite behaving like independent units during their continental phase, they are biologically mixed during their marine phases, requiring to orchestrate regional and international management and assessment process (data collection and availability, use of appropriate assessment methods). Moreover, the species are submitted to many human impacts (e.g. fisheries, habitat degradation and fragmentation). In this context, building on pre-existing road maps, DIASPARA aims to provide tools to enhance the coherence of the scientific assessment process from data collection to assessment, with the final objective of supporting more holistic advice and to better inform a regional management. In the second work package, DIASPARA has done an inventory of available data and made recommendations for potential improvement in the collection, based on a spatiotemporal analysis of key biological parameters. In the database work package (WP3 - this current WP), DIASPARA aimed to develop database structures in order to store data required for the assessment. This was created to include biological data and fisheries data, but also data to monitor the impact of dams and hydropower plants. 
 
-Currently, both ICES WGEEL (Working group on eel) and WGNAS (Working group on North Atlantic Salmon) have developed “home-made” databases stored in local institutions, alongside interactive applications to explore and integrate the data. WGBAST (Working group on the Baltic Atlantic Salmon and Sea Trout) relies on a very extensive set of tables collated in excel to run various models. This situation is far from optimal in terms of operability, data availability, data security and transparency. Moving towards a transparent assessment framework (TAF) procedure requires simpler and more transparent ways of querying several central databases to get the raw data and do the assessment. The objective of this WP is to create database structures to store data to feed models that are currently in use, as well as data that will be useful in the future to support a holistic and transparent assessment. 
+Currently, both ICES WGEEL (Working group on eel) and WGNAS (Working group on North Atlantic Salmon) have developed “home-made” databases stored in local institutions, alongside interactive applications to explore and integrate the data. WGBAST (Working group on the Baltic Atlantic Salmon and Sea Trout) relies on a very extensive set of tables collated in excel to run various models. These approaches are far from optimal in terms of operability, data availability, data security and transparency. Moving towards a transparent assessment framework (TAF) procedure requires simpler and more transparent ways of querying several central databases to get the raw data and do the assessment. The objective of this WP is to create database structures to store data to feed models that are currently in use, as well as data that will be useful in the future to support a holistic and transparent assessment. 
 
 The first part of the work has been to exchange with the different working groups 
 and analyze the content of their databases as well as their working processes.
@@ -47,7 +47,7 @@ WGEEL database was developed largely by the leaders of this work package, and wa
 described.
 
 The main structure of the database has been proposed during the online
-DIASPARA meeting : [database
+DIASPARA meeting: [database
 structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1).
 
 This structure allows to store the data necessary to run the
@@ -55,7 +55,7 @@ international stock models for the different working groups giving advice or sci
 on diadromous fishes. The structure is similar to both the WGEEL and the WGNAS databases. 
 
 
-This documents creates the diaspara database, first creating referential table for the
+This document creates the diaspara database, first creating referential table for the
 different types proposed, and then populates the database with the
 contents of the WGEEL and WGNAS database. All chunks have been run
 sequentially to create the database, but some are later marked with eval =
@@ -83,12 +83,12 @@ JOIN of the tables
 
 ## Referential tables
 
-Similarly, referential tables are created with a mother table  from
-which specific (or wg specific) tables inherit. All mother tables
-will be held in a schema called `ref`. Having working group specific
-tables make the setting up of consistent foreign key more easy. For
-instance wgeel references different stages than wgnas. Most of these referential 
-table are common between species and whenever possible they are sourced from 
+Similarly, referential tables are created with a mother table from
+which specific (or WG-specific) tables inherit. All mother tables
+will be held in a schema called `ref`. Having working-group-specific
+tables makes setting consistent foreign key easier. For
+instance, WGEEL references different stages than WGNAS. Most of these referential 
+tables are common between species, and whenever possible, they are sourced from 
 ICES vocab.
 
 ## Unicity constraints
@@ -100,8 +100,8 @@ different levels of constraints for instance the unique constraint would be
 defined for : (`year, age, area, parameter`) (`year, age, parameter`)
 (`year, area, parameter`) (`year, parameter`). 
 Age is used by WGNAS and WGBAST but not WGEEL, and WGBAST has two additional 
-fields not found in the other databases : period (month, half of year, ...),
-with the value, and the estimation method.
+fields not found in the other databases: period (month, half of year, ...),
+with the value and the estimation method.
 Using different structures in the inherited table is a way to deal with the differences
 between working groups while keeping most of the structure common.
 
@@ -113,35 +113,35 @@ need for a trigger to check the unicity
 
 ## Creating the diaspara database
 
-All along this document, the database will be named `DiadromousDB`. The
+Along this document, the database will be named `DiadromousDB`. The
 database is created with postgresSQL.
 
 **Some rules**
 
--   By default values are be capitalised for the first letter e.g.
+-   By default, values are be capitalised for the first letter e.g.
 `Public` for the code in dataaccess.
 
--   Code are capitalized, e.g working group names
+-   Codes are capitalized, e.g working group names
 WGEEL, WGNAS, or country codes.
 
 -   Units are lowercase e.g. g, mm ...
 
--   Column naming : all integer used for primary keys are called `xxx_id` all columns containing 
+-   Column naming: all integer used for primary keys are called `xxx_id` all columns containing 
 text used for primary keys are called `xxx_code`, the column with definition, or description is always called `xxx_description` where xxx is the three letter code for the table.
 
 -   All tables end with a 3 letter summary which allows to identify the
 source of one column so the table dataaccess will be called
-`tr_dataaccess_dta`. And the column for code will be named
+`tr_dataaccess_dta`. And the column for code will be named.
 
 -   Referential tables or dictionaries are called `tr_`(sometable),
 tables build in conjuction from other tables and not in the
 dictionaries are called `t_`(sometable).
 
--   Foreign key are used instead of check constraints as check
+-   Foreign keys are used instead of check constraints as check
 constraint might not ensure the integrity of data after their
 integration (only when new rows are created or modified).
 
--   Foreign key are name `fk_columnname` where the column name is the
+-   Foreign keys are name `fk_columnname` where the column name is the
 name in the table
 
 -   Primary keys are names `tablename_pkey` (with the constraint
@@ -153,7 +153,7 @@ contraints `uk_columnname`
 -   All tables and column have a definition, we will ask the working
 groups to check those.
 
--   Use of "snake_case" : Column and table name are ALWAYS LOWERCASE, the underscore is only
+-   Use of "snake_case": Column and table name are ALWAYS LOWERCASE, the underscore is only
 used to separate type of table and table shortcode t_table_abc. In
 column is separates table code abc_def_code (table abc will
 reference the column def_code in table def). Some exceptions to this rule
@@ -240,7 +240,7 @@ given specific rights.
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA technical note</h3>
-When installing diaspara on a server with external connexion, there is a need to edit the pb_hba.conf on the server if not in localhost to allow
+When installing diaspara on a server with external connection, there is a need to edit the pb_hba.conf on the server if not in localhost to allow
 access to diaspara.
 :::
 
@@ -314,7 +314,7 @@ access to diaspara.
 
 
 
-Now the database has been created with different schema
+Now the database has been created with different schemas
 (@fig-schema_diadromous_db). The main schema for dictionaries is ref, and a
 schema is created per working group for specific referential tables. The
 Schema refwgeel has been filled in with a foreign data wrapper to get
@@ -325,19 +325,19 @@ created. The tables are be created in dat and later similar or a bit
 more complex tables (with some more columns) will be created using the
 `INHERIT FROM` syntax, which will allow to have a hierarchical structure
 in the db, and maintain the structure in a table common to all fishes.
-Note that`dat` should not containt any data, but will hold all the views
-and inherited tables comming from the different schema.
+Note that `dat` should not containt any data, but will hold all the views
+and inherited tables coming from the different schema.
 
 # Creating referentials
 
-This script holds all referentials necessary for both  the metricDB and the stockDB.
+This script holds all referentials necessary for both the metricDB and the stockDB.
 
 ## species (tr_species_spe)
 
 The first thing is to create a referential table for species. At the moment
-the structure doesn't integrate schema for Alosa and Lamprey but the species
+the structure doesn't integrate schema for Alosa and Lamprey, but the species
 have been created.
-There are no code in ICES vocab for **Alosa alosa**, **Alosa fallax**,
+There are no codes in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 **Petromyzon marinus**, **Lampetra fluviatilis**.
 
 
