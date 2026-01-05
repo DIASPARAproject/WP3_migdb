@@ -1,324 +1,312 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<diagram version="1" name="stock_db">
+<diagram version="1" name="stock_db.erd">
 	<entities>
 		<data-source id="postgres-jdbc-195d1de3c6c-d536525a0443638">
-			<entity id="1" name="t_fish_fi" fq-name="dat.t_fish_fi">
+			<entity id="1" name="t_fish_fi" fq-name="dat.t_fish_fi" order="0" x="497" y="4891">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="2" name="t_group_gr" fq-name="dat.t_group_gr">
+			<entity id="2" name="t_group_gr" fq-name="dat.t_group_gr" order="1" x="497" y="4513">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="3" name="t_grouptrait_grt" fq-name="dat.t_grouptrait_grt">
+			<entity id="3" name="t_grouptrait_grt" fq-name="dat.t_grouptrait_grt" order="2" x="256" y="4592">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="4" name="t_indivtrait_int" fq-name="dat.t_indivtrait_int">
+			<entity id="4" name="t_indivtrait_int" fq-name="dat.t_indivtrait_int" order="3" x="256" y="5474">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="5" name="t_metadata_met" fq-name="dat.t_metadata_met">
+			<entity id="5" name="t_metadata_met" fq-name="dat.t_metadata_met" order="4" x="1039" y="1825">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="6" name="t_serannual_san" fq-name="dat.t_serannual_san">
+			<entity id="6" name="t_serannual_san" fq-name="dat.t_serannual_san" order="5" x="497" y="3232">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="7" name="t_series_ser" fq-name="dat.t_series_ser">
+			<entity id="7" name="t_series_ser" fq-name="dat.t_series_ser" order="6" x="775" y="3442">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="8" name="t_stock_sto" fq-name="dat.t_stock_sto">
+			<entity id="8" name="t_stock_sto" fq-name="dat.t_stock_sto" order="7" x="775" y="1547">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="9" name="tj_seriesstation_ses" fq-name="dat.tj_seriesstation_ses">
+			<entity id="9" name="tj_seriesstation_ses" fq-name="dat.tj_seriesstation_ses" order="8" x="497" y="1846">
 				<path name="dat"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="10" name="t_metadata_met" fq-name="datbast.t_metadata_met">
+			<entity id="10" name="t_metadata_met" fq-name="datbast.t_metadata_met" order="9" color-bg="204,192,184" x="775" y="2072">
 				<path name="datbast"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="11" name="t_stock_sto" fq-name="datbast.t_stock_sto">
+			<entity id="11" name="t_stock_sto" fq-name="datbast.t_stock_sto" order="10" color-bg="204,192,184" x="497" y="1374">
 				<path name="datbast"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="12" name="t_fish_fi" fq-name="dateel.t_fish_fi">
+			<entity id="12" name="t_fish_fi" fq-name="dateel.t_fish_fi" order="11" color-bg="228,255,181" x="256" y="4487">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="13" name="t_group_gr" fq-name="dateel.t_group_gr">
+			<entity id="13" name="t_group_gr" fq-name="dateel.t_group_gr" order="12" color-bg="228,255,181" x="256" y="4382">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="14" name="t_grouptrait_grt" fq-name="dateel.t_grouptrait_grt">
+			<entity id="14" name="t_grouptrait_grt" fq-name="dateel.t_grouptrait_grt" order="13" color-bg="228,255,181" x="40" y="4382">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="15" name="t_indivtrait_int" fq-name="dateel.t_indivtrait_int">
+			<entity id="15" name="t_indivtrait_int" fq-name="dateel.t_indivtrait_int" order="14" color-bg="228,255,181" x="40" y="4487">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="16" name="t_metadata_met" fq-name="dateel.t_metadata_met">
+			<entity id="16" name="t_metadata_met" fq-name="dateel.t_metadata_met" order="15" color-bg="228,255,181" x="775" y="2177">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="17" name="t_recruitmentmetadata_met" fq-name="dateel.t_recruitmentmetadata_met">
+			<entity id="17" name="t_recruitmentmetadata_met" fq-name="dateel.t_recruitmentmetadata_met" order="16" color-bg="228,255,181" x="497" y="3610">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="18" name="t_serannual_san" fq-name="dateel.t_serannual_san">
+			<entity id="18" name="t_serannual_san" fq-name="dateel.t_serannual_san" order="17" color-bg="228,255,181" x="256" y="3348">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="19" name="t_series_ser" fq-name="dateel.t_series_ser">
+			<entity id="19" name="t_series_ser" fq-name="dateel.t_series_ser" order="18" color-bg="228,255,181" x="497" y="3127">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="20" name="t_stock_sto" fq-name="dateel.t_stock_sto">
+			<entity id="20" name="t_stock_sto" fq-name="dateel.t_stock_sto" order="19" color-bg="228,255,181" x="497" y="1741">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="21" name="tj_seriesstation_ses" fq-name="dateel.tj_seriesstation_ses">
+			<entity id="21" name="tj_seriesstation_ses" fq-name="dateel.tj_seriesstation_ses" order="20" color-bg="228,255,181" x="256" y="1867">
 				<path name="dateel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="22" name="t_metadata_met" fq-name="datnas.t_metadata_met">
+			<entity id="22" name="t_metadata_met" fq-name="datnas.t_metadata_met" order="21" color-bg="255,255,255" x="775" y="2450">
 				<path name="datnas"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="23" name="t_stock_sto" fq-name="datnas.t_stock_sto">
+			<entity id="23" name="t_stock_sto" fq-name="datnas.t_stock_sto" order="22" color-bg="255,255,255" x="497" y="1993">
 				<path name="datnas"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="24" name="Deprecated" fq-name="&quot;ref&quot;.&quot;Deprecated&quot;">
+			<entity id="24" name="Deprecated" fq-name="&quot;ref&quot;.&quot;Deprecated&quot;" order="23" color-bg="219,229,241" x="1039" y="670">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="25" name="EDMO" fq-name="&quot;ref&quot;.&quot;EDMO&quot;">
+			<entity id="25" name="EDMO" fq-name="&quot;ref&quot;.&quot;EDMO&quot;" order="24" color-bg="219,229,241" x="256" y="40">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="26" name="MSTAT" fq-name="&quot;ref&quot;.&quot;MSTAT&quot;">
+			<entity id="26" name="MSTAT" fq-name="&quot;ref&quot;.&quot;MSTAT&quot;" order="25" color-bg="219,229,241" x="497" y="40">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="27" name="PRGOV" fq-name="&quot;ref&quot;.&quot;PRGOV&quot;">
+			<entity id="27" name="PRGOV" fq-name="&quot;ref&quot;.&quot;PRGOV&quot;" order="26" color-bg="219,229,241" x="775" y="40">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="28" name="PURPM" fq-name="&quot;ref&quot;.&quot;PURPM&quot;">
+			<entity id="28" name="PURPM" fq-name="&quot;ref&quot;.&quot;PURPM&quot;" order="27" color-bg="219,229,241" x="1039" y="40">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="29" name="StationDictionary" fq-name="&quot;ref&quot;.&quot;StationDictionary&quot;">
+			<entity id="29" name="StationDictionary" fq-name="&quot;ref&quot;.&quot;StationDictionary&quot;" order="28" color-bg="219,229,241" x="775" y="875">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="30" name="Station_DTYPE" fq-name="&quot;ref&quot;.&quot;Station_DTYPE&quot;">
+			<entity id="30" name="Station_DTYPE" fq-name="&quot;ref&quot;.&quot;Station_DTYPE&quot;" order="29" color-bg="219,229,241" x="1280" y="40">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="31" name="WLTYP" fq-name="&quot;ref&quot;.&quot;WLTYP&quot;">
+			<entity id="31" name="WLTYP" fq-name="&quot;ref&quot;.&quot;WLTYP&quot;" order="30" color-bg="219,229,241" x="1039" y="4366">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="32" name="catchments_baltic" fq-name="&quot;ref&quot;.catchments_baltic">
+			<entity id="32" name="tr_age_age" fq-name="&quot;ref&quot;.tr_age_age" order="31" color-bg="219,229,241" x="1719" y="35">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="33" name="riversegments" fq-name="&quot;ref&quot;.riversegments">
+			<entity id="33" name="tr_area_are" fq-name="&quot;ref&quot;.tr_area_are" order="32" color-bg="219,229,241" x="1039" y="3547">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="34" name="tr_age_age" fq-name="&quot;ref&quot;.tr_age_age">
+			<entity id="34" name="tr_category_cat" fq-name="&quot;ref&quot;.tr_category_cat" order="33" color-bg="219,229,241" x="1280" y="1274">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="35" name="tr_area_are" fq-name="&quot;ref&quot;.tr_area_are">
+			<entity id="35" name="tr_country_cou" fq-name="&quot;ref&quot;.tr_country_cou" order="34" color-bg="219,229,241" x="1039" y="1384">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="36" name="tr_category_cat" fq-name="&quot;ref&quot;.tr_category_cat">
+			<entity id="36" name="tr_dataaccess_dta" fq-name="&quot;ref&quot;.tr_dataaccess_dta" order="35" color-bg="219,229,241" x="1039" y="523">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="37" name="tr_country_cou" fq-name="&quot;ref&quot;.tr_country_cou">
+			<entity id="37" name="tr_destination_des" fq-name="&quot;ref&quot;.tr_destination_des" order="36" color-bg="219,229,241" x="1039" y="2644">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="38" name="tr_dataaccess_dta" fq-name="&quot;ref&quot;.tr_dataaccess_dta">
+			<entity id="38" name="tr_fishingarea_fia" fq-name="&quot;ref&quot;.tr_fishingarea_fia" order="37" color-bg="219,229,241" border-width="3" x="1526" y="233">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="39" name="tr_destination_des" fq-name="&quot;ref&quot;.tr_destination_des">
+			<entity id="39" name="tr_fishway_fiw" fq-name="&quot;ref&quot;.tr_fishway_fiw" order="38" color-bg="219,229,241" x="1039" y="4597">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="40" name="tr_fishingarea_fia" fq-name="&quot;ref&quot;.tr_fishingarea_fia">
+			<entity id="40" name="tr_gear_gea" fq-name="&quot;ref&quot;.tr_gear_gea" order="39" color-bg="219,229,241" x="1039" y="3148">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="41" name="tr_fishway_fiw" fq-name="&quot;ref&quot;.tr_fishway_fiw">
+			<entity id="41" name="tr_habitat_hab" fq-name="&quot;ref&quot;.tr_habitat_hab" order="40" color-bg="219,229,241" x="1039" y="3904">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="42" name="tr_gear_gea" fq-name="&quot;ref&quot;.tr_gear_gea">
+			<entity id="42" name="tr_habitatlevel_lev" fq-name="&quot;ref&quot;.tr_habitatlevel_lev" order="41" color-bg="219,229,241" x="1280" y="5033">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="43" name="tr_habitat_hab" fq-name="&quot;ref&quot;.tr_habitat_hab">
+			<entity id="43" name="tr_habitattype_hty" fq-name="&quot;ref&quot;.tr_habitattype_hty" order="42" color-bg="219,229,241" x="1039" y="901">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="44" name="tr_habitatlevel_lev" fq-name="&quot;ref&quot;.tr_habitatlevel_lev">
+			<entity id="44" name="tr_icworkinggroup_wkg" fq-name="&quot;ref&quot;.tr_icworkinggroup_wkg" order="43" color-bg="219,229,241" x="1280" y="5190">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="45" name="tr_habitattype_hty" fq-name="&quot;ref&quot;.tr_habitattype_hty">
+			<entity id="45" name="tr_lifestage_lfs" fq-name="&quot;ref&quot;.tr_lifestage_lfs" order="44" color-bg="219,229,241" x="1039" y="4828">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="46" name="tr_icworkinggroup_wkg" fq-name="&quot;ref&quot;.tr_icworkinggroup_wkg">
+			<entity id="46" name="tr_maturity_mat" fq-name="&quot;ref&quot;.tr_maturity_mat" order="45" color-bg="219,229,241" x="1528" y="40">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="47" name="tr_lifestage_lfs" fq-name="&quot;ref&quot;.tr_lifestage_lfs">
+			<entity id="47" name="tr_metric_mtr" fq-name="&quot;ref&quot;.tr_metric_mtr" order="46" color-bg="219,229,241" x="1280" y="1694">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="48" name="tr_maturity_mat" fq-name="&quot;ref&quot;.tr_maturity_mat">
+			<entity id="48" name="tr_missvalueqal_mis" fq-name="&quot;ref&quot;.tr_missvalueqal_mis" order="47" color-bg="219,229,241" x="1039" y="1132">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="49" name="tr_metric_mtr" fq-name="&quot;ref&quot;.tr_metric_mtr">
+			<entity id="49" name="tr_monitoring_mon" fq-name="&quot;ref&quot;.tr_monitoring_mon" order="48" color-bg="219,229,241" x="1039" y="4135">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="50" name="tr_missvalueqal_mis" fq-name="&quot;ref&quot;.tr_missvalueqal_mis">
+			<entity id="50" name="tr_nimble_nim" fq-name="&quot;ref&quot;.tr_nimble_nim" order="49" color-bg="219,229,241" x="1280" y="2240">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="51" name="tr_monitoring_mon" fq-name="&quot;ref&quot;.tr_monitoring_mon">
+			<entity id="51" name="tr_objecttype_oty" fq-name="&quot;ref&quot;.tr_objecttype_oty" order="50" color-bg="219,229,241" x="1280" y="1547">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="52" name="tr_nimble_nim" fq-name="&quot;ref&quot;.tr_nimble_nim">
+			<entity id="52" name="tr_quality_qal" fq-name="&quot;ref&quot;.tr_quality_qal" order="51" color-bg="219,229,241" x="1039" y="271">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="53" name="tr_objecttype_oty" fq-name="&quot;ref&quot;.tr_objecttype_oty">
+			<entity id="53" name="tr_rivernames_riv" fq-name="&quot;ref&quot;.tr_rivernames_riv" order="52" color-bg="219,229,241" x="775" y="5269">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="54" name="tr_outcome_oco" fq-name="&quot;ref&quot;.tr_outcome_oco">
+			<entity id="54" name="tr_sex_sex" fq-name="&quot;ref&quot;.tr_sex_sex" order="53" color-bg="219,229,241" x="29" y="42">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="55" name="tr_quality_qal" fq-name="&quot;ref&quot;.tr_quality_qal">
+			<entity id="55" name="tr_species_spe" fq-name="&quot;ref&quot;.tr_species_spe" order="54" color-bg="219,229,241" x="1280" y="5557">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="56" name="tr_rivernames_riv" fq-name="&quot;ref&quot;.tr_rivernames_riv">
+			<entity id="56" name="tr_timeperiod_tip" fq-name="&quot;ref&quot;.tr_timeperiod_tip" order="55" color-bg="219,229,241" x="775" y="560">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="57" name="tr_sex_sex" fq-name="&quot;ref&quot;.tr_sex_sex">
+			<entity id="57" name="tr_trait_tra" fq-name="&quot;ref&quot;.tr_trait_tra" order="56" color-bg="219,229,241" x="1039" y="5762">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="58" name="tr_species_spe" fq-name="&quot;ref&quot;.tr_species_spe">
+			<entity id="58" name="tr_traitmethod_trm" fq-name="&quot;ref&quot;.tr_traitmethod_trm" order="57" color-bg="219,229,241" x="497" y="5668">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="59" name="tr_timeperiod_tip" fq-name="&quot;ref&quot;.tr_timeperiod_tip">
+			<entity id="59" name="tr_traitnumeric_trn" fq-name="&quot;ref&quot;.tr_traitnumeric_trn" order="58" color-bg="219,229,241" x="775" y="6072">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="60" name="tr_trait_tra" fq-name="&quot;ref&quot;.tr_trait_tra">
+			<entity id="60" name="tr_traitqualitative_trq" fq-name="&quot;ref&quot;.tr_traitqualitative_trq" order="59" color-bg="219,229,241" x="775" y="5925">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="61" name="tr_traitmethod_trm" fq-name="&quot;ref&quot;.tr_traitmethod_trm">
+			<entity id="61" name="tr_traitvaluequal_trv" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv" order="60" color-bg="219,229,241" x="497" y="5920">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="62" name="tr_traitnumeric_trn" fq-name="&quot;ref&quot;.tr_traitnumeric_trn">
+			<entity id="62" name="tr_units_uni" fq-name="&quot;ref&quot;.tr_units_uni" order="61" color-bg="219,229,241" x="1280" y="3300">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="63" name="tr_traitqualitative_trq" fq-name="&quot;ref&quot;.tr_traitqualitative_trq">
+			<entity id="63" name="tr_version_ver" fq-name="&quot;ref&quot;.tr_version_ver" order="62" color-bg="219,229,241" x="1280" y="2975">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="64" name="tr_traitvaluequal_trv" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv">
-				<path name="ref"/>
-				<path name="diaspara"/>
-			</entity>
-			<entity id="65" name="tr_units_uni" fq-name="&quot;ref&quot;.tr_units_uni">
-				<path name="ref"/>
-				<path name="diaspara"/>
-			</entity>
-			<entity id="66" name="tr_version_ver" fq-name="&quot;ref&quot;.tr_version_ver">
-				<path name="ref"/>
-				<path name="diaspara"/>
-			</entity>
-			<entity id="67" name="tr_area_are" fq-name="refbast.tr_area_are">
+			<entity id="64" name="tr_area_are" fq-name="refbast.tr_area_are" order="63" color-bg="248,214,205" x="775" y="4324">
 				<path name="refbast"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="68" name="tr_rivernames_riv" fq-name="refbast.tr_rivernames_riv">
+			<entity id="65" name="tr_rivernames_riv" fq-name="refbast.tr_rivernames_riv" order="64" color-bg="248,214,205" x="497" y="5290">
 				<path name="refbast"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="69" name="tr_version_ver" fq-name="refbast.tr_version_ver">
+			<entity id="66" name="tr_version_ver" fq-name="refbast.tr_version_ver" order="65" color-bg="248,214,205" x="1039" y="1699">
 				<path name="refbast"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="70" name="tg_trait_tra" fq-name="refeel.tg_trait_tra">
+			<entity id="67" name="tg_trait_tra" fq-name="refeel.tg_trait_tra" order="66" color-bg="251,216,166" x="256" y="413">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="71" name="tr_area_are" fq-name="refeel.tr_area_are">
+			<entity id="68" name="tr_area_are" fq-name="refeel.tr_area_are" order="67" color-bg="251,216,166" x="1039" y="2812">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="72" name="tr_traitmethod_trm" fq-name="refeel.tr_traitmethod_trm">
+			<entity id="69" name="tr_traitmethod_trm" fq-name="refeel.tr_traitmethod_trm" order="68" color-bg="251,216,166" x="256" y="5831">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="73" name="tr_traitnumeric_trn" fq-name="refeel.tr_traitnumeric_trn">
+			<entity id="70" name="tr_traitnumeric_trn" fq-name="refeel.tr_traitnumeric_trn" order="69" color-bg="251,216,166" x="497" y="6319">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="74" name="tr_traitqualitative_trq" fq-name="refeel.tr_traitqualitative_trq">
+			<entity id="71" name="tr_traitqualitative_trq" fq-name="refeel.tr_traitqualitative_trq" order="70" color-bg="251,216,166" x="497" y="6172">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="75" name="tr_traitvaluequal_trv" fq-name="refeel.tr_traitvaluequal_trv">
+			<entity id="72" name="tr_traitvaluequal_trv" fq-name="refeel.tr_traitvaluequal_trv" order="71" color-bg="251,216,166" x="256" y="5936">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="76" name="tr_version_ver" fq-name="refeel.tr_version_ver">
+			<entity id="73" name="tr_version_ver" fq-name="refeel.tr_version_ver" order="72" color-bg="251,216,166" x="1039" y="2980">
 				<path name="refeel"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="77" name="tg_additional_add" fq-name="refnas.tg_additional_add">
+			<entity id="74" name="tg_additional_add" fq-name="refnas.tg_additional_add" order="73" color-bg="225,221,252" x="775" y="2282">
 				<path name="refnas"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="78" name="tr_area_are" fq-name="refnas.tr_area_are">
+			<entity id="75" name="tr_area_are" fq-name="refnas.tr_area_are" order="74" color-bg="225,221,252" x="775" y="5038">
 				<path name="refnas"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="79" name="tr_rivernames_riv" fq-name="refnas.tr_rivernames_riv">
+			<entity id="76" name="tr_rivernames_riv" fq-name="refnas.tr_rivernames_riv" order="75" color-bg="225,221,252" x="497" y="5395">
 				<path name="refnas"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="80" name="tr_version_ver" fq-name="refnas.tr_version_ver">
+			<entity id="77" name="tr_version_ver" fq-name="refnas.tr_version_ver" order="76" color-bg="225,221,252" x="1039" y="2434">
 				<path name="refnas"/>
 				<path name="diaspara"/>
 			</entity>
@@ -327,7 +315,12 @@
 	<relations>
 		<relation name="fk_int_fi_id" fq-name="dat.t_indivtrait_int.fk_int_fi_id" type="fk" pk-ref="1" fk-ref="4"/>
 		<relation name="dateel.t_fish_fi-&gt;dat.t_fish_fi" fq-name="dateel.t_fish_fi.&quot;dateel.t_fish_fi-&gt;dat.t_fish_fi&quot;" type="inheritance" pk-ref="1" fk-ref="12"/>
-		<relation name="fk_gr_gr_id" fq-name="dat.t_group_gr.fk_gr_gr_id" type="fk" pk-ref="2" fk-ref="2"/>
+		<relation name="fk_gr_gr_id" fq-name="dat.t_group_gr.fk_gr_gr_id" type="fk" pk-ref="2" fk-ref="2">
+			<bend type="rel" x="642" y="4685"/>
+			<bend type="rel" x="672" y="4670"/>
+			<bend type="rel" x="672" y="4641"/>
+			<bend type="rel" x="642" y="4627"/>
+		</relation>
 		<relation name="fk_grt_gr_id" fq-name="dat.t_grouptrait_grt.fk_grt_gr_id" type="fk" pk-ref="2" fk-ref="3"/>
 		<relation name="dateel.t_group_gr-&gt;dat.t_group_gr" fq-name="dateel.t_group_gr.&quot;dateel.t_group_gr-&gt;dat.t_group_gr&quot;" type="inheritance" pk-ref="2" fk-ref="13"/>
 		<relation name="dateel.t_grouptrait_grt-&gt;dat.t_grouptrait_grt" fq-name="dateel.t_grouptrait_grt.&quot;dateel.t_grouptrait_grt-&gt;dat.t_grouptrait_grt&quot;" type="inheritance" pk-ref="3" fk-ref="14"/>
@@ -350,8 +343,14 @@
 		<relation name="dateel.t_stock_sto-&gt;dat.t_stock_sto" fq-name="dateel.t_stock_sto.&quot;dateel.t_stock_sto-&gt;dat.t_stock_sto&quot;" type="inheritance" pk-ref="8" fk-ref="20"/>
 		<relation name="datnas.t_stock_sto-&gt;dat.t_stock_sto" fq-name="datnas.t_stock_sto.&quot;datnas.t_stock_sto-&gt;dat.t_stock_sto&quot;" type="inheritance" pk-ref="8" fk-ref="23"/>
 		<relation name="dateel.tj_seriesstation_ses-&gt;dat.tj_seriesstation_ses" fq-name="dateel.tj_seriesstation_ses.&quot;dateel.tj_seriesstation_ses-&gt;dat.tj_seriesstation_ses&quot;" type="inheritance" pk-ref="9" fk-ref="21"/>
+		<relation name="fk_sto_met_var_met_spe_code" fq-name="datbast.t_stock_sto.fk_sto_met_var_met_spe_code" type="fk" pk-ref="10" fk-ref="11"/>
 		<relation name="fk_int_fi_id" fq-name="dateel.t_indivtrait_int.fk_int_fi_id" type="fk" pk-ref="12" fk-ref="15"/>
-		<relation name="fk_gr_gr_id" fq-name="dateel.t_group_gr.fk_gr_gr_id" type="fk" pk-ref="13" fk-ref="13"/>
+		<relation name="fk_gr_gr_id" fq-name="dateel.t_group_gr.fk_gr_gr_id" type="fk" pk-ref="13" fk-ref="13">
+			<bend type="rel" x="406" y="4429"/>
+			<bend type="rel" x="437" y="4414"/>
+			<bend type="rel" x="437" y="4384"/>
+			<bend type="rel" x="406" y="4369"/>
+		</relation>
 		<relation name="fk_grt_gr_id" fq-name="dateel.t_grouptrait_grt.fk_grt_gr_id" type="fk" pk-ref="13" fk-ref="14"/>
 		<relation name="fk_sto_met_var_met_spe_code" fq-name="dateel.t_stock_sto.fk_sto_met_var_met_spe_code" type="fk" pk-ref="16" fk-ref="20"/>
 		<relation name="fk_fi_ser_id" fq-name="dateel.t_fish_fi.fk_fi_ser_id" type="fk" pk-ref="19" fk-ref="12"/>
@@ -365,198 +364,411 @@
 		<relation name="fk_station_code" fq-name="dateel.tj_seriesstation_ses.fk_station_code" type="fk" pk-ref="29" fk-ref="21"/>
 		<relation name="fk_ser_wltyp_code" fq-name="dat.t_series_ser.fk_ser_wltyp_code" type="fk" pk-ref="31" fk-ref="7"/>
 		<relation name="fk_ser_wltyp_code" fq-name="dateel.t_series_ser.fk_ser_wltyp_code" type="fk" pk-ref="31" fk-ref="19"/>
-		<relation name="fk_ser_are_code" fq-name="dat.t_series_ser.fk_ser_are_code" type="fk" pk-ref="35" fk-ref="7"/>
-		<relation name="fk_sto_are_code" fq-name="dat.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="35" fk-ref="8"/>
-		<relation name="fk_are_are_id" fq-name="&quot;ref&quot;.tr_area_are.fk_are_are_id" type="fk" pk-ref="35" fk-ref="35"/>
-		<relation name="fk_riv_are_code" fq-name="&quot;ref&quot;.tr_rivernames_riv.fk_riv_are_code" type="fk" pk-ref="35" fk-ref="56"/>
-		<relation name="refbast.tr_area_are-&gt;&quot;ref&quot;.tr_area_are" fq-name="refbast.tr_area_are.&quot;refbast.tr_area_are-&gt;&quot;&quot;ref&quot;&quot;.tr_area_are&quot;" type="inheritance" pk-ref="35" fk-ref="67"/>
-		<relation name="refeel.tr_area_are-&gt;&quot;ref&quot;.tr_area_are" fq-name="refeel.tr_area_are.&quot;refeel.tr_area_are-&gt;&quot;&quot;ref&quot;&quot;.tr_area_are&quot;" type="inheritance" pk-ref="35" fk-ref="71"/>
-		<relation name="refnas.tr_area_are-&gt;&quot;ref&quot;.tr_area_are" fq-name="refnas.tr_area_are.&quot;refnas.tr_area_are-&gt;&quot;&quot;ref&quot;&quot;.tr_area_are&quot;" type="inheritance" pk-ref="35" fk-ref="78"/>
-		<relation name="fk_met_cat_code" fq-name="dat.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="36" fk-ref="5"/>
-		<relation name="fk_met_cat_code" fq-name="datbast.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="36" fk-ref="10"/>
-		<relation name="fk_met_cat_code" fq-name="dateel.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="36" fk-ref="16"/>
-		<relation name="fk_met_cat_code" fq-name="datnas.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="36" fk-ref="22"/>
-		<relation name="fk_ser_cou_code" fq-name="dat.t_series_ser.fk_ser_cou_code" type="fk" pk-ref="37" fk-ref="7"/>
-		<relation name="fk_sto_cou_code" fq-name="dat.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="37" fk-ref="8"/>
-		<relation name="fk_sto_cou_code" fq-name="datbast.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="37" fk-ref="11"/>
-		<relation name="fk_ser_cou_code" fq-name="dateel.t_series_ser.fk_ser_cou_code" type="fk" pk-ref="37" fk-ref="19"/>
-		<relation name="fk_sto_cou_code" fq-name="dateel.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="37" fk-ref="20"/>
-		<relation name="fk_sto_cou_code" fq-name="datnas.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="37" fk-ref="23"/>
-		<relation name="fk_dta_code" fq-name="dat.t_stock_sto.fk_dta_code" type="fk" pk-ref="38" fk-ref="8"/>
-		<relation name="fk_dta_code" fq-name="datbast.t_stock_sto.fk_dta_code" type="fk" pk-ref="38" fk-ref="11"/>
-		<relation name="fk_dta_code" fq-name="dateel.t_stock_sto.fk_dta_code" type="fk" pk-ref="38" fk-ref="20"/>
-		<relation name="fk_dta_code" fq-name="datnas.t_stock_sto.fk_dta_code" type="fk" pk-ref="38" fk-ref="23"/>
-		<relation name="fk_met_des_code" fq-name="datbast.t_metadata_met.fk_met_des_code" type="fk" pk-ref="39" fk-ref="10"/>
-		<relation name="fk_met_des_code" fq-name="dateel.t_metadata_met.fk_met_des_code" type="fk" pk-ref="39" fk-ref="16"/>
-		<relation name="fk_met_des_code" fq-name="datnas.t_metadata_met.fk_met_des_code" type="fk" pk-ref="39" fk-ref="22"/>
-		<relation name="fk_ser_fiw_code" fq-name="dat.t_series_ser.fk_ser_fiw_code" type="fk" pk-ref="41" fk-ref="7"/>
-		<relation name="fk_ser_fiw_code" fq-name="dateel.t_series_ser.fk_ser_fiw_code" type="fk" pk-ref="41" fk-ref="19"/>
-		<relation name="fk_ser_gea_code" fq-name="dat.t_series_ser.fk_ser_gea_code" type="fk" pk-ref="42" fk-ref="7"/>
-		<relation name="fk_sto_gear_code" fq-name="datbast.t_stock_sto.fk_sto_gear_code" type="fk" pk-ref="42" fk-ref="11"/>
-		<relation name="fk_ser_gea_code" fq-name="dateel.t_series_ser.fk_ser_gea_code" type="fk" pk-ref="42" fk-ref="19"/>
-		<relation name="fk_ser_habitat_code" fq-name="dat.t_series_ser.fk_ser_habitat_code" type="fk" pk-ref="43" fk-ref="7"/>
-		<relation name="fk_area_lev_code" fq-name="&quot;ref&quot;.tr_area_are.fk_area_lev_code" type="fk" pk-ref="44" fk-ref="35"/>
-		<relation name="fk_area_lev_code" fq-name="refbast.tr_area_are.fk_area_lev_code" type="fk" pk-ref="44" fk-ref="67"/>
-		<relation name="fk_area_lev_code" fq-name="refeel.tr_area_are.fk_area_lev_code" type="fk" pk-ref="44" fk-ref="71"/>
-		<relation name="fk_area_lev_code" fq-name="refnas.tr_area_are.fk_area_lev_code" type="fk" pk-ref="44" fk-ref="78"/>
-		<relation name="fk_hty_code" fq-name="dat.t_stock_sto.fk_hty_code" type="fk" pk-ref="45" fk-ref="8"/>
-		<relation name="fk_hty_code" fq-name="datbast.t_stock_sto.fk_hty_code" type="fk" pk-ref="45" fk-ref="11"/>
-		<relation name="fk_hty_code" fq-name="dateel.t_stock_sto.fk_hty_code" type="fk" pk-ref="45" fk-ref="20"/>
-		<relation name="fk_hty_code" fq-name="datnas.t_stock_sto.fk_hty_code" type="fk" pk-ref="45" fk-ref="23"/>
-		<relation name="fk_fi_wkg_code" fq-name="dat.t_fish_fi.fk_fi_wkg_code" type="fk" pk-ref="46" fk-ref="1"/>
-		<relation name="fk_gr_wkg_code" fq-name="dat.t_group_gr.fk_gr_wkg_code" type="fk" pk-ref="46" fk-ref="2"/>
-		<relation name="fk_grt_wkg_code" fq-name="dat.t_grouptrait_grt.fk_grt_wkg_code" type="fk" pk-ref="46" fk-ref="3"/>
-		<relation name="fk_int_wkg_code" fq-name="dat.t_indivtrait_int.fk_int_wkg_code" type="fk" pk-ref="46" fk-ref="4"/>
-		<relation name="fk_met_wkg_code" fq-name="dat.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="46" fk-ref="5"/>
-		<relation name="fk_san_wkg_code" fq-name="dat.t_serannual_san.fk_san_wkg_code" type="fk" pk-ref="46" fk-ref="6"/>
-		<relation name="fk_ser_wkg_code" fq-name="dat.t_series_ser.fk_ser_wkg_code" type="fk" pk-ref="46" fk-ref="7"/>
-		<relation name="fk_sto_wkg_code" fq-name="dat.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="46" fk-ref="8"/>
-		<relation name="fk_met_wkg_code" fq-name="datbast.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="46" fk-ref="10"/>
-		<relation name="fk_sto_wkg_code" fq-name="datbast.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="46" fk-ref="11"/>
-		<relation name="fk_fi_wkg_code" fq-name="dateel.t_fish_fi.fk_fi_wkg_code" type="fk" pk-ref="46" fk-ref="12"/>
-		<relation name="fk_gr_wkg_code" fq-name="dateel.t_group_gr.fk_gr_wkg_code" type="fk" pk-ref="46" fk-ref="13"/>
-		<relation name="fk_grt_wkg_code" fq-name="dateel.t_grouptrait_grt.fk_grt_wkg_code" type="fk" pk-ref="46" fk-ref="14"/>
-		<relation name="fk_int_wkg_code" fq-name="dateel.t_indivtrait_int.fk_int_wkg_code" type="fk" pk-ref="46" fk-ref="15"/>
-		<relation name="fk_met_wkg_code" fq-name="dateel.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="46" fk-ref="16"/>
-		<relation name="fk_san_wkg_code" fq-name="dateel.t_serannual_san.fk_san_wkg_code" type="fk" pk-ref="46" fk-ref="18"/>
-		<relation name="fk_ser_wkg_code" fq-name="dateel.t_series_ser.fk_ser_wkg_code" type="fk" pk-ref="46" fk-ref="19"/>
-		<relation name="fk_sto_wkg_code" fq-name="dateel.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="46" fk-ref="20"/>
-		<relation name="fk_met_wkg_code" fq-name="datnas.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="46" fk-ref="22"/>
-		<relation name="fk_sto_wkg_code" fq-name="datnas.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="46" fk-ref="23"/>
-		<relation name="fk_area_wkg_code" fq-name="&quot;ref&quot;.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="46" fk-ref="35"/>
-		<relation name="fk_riv_wkg_code" fq-name="&quot;ref&quot;.tr_rivernames_riv.fk_riv_wkg_code" type="fk" pk-ref="46" fk-ref="56"/>
-		<relation name="fk_tra_wkg_code" fq-name="&quot;ref&quot;.tr_trait_tra.fk_tra_wkg_code" type="fk" pk-ref="46" fk-ref="60"/>
-		<relation name="fk_trm_wkg_code" fq-name="&quot;ref&quot;.tr_traitmethod_trm.fk_trm_wkg_code" type="fk" pk-ref="46" fk-ref="61"/>
-		<relation name="fk_tra_wkg_code" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.fk_tra_wkg_code" type="fk" pk-ref="46" fk-ref="62"/>
-		<relation name="fk_tra_wkg_code" fq-name="&quot;ref&quot;.tr_traitqualitative_trq.fk_tra_wkg_code" type="fk" pk-ref="46" fk-ref="63"/>
-		<relation name="fk_trv_wkg_code" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv.fk_trv_wkg_code" type="fk" pk-ref="46" fk-ref="64"/>
-		<relation name="fk_area_wkg_code" fq-name="refbast.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="46" fk-ref="67"/>
-		<relation name="fk_riv_wkg_code" fq-name="refbast.tr_rivernames_riv.fk_riv_wkg_code" type="fk" pk-ref="46" fk-ref="68"/>
-		<relation name="fk_area_wkg_code" fq-name="refeel.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="46" fk-ref="71"/>
-		<relation name="fk_trm_wkg_code" fq-name="refeel.tr_traitmethod_trm.fk_trm_wkg_code" type="fk" pk-ref="46" fk-ref="72"/>
-		<relation name="fk_tra_wkg_code" fq-name="refeel.tr_traitnumeric_trn.fk_tra_wkg_code" type="fk" pk-ref="46" fk-ref="73"/>
-		<relation name="fk_tra_wkg_code" fq-name="refeel.tr_traitqualitative_trq.fk_tra_wkg_code" type="fk" pk-ref="46" fk-ref="74"/>
-		<relation name="fk_area_wkg_code" fq-name="refnas.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="46" fk-ref="78"/>
-		<relation name="fk_riv_wkg_code" fq-name="refnas.tr_rivernames_riv.fk_riv_wkg_code" type="fk" pk-ref="46" fk-ref="79"/>
-		<relation name="fk_fi_lfs_code_fi_spe_code" fq-name="dat.t_fish_fi.fk_fi_lfs_code_fi_spe_code" type="fk" pk-ref="47" fk-ref="1"/>
-		<relation name="fk_gr_lfs_code_gr_spe_code" fq-name="dat.t_group_gr.fk_gr_lfs_code_gr_spe_code" type="fk" pk-ref="47" fk-ref="2"/>
-		<relation name="fk_ser_lfs_code_ser_spe_code" fq-name="dat.t_series_ser.fk_ser_lfs_code_ser_spe_code" type="fk" pk-ref="47" fk-ref="7"/>
-		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="dat.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="47" fk-ref="8"/>
-		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="datbast.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="47" fk-ref="11"/>
-		<relation name="fk_fi_lfs_code_fi_spe_code" fq-name="dateel.t_fish_fi.fk_fi_lfs_code_fi_spe_code" type="fk" pk-ref="47" fk-ref="12"/>
-		<relation name="fk_gr_lfs_code_gr_spe_code" fq-name="dateel.t_group_gr.fk_gr_lfs_code_gr_spe_code" type="fk" pk-ref="47" fk-ref="13"/>
-		<relation name="fk_ser_lfs_code_ser_spe_code" fq-name="dateel.t_series_ser.fk_ser_lfs_code_ser_spe_code" type="fk" pk-ref="47" fk-ref="19"/>
-		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="dateel.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="47" fk-ref="20"/>
-		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="datnas.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="47" fk-ref="23"/>
-		<relation name="fk_met_mtr_code" fq-name="dat.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="49" fk-ref="5"/>
-		<relation name="fk_met_mtr_code" fq-name="datbast.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="49" fk-ref="10"/>
-		<relation name="fk_met_mtr_code" fq-name="dateel.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="49" fk-ref="16"/>
-		<relation name="fk_met_mtr_code" fq-name="datnas.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="49" fk-ref="22"/>
-		<relation name="fk_sto_mis_code" fq-name="dat.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="50" fk-ref="8"/>
-		<relation name="fk_sto_mis_code" fq-name="datbast.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="50" fk-ref="11"/>
-		<relation name="fk_sto_mis_code" fq-name="dateel.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="50" fk-ref="20"/>
-		<relation name="fk_sto_mis_code" fq-name="datnas.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="50" fk-ref="23"/>
-		<relation name="fk_ser_mon_code" fq-name="dat.t_series_ser.fk_ser_mon_code" type="fk" pk-ref="51" fk-ref="7"/>
-		<relation name="fk_ser_mon_code" fq-name="dateel.t_series_ser.fk_ser_mon_code" type="fk" pk-ref="51" fk-ref="19"/>
-		<relation name="fk_met_nim_code" fq-name="dat.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="52" fk-ref="5"/>
-		<relation name="fk_met_nim_code" fq-name="datbast.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="52" fk-ref="10"/>
-		<relation name="fk_met_nim_code" fq-name="dateel.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="52" fk-ref="16"/>
-		<relation name="fk_met_nim_code" fq-name="datnas.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="52" fk-ref="22"/>
-		<relation name="fk_met_oty_code" fq-name="dat.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="53" fk-ref="5"/>
-		<relation name="fk_met_oty_code" fq-name="datbast.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="53" fk-ref="10"/>
-		<relation name="fk_met_oty_code" fq-name="dateel.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="53" fk-ref="16"/>
-		<relation name="fk_met_oty_code" fq-name="datnas.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="53" fk-ref="22"/>
-		<relation name="fk_grt_qal_id" fq-name="dat.t_grouptrait_grt.fk_grt_qal_id" type="fk" pk-ref="55" fk-ref="3"/>
-		<relation name="fk_int_qal_id" fq-name="dat.t_indivtrait_int.fk_int_qal_id" type="fk" pk-ref="55" fk-ref="4"/>
-		<relation name="fk_sto_qal_code" fq-name="dat.t_stock_sto.fk_sto_qal_code" type="fk" pk-ref="55" fk-ref="8"/>
-		<relation name="fk_sto_qal_code" fq-name="datbast.t_stock_sto.fk_sto_qal_code" type="fk" pk-ref="55" fk-ref="11"/>
-		<relation name="fk_grt_qal_id" fq-name="dateel.t_grouptrait_grt.fk_grt_qal_id" type="fk" pk-ref="55" fk-ref="14"/>
-		<relation name="fk_int_qal_id" fq-name="dateel.t_indivtrait_int.fk_int_qal_id" type="fk" pk-ref="55" fk-ref="15"/>
-		<relation name="fk_sto_qal_code" fq-name="dateel.t_stock_sto.fk_sto_qal_code" type="fk" pk-ref="55" fk-ref="20"/>
-		<relation name="refbast.tr_rivernames_riv-&gt;&quot;ref&quot;.tr_rivernames_riv" fq-name="refbast.tr_rivernames_riv.&quot;refbast.tr_rivernames_riv-&gt;&quot;&quot;ref&quot;&quot;.tr_rivernames_riv&quot;" type="inheritance" pk-ref="56" fk-ref="68"/>
-		<relation name="refnas.tr_rivernames_riv-&gt;&quot;ref&quot;.tr_rivernames_riv" fq-name="refnas.tr_rivernames_riv.&quot;refnas.tr_rivernames_riv-&gt;&quot;&quot;ref&quot;&quot;.tr_rivernames_riv&quot;" type="inheritance" pk-ref="56" fk-ref="79"/>
-		<relation name="fk_fi_spe_code" fq-name="dat.t_fish_fi.fk_fi_spe_code" type="fk" pk-ref="58" fk-ref="1"/>
-		<relation name="fk_gr_spe_code" fq-name="dat.t_group_gr.fk_gr_spe_code" type="fk" pk-ref="58" fk-ref="2"/>
-		<relation name="fk_grt_spe_code" fq-name="dat.t_grouptrait_grt.fk_grt_spe_code" type="fk" pk-ref="58" fk-ref="3"/>
-		<relation name="fk_int_spe_code" fq-name="dat.t_indivtrait_int.fk_int_spe_code" type="fk" pk-ref="58" fk-ref="4"/>
-		<relation name="fk_met_spe_code" fq-name="dat.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="58" fk-ref="5"/>
-		<relation name="fk_ser_spe_code" fq-name="dat.t_series_ser.fk_ser_spe_code" type="fk" pk-ref="58" fk-ref="7"/>
-		<relation name="fk_met_spe_code" fq-name="datbast.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="58" fk-ref="10"/>
-		<relation name="fk_fi_spe_code" fq-name="dateel.t_fish_fi.fk_fi_spe_code" type="fk" pk-ref="58" fk-ref="12"/>
-		<relation name="fk_gr_spe_code" fq-name="dateel.t_group_gr.fk_gr_spe_code" type="fk" pk-ref="58" fk-ref="13"/>
-		<relation name="fk_grt_spe_code" fq-name="dateel.t_grouptrait_grt.fk_grt_spe_code" type="fk" pk-ref="58" fk-ref="14"/>
-		<relation name="fk_int_spe_code" fq-name="dateel.t_indivtrait_int.fk_int_spe_code" type="fk" pk-ref="58" fk-ref="15"/>
-		<relation name="fk_met_spe_code" fq-name="dateel.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="58" fk-ref="16"/>
-		<relation name="fk_ser_spe_code" fq-name="dateel.t_series_ser.fk_ser_spe_code" type="fk" pk-ref="58" fk-ref="19"/>
-		<relation name="fk_met_spe_code" fq-name="datnas.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="58" fk-ref="22"/>
-		<relation name="fk_lfs_spe_code" fq-name="&quot;ref&quot;.tr_lifestage_lfs.fk_lfs_spe_code" type="fk" pk-ref="58" fk-ref="47"/>
-		<relation name="fk_tra_spe_code" fq-name="&quot;ref&quot;.tr_trait_tra.fk_tra_spe_code" type="fk" pk-ref="58" fk-ref="60"/>
-		<relation name="fk_trm_spe_code" fq-name="&quot;ref&quot;.tr_traitmethod_trm.fk_trm_spe_code" type="fk" pk-ref="58" fk-ref="61"/>
-		<relation name="fk_tra_spe_code" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.fk_tra_spe_code" type="fk" pk-ref="58" fk-ref="62"/>
-		<relation name="fk_tra_spe_code" fq-name="&quot;ref&quot;.tr_traitqualitative_trq.fk_tra_spe_code" type="fk" pk-ref="58" fk-ref="63"/>
-		<relation name="fk_trv_spe_code" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv.fk_trv_spe_code" type="fk" pk-ref="58" fk-ref="64"/>
-		<relation name="fk_ver_spe_code" fq-name="refbast.tr_version_ver.fk_ver_spe_code" type="fk" pk-ref="58" fk-ref="69"/>
-		<relation name="fk_trm_spe_code" fq-name="refeel.tr_traitmethod_trm.fk_trm_spe_code" type="fk" pk-ref="58" fk-ref="72"/>
-		<relation name="fk_tra_spe_code" fq-name="refeel.tr_traitnumeric_trn.fk_tra_spe_code" type="fk" pk-ref="58" fk-ref="73"/>
-		<relation name="fk_tra_spe_code" fq-name="refeel.tr_traitqualitative_trq.fk_tra_spe_code" type="fk" pk-ref="58" fk-ref="74"/>
-		<relation name="fk_grt_tra_code" fq-name="dat.t_grouptrait_grt.fk_grt_tra_code" type="fk" pk-ref="60" fk-ref="3"/>
-		<relation name="fk_int_tra_code" fq-name="dat.t_indivtrait_int.fk_int_tra_code" type="fk" pk-ref="60" fk-ref="4"/>
-		<relation name="&quot;ref&quot;.tr_traitnumeric_trn-&gt;&quot;ref&quot;.tr_trait_tra" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.&quot;&quot;&quot;ref&quot;&quot;.tr_traitnumeric_trn-&gt;&quot;&quot;ref&quot;&quot;.tr_trait_tra&quot;" type="inheritance" pk-ref="60" fk-ref="62"/>
-		<relation name="&quot;ref&quot;.tr_traitqualitative_trq-&gt;&quot;ref&quot;.tr_trait_tra" fq-name="&quot;ref&quot;.tr_traitqualitative_trq.&quot;&quot;&quot;ref&quot;&quot;.tr_traitqualitative_trq-&gt;&quot;&quot;ref&quot;&quot;.tr_trait_tra&quot;" type="inheritance" pk-ref="60" fk-ref="63"/>
-		<relation name="fk_grt_trm_code" fq-name="dat.t_grouptrait_grt.fk_grt_trm_code" type="fk" pk-ref="61" fk-ref="3"/>
-		<relation name="fk_int_trm_code" fq-name="dat.t_indivtrait_int.fk_int_trm_code" type="fk" pk-ref="61" fk-ref="4"/>
-		<relation name="refeel.tr_traitmethod_trm-&gt;&quot;ref&quot;.tr_traitmethod_trm" fq-name="refeel.tr_traitmethod_trm.&quot;refeel.tr_traitmethod_trm-&gt;&quot;&quot;ref&quot;&quot;.tr_traitmethod_trm&quot;" type="inheritance" pk-ref="61" fk-ref="72"/>
-		<relation name="refeel.tr_traitnumeric_trn-&gt;&quot;ref&quot;.tr_traitnumeric_trn" fq-name="refeel.tr_traitnumeric_trn.&quot;refeel.tr_traitnumeric_trn-&gt;&quot;&quot;ref&quot;&quot;.tr_traitnumeric_trn&quot;" type="inheritance" pk-ref="62" fk-ref="73"/>
-		<relation name="fk_trv_trq_code" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv.fk_trv_trq_code" type="fk" pk-ref="63" fk-ref="64"/>
-		<relation name="refeel.tr_traitqualitative_trq-&gt;&quot;ref&quot;.tr_traitqualitative_trq" fq-name="refeel.tr_traitqualitative_trq.&quot;refeel.tr_traitqualitative_trq-&gt;&quot;&quot;ref&quot;&quot;.tr_traitqualitative_trq&quot;" type="inheritance" pk-ref="63" fk-ref="74"/>
-		<relation name="fk_grt_trv_tra_code" fq-name="dat.t_grouptrait_grt.fk_grt_trv_tra_code" type="fk" pk-ref="64" fk-ref="3"/>
-		<relation name="fk_int_trv_tra_code" fq-name="dat.t_indivtrait_int.fk_int_trv_tra_code" type="fk" pk-ref="64" fk-ref="4"/>
-		<relation name="refeel.tr_traitvaluequal_trv-&gt;&quot;ref&quot;.tr_traitvaluequal_trv" fq-name="refeel.tr_traitvaluequal_trv.&quot;refeel.tr_traitvaluequal_trv-&gt;&quot;&quot;ref&quot;&quot;.tr_traitvaluequal_trv&quot;" type="inheritance" pk-ref="64" fk-ref="75"/>
-		<relation name="fk_met_uni_code" fq-name="dat.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="65" fk-ref="5"/>
-		<relation name="fk_ser_effort_uni_code" fq-name="dat.t_series_ser.fk_ser_effort_uni_code" type="fk" pk-ref="65" fk-ref="7"/>
-		<relation name="fk_ser_uni_code" fq-name="dat.t_series_ser.fk_ser_uni_code" type="fk" pk-ref="65" fk-ref="7"/>
-		<relation name="fk_met_uni_code" fq-name="datbast.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="65" fk-ref="10"/>
-		<relation name="fk_met_uni_code" fq-name="dateel.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="65" fk-ref="16"/>
-		<relation name="fk_ser_effort_uni_code" fq-name="dateel.t_series_ser.fk_ser_effort_uni_code" type="fk" pk-ref="65" fk-ref="19"/>
-		<relation name="fk_ser_uni_code" fq-name="dateel.t_series_ser.fk_ser_uni_code" type="fk" pk-ref="65" fk-ref="19"/>
-		<relation name="fk_met_uni_code" fq-name="datnas.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="65" fk-ref="22"/>
-		<relation name="fk_trn_uni_code" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.fk_trn_uni_code" type="fk" pk-ref="65" fk-ref="62"/>
-		<relation name="fk_trn_uni_code" fq-name="refeel.tr_traitnumeric_trn.fk_trn_uni_code" type="fk" pk-ref="65" fk-ref="73"/>
-		<relation name="fk_gr_ver_code" fq-name="dat.t_fish_fi.fk_gr_ver_code" type="fk" pk-ref="66" fk-ref="1"/>
-		<relation name="fk_gr_ver_code" fq-name="dat.t_group_gr.fk_gr_ver_code" type="fk" pk-ref="66" fk-ref="2"/>
-		<relation name="fk_grt_ver_code" fq-name="dat.t_grouptrait_grt.fk_grt_ver_code" type="fk" pk-ref="66" fk-ref="3"/>
-		<relation name="fk_int_ver_code" fq-name="dat.t_indivtrait_int.fk_int_ver_code" type="fk" pk-ref="66" fk-ref="4"/>
-		<relation name="fk_met_ver_code" fq-name="dat.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="66" fk-ref="5"/>
-		<relation name="fk_san_ver_code" fq-name="dat.t_serannual_san.fk_san_ver_code" type="fk" pk-ref="66" fk-ref="6"/>
-		<relation name="fk_ser_ver_code" fq-name="dat.t_series_ser.fk_ser_ver_code" type="fk" pk-ref="66" fk-ref="7"/>
-		<relation name="fk_sto_ver_code" fq-name="dat.t_stock_sto.fk_sto_ver_code" type="fk" pk-ref="66" fk-ref="8"/>
-		<relation name="refbast.tr_version_ver-&gt;&quot;ref&quot;.tr_version_ver" fq-name="refbast.tr_version_ver.&quot;refbast.tr_version_ver-&gt;&quot;&quot;ref&quot;&quot;.tr_version_ver&quot;" type="inheritance" pk-ref="66" fk-ref="69"/>
-		<relation name="refeel.tr_version_ver-&gt;&quot;ref&quot;.tr_version_ver" fq-name="refeel.tr_version_ver.&quot;refeel.tr_version_ver-&gt;&quot;&quot;ref&quot;&quot;.tr_version_ver&quot;" type="inheritance" pk-ref="66" fk-ref="76"/>
-		<relation name="refnas.tr_version_ver-&gt;&quot;ref&quot;.tr_version_ver" fq-name="refnas.tr_version_ver.&quot;refnas.tr_version_ver-&gt;&quot;&quot;ref&quot;&quot;.tr_version_ver&quot;" type="inheritance" pk-ref="66" fk-ref="80"/>
-		<relation name="fk_are_are_id" fq-name="refbast.tr_area_are.fk_are_are_id" type="fk" pk-ref="67" fk-ref="67"/>
-		<relation name="fk_riv_are_code" fq-name="refbast.tr_rivernames_riv.fk_riv_are_code" type="fk" pk-ref="67" fk-ref="68"/>
-		<relation name="fk_met_ver_code" fq-name="datbast.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="69" fk-ref="10"/>
-		<relation name="fk_grt_tra_code" fq-name="dateel.t_grouptrait_grt.fk_grt_tra_code" type="fk" pk-ref="70" fk-ref="14"/>
-		<relation name="fk_int_tra_code" fq-name="dateel.t_indivtrait_int.fk_int_tra_code" type="fk" pk-ref="70" fk-ref="15"/>
-		<relation name="fk_sto_are_code" fq-name="datbast.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="71" fk-ref="11"/>
-		<relation name="fk_sto_are_code" fq-name="dateel.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="71" fk-ref="20"/>
-		<relation name="fk_are_are_id" fq-name="refeel.tr_area_are.fk_are_are_id" type="fk" pk-ref="71" fk-ref="71"/>
-		<relation name="fk_grt_trm_code" fq-name="dateel.t_grouptrait_grt.fk_grt_trm_code" type="fk" pk-ref="72" fk-ref="14"/>
-		<relation name="fk_int_trm_code" fq-name="dateel.t_indivtrait_int.fk_int_trm_code" type="fk" pk-ref="72" fk-ref="15"/>
-		<relation name="fk_trv_trq_code" fq-name="refeel.tr_traitvaluequal_trv.fk_trv_trq_code" type="fk" pk-ref="74" fk-ref="75"/>
-		<relation name="fk_grt_trv_tra_code" fq-name="dateel.t_grouptrait_grt.fk_grt_trv_tra_code" type="fk" pk-ref="75" fk-ref="14"/>
-		<relation name="fk_int_trv_tra_code" fq-name="dateel.t_indivtrait_int.fk_int_trv_tra_code" type="fk" pk-ref="75" fk-ref="15"/>
-		<relation name="fk_gr_ver_code" fq-name="dateel.t_fish_fi.fk_gr_ver_code" type="fk" pk-ref="76" fk-ref="12"/>
-		<relation name="fk_gr_ver_code" fq-name="dateel.t_group_gr.fk_gr_ver_code" type="fk" pk-ref="76" fk-ref="13"/>
-		<relation name="fk_grt_ver_code" fq-name="dateel.t_grouptrait_grt.fk_grt_ver_code" type="fk" pk-ref="76" fk-ref="14"/>
-		<relation name="fk_int_ver_code" fq-name="dateel.t_indivtrait_int.fk_int_ver_code" type="fk" pk-ref="76" fk-ref="15"/>
-		<relation name="fk_met_ver_code" fq-name="dateel.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="76" fk-ref="16"/>
-		<relation name="fk_san_ver_code" fq-name="dateel.t_serannual_san.fk_san_ver_code" type="fk" pk-ref="76" fk-ref="18"/>
-		<relation name="fk_ser_ver_code" fq-name="dateel.t_series_ser.fk_ser_ver_code" type="fk" pk-ref="76" fk-ref="19"/>
-		<relation name="fk_sto_add_code" fq-name="datnas.t_stock_sto.fk_sto_add_code" type="fk" pk-ref="77" fk-ref="23"/>
-		<relation name="fk_sto_are_code" fq-name="datnas.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="78" fk-ref="23"/>
-		<relation name="fk_are_are_id" fq-name="refnas.tr_area_are.fk_are_are_id" type="fk" pk-ref="78" fk-ref="78"/>
-		<relation name="fk_riv_are_code" fq-name="refnas.tr_rivernames_riv.fk_riv_are_code" type="fk" pk-ref="78" fk-ref="79"/>
-		<relation name="fk_met_ver_code" fq-name="datnas.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="80" fk-ref="22"/>
+		<relation name="fk_ser_are_code" fq-name="dat.t_series_ser.fk_ser_are_code" type="fk" pk-ref="33" fk-ref="7"/>
+		<relation name="fk_sto_are_code" fq-name="dat.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="33" fk-ref="8"/>
+		<relation name="fk_are_are_id" fq-name="&quot;ref&quot;.tr_area_are.fk_are_are_id" type="fk" pk-ref="33" fk-ref="33">
+			<bend type="rel" x="1196" y="3690"/>
+			<bend type="rel" x="1228" y="3674"/>
+			<bend type="rel" x="1228" y="3643"/>
+			<bend type="rel" x="1196" y="3627"/>
+		</relation>
+		<relation name="fk_riv_are_code" fq-name="&quot;ref&quot;.tr_rivernames_riv.fk_riv_are_code" type="fk" pk-ref="33" fk-ref="53"/>
+		<relation name="refbast.tr_area_are-&gt;&quot;ref&quot;.tr_area_are" fq-name="refbast.tr_area_are.&quot;refbast.tr_area_are-&gt;&quot;&quot;ref&quot;&quot;.tr_area_are&quot;" type="inheritance" pk-ref="33" fk-ref="64"/>
+		<relation name="refeel.tr_area_are-&gt;&quot;ref&quot;.tr_area_are" fq-name="refeel.tr_area_are.&quot;refeel.tr_area_are-&gt;&quot;&quot;ref&quot;&quot;.tr_area_are&quot;" type="inheritance" pk-ref="33" fk-ref="68"/>
+		<relation name="refnas.tr_area_are-&gt;&quot;ref&quot;.tr_area_are" fq-name="refnas.tr_area_are.&quot;refnas.tr_area_are-&gt;&quot;&quot;ref&quot;&quot;.tr_area_are&quot;" type="inheritance" pk-ref="33" fk-ref="75"/>
+		<relation name="fk_met_cat_code" fq-name="dat.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="34" fk-ref="5"/>
+		<relation name="fk_met_cat_code" fq-name="datbast.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="34" fk-ref="10"/>
+		<relation name="fk_met_cat_code" fq-name="dateel.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="34" fk-ref="16"/>
+		<relation name="fk_met_cat_code" fq-name="datnas.t_metadata_met.fk_met_cat_code" type="fk" pk-ref="34" fk-ref="22"/>
+		<relation name="fk_ser_cou_code" fq-name="dat.t_series_ser.fk_ser_cou_code" type="fk" pk-ref="35" fk-ref="7"/>
+		<relation name="fk_sto_cou_code" fq-name="dat.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="35" fk-ref="8"/>
+		<relation name="fk_sto_cou_code" fq-name="datbast.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="35" fk-ref="11"/>
+		<relation name="fk_ser_cou_code" fq-name="dateel.t_series_ser.fk_ser_cou_code" type="fk" pk-ref="35" fk-ref="19"/>
+		<relation name="fk_sto_cou_code" fq-name="dateel.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="35" fk-ref="20"/>
+		<relation name="fk_sto_cou_code" fq-name="datnas.t_stock_sto.fk_sto_cou_code" type="fk" pk-ref="35" fk-ref="23"/>
+		<relation name="fk_dta_code" fq-name="dat.t_stock_sto.fk_dta_code" type="fk" pk-ref="36" fk-ref="8"/>
+		<relation name="fk_dta_code" fq-name="datbast.t_stock_sto.fk_dta_code" type="fk" pk-ref="36" fk-ref="11"/>
+		<relation name="fk_dta_code" fq-name="dateel.t_stock_sto.fk_dta_code" type="fk" pk-ref="36" fk-ref="20"/>
+		<relation name="fk_dta_code" fq-name="datnas.t_stock_sto.fk_dta_code" type="fk" pk-ref="36" fk-ref="23"/>
+		<relation name="fk_met_des_code" fq-name="datbast.t_metadata_met.fk_met_des_code" type="fk" pk-ref="37" fk-ref="10"/>
+		<relation name="fk_met_des_code" fq-name="dateel.t_metadata_met.fk_met_des_code" type="fk" pk-ref="37" fk-ref="16"/>
+		<relation name="fk_met_des_code" fq-name="datnas.t_metadata_met.fk_met_des_code" type="fk" pk-ref="37" fk-ref="22"/>
+		<relation name="fk_ser_fiw_code" fq-name="dat.t_series_ser.fk_ser_fiw_code" type="fk" pk-ref="39" fk-ref="7"/>
+		<relation name="fk_ser_fiw_code" fq-name="dateel.t_series_ser.fk_ser_fiw_code" type="fk" pk-ref="39" fk-ref="19"/>
+		<relation name="fk_ser_gea_code" fq-name="dat.t_series_ser.fk_ser_gea_code" type="fk" pk-ref="40" fk-ref="7"/>
+		<relation name="fk_sto_gear_code" fq-name="datbast.t_stock_sto.fk_sto_gear_code" type="fk" pk-ref="40" fk-ref="11"/>
+		<relation name="fk_ser_gea_code" fq-name="dateel.t_series_ser.fk_ser_gea_code" type="fk" pk-ref="40" fk-ref="19"/>
+		<relation name="fk_ser_habitat_code" fq-name="dat.t_series_ser.fk_ser_habitat_code" type="fk" pk-ref="41" fk-ref="7"/>
+		<relation name="fk_area_lev_code" fq-name="&quot;ref&quot;.tr_area_are.fk_area_lev_code" type="fk" pk-ref="42" fk-ref="33"/>
+		<relation name="fk_area_lev_code" fq-name="refbast.tr_area_are.fk_area_lev_code" type="fk" pk-ref="42" fk-ref="64"/>
+		<relation name="fk_area_lev_code" fq-name="refeel.tr_area_are.fk_area_lev_code" type="fk" pk-ref="42" fk-ref="68"/>
+		<relation name="fk_area_lev_code" fq-name="refnas.tr_area_are.fk_area_lev_code" type="fk" pk-ref="42" fk-ref="75"/>
+		<relation name="fk_hty_code" fq-name="dat.t_stock_sto.fk_hty_code" type="fk" pk-ref="43" fk-ref="8"/>
+		<relation name="fk_hty_code" fq-name="datbast.t_stock_sto.fk_hty_code" type="fk" pk-ref="43" fk-ref="11"/>
+		<relation name="fk_hty_code" fq-name="dateel.t_stock_sto.fk_hty_code" type="fk" pk-ref="43" fk-ref="20"/>
+		<relation name="fk_hty_code" fq-name="datnas.t_stock_sto.fk_hty_code" type="fk" pk-ref="43" fk-ref="23"/>
+		<relation name="fk_fi_wkg_code" fq-name="dat.t_fish_fi.fk_fi_wkg_code" type="fk" pk-ref="44" fk-ref="1">
+			<bend type="abs" x="775" y="5218"/>
+			<bend type="abs" x="1039" y="5260"/>
+		</relation>
+		<relation name="fk_gr_wkg_code" fq-name="dat.t_group_gr.fk_gr_wkg_code" type="fk" pk-ref="44" fk-ref="2">
+			<bend type="abs" x="775" y="5155"/>
+			<bend type="abs" x="1039" y="5218"/>
+		</relation>
+		<relation name="fk_grt_wkg_code" fq-name="dat.t_grouptrait_grt.fk_grt_wkg_code" type="fk" pk-ref="44" fk-ref="3">
+			<bend type="abs" x="497" y="5512"/>
+			<bend type="abs" x="775" y="5470"/>
+			<bend type="abs" x="1039" y="5438"/>
+		</relation>
+		<relation name="fk_int_wkg_code" fq-name="dat.t_indivtrait_int.fk_int_wkg_code" type="fk" pk-ref="44" fk-ref="4">
+			<bend type="abs" x="497" y="5596"/>
+			<bend type="abs" x="775" y="5554"/>
+			<bend type="abs" x="1039" y="5522"/>
+		</relation>
+		<relation name="fk_met_wkg_code" fq-name="dat.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="44" fk-ref="5"/>
+		<relation name="fk_san_wkg_code" fq-name="dat.t_serannual_san.fk_san_wkg_code" type="fk" pk-ref="44" fk-ref="6">
+			<bend type="abs" x="775" y="4126"/>
+			<bend type="abs" x="1039" y="3832"/>
+		</relation>
+		<relation name="fk_ser_wkg_code" fq-name="dat.t_series_ser.fk_ser_wkg_code" type="fk" pk-ref="44" fk-ref="7"/>
+		<relation name="fk_sto_wkg_code" fq-name="dat.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="44" fk-ref="8"/>
+		<relation name="fk_met_wkg_code" fq-name="datbast.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="44" fk-ref="10"/>
+		<relation name="fk_sto_wkg_code" fq-name="datbast.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="44" fk-ref="11">
+			<bend type="abs" x="775" y="2866"/>
+			<bend type="abs" x="1039" y="2887"/>
+		</relation>
+		<relation name="fk_fi_wkg_code" fq-name="dateel.t_fish_fi.fk_fi_wkg_code" type="fk" pk-ref="44" fk-ref="12">
+			<bend type="abs" x="497" y="5470"/>
+			<bend type="abs" x="775" y="5428"/>
+			<bend type="abs" x="1039" y="5417"/>
+		</relation>
+		<relation name="fk_gr_wkg_code" fq-name="dateel.t_group_gr.fk_gr_wkg_code" type="fk" pk-ref="44" fk-ref="13">
+			<bend type="abs" x="497" y="4840"/>
+			<bend type="abs" x="775" y="5176"/>
+			<bend type="abs" x="1039" y="5239"/>
+		</relation>
+		<relation name="fk_grt_wkg_code" fq-name="dateel.t_grouptrait_grt.fk_grt_wkg_code" type="fk" pk-ref="44" fk-ref="14">
+			<bend type="abs" x="256" y="5423"/>
+			<bend type="abs" x="497" y="5554"/>
+			<bend type="abs" x="775" y="5512"/>
+			<bend type="abs" x="1039" y="5480"/>
+		</relation>
+		<relation name="fk_int_wkg_code" fq-name="dateel.t_indivtrait_int.fk_int_wkg_code" type="fk" pk-ref="44" fk-ref="15">
+			<bend type="abs" x="256" y="6268"/>
+			<bend type="abs" x="497" y="6268"/>
+			<bend type="abs" x="775" y="6231"/>
+			<bend type="abs" x="1039" y="6189"/>
+		</relation>
+		<relation name="fk_met_wkg_code" fq-name="dateel.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="44" fk-ref="16"/>
+		<relation name="fk_san_wkg_code" fq-name="dateel.t_serannual_san.fk_san_wkg_code" type="fk" pk-ref="44" fk-ref="18">
+			<bend type="abs" x="497" y="4462"/>
+			<bend type="abs" x="775" y="5113"/>
+			<bend type="abs" x="1039" y="5197"/>
+		</relation>
+		<relation name="fk_ser_wkg_code" fq-name="dateel.t_series_ser.fk_ser_wkg_code" type="fk" pk-ref="44" fk-ref="19">
+			<bend type="abs" x="775" y="3370"/>
+			<bend type="abs" x="1039" y="3433"/>
+		</relation>
+		<relation name="fk_sto_wkg_code" fq-name="dateel.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="44" fk-ref="20">
+			<bend type="abs" x="775" y="2908"/>
+			<bend type="abs" x="1039" y="2929"/>
+		</relation>
+		<relation name="fk_met_wkg_code" fq-name="datnas.t_metadata_met.fk_met_wkg_code" type="fk" pk-ref="44" fk-ref="22"/>
+		<relation name="fk_sto_wkg_code" fq-name="datnas.t_stock_sto.fk_sto_wkg_code" type="fk" pk-ref="44" fk-ref="23">
+			<bend type="abs" x="775" y="3055"/>
+			<bend type="abs" x="1039" y="3097"/>
+		</relation>
+		<relation name="fk_area_wkg_code" fq-name="&quot;ref&quot;.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="44" fk-ref="33"/>
+		<relation name="fk_riv_wkg_code" fq-name="&quot;ref&quot;.tr_rivernames_riv.fk_riv_wkg_code" type="fk" pk-ref="44" fk-ref="53"/>
+		<relation name="fk_tra_wkg_code" fq-name="&quot;ref&quot;.tr_trait_tra.fk_tra_wkg_code" type="fk" pk-ref="44" fk-ref="57"/>
+		<relation name="fk_trm_wkg_code" fq-name="&quot;ref&quot;.tr_traitmethod_trm.fk_trm_wkg_code" type="fk" pk-ref="44" fk-ref="58">
+			<bend type="abs" x="775" y="5638"/>
+			<bend type="abs" x="1039" y="5606"/>
+		</relation>
+		<relation name="fk_tra_wkg_code" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.fk_tra_wkg_code" type="fk" pk-ref="44" fk-ref="59"/>
+		<relation name="fk_tra_wkg_code" fq-name="&quot;ref&quot;.tr_traitqualitative_trq.fk_tra_wkg_code" type="fk" pk-ref="44" fk-ref="60"/>
+		<relation name="fk_trv_wkg_code" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv.fk_trv_wkg_code" type="fk" pk-ref="44" fk-ref="61">
+			<bend type="abs" x="775" y="5732"/>
+			<bend type="abs" x="1039" y="5669"/>
+		</relation>
+		<relation name="fk_area_wkg_code" fq-name="refbast.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="44" fk-ref="64"/>
+		<relation name="fk_riv_wkg_code" fq-name="refbast.tr_rivernames_riv.fk_riv_wkg_code" type="fk" pk-ref="44" fk-ref="65">
+			<bend type="abs" x="775" y="5575"/>
+			<bend type="abs" x="1039" y="5543"/>
+		</relation>
+		<relation name="fk_area_wkg_code" fq-name="refeel.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="44" fk-ref="68"/>
+		<relation name="fk_trm_wkg_code" fq-name="refeel.tr_traitmethod_trm.fk_trm_wkg_code" type="fk" pk-ref="44" fk-ref="69">
+			<bend type="abs" x="497" y="5848"/>
+			<bend type="abs" x="775" y="5659"/>
+			<bend type="abs" x="1039" y="5648"/>
+		</relation>
+		<relation name="fk_tra_wkg_code" fq-name="refeel.tr_traitnumeric_trn.fk_tra_wkg_code" type="fk" pk-ref="44" fk-ref="70">
+			<bend type="abs" x="775" y="6294"/>
+			<bend type="abs" x="1039" y="6231"/>
+		</relation>
+		<relation name="fk_tra_wkg_code" fq-name="refeel.tr_traitqualitative_trq.fk_tra_wkg_code" type="fk" pk-ref="44" fk-ref="71">
+			<bend type="abs" x="775" y="6021"/>
+			<bend type="abs" x="1039" y="6047"/>
+		</relation>
+		<relation name="fk_area_wkg_code" fq-name="refnas.tr_area_are.fk_area_wkg_code" type="fk" pk-ref="44" fk-ref="75"/>
+		<relation name="fk_riv_wkg_code" fq-name="refnas.tr_rivernames_riv.fk_riv_wkg_code" type="fk" pk-ref="44" fk-ref="76">
+			<bend type="abs" x="775" y="5596"/>
+			<bend type="abs" x="1039" y="5585"/>
+		</relation>
+		<relation name="fk_fi_lfs_code_fi_spe_code" fq-name="dat.t_fish_fi.fk_fi_lfs_code_fi_spe_code" type="fk" pk-ref="45" fk-ref="1"/>
+		<relation name="fk_gr_lfs_code_gr_spe_code" fq-name="dat.t_group_gr.fk_gr_lfs_code_gr_spe_code" type="fk" pk-ref="45" fk-ref="2"/>
+		<relation name="fk_ser_lfs_code_ser_spe_code" fq-name="dat.t_series_ser.fk_ser_lfs_code_ser_spe_code" type="fk" pk-ref="45" fk-ref="7"/>
+		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="dat.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="45" fk-ref="8"/>
+		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="datbast.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="45" fk-ref="11"/>
+		<relation name="fk_fi_lfs_code_fi_spe_code" fq-name="dateel.t_fish_fi.fk_fi_lfs_code_fi_spe_code" type="fk" pk-ref="45" fk-ref="12">
+			<bend type="abs" x="497" y="4441"/>
+			<bend type="abs" x="775" y="4441"/>
+		</relation>
+		<relation name="fk_gr_lfs_code_gr_spe_code" fq-name="dateel.t_group_gr.fk_gr_lfs_code_gr_spe_code" type="fk" pk-ref="45" fk-ref="13">
+			<bend type="abs" x="497" y="4399"/>
+			<bend type="abs" x="775" y="4420"/>
+		</relation>
+		<relation name="fk_ser_lfs_code_ser_spe_code" fq-name="dateel.t_series_ser.fk_ser_lfs_code_ser_spe_code" type="fk" pk-ref="45" fk-ref="19"/>
+		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="dateel.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="45" fk-ref="20"/>
+		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="datnas.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="45" fk-ref="23"/>
+		<relation name="fk_met_mtr_code" fq-name="dat.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="5"/>
+		<relation name="fk_met_mtr_code" fq-name="datbast.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="10"/>
+		<relation name="fk_met_mtr_code" fq-name="dateel.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="16"/>
+		<relation name="fk_met_mtr_code" fq-name="datnas.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="22"/>
+		<relation name="fk_sto_mis_code" fq-name="dat.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="8"/>
+		<relation name="fk_sto_mis_code" fq-name="datbast.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="11"/>
+		<relation name="fk_sto_mis_code" fq-name="dateel.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="20"/>
+		<relation name="fk_sto_mis_code" fq-name="datnas.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="23"/>
+		<relation name="fk_ser_mon_code" fq-name="dat.t_series_ser.fk_ser_mon_code" type="fk" pk-ref="49" fk-ref="7"/>
+		<relation name="fk_ser_mon_code" fq-name="dateel.t_series_ser.fk_ser_mon_code" type="fk" pk-ref="49" fk-ref="19"/>
+		<relation name="fk_met_nim_code" fq-name="dat.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="5"/>
+		<relation name="fk_met_nim_code" fq-name="datbast.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="10"/>
+		<relation name="fk_met_nim_code" fq-name="dateel.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="16"/>
+		<relation name="fk_met_nim_code" fq-name="datnas.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="22"/>
+		<relation name="fk_met_oty_code" fq-name="dat.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="5"/>
+		<relation name="fk_met_oty_code" fq-name="datbast.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="10"/>
+		<relation name="fk_met_oty_code" fq-name="dateel.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="16"/>
+		<relation name="fk_met_oty_code" fq-name="datnas.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="22"/>
+		<relation name="fk_grt_qal_id" fq-name="dat.t_grouptrait_grt.fk_grt_qal_id" type="fk" pk-ref="52" fk-ref="3">
+			<bend type="abs" x="497" y="467"/>
+			<bend type="abs" x="775" y="467"/>
+		</relation>
+		<relation name="fk_int_qal_id" fq-name="dat.t_indivtrait_int.fk_int_qal_id" type="fk" pk-ref="52" fk-ref="4">
+			<bend type="abs" x="497" y="488"/>
+			<bend type="abs" x="775" y="488"/>
+		</relation>
+		<relation name="fk_sto_qal_code" fq-name="dat.t_stock_sto.fk_sto_qal_code" type="fk" pk-ref="52" fk-ref="8"/>
+		<relation name="fk_sto_qal_code" fq-name="datbast.t_stock_sto.fk_sto_qal_code" type="fk" pk-ref="52" fk-ref="11"/>
+		<relation name="fk_grt_qal_id" fq-name="dateel.t_grouptrait_grt.fk_grt_qal_id" type="fk" pk-ref="52" fk-ref="14">
+			<bend type="abs" x="256" y="362"/>
+			<bend type="abs" x="497" y="362"/>
+			<bend type="abs" x="775" y="362"/>
+		</relation>
+		<relation name="fk_int_qal_id" fq-name="dateel.t_indivtrait_int.fk_int_qal_id" type="fk" pk-ref="52" fk-ref="15">
+			<bend type="abs" x="256" y="635"/>
+			<bend type="abs" x="497" y="425"/>
+			<bend type="abs" x="775" y="425"/>
+		</relation>
+		<relation name="fk_sto_qal_code" fq-name="dateel.t_stock_sto.fk_sto_qal_code" type="fk" pk-ref="52" fk-ref="20"/>
+		<relation name="refbast.tr_rivernames_riv-&gt;&quot;ref&quot;.tr_rivernames_riv" fq-name="refbast.tr_rivernames_riv.&quot;refbast.tr_rivernames_riv-&gt;&quot;&quot;ref&quot;&quot;.tr_rivernames_riv&quot;" type="inheritance" pk-ref="53" fk-ref="65"/>
+		<relation name="refnas.tr_rivernames_riv-&gt;&quot;ref&quot;.tr_rivernames_riv" fq-name="refnas.tr_rivernames_riv.&quot;refnas.tr_rivernames_riv-&gt;&quot;&quot;ref&quot;&quot;.tr_rivernames_riv&quot;" type="inheritance" pk-ref="53" fk-ref="76"/>
+		<relation name="fk_fi_spe_code" fq-name="dat.t_fish_fi.fk_fi_spe_code" type="fk" pk-ref="55" fk-ref="1">
+			<bend type="abs" x="775" y="5449"/>
+			<bend type="abs" x="1039" y="5459"/>
+		</relation>
+		<relation name="fk_gr_spe_code" fq-name="dat.t_group_gr.fk_gr_spe_code" type="fk" pk-ref="55" fk-ref="2">
+			<bend type="abs" x="775" y="5197"/>
+			<bend type="abs" x="1039" y="5281"/>
+		</relation>
+		<relation name="fk_grt_spe_code" fq-name="dat.t_grouptrait_grt.fk_grt_spe_code" type="fk" pk-ref="55" fk-ref="3">
+			<bend type="abs" x="497" y="5575"/>
+			<bend type="abs" x="775" y="5617"/>
+			<bend type="abs" x="1039" y="5627"/>
+		</relation>
+		<relation name="fk_int_spe_code" fq-name="dat.t_indivtrait_int.fk_int_spe_code" type="fk" pk-ref="55" fk-ref="4">
+			<bend type="abs" x="497" y="6121"/>
+			<bend type="abs" x="775" y="6210"/>
+			<bend type="abs" x="1039" y="6168"/>
+		</relation>
+		<relation name="fk_met_spe_code" fq-name="dat.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="55" fk-ref="5"/>
+		<relation name="fk_ser_spe_code" fq-name="dat.t_series_ser.fk_ser_spe_code" type="fk" pk-ref="55" fk-ref="7"/>
+		<relation name="fk_met_spe_code" fq-name="datbast.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="55" fk-ref="10"/>
+		<relation name="fk_fi_spe_code" fq-name="dateel.t_fish_fi.fk_fi_spe_code" type="fk" pk-ref="55" fk-ref="12">
+			<bend type="abs" x="497" y="5533"/>
+			<bend type="abs" x="775" y="5533"/>
+			<bend type="abs" x="1039" y="5564"/>
+		</relation>
+		<relation name="fk_gr_spe_code" fq-name="dateel.t_group_gr.fk_gr_spe_code" type="fk" pk-ref="55" fk-ref="13">
+			<bend type="abs" x="497" y="5491"/>
+			<bend type="abs" x="775" y="5491"/>
+			<bend type="abs" x="1039" y="5501"/>
+		</relation>
+		<relation name="fk_grt_spe_code" fq-name="dateel.t_grouptrait_grt.fk_grt_spe_code" type="fk" pk-ref="55" fk-ref="14">
+			<bend type="abs" x="256" y="6247"/>
+			<bend type="abs" x="497" y="6394"/>
+			<bend type="abs" x="775" y="6373"/>
+			<bend type="abs" x="1039" y="6373"/>
+		</relation>
+		<relation name="fk_int_spe_code" fq-name="dateel.t_indivtrait_int.fk_int_spe_code" type="fk" pk-ref="55" fk-ref="15">
+			<bend type="abs" x="256" y="6415"/>
+			<bend type="abs" x="497" y="6415"/>
+			<bend type="abs" x="775" y="6415"/>
+			<bend type="abs" x="1039" y="6415"/>
+		</relation>
+		<relation name="fk_met_spe_code" fq-name="dateel.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="55" fk-ref="16"/>
+		<relation name="fk_ser_spe_code" fq-name="dateel.t_series_ser.fk_ser_spe_code" type="fk" pk-ref="55" fk-ref="19">
+			<bend type="abs" x="775" y="4399"/>
+			<bend type="abs" x="1039" y="5113"/>
+		</relation>
+		<relation name="fk_met_spe_code" fq-name="datnas.t_metadata_met.fk_met_spe_code" type="fk" pk-ref="55" fk-ref="22"/>
+		<relation name="fk_lfs_spe_code" fq-name="&quot;ref&quot;.tr_lifestage_lfs.fk_lfs_spe_code" type="fk" pk-ref="55" fk-ref="45"/>
+		<relation name="fk_tra_spe_code" fq-name="&quot;ref&quot;.tr_trait_tra.fk_tra_spe_code" type="fk" pk-ref="55" fk-ref="57"/>
+		<relation name="fk_trm_spe_code" fq-name="&quot;ref&quot;.tr_traitmethod_trm.fk_trm_spe_code" type="fk" pk-ref="55" fk-ref="58">
+			<bend type="abs" x="775" y="5711"/>
+			<bend type="abs" x="1039" y="5711"/>
+		</relation>
+		<relation name="fk_tra_spe_code" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.fk_tra_spe_code" type="fk" pk-ref="55" fk-ref="59"/>
+		<relation name="fk_tra_spe_code" fq-name="&quot;ref&quot;.tr_traitqualitative_trq.fk_tra_spe_code" type="fk" pk-ref="55" fk-ref="60"/>
+		<relation name="fk_trv_spe_code" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv.fk_trv_spe_code" type="fk" pk-ref="55" fk-ref="61">
+			<bend type="abs" x="775" y="6000"/>
+			<bend type="abs" x="1039" y="6068"/>
+		</relation>
+		<relation name="fk_trm_spe_code" fq-name="refeel.tr_traitmethod_trm.fk_trm_spe_code" type="fk" pk-ref="55" fk-ref="69">
+			<bend type="abs" x="497" y="6247"/>
+			<bend type="abs" x="775" y="6273"/>
+			<bend type="abs" x="1039" y="6273"/>
+		</relation>
+		<relation name="fk_tra_spe_code" fq-name="refeel.tr_traitnumeric_trn.fk_tra_spe_code" type="fk" pk-ref="55" fk-ref="70">
+			<bend type="abs" x="775" y="6394"/>
+			<bend type="abs" x="1039" y="6394"/>
+		</relation>
+		<relation name="fk_tra_spe_code" fq-name="refeel.tr_traitqualitative_trq.fk_tra_spe_code" type="fk" pk-ref="55" fk-ref="71">
+			<bend type="abs" x="775" y="6252"/>
+			<bend type="abs" x="1039" y="6252"/>
+		</relation>
+		<relation name="fk_tip_code" fq-name="datbast.t_stock_sto.fk_tip_code" type="fk" pk-ref="56" fk-ref="11"/>
+		<relation name="fk_grt_tra_code" fq-name="dat.t_grouptrait_grt.fk_grt_tra_code" type="fk" pk-ref="57" fk-ref="3">
+			<bend type="abs" x="497" y="5617"/>
+			<bend type="abs" x="775" y="5680"/>
+		</relation>
+		<relation name="fk_int_tra_code" fq-name="dat.t_indivtrait_int.fk_int_tra_code" type="fk" pk-ref="57" fk-ref="4">
+			<bend type="abs" x="497" y="5869"/>
+			<bend type="abs" x="775" y="5853"/>
+		</relation>
+		<relation name="&quot;ref&quot;.tr_traitnumeric_trn-&gt;&quot;ref&quot;.tr_trait_tra" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.&quot;&quot;&quot;ref&quot;&quot;.tr_traitnumeric_trn-&gt;&quot;&quot;ref&quot;&quot;.tr_trait_tra&quot;" type="inheritance" pk-ref="57" fk-ref="59"/>
+		<relation name="&quot;ref&quot;.tr_traitqualitative_trq-&gt;&quot;ref&quot;.tr_trait_tra" fq-name="&quot;ref&quot;.tr_traitqualitative_trq.&quot;&quot;&quot;ref&quot;&quot;.tr_traitqualitative_trq-&gt;&quot;&quot;ref&quot;&quot;.tr_trait_tra&quot;" type="inheritance" pk-ref="57" fk-ref="60"/>
+		<relation name="fk_grt_trm_code" fq-name="dat.t_grouptrait_grt.fk_grt_trm_code" type="fk" pk-ref="58" fk-ref="3"/>
+		<relation name="fk_int_trm_code" fq-name="dat.t_indivtrait_int.fk_int_trm_code" type="fk" pk-ref="58" fk-ref="4"/>
+		<relation name="refeel.tr_traitmethod_trm-&gt;&quot;ref&quot;.tr_traitmethod_trm" fq-name="refeel.tr_traitmethod_trm.&quot;refeel.tr_traitmethod_trm-&gt;&quot;&quot;ref&quot;&quot;.tr_traitmethod_trm&quot;" type="inheritance" pk-ref="58" fk-ref="69"/>
+		<relation name="refeel.tr_traitnumeric_trn-&gt;&quot;ref&quot;.tr_traitnumeric_trn" fq-name="refeel.tr_traitnumeric_trn.&quot;refeel.tr_traitnumeric_trn-&gt;&quot;&quot;ref&quot;&quot;.tr_traitnumeric_trn&quot;" type="inheritance" pk-ref="59" fk-ref="70"/>
+		<relation name="fk_trv_trq_code" fq-name="&quot;ref&quot;.tr_traitvaluequal_trv.fk_trv_trq_code" type="fk" pk-ref="60" fk-ref="61"/>
+		<relation name="refeel.tr_traitqualitative_trq-&gt;&quot;ref&quot;.tr_traitqualitative_trq" fq-name="refeel.tr_traitqualitative_trq.&quot;refeel.tr_traitqualitative_trq-&gt;&quot;&quot;ref&quot;&quot;.tr_traitqualitative_trq&quot;" type="inheritance" pk-ref="60" fk-ref="71"/>
+		<relation name="fk_grt_trv_tra_code" fq-name="dat.t_grouptrait_grt.fk_grt_trv_tra_code" type="fk" pk-ref="61" fk-ref="3"/>
+		<relation name="fk_int_trv_tra_code" fq-name="dat.t_indivtrait_int.fk_int_trv_tra_code" type="fk" pk-ref="61" fk-ref="4"/>
+		<relation name="refeel.tr_traitvaluequal_trv-&gt;&quot;ref&quot;.tr_traitvaluequal_trv" fq-name="refeel.tr_traitvaluequal_trv.&quot;refeel.tr_traitvaluequal_trv-&gt;&quot;&quot;ref&quot;&quot;.tr_traitvaluequal_trv&quot;" type="inheritance" pk-ref="61" fk-ref="72"/>
+		<relation name="fk_met_uni_code" fq-name="dat.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="62" fk-ref="5"/>
+		<relation name="fk_ser_effort_uni_code" fq-name="dat.t_series_ser.fk_ser_effort_uni_code" type="fk" pk-ref="62" fk-ref="7"/>
+		<relation name="fk_ser_uni_code" fq-name="dat.t_series_ser.fk_ser_uni_code" type="fk" pk-ref="62" fk-ref="7"/>
+		<relation name="fk_met_uni_code" fq-name="datbast.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="62" fk-ref="10"/>
+		<relation name="fk_met_uni_code" fq-name="dateel.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="62" fk-ref="16"/>
+		<relation name="fk_ser_effort_uni_code" fq-name="dateel.t_series_ser.fk_ser_effort_uni_code" type="fk" pk-ref="62" fk-ref="19">
+			<bend type="abs" x="775" y="3286"/>
+			<bend type="abs" x="1039" y="3349"/>
+		</relation>
+		<relation name="fk_ser_uni_code" fq-name="dateel.t_series_ser.fk_ser_uni_code" type="fk" pk-ref="62" fk-ref="19">
+			<bend type="abs" x="775" y="3328"/>
+			<bend type="abs" x="1039" y="3370"/>
+		</relation>
+		<relation name="fk_met_uni_code" fq-name="datnas.t_metadata_met.fk_met_uni_code" type="fk" pk-ref="62" fk-ref="22"/>
+		<relation name="fk_trn_uni_code" fq-name="&quot;ref&quot;.tr_traitnumeric_trn.fk_trn_uni_code" type="fk" pk-ref="62" fk-ref="59"/>
+		<relation name="fk_trn_uni_code" fq-name="refeel.tr_traitnumeric_trn.fk_trn_uni_code" type="fk" pk-ref="62" fk-ref="70">
+			<bend type="abs" x="775" y="5874"/>
+			<bend type="abs" x="1039" y="5690"/>
+		</relation>
+		<relation name="fk_gr_ver_code" fq-name="dat.t_fish_fi.fk_gr_ver_code" type="fk" pk-ref="63" fk-ref="1">
+			<bend type="abs" x="775" y="5134"/>
+			<bend type="abs" x="1039" y="5134"/>
+		</relation>
+		<relation name="fk_gr_ver_code" fq-name="dat.t_group_gr.fk_gr_ver_code" type="fk" pk-ref="63" fk-ref="2">
+			<bend type="abs" x="775" y="4168"/>
+			<bend type="abs" x="1039" y="3496"/>
+		</relation>
+		<relation name="fk_grt_ver_code" fq-name="dat.t_grouptrait_grt.fk_grt_ver_code" type="fk" pk-ref="63" fk-ref="3">
+			<bend type="abs" x="497" y="3076"/>
+			<bend type="abs" x="775" y="3097"/>
+			<bend type="abs" x="1039" y="3055"/>
+		</relation>
+		<relation name="fk_int_ver_code" fq-name="dat.t_indivtrait_int.fk_int_ver_code" type="fk" pk-ref="63" fk-ref="4">
+			<bend type="abs" x="497" y="3538"/>
+			<bend type="abs" x="775" y="3391"/>
+			<bend type="abs" x="1039" y="3391"/>
+		</relation>
+		<relation name="fk_met_ver_code" fq-name="dat.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="63" fk-ref="5"/>
+		<relation name="fk_san_ver_code" fq-name="dat.t_serannual_san.fk_san_ver_code" type="fk" pk-ref="63" fk-ref="6">
+			<bend type="abs" x="775" y="3139"/>
+			<bend type="abs" x="1039" y="3076"/>
+		</relation>
+		<relation name="fk_ser_ver_code" fq-name="dat.t_series_ser.fk_ser_ver_code" type="fk" pk-ref="63" fk-ref="7"/>
+		<relation name="fk_sto_ver_code" fq-name="dat.t_stock_sto.fk_sto_ver_code" type="fk" pk-ref="63" fk-ref="8"/>
+		<relation name="refbast.tr_version_ver-&gt;&quot;ref&quot;.tr_version_ver" fq-name="refbast.tr_version_ver.&quot;refbast.tr_version_ver-&gt;&quot;&quot;ref&quot;&quot;.tr_version_ver&quot;" type="inheritance" pk-ref="63" fk-ref="66"/>
+		<relation name="refeel.tr_version_ver-&gt;&quot;ref&quot;.tr_version_ver" fq-name="refeel.tr_version_ver.&quot;refeel.tr_version_ver-&gt;&quot;&quot;ref&quot;&quot;.tr_version_ver&quot;" type="inheritance" pk-ref="63" fk-ref="73"/>
+		<relation name="refnas.tr_version_ver-&gt;&quot;ref&quot;.tr_version_ver" fq-name="refnas.tr_version_ver.&quot;refnas.tr_version_ver-&gt;&quot;&quot;ref&quot;&quot;.tr_version_ver&quot;" type="inheritance" pk-ref="63" fk-ref="77"/>
+		<relation name="fk_sto_are_code" fq-name="datbast.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="64" fk-ref="11"/>
+		<relation name="fk_are_are_id" fq-name="refbast.tr_area_are.fk_are_are_id" type="fk" pk-ref="64" fk-ref="64">
+			<bend type="rel" x="930" y="4372"/>
+			<bend type="rel" x="961" y="4356"/>
+			<bend type="rel" x="961" y="4325"/>
+			<bend type="rel" x="930" y="4310"/>
+		</relation>
+		<relation name="fk_riv_are_code" fq-name="refbast.tr_rivernames_riv.fk_riv_are_code" type="fk" pk-ref="64" fk-ref="65"/>
+		<relation name="fk_met_ver_code" fq-name="datbast.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="66" fk-ref="10"/>
+		<relation name="fk_grt_tra_code" fq-name="dateel.t_grouptrait_grt.fk_grt_tra_code" type="fk" pk-ref="67" fk-ref="14"/>
+		<relation name="fk_int_tra_code" fq-name="dateel.t_indivtrait_int.fk_int_tra_code" type="fk" pk-ref="67" fk-ref="15"/>
+		<relation name="fk_sto_are_code" fq-name="dateel.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="68" fk-ref="20"/>
+		<relation name="fk_are_are_id" fq-name="refeel.tr_area_are.fk_are_are_id" type="fk" pk-ref="68" fk-ref="68">
+			<bend type="rel" x="1184" y="2858"/>
+			<bend type="rel" x="1213" y="2843"/>
+			<bend type="rel" x="1213" y="2814"/>
+			<bend type="rel" x="1184" y="2800"/>
+		</relation>
+		<relation name="fk_grt_trm_code" fq-name="dateel.t_grouptrait_grt.fk_grt_trm_code" type="fk" pk-ref="69" fk-ref="14"/>
+		<relation name="fk_int_trm_code" fq-name="dateel.t_indivtrait_int.fk_int_trm_code" type="fk" pk-ref="69" fk-ref="15"/>
+		<relation name="fk_trv_trq_code" fq-name="refeel.tr_traitvaluequal_trv.fk_trv_trq_code" type="fk" pk-ref="71" fk-ref="72"/>
+		<relation name="fk_grt_trv_tra_code" fq-name="dateel.t_grouptrait_grt.fk_grt_trv_tra_code" type="fk" pk-ref="72" fk-ref="14"/>
+		<relation name="fk_int_trv_tra_code" fq-name="dateel.t_indivtrait_int.fk_int_trv_tra_code" type="fk" pk-ref="72" fk-ref="15"/>
+		<relation name="fk_gr_ver_code" fq-name="dateel.t_fish_fi.fk_gr_ver_code" type="fk" pk-ref="73" fk-ref="12">
+			<bend type="abs" x="497" y="3034"/>
+			<bend type="abs" x="775" y="3034"/>
+		</relation>
+		<relation name="fk_gr_ver_code" fq-name="dateel.t_group_gr.fk_gr_ver_code" type="fk" pk-ref="73" fk-ref="13">
+			<bend type="abs" x="497" y="3013"/>
+			<bend type="abs" x="775" y="3013"/>
+		</relation>
+		<relation name="fk_grt_ver_code" fq-name="dateel.t_grouptrait_grt.fk_grt_ver_code" type="fk" pk-ref="73" fk-ref="14">
+			<bend type="abs" x="256" y="2950"/>
+			<bend type="abs" x="497" y="2950"/>
+			<bend type="abs" x="775" y="2950"/>
+		</relation>
+		<relation name="fk_int_ver_code" fq-name="dateel.t_indivtrait_int.fk_int_ver_code" type="fk" pk-ref="73" fk-ref="15">
+			<bend type="abs" x="256" y="2971"/>
+			<bend type="abs" x="497" y="2971"/>
+			<bend type="abs" x="775" y="2971"/>
+		</relation>
+		<relation name="fk_met_ver_code" fq-name="dateel.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="73" fk-ref="16"/>
+		<relation name="fk_san_ver_code" fq-name="dateel.t_serannual_san.fk_san_ver_code" type="fk" pk-ref="73" fk-ref="18">
+			<bend type="abs" x="497" y="2992"/>
+			<bend type="abs" x="775" y="2992"/>
+		</relation>
+		<relation name="fk_ser_ver_code" fq-name="dateel.t_series_ser.fk_ser_ver_code" type="fk" pk-ref="73" fk-ref="19"/>
+		<relation name="fk_sto_add_code" fq-name="datnas.t_stock_sto.fk_sto_add_code" type="fk" pk-ref="74" fk-ref="23"/>
+		<relation name="fk_sto_are_code" fq-name="datnas.t_stock_sto.fk_sto_are_code" type="fk" pk-ref="75" fk-ref="23"/>
+		<relation name="fk_are_are_id" fq-name="refnas.tr_area_are.fk_are_are_id" type="fk" pk-ref="75" fk-ref="75">
+			<bend type="rel" x="923" y="5084"/>
+			<bend type="rel" x="953" y="5069"/>
+			<bend type="rel" x="953" y="5040"/>
+			<bend type="rel" x="923" y="5025"/>
+		</relation>
+		<relation name="fk_riv_are_code" fq-name="refnas.tr_rivernames_riv.fk_riv_are_code" type="fk" pk-ref="75" fk-ref="76"/>
+		<relation name="fk_met_ver_code" fq-name="datnas.t_metadata_met.fk_met_ver_code" type="fk" pk-ref="77" fk-ref="22"/>
 	</relations>
 </diagram>

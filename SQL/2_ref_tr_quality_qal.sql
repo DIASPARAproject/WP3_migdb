@@ -18,3 +18,4 @@ GRANT ALL ON ref.tr_quality_qal TO diaspara_admin;
 GRANT SELECT ON ref.tr_quality_qal TO diaspara_read;
 
 
+
