@@ -4590,13 +4590,14 @@ From now on everywhere in the db Atlantic salmon will be 127186 and eel 126281.
 Sorry about that. Please bookmark the link to this paragraph in your browser to find it again.
 
 | spe_code | spe_commonname | 	spe_scientificname |
-|127186 |	Atlantic salmon |	Salmo salar |	127186|
-|126413 |	Twait shad |	Alosa alosa |	126413|
-|126415 |	Allis shad |	Alosa fallax |	126415 |	
-|101174 |	Sea lamprey |	Petromyzon marinus |	101174|
-|101172 |	European river lamprey | Lampetra  fluviatilis |	101172|
-|126281 |	European eel |	Anguilla anguilla |	126281|
-|127187 |	Sea trout |	Salmo trutta |	127187|
+| ------| -------------| ----------------| 
+|127186 |	Atlantic salmon |	Salmo salar |	
+|126413 |	Twait shad |	Alosa alosa |	
+|126415 |	Allis shad |	Alosa fallax |		
+|101174 |	Sea lamprey |	Petromyzon marinus |
+|101172 |	European river lamprey | Lampetra  fluviatilis |	
+|126281 |	European eel |	Anguilla anguilla |
+|127187 |	Sea trout |	Salmo trutta |	
 
 :::
 
