@@ -5,7 +5,7 @@ ALTER TABLE ref.tr_quality_qal  ADD COLUMN qal_icesguid uuid ;
 ALTER TABLE ref.tr_quality_qal  ADD COLUMN qal_icestablesource TEXT ;
 
 -- table public.temp_sdn_flags has been inserted in R
--- see report https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7/stockdb.html#quality-tr_quality_qal
+-- see report https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/stockdb.html#quality-tr_quality_qal
 
 
 /*
