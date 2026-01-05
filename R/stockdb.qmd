@@ -1,6 +1,6 @@
 ---
 title: "DIADROMOUS FISH STOCK DATABASE"
-subtitle: "DIASPARA WP3.4 working document"
+subtitle: "DIASPARA WP3.4 pre-release version"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
@@ -46,7 +46,8 @@ The reports are available for [WGNAS](https://diaspara.bordeaux-aquitaine.inrae.
 WGEEL database was developed largely by the leaders of this work package, and was not 
 described.
 
-The main structure of the database has been proposed during the online
+The second part consisted of finding a database structure suiting the needs of all expert 
+groups. The main structure of the database has been proposed during the online
 DIASPARA meeting : [database
 structure](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p2/diaspara_WP3_Tuesday_presentation.html#/section-1).
 
@@ -54,15 +55,22 @@ This structure allows to store the data necessary to run the
 international stock models for the different working groups giving advice or scientific reports
 on diadromous fishes. The structure is similar to both the WGEEL and the WGNAS databases. 
 
-
-This documents creates the diaspara database, first creating referential table for the
+The third part is creating referential table for the
 different types proposed, and then populates the database with the
 contents of the WGEEL and WGNAS database. All chunks have been run
 sequentially to create the database, but some are later marked with eval =
 FALSE to speed up the process of running the quarto document.
-The diadromous fish database is made of two main structures.
+
+Finally the fourth part is to import data in the stock database and to 
+create a structure working for all the working groups.
+
+The diadromous fish database is in fact made of two main structures.
 The first is called ***Stock Database*** and holds values aggregated at the
-scale of the assessment unit, or stock unit. This scale has been created using
+scale of the assessment unit, or stock unit. The second is the ***Metric Database*** 
+and allows to have time series of data, group and individual metrics to store life
+history traits data. The report for the metric can found (here)[https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/rep11.html].
+
+This habitat used to support both structures has been created using
 a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
 The script to create this report can be found in diaspara github [code of the report](https://github.com/DIASPARAproject/WP3_migdb/blob/main/R/stockdb.qmd), the SQL codes are found in the following link
  [SQL code](https://github.com/DIASPARAproject/WP3_migdb/tree/main/SQL).
