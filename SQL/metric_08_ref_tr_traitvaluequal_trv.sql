@@ -31,7 +31,8 @@ COMMENT ON COLUMN ref.tr_traitvaluequal_trv.trv_description IS
 GRANT ALL ON ref.tr_traitvaluequal_trv TO diaspara_admin;
 GRANT SELECT ON ref.tr_traitvaluequal_trv TO diaspara_read; 
 
-DROP TABLE IF EXISTS refeel.tr_traitvaluequal_trv CASCADE
+DROP TABLE IF EXISTS refeel.tr_traitvaluequal_trv CASCADE;
+CREATE TABLE refeel.tr_traitvaluequal_trv(
   CONSTRAINT uk_trv_id UNIQUE (trv_id),
   CONSTRAINT fk_trv_trq_code 
   FOREIGN KEY (trv_trq_code)

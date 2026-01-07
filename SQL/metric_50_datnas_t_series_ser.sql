@@ -88,7 +88,7 @@ COMMENT ON COLUMN dat.t_series_ser.ser_locationdescription IS
  'This should provide a description of the site, e.g. if ist far inland, in the middle of a river, near a dam etc. Also please specify the adjectant marine region (Baltic, North Sea) etc.
 (e.g.  `Bresle river trap 3 km from the sea` or `IYFS/IBTS sampling in the Skagerrak-Kattegat`';
 COMMENT ON COLUMN dat.t_series_ser.ser_gea_code IS
- 'Code of the gear used, see tr_gear_gea';
+ 'Code of the gear used, see tr_gear_gea, if a fishway or scientific monitoring device leave NULL and set mon_code';
 COMMENT ON COLUMN dat.t_series_ser.ser_fiw_code IS
  'Code the fishway, eg PO for pool type fishway';
 COMMENT ON COLUMN dat.t_series_ser.ser_mon_code IS

@@ -840,7 +840,9 @@ dbGetQuery(con_diaspara,
 
 ## Values of Qualitative fish trait (tr_traitvaluequal_trv)
 
-The qualitative traits have values
+The qualitative traits have a limited set of discrete values, 
+this table contains the discrete values.
+
 
 <details>
 
@@ -930,6 +932,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;") |>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
+
+
 
 
 ## Fish trait measurement method
@@ -2235,9 +2239,9 @@ data.frame(
 "ser_ver_code" = "DIASPARA-2025-1",
 "ser_cou_code" = ser$sai_cou_code,
 "ser_hab_code" = NA, # TODO remove 
-"ser_gea_code" = NA, # electric fishing
+"ser_gea_code" = NA, # not used only monitoring
 "ser_fiw_code" = NA,
-"ser_mon_code" = NA,
+"ser_mon_code" = "TR", -- both traps are TR, no fishway
 "ser_uni_code" = "nr",
 "ser_effort_uni_code" = NA,
 "ser_description" = NA,
@@ -2307,7 +2311,7 @@ The code of the area is the river.
 :::
 
 
-::: {.callout-note appearance="caution"}
+::: {.callout-caution appearance="simple"}
 
 ## TODO
 
@@ -2370,7 +2374,7 @@ Currently there is no annual series in WP2 only group and individual metrics,
 
 ## Create group table
 
-:::{.callout-note appearance="simple"}
+:::{.callout-caution appearance="simple"}
 ## Note for group metrics
 Need a foreign key on both species and lfs code.
 :::
@@ -2390,22 +2394,615 @@ Need a foreign key on both species and lfs code.
 ## Import data for group
 
 
-TODO HERE :
+:::{.callout-caution appearance="simple"}
+## Group metrics
+There are no group metrics currently
+:::
+
 
 <details>
 
-<summary>SQL code to Import data </summary>
+<summary>SQL code to create table `datnas.t_group_gr`</summary>
 
-``` {.sql include="../SQL/metric_54_datnas_t_group_gr_insert.sql"}
+``` {.sql include="../SQL/metric_54_datnas_t_grouptrait_grt.sql"}
+```
+
+</details>
+
+
+# Creating ind metrics 
+
+
+
+<details>
+
+<summary>SQL code to import data tables</summary>
+
+``` {.sql include="../SQL/metric_55_datnas_t_fish_fi.sql"}
+```
+
+</details>
+
+
+```{r}
+#| label: tbl-datnas.t_fish_fi
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fish table.
+#| tbl-cap: Table t_fish_fi, fish table
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_fish_fi limit 20;")|>
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+
+## Referential for numeric traits (refnas.tr_traitnumeric_trn)
+
+<details>
+
+<summary>SQL code to create table  `refnas.tr_traitnumeric_trn` </summary>
+
+``` {.sql include="../SQL/metric_56_refnas_tr_traitnumeric_trn.sql"}
 ```
 
 </details>
 
 
 
+```{r}
+#| label : refnas_tr_traitnumeric_trn_insert
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import numeric trait.
+
+#tra <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitnumeric_trn;")
+# we will include group metric names later
+# tra <- tra[tra$tra_id %in% c(1,2),]
+# tra$tra_wkg_code <- "WGNAS"
+# tra$tra_spe_code = "127186"
+
+
+# df_to_tribble_code <- function(df) {
+#   stopifnot(requireNamespace("tibble", quietly = TRUE))
+  
+  
+#   cols <- names(df)
+#   header <- paste0("tibble::tribble(\n  ~", paste(cols, collapse = ", ~"), ",\n")
+  
+#   row_lines <- apply(df, 1, function(row) {
+#     vals <- Map(function(val) {
+#       if (is.character(val)) {
+#         dquote(val)
+#       } else if (is.factor(val)) {
+#         sprintf("%s", as.character(val))
+#       } else if (is.logical(val)) {
+#         ifelse(is.na(val), "NA", ifelse(val, "TRUE", "FALSE"))
+#       } else if (is.numeric(val)) {
+#         ifelse(is.na(val), "NA_real_", as.character(val))
+#       } else if (inherits(val, "Date")) {
+#         sprintf("as.Date("%s")", format(val, "%Y-%m-%d"))
+#       } else if (inherits(val, "POSIXt")) {
+#         sprintf("as.POSIXct("%s", tz = "%s")",
+#                 format(val, "%Y-%m-%d %H:%M:%S"),
+#                 attr(val, "tzone") %||% "UTC")
+#       } else if (is.na(val)) {
+#         "NA"
+#       } else {
+#         # Fallback to dput for unsupported types in a cell
+#         paste(capture.output(dput(val)), collapse = "")
+#       }
+#     }, row)
+#     paste0("  ", paste(vals, collapse = ", "), ",")
+#   })
+  
+#   body <- paste(row_lines, collapse = "\n")
+#   paste0(header, body, "\n)")
+# }
+
+# # Example
+# library(tibble)
+# df_to_tribble_code(tra)
+
+tranum <- tibble::tribble(
+  ~tra_id, ~tra_code, ~tra_description, ~tra_wkg_code, 
+  ~tra_spe_code,  ~tra_typemetric, ~tra_qualitativeornumeric,
+  ~trn_uni_code, ~trn_minvalue, ~trn_maxvalue,
+  1, "Length_mm", 
+  "Total body length in millimeters (mm) or mean total body length for group", 
+  "WGNAS", "127186", "Both", "Numeric",
+  "mm", NA, NA,
+  2, "Weightg", "Weight (g) or mean weight for group", "WGNAS", 
+  "127186", "Both", "Numeric",
+  "g", NA, NA,
+  3, "FreshwaterAge_year", 
+  "Age at capture for juveniles or smolt age for adults in years. An individual aged in the same year as birth is 0.", 
+  "WGNAS", "127186", "Both", "Numeric",
+  "nr year", NA, NA,
+  4, "SeaAge_year", 
+  "Sea age at capture in years. Leave blank for juveniles.  An individual aged in the same year as its transition to salt water is 0", 
+  "WGNAS", "127186", "Both", "Numeric", 
+  "nr year", NA, NA,
+  5, 
+  "TotAge_year", 
+  "Sea age at capture in years. Leave blank for juveniles. An individual aged in the same year as its transition to salt water is 0", 
+  "WGNAS", "127186", "Both", "Numeric", 
+  "nr year", NA, NA,  
+  6, "ScalRad_mm", 
+  "Scale reading radius in mm, if used provide a code for the ScalAnnCode method", 
+  "WGNAS", "127186", "Individual", "Numeric", 
+  "mm", NA, NA,  
+  7, "Fec_negg", 
+  "Fecundity in number of eggs", 
+  "WGNAS", "127186", "Both", "Numeric",
+   "nr", NA, NA,
+  8, "Fec_uncertainty_sd",
+  "Uncertainty in fecundity resulting from measures of egg samples. Standard deviation", 
+  "WGNAS", "127186", "Both", "Numeric",
+  "nr", NA, NA,
+  9, "FemaleProportion", 
+  "Proportion of female (in numbers) between 0 (all males) and 1 (all females).", 
+  "WGNAS", "127186", "Group", "Numeric",
+  )
+
+tranum$trn_minvalue <- as.numeric(tranum$trn_minvalue)
+tranum$trn_maxvalue <- as.numeric(tranum$trn_maxvalue)
+dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitnumeric_trn")
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitnumeric_trn(
+tra_id,
+tra_code,
+tra_wkg_code,
+tra_spe_code,
+tra_description,
+tra_typemetric,
+trn_uni_code,
+tra_qualitativeornumeric,
+trn_minvalue,
+trn_maxvalue)
+SELECT 
+tra_id,
+tra_code,
+tra_wkg_code,
+tra_spe_code,
+tra_description,
+tra_typemetric,
+trn_uni_code,
+tra_qualitativeornumeric,
+trn_minvalue::numeric,
+trn_maxvalue::numeric
+ FROM tr_traitnumeric_trn_temp") #8
+
+
+```
+
+
+```{r}
+#| label: tbl-refnas.tr_traitnumeric_trn
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show trait numeric table.
+#| tbl-cap: Quantitative parameters parameters
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitnumeric_trn;") |>
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+:::{.callout-caution}
+## Question for Viktor (WP2) ?
+There is a method for winter measurement reading but no column to put the corresponding
+data ? I'm not sure I understand. Do you have something you used ? 
+Should it be a vector ?
+:::
+
+
+:::{.callout-caution}
+## Question for Viktor (WP2) ?
+Can you provide bounds for numeric values in the code above ?
+:::
+
+:::{.callout-note}
+## Note Viktor (WP2) 
+Currently you have two columns one juvenile_age which can be Smolt or juvenile age.
+And then in group metrics you have smolt age. 
+I find it confusing. I'm proposing to call it a freshwater age.
+Currently in the database the stage should never be null, so if it's a parr 
+or a smolt the meaning would be different. Freshwater age for a smolt or and
+adult is the smolt age.
+:::
+
+
+
+## Referential for qualitative traits (refnas.tr_traitqualitative_trq)
+
+<details>
+
+<summary>SQL code to create table  `refnas.tr_traitqualitative_trq` </summary>
+
+``` {.sql include="../SQL/metric_57_refnas_tr_traitqualitative_trq.sql"}
+```
+
+</details>
+
+
+```{r}
+#| refnas_tr_tr_traitqualitative_trq_insert
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import qualitative trait.
+
+traqal <- tibble::tribble(
+  ~tra_id, ~tra_code, ~tra_description, ~tra_wkg_code, 
+  ~tra_spe_code,  ~tra_typemetric, ~tra_qualitativeornumeric,
+  1, "Sex", 
+  "Sex (F Female,H Hermaphordite, I Immature attempt made, M Male, T Transitional, U Undetermined no attempt made, X Mixed)", 
+  "WGNAS", "127186", "Individual", "Qualitative",
+
+  2, "AdiposeFinPresence", "Presence of adipose fin (0 = absent (reared), 1=present (wild))", "WGNAS", 
+  "127186", "Individual", "Numeric"    
+  )
+
+
+dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp", traqal, overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitqualitative_trq")
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitqualitative_trq(
+tra_id,
+tra_code,
+tra_wkg_code,
+tra_spe_code,
+tra_description,
+tra_typemetric,
+tra_qualitativeornumeric
+)
+SELECT 
+tra_id,
+tra_code,
+tra_wkg_code,
+tra_spe_code,
+tra_description,
+tra_typemetric,
+tra_qualitativeornumeric
+ FROM tr_traitqualitative_trq_temp") #2
+
+```
+
+
+```{r}
+#| label: tbl-refnas.tr_traitqualitative_trq
+#| echo: FALSE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show trait numeric table.
+#| tbl-cap: Quantitative parameters parameters
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitqualitative_trq;") |>
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+## Values of Qualitative fish trait (tr_traitvaluequal_trv)
+
+
+
+<details>
+
+<summary>SQL code to create tables `ref.tr_traitqualvalue_trv` and `refeel.tr_traitqualvalue_trv`</summary>
+
+``` {.sql include="../SQL/metric_57_ref_tr_traitvaluequal_trv.sql"}
+```
+</details>
+
+
+
+```{r tbl-refeel_tr_traitvalueqal_trv}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import trait values for qualitative parm.
+#| tbl-cap: Table of possible qualitative trait values
+
+#trve <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitvaluequal_trv;")
+trqn <- dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitqualitative_trq;")
+#clipr::write_clip(colnames(trv))
+trv <-  data.frame(
+  "trv_id"=1:12,
+  "trv_trq_code"=c(
+    rep(trqn$tra_code[1],7),
+    rep(trqn$tra_code[2],5)
+    ),
+  "trv_code"=c(
+    c("F","I","M","T","U","X","H"), 
+    c("Y","N","P","NA","U")
+    ),
+  "trv_description" = c(
+    c("Female",
+    "Immature - attempt made but sex could not be destinguished",
+  "Male",
+  "Transitional", 
+  "Undetermined - no attempt made",
+  "Mixed",
+  "Hermaphrodite"
+  ),
+  c("Yes","No", "Probable","Not Applicable", "Unknown")
+  ),
+  "trv_spe_code" = "127186",
+  "trv_wkg_code" = "WGNAS"
+)
+dbWriteTable(con_diaspara_admin, "tr_traitvaluequal_trv_temp", trv,
+             overwrite =TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitvaluequal_trv");
+dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitvaluequal_trv (
+trv_id,
+trv_trq_code,
+trv_code,
+trv_description,
+trv_spe_code,
+trv_wkg_code)
+SELECT 
+trv_id,
+trv_trq_code,
+trv_code,
+trv_description,
+trv_spe_code,
+trv_wkg_code
+ FROM tr_traitvaluequal_trv_temp;") #12
+
+```
+
+```{r}
+#| label: tbl-refnas_tr_traitvalueqal_trv
+#| echo: TRUE
+#| eval: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show trait value table.
+#| tbl-cap: Values for qualitative parameters
+dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitvaluequal_trv;") |>
+  knitr::kable() |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+
+
+## Referential for trait methods (refnas.tr_traitmethod_trm)
+
+
+
+<details>
+
+<summary>SQL code to create table  `refnas.tr_traitmethod_trm` </summary>
+
+``` {.sql include="../SQL/metric_59_refnas_tr_traitmethod_trm.sql"}
+```
+
+</details>
+
+```{r refnas_tr_traitmethod_trm_insert}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import trait method.
+
+trm <- tibble::tribble(
+  ~trm_id, ~trm_code, ~trm_description, ~trm_wkg_code, 
+  ~trm_spe_code,
+  1, "GonadalInspection", 
+  "Sex (F Female,H Hermaphordite, I Immature attempt made, M Male, T Transitional, U Undetermined no attempt made, X Mixed)", 
+  "WGNAS", "127186", "Individual", "Qualitative",
+
+  2, "PresenceAdiposeFin", "Presence of adipose fin (0 = absent (reared), 1=present (wild))", "WGNAS", 
+  "127186", "Individual", "Numeric"    
+  )
+
+  6, 
+  "ScalAnnCode", 
+  "Scale reading annulus code for identifying the type of the corresponding scale radius measurement:
+   0 means that the measurement corresponds to an annulus of the fish, 
+   1 means salt water check (freshwater to saltwater transition) 
+   and 2 means that the radius is a measurement from the center to the edge of the scale (radius at capture)", 
+  "WGNAS", "127186", "Both", "Numeric", 
+
+```
+
+
+## Table t_indtrait_int
+
+<details>
+
+<summary>SQL code to create table  `datnas.t_indivtrait_int` </summary>
+
+``` {.sql include="../SQL/metric_60_datnas_t_indivtrait_int.sql"}
+```
+
+</details>
+
+```{r refnas.t_indmetrics_ind}
+#| echo: TRUE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to import to to refnas.t_indivtrait_int
+
+ind <- readxl::read_xlsx(file.path(datawd,
+"../wgnas/burishoole.xlsx"),
+sheet = "new_individual_metrics",
+col_types = c("text", "text", rep("date",2),"numeric", "text", rep("numeric",2),
+ rep("text", 2), rep("numeric",8), "text", rep("numeric",3), 
+ "text", rep("numeric",2), rep("text", 2))
+) 
+ind <- janitor::clean_names(ind)
+
+
+
+
+st_write(ind, con_diaspara, "temp_ind")
+
+temp = dbGetQuery(con_diaspara,
+"SELECT * FROM temp_ind join datnas.t_series_ser on ser_code = sai_name")
+
+stopifnot(nrow(ind)==nrow(temp))
+
+
+# fi <- dbGetQuery(con_diaspara, 
+# "SELECT * FROM datnas.t_fish_fi")
+# paste(colnames(fi), collapse= ", ")
+fi <- data.frame(
+fi_ser_id =temp$ser_id, 
+fi_wkg_code = temp$ser_wkg_code, 
+fi_spe_code = temp$ser_spe_code, 
+fi_lfs_code = case_when(temp$fi_lfs_code == "S" ~ "A",
+is.na(temp$fi_lfs_code) ~ "SM"),
+fi_date = temp$fi_datecapture, 
+ fi_year = year(temp$fi_datecapture), 
+ fi_comment = temp$fi_comment, 
+ fi_lastupdate = today(), 
+ fi_idsource = temp$fi_id_cou, 
+ fi_ver_code = "DIASPARA-2025-1",
+ fi_x_4326 = temp$fisa_x_4326, 
+ fi_y_4326 = temp$fisa_y_4326)
+
+
+dbWriteTable(con_diaspara,  "temp_fi", fi, overwrite =TRUE)
+
+# create verion for diaspara
+dbExecute(con_diaspara_admin, "INSERT INTO datnas.t_fish_fi (
+fi_ser_id, fi_wkg_code, fi_spe_code, fi_lfs_code, fi_date, fi_year, 
+fi_comment, fi_lastupdate, fi_idsource, fi_ver_code, fi_x_4326, fi_y_4326)
+SELECT 
+fi_ser_id::uuid, fi_wkg_code, fi_spe_code, fi_lfs_code, fi_date, fi_year, 
+fi_comment, fi_lastupdate, fi_idsource, fi_ver_code, fi_x_4326, fi_y_4326 
+from temp_fi")	# 2965
+
+# process fi_geom
+
+dbExecute(con_diaspara_admin, "UPDATE datnas.t_fish_fi set fi_geom = 
+ST_SetSRID(ST_MakePoint(fi_x_4326, fi_y_4326),4326)") # 2965
+
+t_series_ser <-
+data.frame(
+"ser_id" = uuid::UUIDgenerate(n=nrow(ser)),
+"ser_code" = ser$sai_name,
+"ser_name"  = ser$sai_name,
+"ser_spe_code" = "127186",
+"ser_lfs_code" = ser$sai_lfs_code,
+"ser_are_code" = ser$are_code, # got from spatial query
+"ser_wkg_code" = "WGNAS",
+"ser_ver_code" = "DIASPARA-2025-1",
+"ser_cou_code" = ser$sai_cou_code,
+"ser_hab_code" = NA, # TODO remove 
+"ser_gea_code" = NA, # electric fishing
+"ser_fiw_code" = NA,
+"ser_mon_code" = NA,
+"ser_uni_code" = "nr",
+"ser_effort_uni_code" = NA,
+"ser_description" = NA,
+"ser_locationdescription" = NA, # TODO remove
+"ser_wltyp_code" =  case_when(ser$sai_hty_code == "T" ~ "T",
+ser$sai_hty_code == "C" ~ "MC",
+ser$sai_hty_code == "F" ~ "FW",
+ser$sai_hty_code == "MO" ~ "MO"),
+"ser_stocking" = ser$"sai_riverorigin(0=reared,1=wild,2=mixed)" %in% c(0,2),
+"ser_stockingcomment" = NA,
+"ser_protocol" = ser$sai_protocol,
+"ser_samplingstrategy" = ser$sai_samplingstrategy,
+"ser_datarightsholder" = NA,
+"ser_datelastupdate" = Sys.Date() #,
+# geom
+)
+
+res <- dbWriteTable(con_diaspara, "t_series_ser_temp", 
+t_series_ser, overwrite = TRUE)
+dbExecute(con_diaspara_admin, "DELETE FROM  datnas.t_series_ser;")
+dbExecute(con_diaspara_admin, "INSERT INTO datnas.t_series_ser 
+SELECT distinct on (ser_code)
+ ser_id::uuid,
+ ser_code,
+ ser_name,
+ ser_spe_code,
+ ser_lfs_code,
+ ser_are_code::TEXT,
+ ser_wkg_code,
+ ser_ver_code,
+ ser_cou_code,
+ ser_hab_code,
+ ser_gea_code,
+ ser_fiw_code,
+ ser_mon_code,
+ ser_uni_code,
+ ser_effort_uni_code,
+ ser_description,
+ ser_locationdescription,
+ ser_wltyp_code,
+ ser_stocking,
+ ser_stockingcomment,
+ ser_protocol,
+ ser_samplingstrategy,
+ ser_datarightsholder,
+ ser_datelastupdate::date
+FROM t_series_ser_temp") # 2
+
+
+
+```
+
+::: {.callout-note appearance="simple"}
+
+## Notes to Viktor (WP2) :
+
+In the template there is a fi_daterelease. It's empty. Are you sure we need this ?
+
+:::
+
+::: {.callout-note appearance="simple"}
+
+## Notes to Viktor (WP2) :
+
+In the template there is a fi_tagnumber. 
+Do you think the international database is
+the place to hold information about the tag. 
+Or should it be handled at the national level ?
+
+:::
+
+
+```{r}
+#| label: tbl-datnas.t_indivtrait_int
+#| echo: FALSE
+#| eval: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| code-fold: TRUE
+#| code-summary: Code to show fish table.
+#| tbl-cap: Table t_indivtrait_int, fish metric table
+dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_indivtrait_int limit 20;")|>
+  knitr::kable()|>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
 
 
 # Acknowledgements
 
 Maria and Joana for their help.
 Rui and Carlos for their support.
+
