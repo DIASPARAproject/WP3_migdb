@@ -341,7 +341,7 @@ There are no codes in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 **Petromyzon marinus**, **Lampetra fluviatilis**.
 
 
-:::::: questionbox
+::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
 :::
@@ -350,10 +350,10 @@ QUESTION to ICES: species codes
 ::::
 
 ::: questionbox-body
-ANG, ALA, ALF, PET, LAM are these internal code OK ? Should we use
-SpecWoRMS or is Aphia OK ?
+ANG, ALA, ALF, PET, LAM are these internal code OK? Should we use
+SpecWoRMS or is Aphia OK?
 :::
-::::::
+:::::
 
 :::::: answerbox
 :::: answerbox-header
@@ -481,49 +481,18 @@ tr_species_spe with other tables, arrows indicate inheritance, click to enlarge"
 ## Working group (tr_icworkinggroup_wkg)
 
 Species is necessary to separate data within the same working group (WGBAST works
-on both Trutta and Salmon). Furthermore two working groups might be working on the
+on both Trutta and Salmon). Furthermore, two working groups might be working on the
  same species. For this reason we need to have a "working group" entry in most of the tables.
- There is aready a table for working group. Proposed table is @tbl-icworkinggroup but need confirmation for
+ There is already a table for working group. Proposed table is @tbl-icworkinggroup but need confirmation for
 WKTRUTTA2.
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
-
-QUESTION ICES/ WGTRUTTA/ DIASPARA
-::::
-
-::: questionbox-body
-what is the latest working group for WGTRUTTA, I found a WKTRUTTA2 but
-that is quite old. Do we want to refer to other groups on diadromous
-fishes there ? The name of the WGEEL is wrong in the referential, needs
-to reference GFCM... JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL.
-:::
-::::::
-
-:::::: answerbox
-:::: answerbox-header
-::: answerbox-icon
-:::
-
-Answer ICES
-::::
-
-::: answerbox-body
-There is a vocab for all groups, it's expertgroup. WGTRUTTA is not there
-but we will add it.
-:::
-::::::
-
-
 ::: {.callout-note appearance="simple"}
-## Note from Hilaire
+## Note
+WGEEL name needs to be updated to JOINT EIFAAC/ICES/GFCM WORKING GROUP ON EEL and WGTRUTTA is an expert group, and, therefore, needs to be added to the lit separately. 
 
 The working groups might change over time, referencing a working group
 there is probably not the best. 
-> Cédric : Added stockkeylabel, this table is necessary to aggregate data 
-> as species is not enough.
+> Added stockkeylabel, this table is necessary to aggregate data, as species is not enough.
 :::
 
 
@@ -597,7 +566,7 @@ tr_icworkinggroup_wkg with other tables, arrows indicate inheritance"){#fig-sche
 
 Countries are taken from the wgeel database where everything is almost OK and
 streamlined with ICES. But we need to add
-american countries. The shapefiles have been downloaded from
+North American countries. The shapefiles have been downloaded from
 https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries
 source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered
 from North to South starting from the Baltic and ending in the
