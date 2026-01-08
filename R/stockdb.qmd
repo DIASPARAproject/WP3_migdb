@@ -944,7 +944,7 @@ We can have a look at the metadata in the analysis done on the WGNAS
 database [WGNAS
 description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
 
-There is a problem with some columns with mutiple dimenstions which need to be
+There is a problem with some columns with mutiple dimensions which need to be
 aligned. For instance a column can hold year, or age. This will be solved by using an
 additional column where data can be of several types (see tg_additional_add in @sec-additional).
 The description could be used within a type
@@ -996,7 +996,7 @@ structure still in construction
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
 
-As in the diagram, we added a category (data type in figure @fig-metadata).
+As in the diagram, we added a category (data type in @fig-metadata).
 The idea is to be able to get quickly all parameters related to a type,
 e.g. catch, mortality, biomass.
 :::
@@ -1301,7 +1301,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") |>
 ::: {.callout-note appearance="simple"}
 <h3>NOTE DIASPARA</h3>
 
-Here Hilaire say that naming the table "outcome" wasn't ideal so we've
+Hilaire noted that naming the table "outcome" wasn't ideal so we've
 followed his suggestion
 :::
 
@@ -1646,8 +1646,7 @@ that this steering group is created within WGDIAD to discuss these issues.
 
 ### Considerations about the database structure
 
-For life stage, unlike in other referentials, using working group
-specific life stage would lead to confusion. WGBAST and WGNAS would
+For life stage, unlike in other referentials, using working-group-specific life stages would lead to confusion. WGBAST and WGNAS would
 share the same stages for salmon. So unlike in many other table, the
 referentials will not use inheritance (see paragraph @sec-hierarchical
 for more details on inheritance). This means that we will create a table
@@ -1667,7 +1666,7 @@ link to issue](https://github.com/DIASPARAproject/WP3_migdb/issues/16)
 Stages use are described in WGNAS metadata [paragraph life stage of the
 WGNAS description
 report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#developmental-stage)
-and WGBAST reports (though for the young fish this concept is mixed with
+and WGBAST reports (though for the "young fish" -data this concept is mixed with
 age) [paragraph life stage of the WGBAST description
 report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgbast_database_description.html#age).
 So they are not used as a separate column to describe the data. But in
@@ -1681,14 +1680,14 @@ Currently the stage is used by WGEEL, not by WGNAS and not directly in WGBAST.
 Indeed for WGBAST there is no column stage in landings data. 
 There is an age column in the juvenile data used to describe the number released from
 hatchery at various stages ([age in the juvenile database](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#tbl-readyoungfishdbage)). 
-Spatial information, and information about the age are used to split the dataset, not the stage, but the differentdatasets (landings, juvenile) do correspond to different stages.
+Spatial information, and information about the age are used to split the dataset, not the stage, but the different datasets (landings, juvenile) do correspond to different stages.
  We have chosen to add stages everywhere and populate the column using the metadata
 even if for WGNAS there is no practical use the information is not used currently.
 :::
 
 ### Use of lifestages to include other information
 
-The different steps in the models are identified using spatio temporal
+The different steps in the models are identified using spatio-temporal
 units and stages (e.g; post smolt and location at sea)
 @ices_second_2024, a location and stage to descibe the different steps
 in the return migration (for instance returning adult in seawater, in
@@ -1699,7 +1698,7 @@ which correspond to the number at sea of different stages before
 fishery. Note that this parameter is no longer used, that is, it's in the metadata
 but the variable in metadata are no longer in the database (this stands for
 logN4, N4, logit_theta4, tau_theta4, theta4). 
-To deal with these spatio temporal elements that are not stage, 
+To deal with these spatio-temporal elements that are not stage, 
 we will simplify the stages table, remove
 elements which are not stages, and still refer to spatio temporal
 parameters from their definition. Here we are focusing on the stock DB
