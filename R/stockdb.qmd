@@ -1717,7 +1717,7 @@ will add the maturity scale from ICES in the DB.
 
 ### Adding a bit more complexity with the eel
 
-In some cases mixture of stages are used. Many fyke net fisheries for
+In some cases, a mixture of stages are used. Many fyke net fisheries for
 eel will not distinguish between yellow and silver eel stage and WGEEL
 uses the `YS` stage. Some historical trap series did not distinguish
 between small yellow eels and glass eel, or the glass eel ascending are
@@ -1749,7 +1749,7 @@ Answer WGEEL (Cédric)
 ::::
 
 ::: answerbox-body
-Stages OG and QG will be marked as deprecated for the stock, but they will be 
+Stages OG and QG will be marked as deprecated for the stock, but they will
 probably be used in the release database that needs to be created for EDA.
 :::
 ::::::
@@ -1770,7 +1770,7 @@ includes the import of the WGEEL stage table.
 
 ### Existing stages in ICES dictionaries
 
-You can run the following code to see the candidate tables in ICES, in summary
+You can run the following code to see the candidate tables in ICES, in summary:
 none fitted and this part is skipped to shorten the report. 
 
 ```{r }
@@ -1971,7 +1971,7 @@ include information on maturity.
 
 </details>
 
-In Salmoglob information about the stage mixes information on stage and maturity.
+In Salmoglob, information about the stage mixes information on stage and maturity.
 The use of SMSF vocabulary has been made mandatory for all countries
 since 2020 and WGBIOP [@ices_wgbiop_2024] has revised the referential
 and emphasized the need of its use for a consistent stock assessment.
@@ -2075,8 +2075,8 @@ link it. This has to be done by WGNAS :
 
 ## Habitat type (tr_habitattype_hty)
 
-This table (Table @tbl-habitat_type_vocab) is used in RDBES, and those
-stages are consistent with WGBAST and WGEEL. when creating habitat types
+This table (@tbl-habitat_type_vocab) is used in RDBES, and those
+stages are consistent with WGBAST and WGEEL. When creating habitat types
 for WGEEL, we tried to follow the ICES vocab at the time, so it's
 mostly similar except that `C` (coastal) in WGEEL is
 `C (WFD Coastal water)` in WLTYP but is also reported as
@@ -2087,7 +2087,7 @@ is said that `S` sea is used when it is not possible to distinguish
 between coastal and marine open, but the code is not in the database (If
 I'm not wrong see [WGBAST database description - catch
 habitat](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p5/wgbast_database_description.html#catch-habitat)).
-Other elements in this vocab will not be used (e.g. `TT`, `Beach` ... ).
+Other elements in this vocab will not be used (e.g. `TT`, `Beach`, ...).
 Currently the
 [RDBES](https://vocab.ices.dk/?CodeTypeRelID=212&CodeID=249075) uses the
 following codes from `FW  Fresh water`, `MC   Marine water (coast)`,
@@ -2197,7 +2197,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") |>
 
 This code is used by wgeel. Currently the WGNAS uses an archive table,
 WGEEL uses historical data with a different quality ID. Both have chosen
-never to remove any data, I don't think that these procedures, handled
+never to remove any data. It does not look like these procedures, handled
 by shiny app, are compatible with ICES procedures.
 
 :::::: questionbox
@@ -2216,9 +2216,9 @@ WGNAS uses an archive table for historical data. WGEEL uses a code to
 old one, the data is saved in an archive table, with the same
 structure as the main data table, but with the name of the people
 who have handled the change and the date. The version is replaced
-with a new number in the `database`table.
+with a new number in the `database` table.
 
--   For WGEEL, all the row are kept in the same table. Historical value
+-   For WGEEL, all the rows are kept in the same table. Historical value
 get a code like 18, ..., 25 which identifies the year that the line
 was removed. All data submitted to the database are kept, so if
 during a datacall, a new value is submitted that is a duplicate from
@@ -2325,7 +2325,7 @@ The code for creating `tr_quality_qal` is shown below.
 
 ### Import the quality code
 
-The codes are imported in Table @tbl-tr_quality_qal using the following
+The codes are imported in @tbl-tr_quality_qal using the following
 code :
 
 ```{r import_tr_quality_qal}
@@ -2505,7 +2505,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_sex_sex;") |>
 ```
 ## Gear (ref.tr_gear_gea)
 
-The gears dictionnary is set by FAO and used in EU 
+The gears dictionary is set by FAO and used in EU 
 [link](https://www.europarl.europa.eu/RegData/etudes/STUD/2024/759320/IPOL_STU(2024)759320_EN.pdf). There is a gear dictionary in ICES but it's used to describe the type of
 engine on experimental trawling surveys.
 There might be a need to include more passive engine like trap and fishways.
@@ -2609,8 +2609,8 @@ source : ICES statistical areas
 https://gis.ices.dk/shapefiles/ICES_areas.zip
 https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c784a0a3-752f-4b50-b02f-f225f6c815eb
 
-The rest of the word was somewhere on my computer. Cannot trace the
-source, it's exaclty the same for NAFO but changed in the med and ICES.
+The rest of the world was found on a computer. Cannot trace the
+source, it's exaclty the same for NAFO but changed in the Med and ICES.
 For some reasons was not complete in table from wgeel so have to
 download it again to postgres.
 
@@ -2978,13 +2978,13 @@ is always year), the referential is only used in WGBAST.
 ## Data source (ref.tr_datasource_dts) {#sec-datasource}
 
 
-The source of fishery data is included in WGBAST see : [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
-THe vocab described her is deprecated and superseeded by datasource.
+The source of fishery data is included in WGBAST see: [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
+The vocab described here is deprecated and superseeded by datasource.
 
 During exchange with Data Centre (Thanks Maria for hinting at this change), the current way of handling estimated data,
 is to separate the source of data and the type of estimation. This is how it
 works currently in RDBES. So a catch can coming from logbook, it is estimated,
-and when estimated a method must be provided if estimated (estimation method.)
+and when estimated a method must be provided if estimated (estimation method).
 
 <details>
 
@@ -3135,7 +3135,7 @@ Currently the estimation method are only for WGBAST
 
 The estimation method are inherited, so there is a common table
 and estimation methods are created in daughter tables in each working group,
- they are inherited. see @sec-datbast.tr_estimationmethod_esm
+ they are inherited. See @sec-datbast.tr_estimationmethod_esm
 :::
 
 # Metadata
@@ -3310,8 +3310,7 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_temp CASCADE;")
 ```
 
 After integration, the table of metadata from WGNAS is not changed
-much, apart from adapting to the new referentials. The table is shown in
-Table @tbl-metadatawgnas below.
+much, apart from adapting to the new referentials. The table is shown in @tbl-metadatawgnas below.
 
 ```{r}
 #| label: tbl-metadatawgnas
@@ -3333,7 +3332,7 @@ For data we first need to create the table.
 
 The code for creating `t_stock_sto` is listed below, this table is
 created for all working groups, it should not have any lines, only get
-those from inheritance from schema datnas, datang, datbast...
+those from inheritance from schema datnas, datang, datbast, ...
 
 <details>
 
@@ -4517,10 +4516,10 @@ QUESTION WGBAST: Would the data access be restricted ?
 
 ::: {.callout-important appearance="simple"}
 ## TODO WGBAST : n_type and w_type
-Current we cannot easily translate all values LOG" "EST" "EXV" "EXT"
+Currently, we cannot easily translate all values "LOG" "EST" "EXV" "EXT"
 values with ICES vocab. While Logbook is OK. We think that you will need
 to create a dictionary of possible estimation methods (we could have more), and then
-resubmit your data while screening for the correct type. For instance we don't have
+resubmit your data while screening for the correct type. For instance, we don't have
 an equivalent for EXT (extrapolated) so has not been translated, but the f_type and
 w_type are provided in the column comment. 
 For "Est" when notes indicated "survey", we have assessed it as
@@ -4536,22 +4535,23 @@ or SampDC	Commercial sampling data (sampling methodologies specific to each coun
 Full diagram of the diadromous DB including both stock and metric databases![click to enlarge](images\diaspara-ref.png){.lightbox #fig-ref}
 
 
-# Conclusion
+# Conclusions
 
-A database was created for WGNAS, WGBAST, WGEEL, it could easily
-have a similar format for WGTRUTTA and other working groups working with lampreys and 
+A database was created for WGNAS, WGBAST, and WGEEL. It could easily
+have a similar format for WGTRUTTA and other working groups working with diadromous fish species, such as lampreys and 
 shads. It will allow for the
-integration of data calls files using DATSU, the habitat database is currently
-ported to RDBES has been proposed in RDBFIS to allow for the inclusion of data in the
+integration of data call files using DATSU. The habitat database is currently
+ported to RDBES and it has been proposed in RDBFIS to allow for the inclusion of data in the
 continental part of the range for migratory fishes.
+
 Starting with the creation of formats for metrics in the summer 2025, this database will progressively 
-be handed over to ICES 
-since it was programmed in Postgres, this will require some
+be handed over to ICES.
+Since it was programmed in Postgres, this will require some
 work. 
-In the long run however, the use of a common database and ICES tools will simplify
-the learning needs of experts when shifting between different diadromous expert groups,
-allow to provide a more streamlined data flow between national and international level,
-enhance accessibility and interoperability.
+In the long run, however, the use of a common database and ICES tools will:
+1) simplify
+the learning needs of experts and knowledge, when shifting between different diadromous expert and assessment groups,
+2) allow to provide a more streamlined data flow between national and international level, and 3) enhance accessibility and interoperability.
 
 ::: {.callout-caution appearance="simple"}
 The shift to the new database will start in 2026 for WGEEL (metric DB) and
@@ -4563,7 +4563,7 @@ Changing from one database to another system will break the R code,
 
 ::: {.callout-important appearance="simple"}
 
-From now on everywhere in the db Atlantic salmon will be 127186 and eel 126281.
+From now on everywhere in the db: Atlantic salmon will be 127186 and eel 126281.
 Sorry about that. Please bookmark the link to this paragraph in your browser to find it again.
 
 | spe_code | spe_commonname | 	spe_scientificname |
@@ -4578,6 +4578,6 @@ Sorry about that. Please bookmark the link to this paragraph in your browser to 
 
 :::
 
-# Acknowledgements
+# Acknowledgements and references
 
 -   Data source : EuroGeographics and UN-FAO for countries
