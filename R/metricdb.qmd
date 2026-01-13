@@ -2453,7 +2453,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_fish_fi limit 20;")|>
 
 
 ```{r}
-#| label : refnas_tr_traitnumeric_trn_insert
+#| label: refnas_tr_traitnumeric_trn_insert
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -2585,7 +2585,7 @@ trn_maxvalue::numeric
 ```{r}
 #| label: tbl-refnas.tr_traitnumeric_trn
 #| echo: FALSE
-#| eval: TRUE
+#| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| code-fold: TRUE
@@ -2635,7 +2635,7 @@ adult is the smolt age.
 
 
 ```{r}
-#| refnas_tr_tr_traitqualitative_trq_insert
+#| label: refnas_tr_tr_traitqualitative_trq_insert
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -2708,7 +2708,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitqualitative_trq;") |>
 
 
 
-```{r tbl-refeel_tr_traitvalueqal_trv}
+```{r tbl-refnas_tr_traitqualitative_trq}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
