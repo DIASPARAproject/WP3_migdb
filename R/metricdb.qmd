@@ -58,12 +58,13 @@ load_library("sf")
 load_library("janitor") # clean_names
 load_library("uuid")
 cred <- read_yaml("../credentials.yml")
+
 con_diaspara <- dbConnect(Postgres(), 
-                          dbname = cred$dbnamediaspara,
-                          host = cred$hostdistant,
-                          port = cred$port,
-                          user = cred$userdiaspara,
-                          password = cred$passworddiaspara)
+                           dbname = cred$dbnamediaspara,
+                           host = cred$hostdistant,
+                           port = cred$port,
+                           user = cred$userdiaspara,
+                           password = cred$passworddiaspara)
 con_diaspara_admin <- dbConnect(Postgres(), 
                                 dbname = cred$dbnamediaspara,
                                 host = cred$hostdistant,
