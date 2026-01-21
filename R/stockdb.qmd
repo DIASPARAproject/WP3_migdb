@@ -37,13 +37,13 @@ editor:
 
 Despite legal commitments for their conservation, the Atlantic salmon and the European eel are currently endangered. This is partly due to their ecological characteristics. First, the two species share their life cycle between marine and continental ecosystems, in and outside Europe. Despite behaving like independent units during their continental phase, they are biologically mixed during their marine phases, requiring to orchestrate regional and international management and assessment process (data collection and availability, use of appropriate assessment methods). Moreover, the species are submitted to many human impacts (e.g. fisheries, habitat degradation and fragmentation). In this context, building on pre-existing road maps, DIASPARA aims to provide tools to enhance the coherence of the scientific assessment process from data collection to assessment, with the final objective of supporting more holistic advice and to better inform a regional management. In the second work package, DIASPARA has done an inventory of available data and made recommendations for potential improvement in the collection, based on a spatiotemporal analysis of key biological parameters. In the database work package (WP3 - this current WP), DIASPARA aimed to develop database structures in order to store data required for the assessment. This was created to include biological data and fisheries data, but also data to monitor the impact of dams and hydropower plants. 
 
-Currently, both ICES WGEEL (Working group on eel) and WGNAS (Working group on North Atlantic Salmon) have developed “home-made” databases stored in local institutions, alongside interactive applications to explore and integrate the data. WGBAST (Working group on the Baltic Atlantic Salmon and Sea Trout) relies on a very extensive set of tables collated in excel to run various models. These approaches are far from optimal in terms of operability, data availability, data security and transparency. Moving towards a transparent assessment framework (TAF) procedure requires simpler and more transparent ways of querying several central databases to get the raw data and do the assessment. The objective of this WP is to create database structures to store data to feed models that are currently in use, as well as data that will be useful in the future to support a holistic and transparent assessment. 
+Currently, both ICES WGEEL (Working group on eel) and WGNAS (Working group on North Atlantic Salmon) have developed “home-made” databases stored in local institutions, alongside interactive applications to explore and integrate the data. WGBAST (Working group on the Baltic Atlantic Salmon and Sea Trout) relies on a very extensive set of tables collated in excel worksheets to run various models. These approaches are far from optimal in terms of operability, data availability, data security, long-term maintenance and transparency. Moving towards a transparent assessment framework (TAF) requires simpler and more transparent ways of querying several central databases to get the raw data and do the assessment. The objective of this WP is to create database structures to store data to feed models that are currently in use, as well as data that will be useful in the future to support a holistic and transparent assessment. 
 
 The first part of the work has been to exchange with the different working groups 
 and analyze the content of their databases as well as their working processes.
 
 The reports are available for [WGNAS](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/rep1.html), [WGBAST](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/rep2.html), [WGTRUTTA](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p6/rep3.html). 
-WGEEL database was developed largely by the leaders of this work package, and was not 
+WGEEL database was largely developed by the leaders of this work package, and was not 
 described.
 
 The second part consisted of finding a database structure suiting the needs of all expert 
@@ -55,22 +55,28 @@ This structure allows to store the data necessary to run the
 international stock models for the different working groups giving advice or scientific reports
 on diadromous fishes. The structure is similar to both the WGEEL and the WGNAS databases. 
 
-The third part is creating referential table for the
-different types proposed, and then populates the database with the
+The third part consisted in creating referential tables for the
+different types {>>define types<<} proposed, and then populates the database with the
 contents of the WGEEL and WGNAS database. All chunks have been run
 sequentially to create the database, but some are later marked with eval =
-FALSE to speed up the process of running the quarto document.
+FALSE to speed up the process of running the quarto document {>>remove the last part: we provide a finalized report, so we don't need eval at all<<}.
 
-Finally the fourth part is to import data in the stock database and to 
-create a structure working for all the working groups.
+Finally the fourth part consisted in importing data in the stock database and in 
+creating a structure working for all the working groups {>>I don't see the difference with part 2: " finding a database structure suiting the needs of all expert 
+groups"<<}.
 
 The diadromous fish database is in fact made of two main structures.
 The first is called ***Stock Database*** and holds values aggregated at the
 scale of the assessment unit, or stock unit. The second is the ***Metric Database*** 
 and allows to have time series of data, group and individual metrics to store life
 history traits data. The report for the metric can found [here]([https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/rep11.html).
+{>>the more I think about it, the more I find this distinction missleading: should we really
+make this separation. Wouldn't that be easier to say that the database aims to store raw data (biometry,
+time series of abundance), preprocessed data used by model (e.g. landings at various scales, biomass at various scales), model parameters and model outputs<<}.
 
-This habitat used to support both structures has been created using
+
+
+This habitat {>>database<<?} used to support both structures has been created using
 a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
 The script to create this report can be found in diaspara github [code of the report](https://github.com/DIASPARAproject/WP3_migdb/blob/main/R/stockdb.qmd), the SQL codes are found in the following link
  [SQL code](https://github.com/DIASPARAproject/WP3_migdb/tree/main/SQL).
@@ -79,8 +85,8 @@ The script to create this report can be found in diaspara github [code of the re
 
 The database starts with the simplest structure, with a basic table
 corresponding to all data. Then three tables are created, one per
-Working group  Since SQL server does not handle inheritance, once the table built, some of
-those will have to be replaced with views or partitioned views.
+Working group.  Since SQL server does not handle inheritance, once the table built, some of
+those will have to be replaced with views or partitioned views. {>>I don't understand this paragraph<<}
 
 ::: {.callout-note appearance="simple"}
 <h3>Code for SQL Server </h3>
@@ -90,20 +96,24 @@ JOIN of the tables
 :::
 
 ## Referential tables
+Referentials tables aim to define dictionaries of data, ensuring data consistency
+and validity among different tables.
 
-Similarly, referential tables are created with a mother table from
-which specific (or WG-specific) tables inherit. All mother tables
+Referential tables are created with a mother table from
+which specific (or WG-specific) tables inherit. All mother referential tables
 will be held in a schema called `ref`. Having working-group-specific
 tables makes setting consistent foreign key easier. For
 instance, WGEEL references different stages than WGNAS. Most of these referential 
 tables are common between species, and whenever possible, they are sourced from 
-ICES vocab.
+ICES vocabulary {>>make a reference to ICES vocab webpage, and perhaps explain that ICES vocab
+is more or less equivalent to ICES referentials<<}.
 
 ## Unicity constraints
-
+In relational databases, unicity constraints aim to avoid storing duplicate data.
 Another important point to add is
 unique constraint. As some values would be null, creating unique
-constraints with indexes would be necessary. These allow to have
+constraints with indexes would be necessary. {>>I don't understand those two first sentences<<}
+These allow to have
 different levels of constraints for instance the unique constraint would be
 defined for : (`year, age, area, parameter`) (`year, age, parameter`)
 (`year, area, parameter`) (`year, parameter`). 
@@ -118,6 +128,8 @@ the area might appear twice, this will be dealt with the use of
 an additional column (both for WGBAST and WGNAS). There might be a
 need for a trigger to check the unicity
  (`year, area, area, parameter`)
+ 
+{>>this section is hard to follow<<}
 
 ## Creating the diaspara database
 
@@ -126,7 +138,7 @@ database is created with postgresSQL.
 
 **Some rules**
 
--   By default, values are be capitalised for the first letter e.g.
+-   By default, values are capitalised for the first letter e.g.
 `Public` for the code in dataaccess.
 
 -   Codes are capitalized, e.g working group names
@@ -139,10 +151,10 @@ text used for primary keys are called `xxx_code`, the column with definition, or
 
 -   All tables end with a 3 letter summary which allows to identify the
 source of one column so the table dataaccess will be called
-`tr_dataaccess_dta`. And the column for code will be named.
+`tr_dataaccess_dta`. And the column for code will be named. {>>last part of the sentence is missing<<}
 
 -   Referential tables or dictionaries are called `tr_`(sometable),
-tables build in conjuction from other tables and not in the
+tables build in conjunction from other tables and not in the
 dictionaries are called `t_`(sometable).
 
 -   Foreign keys are used instead of check constraints as check
@@ -153,12 +165,12 @@ integration (only when new rows are created or modified).
 name in the table
 
 -   Primary keys are names `tablename_pkey` (with the constraint
-possibly referering to more than one column).
+possibly refering to more than one column).
 
 -   Other constraints are check constraints `ck_columnname` and unique
-contraints `uk_columnname`
+constraints `uk_columnname`
 
--   All tables and column have a definition, we will ask the working
+-   All tables and columns have a definition, we will ask the working
 groups to check those.
 
 -   Use of "snake_case": Column and table name are ALWAYS LOWERCASE, the underscore is only
@@ -174,6 +186,7 @@ difficult, and requires the use of double quotes, when using SQL strings in
 R it then becomes very difficult to write SQL. So we followed a more postgres
 compatible case here. This will change once the format will be created in ICES.
 :::
+{>>remove this in the final report<<}
 
 
 ```{r init}
@@ -252,6 +265,9 @@ When installing diaspara on a server with external connection, there is a need t
 access to diaspara.
 :::
 
+{>>remove this in the final report<<}
+
+
 ```{r}
 #| label: creatediasparadb
 #| echo: TRUE
@@ -319,6 +335,7 @@ access to diaspara.
 
 ![Conceptual schema of the diadromous database](images/fig-schema_diadromous_db.svg "A schema showing the structure of the database"){#fig-schema_diadromous_db}
 
+{>>most of your relational diagram are too small to be read. Perhaps it is not worth listing all columns of each table here? only leaving table name, pk and fk?<<}
 
 
 
@@ -326,10 +343,10 @@ Now the database has been created with different schemas
 (@fig-schema_diadromous_db). The main schema for dictionaries is ref, and a
 schema is created per working group for specific referential tables. The
 Schema refwgeel has been filled in with a foreign data wrapper to get
-the data from wgeel, the same schema exists for wgnas. We'll see later
-for wgbast and wgtrutta. The schema `dat` is the common schema for all
+the data from wgeel, the same schema exists for wgnas {>>I don't understand<<}. We'll see later
+for wgbast and wgtrutta {>>please rephrase for the final report<<}. The schema `dat` is the common schema for all
 data. For each working group, schema `datbast`, `dateel`, `datnas` are
-created. The tables are be created in dat and later similar or a bit
+created. The tables are created in dat and later similar or a bit
 more complex tables (with some more columns) will be created using the
 `INHERIT FROM` syntax, which will allow to have a hierarchical structure
 in the db, and maintain the structure in a table common to all fishes.
@@ -348,7 +365,7 @@ have been created.
 There are no codes in ICES vocab for **Alosa alosa**, **Alosa fallax**,
 **Petromyzon marinus**, **Lampetra fluviatilis**.
 
-
+{>>please remove questions in final report<<}
 ::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -486,13 +503,15 @@ knitr::kable(tr_icworkinggroup_wkg) |> kable_styling(bootstrap_options = c("stri
 ![diagram of tr_species_spe](images/schema_tr_species_spe.png "A schema showing the link of
 tr_species_spe with other tables, arrows indicate inheritance, click to enlarge"){#fig-schema_tr_species_spe .lightbox}
 
+{>>the figure is not readble, even in html<<}
+
 ## Working group (tr_icworkinggroup_wkg)
 
 Species is necessary to separate data within the same working group (WGBAST works
 on both Trutta and Salmon). Furthermore, two working groups might be working on the
  same species. For this reason we need to have a "working group" entry in most of the tables.
  There is already a table for working group. Proposed table is @tbl-icworkinggroup but need confirmation for
-WKTRUTTA2.
+WKTRUTTA2 {>>what is WKTRUTTA2? I would remove "but need confirmation for wktrutta"<<}.
 
 
 ::: {.callout-note appearance="simple"}
@@ -571,11 +590,14 @@ knitr::kable(tr_icworkinggroup_wkg) |>
 ![diagram of tr_icworkinggroup_wkg, click to enlarge](images/schema_tr_icworkinggroup_wkg.png "A schema showing the link of
 tr_icworkinggroup_wkg with other tables, arrows indicate inheritance"){#fig-schema_tr_icworkinggroup_wkg .lightbox}
 
+
+{>>the diagram can't be read<<}
+
+
 ## Country (tr_country_cou)
 
 Countries are taken from the wgeel database where everything is almost OK and
-streamlined with ICES. But we need to add
-North American countries. The shapefiles have been downloaded from
+streamlined with ICES (though North American countries have not been integrated yet). The shapefiles have been downloaded from
 https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries
 source EuroGeographics and UN-FAO. Countries (@tbl-country) are ordered
 from North to South starting from the Baltic and ending in the
@@ -674,6 +696,7 @@ tr_country_cou <- dbGetQuery(con_diaspara, "SELECT cou_code,cou_country,cou_orde
 knitr::kable(tr_country_cou) |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+{>>Jani, is Åland an official country? for me, it was a region of Finland (with autonomy)? not of main importance for eel, but might be more important for salmon since many fisheries take place around the islands and migration corridors are close to those coasts?<<}
 
 
 ```{r fig-country}
@@ -740,6 +763,8 @@ dev.off()
 
 <summary>Creating the unit from wgeel and checking ICES code</summary>
 
+{>>Can you rephrase in a please? I think the important here is that the following section display
+the code to create the table as well as the resulting table?<<}
 First we import from wgeel
 
 Then we standarize using ICES codes, it takes a while to scroll through
@@ -889,8 +914,9 @@ knitr::kable() |>
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-Some of the values are missing from ICES vocab (Table @tbl-unit).
+Some of the values are missing from ICES vocab (Table @tbl-unit). {>>is this fixed? if not, we should rephrase to "Some of the values are not yet in ICES vocab and effort will made to fix the issue<<}
 
+{>>remove the question in the final report?<<}
 ::::: questionbox
 
 :::: questionbox-header
@@ -937,11 +963,11 @@ tr_units_uni with other tables, arrows indicate inheritance"){#fig-schema_tr_uni
 ## Parameters
 
 Parameters are a simple way to reduce the complexity of data. It will
-correspond to all nimble variables, reduced to their lower level (e.g. 3
+correspond to all nimble {>>many scientitist do not know what is nimble, so DG MARE even less, so we need a bit more explaination here. The important is not that it is a nimble variable, rather that we want to need to store input parameters of stock assessment models, that are ofter multidimensional arrays<<} variables, reduced to their lower level (e.g. 3
 dimensional arrays with dimensions \[area, year, stage\] will be
 translated as many lines with the corresponding values in columns area,
-year, and stage), and the identifyer of the variable will be used for
-all the lines necessary to store this dataset. In practise, parameters
+year, and stage), and the identifier of the variable will be used for
+all the lines necessary to store this dataset {>>should we specifiy that a column can be left empty if not used, e.g. 2D array? should you specify how you manage squared array, e.g. area x area?<<}. In practise, parameters
 also correspond to input data, and output data in the model. The
 parameters will be described by their metadata as illustrated in
 @fig-metadata
@@ -949,16 +975,19 @@ parameters will be described by their metadata as illustrated in
 ![Mind map of the metadata
 structure](images\SAM_parm_metadata.png){#fig-metadata}
 
+ {>> the figure is very difficult to read, even in the html format<<}
+
 We can have a look at the metadata in the analysis done on the WGNAS
 database [WGNAS
 description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
 
-There is a problem with some columns with mutiple dimensions which need to be
-aligned. For instance a column can hold year, or age. This will be solved by using an
-additional column where data can be of several types (see tg_additional_add in @sec-additional).
+There is a problem with some columns with multiple dimensions which need to be
+aligned {>>I don't understand<<}. For instance a column can hold year, or age. This will be solved by using an
+additional column where data can be of several types (see tg_additional_add in @sec-additional). {>>sorry, I don't get this point<<}
+
 The description could be used within a type
 [array](https://www.postgresql.org/docs/current/arrays.html). SQL server
-does not work with array so it's not a good idea to use those.
+does not work with array so it's not a good idea to use those. {>>so what to do? I would avoid leaving open question in a final report<<}
 
 <details>
 
@@ -991,7 +1020,7 @@ sd[ww,] |> kable()
 
 </details>
 
-
+{>>those notes should be deleted?<<}
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
@@ -1019,6 +1048,8 @@ in the main table.
 :::
 
 ## Object type (tr_objectype_oty)
+Parameters can have different types: single value, matrix, arrays. Allowed types are 
+are specified in the `tr_objectype_oty` table {>>correct?<<}
 
 This table (@tbl-objectype) is used in metadata
 
@@ -1046,10 +1077,12 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")|> knitr::kable(
 ```
 
 ## Type of parm / data (tr_nimble_nim)
-
+{>>I am not sure to get the difference with the previous paragraph<<}
 In the salmoglob database (WGNAS), this table (@tbl-nimble) corresponds to both
 tables [`status`](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-8) and [`nimble`](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-2) which most often contain the same
 information.
+
+{>>I won't call any table nimble: nimble is a software and can be changed in a future version, could as well be jags or stan<<}
 
 <details>
 
@@ -1081,7 +1114,7 @@ version only correspond to different versions of the same parameter
 The  `database` only contains the variables used to run the salmoglob model, at
 the time of the working group, any updated value is copied to the `database_archive`
 which then contains historical values.
-From this it might be possible to rebuild historical states of the database but 
+From this, it might be possible to rebuild historical states of the database but 
 it is not straightforward, as the archive database can hold, for the same year,
 multiple values of the same variable, if the corrections or updates were made
 several times.
@@ -1098,6 +1131,9 @@ introduced. So the version column was added to we added to both metadata
 (`t_metadata_met`) table and stock table (`t_stock_sto`). 
 Some variables might get deprecated over
 time.
+
+
+{>>remove the notes in the finalised vesrion to be submitted?<<}
 
 ::: {.callout-note appearance="simple"}
 <h3>DIASPARA</h3>
@@ -1223,7 +1259,7 @@ or stocks but not data calls.
 ::::::
 
 ## Metric (tr_metric_mtr)
-
+{>>that's where the metric terminology get confusing with the metric database. what about parameter value?<<}
 <details>
 
 <summary>SQL code to create tables</summary>
@@ -1247,10 +1283,13 @@ knitr::kable() |>
 
 ```
 
+
+{>>remove notes?<<}
+
 ::: {.callout-note appearance="simple"}
 <h3>NOTE</h3>
 
-This list currenly correspond to the needs of both WGNAS and WGBAST.
+This list currently corresponds to the needs of both WGNAS and WGBAST.
  But the metric can be NULL, for instance in case of a number of fish released, 
  none of the above (@tbl-metric) would apply. 
 :::
@@ -1284,7 +1323,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_category_cat;")|> knitr::kable() 
 ## Destination (tr_destination_dest)
 
 This table was added for WGBAST. The idea is "what becomes of this fish".
-It allows to integrate discards, releases and seal damages.
+It allows to integrate discards, releases and seal damages. {>>what about east Asia for eel? just a joke ;-)<<}
 
 <details>
 
@@ -1320,7 +1359,7 @@ This table has been created here but see the [habitat report](https://diaspara.b
 habitat referential creation.
 
 ### Habitat level (tr_habitatlevel_lev)
-
+{>>can you provide a brief explaination?<<}
 
 <details>
 
@@ -1643,6 +1682,9 @@ Life stages cannot easily be shared among all species, they are species
 specific, probably similar between Sea trout and Salmon, but there is a
 large gap between a leptocephalus and a parr.
 
+
+{>>remove. Paste at the end of the report as a concluding recommendation?<<}
+
 ::: {.callout-important appearance="simple"}
 <h3>CREATE A STEERING GROUP IN WGDIAD</h3>
 The following definitions have been checked by the working groups and a draft
@@ -1654,9 +1696,9 @@ that this steering group is created within WGDIAD to discuss these issues.
 :::
 
 ### Considerations about the database structure
-
+{>>moved this paragraph in the next section?<<}
 For life stage, unlike in other referentials, using working-group-specific life stages would lead to confusion. WGBAST and WGNAS would
-share the same stages for salmon. So unlike in many other table, the
+share the same stages for salmon. So unlike in many other tables, the
 referentials will not use inheritance (see paragraph @sec-hierarchical
 for more details on inheritance). This means that we will create a table
 grouping all life stages and then we will only select the relevant ones
@@ -1668,6 +1710,7 @@ group referentials, `refnas`, `refbast`, `refeel` ... will have
 and a subset of values used by the working group.
 
 ### The lifestages in working group databases
+{>>should we just copy and paste the tables from the issue?<<}
 
 The creation of life stage is discussed in the issue 16 in git [github
 link to issue](https://github.com/DIASPARAproject/WP3_migdb/issues/16)
@@ -1682,6 +1725,8 @@ So they are not used as a separate column to describe the data. But in
 the eel database they are and so we will need to add this dimension to
 the table structure.
 
+
+{>>for simplicity, could we remove this note in the final report?<<}
 ::: {.callout-tip appearance="simple"}
 <h3>Adding a stage dimension</h3>
 
@@ -1695,15 +1740,16 @@ even if for WGNAS there is no practical use the information is not used currentl
 :::
 
 ### Use of lifestages to include other information
+{>>I am not sure to understand the final decision: will the life stage table include potentially refined stages that include extrainformation?<<}
 
 The different steps in the models are identified using spatio-temporal
 units and stages (e.g; post smolt and location at sea)
-@ices_second_2024, a location and stage to descibe the different steps
+@ices_second_2024, a location and stage to describe the different steps
 in the return migration (for instance returning adult in seawater, in
 freshwater...). Some of the elements added in the stage column are not
 stage per-se, but elements used to describe the spatio-temporal elements
-within the life-cycle, for instance the use PFA (pre-fishery-abundance)
-which correspond to the number at sea of different stages before
+within the life-cycle, for instance PFA (pre-fishery-abundance)
+corresponds to the number at sea of different stages before
 fishery. Note that this parameter is no longer used, that is, it's in the metadata
 but the variable in metadata are no longer in the database (this stands for
 logN4, N4, logit_theta4, tau_theta4, theta4). 
@@ -1715,8 +1761,12 @@ which will group information, but the individual metric database might
 require more details that the simple adult stage. For this reason, we
 will add the maturity scale from ICES in the DB.
 
-### Adding a bit more complexity with the eel
 
+
+### Adding a bit more complexity with the eel
+{>>is this different from PFA for example? Perhaps we should simply state that,
+for pratical reasons, we define stages that encompass different "true" biological
+life stages<<}
 In some cases, a mixture of stages are used. Many fyke net fisheries for
 eel will not distinguish between yellow and silver eel stage and WGEEL
 uses the `YS` stage. Some historical trap series did not distinguish
@@ -1724,6 +1774,9 @@ between small yellow eels and glass eel, or the glass eel ascending are
 in a late stage. In that case the `GY`stage is used to count the
 recruits.
 
+{>>what about OG and QG? just kidding ;-)<<}
+
+{>>remove questions<<}
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -1799,6 +1852,7 @@ kable(TS_MATURITY, caption = "TS_MATURITY") |> kable_styling(bootstrap_options =
 kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
 
+{>>remove questions<<}
 
 :::::: questionbox
 :::: questionbox-header
@@ -1913,6 +1967,11 @@ dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs
 
 
 ```
+
+
+{>>remove questions<<}
+
+
 :::{.answerbox}
 ::::{.answerbox-header}
 ::::{.answerbox-icon}
@@ -1948,6 +2007,8 @@ DT::datatable(rownames = FALSE,
   ))
 ```
 
+{>>remove questions<<}
+
 ::: {.callout-tip appearance="note"}
 ## Follow up in ICES vocab
 You can follow up this issue in ICES
@@ -1958,7 +2019,7 @@ You can follow up this issue in ICES
 tr_lifestage_lfs with other tables, arrows indicate inheritance"){#fig-schema_tr_lifestage_lfs}
 
 ## Maturity (ts_maturity_mat)
-
+{>>is this a separate table or a column in life stage table?<<}
 Working on stages, and looking at the ICES vocab, we have decided to
 include information on maturity.
 
@@ -1972,7 +2033,7 @@ include information on maturity.
 </details>
 
 In Salmoglob, information about the stage mixes information on stage and maturity.
-The use of SMSF vocabulary has been made mandatory for all countries
+The use of SMSF{>>define<<} vocabulary has been made mandatory for all countries
 since 2020 and WGBIOP [@ices_wgbiop_2024] has revised the referential
 and emphasized the need of its use for a consistent stock assessment.
 
@@ -2094,6 +2155,7 @@ following codes from `FW  Fresh water`, `MC   Marine water (coast)`,
 `MO Marine water (open sea)`, `MC   Marine water (coast)` and
 `NA  Not applicable`.
 
+{>>remove?<<}
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -2194,8 +2256,9 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") |>
 ```
 
 ## Quality (tr_quality_qal)
+{>>this section should be rephrased to present the final decision, or completely removed since it is not of major importance<<}
 
-This code is used by wgeel. Currently the WGNAS uses an archive table,
+This code is used by WGEEL. Currently the WGNAS uses an archive table,
 WGEEL uses historical data with a different quality ID. Both have chosen
 never to remove any data. It does not look like these procedures, handled
 by shiny app, are compatible with ICES procedures.
@@ -2246,7 +2309,7 @@ Normally we don't ....
 ::::::
 
 ::: {.callout-tip  appearance="simple"}
-## We need an archive
+## We need an archive {>>see above: I would only keep this section and rephrase a bit to mention that, while it is not usually done by ICES, both WGEEL and WGNAS asks for an arichive system<<}
 It was further agreed during the final meeting
 and several other informal meetings that an archive format will
 be created to adapt to the needs of the Working groups (shiny using the
@@ -2281,7 +2344,7 @@ Table tr_quality_qal used by the wgeel
 
 
 ::: {.callout-tip  appearance="simple"}
-### ICES (Maria)
+### ICES (Maria) {>>see above: we are a bit lost and it is difficult to understand the final decision<<}
 We have this quality flag code type from [seadatanet](https://vocab.ices.dk/?codetypeguid=036cc995-415d-4859-8f2d-739c12d84250).
 :::
 
@@ -2417,6 +2480,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_age_age;") |>
 
 ```
 
+{>>remove<<}
 :::::: answerbox
 :::: answerbox-header
 ::: answerbox-icon
@@ -2436,7 +2500,7 @@ The general definition looks OK. Although, when you store adults, how do you rec
 
 ## Sex (tr_sex_sex)
 
-There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) see Table @tbl-vocabsex.
+There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) {>>remove this kind of statement, it is a report to EU<<} see Table @tbl-vocabsex.
 
 ```{r }
 #| echo: TRUE
@@ -2579,7 +2643,7 @@ provides a dictionary of the scientific gear used in monitoring, this one can be
 
 :::{.callout-tip appearance="simple" appearance="simple"}
 ## Other source of definition (if needed)
- Method used to monitor eel in the mediterranean are referenced in detail in this 
+ Method used to monitor eel in the Mediterranean are referenced in detail in this 
  [report](https://openknowledge.fao.org/handle/20.500.14283/cc7252en).
 :::
 
@@ -2914,7 +2978,7 @@ GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing
 ## Time period (ref.tr_timeperiod_tip)
 
 WGBAST reports data per month, quarter, or half year.
-There is a vocabulary for quarters, couldn't find a vocab for half of year.
+There is a vocabulary for quarters, couldn't find a vocab for half of year. {>>where? please rephrase to present the final solution<<}
 
 
 <details>
@@ -2969,8 +3033,10 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_timeperiod_tip;") |>
 
 ```
 
+
 ::: {.callout-warning appearance="simple"}
 ## Only in WGBAST
+{>>already said above, remove<<}
 Currently the time period are not used in WGEEL and WGNAS (where time period
 is always year), the referential is only used in WGBAST.
 :::
@@ -2979,11 +3045,11 @@ is always year), the referential is only used in WGBAST.
 
 
 The source of fishery data is included in WGBAST see: [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
-The vocab described here is deprecated and superseeded by datasource.
+The vocab described here is deprecated and superseeded by datasource. {>>if superseeded, why do we present it?<<}
 
-During exchange with Data Centre (Thanks Maria for hinting at this change), the current way of handling estimated data,
+During exchange with Data Centre (Thanks Maria for hinting at this change) {>>avoid this kind of statement in a report to EU<<}, the current way of handling estimated data,
 is to separate the source of data and the type of estimation. This is how it
-works currently in RDBES. So a catch can coming from logbook, it is estimated,
+works currently in RDBES. So a catch can come from logbook, it is estimated, {>>do you mean "or estimated"?, if it in logbook, then it is not an estimate but a reported value?<< }
 and when estimated a method must be provided if estimated (estimation method).
 
 <details>
@@ -3055,6 +3121,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_datasource_dts;") |>
 
 ::: {.callout-warning appearance="simple"}
 ## Only in WGBAST
+{>>this should not be a heading, rather a note in previous paragraph. While it is currently used by WGBAST only, should we or WGNAS use it in the future?<<}
 Currently the data source are only for WGBAST
 :::
 
@@ -3101,7 +3168,7 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_dtbr")
 
 
 ## Data estimation method ref.tr_estimationmethod_esm 
-
+{>>should be a subheading of data sources?<<}
 This table will be inherited, we are proposing working group specific estimation
 methods. Typically estimation methods of WGBAST. These will only be used if
 sto_dtb_code = 'Estimated'
@@ -3127,12 +3194,13 @@ sto_dtb_code = 'Estimated'
 
 ::: {.callout-warning appearance="simple"}
 ## Only in WGBAST
+{>>this should not be a heading, rather a note in previous paragraph. While it is currently used by WGBAST only, should we or WGNAS use it in the future?<<}
 Currently the estimation method are only for WGBAST
 :::
 
 ::: {.callout-note appearance="simple"}
 ## Note
-
+{>>this seems a bit contradictory with the fact that we say that is only used by wgbast?<<}
 The estimation method are inherited, so there is a common table
 and estimation methods are created in daughter tables in each working group,
  they are inherited. See @sec-datbast.tr_estimationmethod_esm
@@ -3141,7 +3209,7 @@ and estimation methods are created in daughter tables in each working group,
 # Metadata
 
 ## Metadata (dat.t_metadata_met)
-
+{>>I think we should explain what metadata mean in this context. I mean, referentials tables can also be seen as metadata since we generally provide descriptions alongside the code.<<}
 The code for creating metadata is listed below
 
 <details>
@@ -3169,7 +3237,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;") |> DT::datatable(c
 
 
 
-
+{>>should we add a top heading # code for data import? and turn wgnas, wgbast and wgeel as subheadings?<<}
 # WGNAS 
 
 The WGNAS database is created in schemas refnas and datna (see @sec-hierarchical).
@@ -3359,6 +3427,7 @@ always be `WGNAS`.
 
 </details>
 
+{>>remove<<}
 ::: {.callout-caution appearance="simple"}
 ## duplicated values in archive
 
@@ -3386,6 +3455,8 @@ Another problem is the age column. When looking at the analysis [see age in WGNA
 database description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#age)
 
 Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age.
+
+{>>remove<<}
 
 ::: {.callout-tip appearance="simple"}
 This was solved using the tg_additional_add column. The stucture for WGBAST
@@ -3504,6 +3575,7 @@ lies in the way the data are linked to areas in the marine habitat.
 Currently we have kept all historical data with the "historical" EMU as
 the reference. This will probably change once we start to build the model
 and the habitat DB proposes a structure of [eel habitat](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html#creating-a-hierarchical-structure-for-wgeel)
+{>>yes and no, my feeling is that many reported data will still be provided aggregated at the EMU scale unfortunately: the data collection in Member States are organised in this way and are not likely to change for eel only in the short term? This does not mean that we could not use and push for another system, but that the EMU scale will remain used in the future<<}
 
 ## refeel.tr_version_ver
 
@@ -3519,6 +3591,7 @@ See [metricDB report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/
 ```
 </details>
 
+{>>remove<<}
 ::: {.callout-note appearance="simple"}
 We currently consider that SumH, and Biom are "Output", the result of model.
 :::
@@ -3649,6 +3722,8 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_met_wgeel_temp CASCADE;")
 
 ```
 
+
+{>>is this done?<<}
 ::: {.callout-warning appearance="simple"}
 ## TODO DIASPARA
 We still need to add units to the metadata table
@@ -3695,12 +3770,14 @@ of the table.
 reporting e.g. Month, Half of year, Quarter need to be added to the t_stock_sto table, since this table
 is inherited in postgres and aready has one more column (to store some extra dimension)
 is WGNAS when compared to WGEEL, we need to do the same and allow for three additional columns,
- one for gear, one for time period type and one for time period.
+ one for gear, one for time period type and one for time period {>>the sentence is weird<<}.
 * The metadata will allow by a simple join to get back to F_type (stored in column met_type). It should also for a simple division according to the destination column, allowing to separate dead fish from the living ones.
 
-* **Effort, Numbers and Weights**. The database will be in long format while in the current structure, Effort, Weights and Numbers are reported in separate columns.A simple query will bring back the original format.
+* **Effort, Numbers and Weights**. The database will be in long format while in the current structure, Effort, Weights and Numbers are reported in separate columns.A simple query will bring back the original format. {>>this is a bit technical, long and wide format are not easy to understand for everyone<<}
 
 * Effort is reported in geardays only for driftnet, longline and trapnet fisheries. 
+
+{>>please rephrase the TODO<<}
 
 * TODO CHECK WITH maria about the unit (effort gearxdays)
 
@@ -3813,11 +3890,12 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_esmr")
 
 ```
 
+{>>there is an issue with the structure of the document: we are in a WGBAST section and refer to WGEEL issues?<<}
 ::: {.callout-important appearance="simple"}
 
 The full WGEEL database was imported in 2025. In 2026 there will be one last
 datacall using the previous database and shiny interface before switching to the 
-new format.
+new format. {>>sure?<<}
 
 The remaining issues are here :
 
@@ -3831,7 +3909,7 @@ The remaining issues are here :
 Note there is a slight different here, I need to add twice the variables for salmon,
 and then for trutta. These are no duplicates as the primary key is set on both 127187 (Salmo trutta)
 and 127186 (Salmon salar). Later on, there should be variables only with 127186  (at the second step
-of the integration process.)
+of the integration process.) {>>please rephrase for the final version<<}
 
 ```{r datbast.t_metadata_met}
 #| echo: TRUE
@@ -4492,7 +4570,7 @@ dbExecute(con_diaspara_local, "drop table temp_t_stock_sto_e")
 
 ```
 
-
+{>>remove following notes?<<}
 ::: {.callout-warning appearance="simple"}
 ## WGBAST corrections made to the dataset 
 3 lines with area 21 (which do not exists) =>
@@ -4533,14 +4611,15 @@ or SampDC	Commercial sampling data (sampling methodologies specific to each coun
 
 
 Full diagram of the diadromous DB including both stock and metric databases![click to enlarge](images\diaspara-ref.png){.lightbox #fig-ref}
-
+{>>the picture is too small to be read? Would it be possible to put only the table names (i.e. removing the fields), and then detail each table elsewhere (tables in annex?)<<}
 
 # Conclusions
 
 A database was created for WGNAS, WGBAST, and WGEEL. It could easily
 have a similar format for WGTRUTTA and other working groups working with diadromous fish species, such as lampreys and 
 shads. It will allow for the
-integration of data call files using DATSU. The habitat database is currently
+integration of data call files using DATSU and more generally, interoperable with 
+other ICES tools (e.g. RDBES) and processes (e.g. TAF). The habitat database is currently
 ported to RDBES and it has been proposed in RDBFIS to allow for the inclusion of data in the
 continental part of the range for migratory fishes.
 
@@ -4552,6 +4631,7 @@ In the long run, however, the use of a common database and ICES tools will:
 1) simplify
 the learning needs of experts and knowledge, when shifting between different diadromous expert and assessment groups,
 2) allow to provide a more streamlined data flow between national and international level, and 3) enhance accessibility and interoperability.
+3) allow to benefit from further support from ICES Data Center and ensure the long term maintenance of the system
 
 ::: {.callout-caution appearance="simple"}
 The shift to the new database will start in 2026 for WGEEL (metric DB) and
@@ -4560,7 +4640,7 @@ Changing from one database to another system will break the R code,
  which will need to be reviewed  
 :::
 
-
+{>>remove<<}
 ::: {.callout-important appearance="simple"}
 
 From now on everywhere in the db: Atlantic salmon will be 127186 and eel 126281.
