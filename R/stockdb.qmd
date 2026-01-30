@@ -204,36 +204,36 @@ load_library("ggplot2")
 load_library("sf")
 load_library("janitor") # clean_names
 cred <- read_yaml("../credentials.yml")
-con_diaspara_local <- dbConnect(Postgres(), 
-                          dbname = "diaspara",
-                          host = "localhost",
-                          port = 5432,
-                          user = cred$userdiaspara,
-                          password = cred$passworddiaspara)
+# con_diaspara_local <- dbConnect(Postgres(), 
+#                           dbname = "diaspara",
+#                           host = "localhost",
+#                           port = 5432,
+#                           user = cred$userdiaspara,
+#                           password = cred$passworddiaspara)
 con_diaspara <- dbConnect(Postgres(), 
                           dbname = cred$dbnamediaspara,
-                          host = cred$hostdistant,
+                          host = cred$host,
                           port = cred$port,
                           user = cred$userdiaspara,
                           password = cred$passworddiaspara)
-con_diaspara_admin <- dbConnect(Postgres(), 
-                                dbname = cred$dbnamediaspara,
-                                host = cred$hostdistant,
-                                port = cred$port,
-                                user = cred$userdistant,
-                                password = cred$passworddistant)
-con_salmoglob <- dbConnect(Postgres(), 
-                           dbname = cred$dbnamesalmo,
-                           host = cred$hostdistant,
-                           port = cred$port,
-                           user = cred$usersalmo,
-                           password = cred$passwordsalmo)
-con_wgeel_distant <- dbConnect(Postgres(), 
-                               dbname = cred$dbnamedistant,
-                               host = cred$hostdistant,
-                               port = cred$port,
-                               user = cred$userdistant,
-                               password = cred$passworddistant)
+# con_diaspara_admin <- dbConnect(Postgres(), 
+#                                 dbname = cred$dbnamediaspara,
+#                                 host = cred$hostdistant,
+#                                 port = cred$port,
+#                                 user = cred$userdistant,
+#                                 password = cred$passworddistant)
+# con_salmoglob <- dbConnect(Postgres(), 
+#                            dbname = cred$dbnamesalmo,
+#                            host = cred$hostdistant,
+#                            port = cred$port,
+#                            user = cred$usersalmo,
+#                            password = cred$passwordsalmo)
+# con_wgeel_distant <- dbConnect(Postgres(), 
+#                                dbname = cred$dbnamedistant,
+#                                host = cred$hostdistant,
+#                                port = cred$port,
+#                                user = cred$userdistant,
+#                                password = cred$passworddistant)
 
 
 
