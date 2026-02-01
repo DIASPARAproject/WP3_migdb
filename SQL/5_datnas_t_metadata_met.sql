@@ -46,7 +46,7 @@ ALTER TABLE datnas.t_metadata_met ADD
 
 ALTER TABLE datnas.t_metadata_met ADD
   CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
-  REFERENCES ref.tr_nimble_nim (nim_code) ON DELETE CASCADE
+  REFERENCES ref.tr_bayestype_bty (nim_code) ON DELETE CASCADE
   ON UPDATE CASCADE;
 
 ALTER TABLE datnas.t_metadata_met ADD  

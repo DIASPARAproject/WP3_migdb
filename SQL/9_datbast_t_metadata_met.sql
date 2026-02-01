@@ -18,7 +18,7 @@ CREATE TABLE datbast.t_metadata_met(
   REFERENCES ref.tr_objecttype_oty (oty_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
-  REFERENCES ref.tr_nimble_nim (nim_code) 
+  REFERENCES ref.tr_bayestype_bty (nim_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,  
   CONSTRAINT fk_met_mtr_code FOREIGN KEY (met_mtr_code)
   REFERENCES ref.tr_metric_mtr(mtr_code)

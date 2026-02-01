@@ -1031,7 +1031,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")|> knitr::kable(
 
 ```
 
-## Type of parm / data (tr_nimble_nim)
+## Type of parm / data (tr_bayestype_bty)
 
 In the salmoglob database (WGNAS), this table (@tbl-nimble) corresponds to both
 tables [`status`](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-8) and [`nimble`](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-2) which most often contain the same
@@ -1041,7 +1041,7 @@ information.
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_ref_tr_nimble_nim.sql"}
+``` {.sql include="../SQL/2_ref_tr_bayestype_bty.sql"}
 ```
 
 </details>
@@ -1055,7 +1055,7 @@ information.
 #| tbl-cap: Nimble
 #| code-fold: TRUE
 #| code-summary: Code to show table
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_nimble_nim;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_bayestype_bty;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -3573,7 +3573,7 @@ t_metadata_met <-
     met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
     met_nim_code =  case_when(    
       typ$typ_id %in% c(4:12,32,33)   ~ "Data",
-      .default = "Output"), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
+      .default = "Output"), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -3971,7 +3971,7 @@ t_metadata_met_TRS  <- data.frame(
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  "Data", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
+    met_nim_code =  "Data", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -4048,7 +4048,7 @@ t_metadata_met_a  <- data.frame(
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
+    met_nim_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", array$dim1, ",",
        ifelse(is.na(array$dim2), 0,array$dim2), ",",
@@ -4079,7 +4079,7 @@ t_metadata_met_s  <- data.frame(
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
     met_oty_code =  "Single_value",  
-    met_nim_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_nimble_nim
+    met_nim_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", 1, ",",
        0, ",",

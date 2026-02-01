@@ -198,7 +198,7 @@
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="50" name="tr_nimble_nim" fq-name="&quot;ref&quot;.tr_nimble_nim" order="49" color-bg="219,229,241" x="1280" y="2240">
+			<entity id="50" name="tr_bayestype_bty" fq-name="&quot;ref&quot;.tr_bayestype_bty" order="49" color-bg="219,229,241" x="1280" y="2240">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>

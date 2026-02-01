@@ -304,7 +304,7 @@ label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
 "ref".tr_metric_mtr <br align="left"/>
 "ref".tr_missvalueqal_mis <br align="left"/>
 "ref".tr_monitoring_mon <br align="left"/>
-"ref".tr_nimble_nim <br align="left"/>
+"ref".tr_bayestype_bty <br align="left"/>
 <font color="pink">
 "ref".tr_objecttype_oty <br align="left"/>
 </font>
@@ -532,7 +532,7 @@ label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
 "ref".tr_metric_mtr <br align="left"/>
 "ref".tr_missvalueqal_mis <br align="left"/>
 "ref".tr_monitoring_mon <br align="left"/>
-"ref".tr_nimble_nim <br align="left"/>
+"ref".tr_bayestype_bty <br align="left"/>
 <font color="pink">
 "ref".tr_objecttype_oty <br align="left"/>
 </font>
@@ -852,7 +852,7 @@ label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
 "ref".tr_metric_mtr <br align="left"/>
 "ref".tr_missvalueqal_mis <br align="left"/>
 "ref".tr_monitoring_mon <br align="left"/>
-"ref".tr_nimble_nim <br align="left"/>
+"ref".tr_bayestype_bty <br align="left"/>
 <font color="pink">
 "ref".tr_objecttype_oty <br align="left"/>
 </font>
