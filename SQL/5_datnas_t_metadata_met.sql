@@ -40,18 +40,18 @@ ALTER TABLE datnas.t_metadata_met ADD
   ON UPDATE CASCADE;
 
 ALTER TABLE datnas.t_metadata_met ADD
-  CONSTRAINT fk_met_oty_code FOREIGN KEY (met_oty_code) 
-  REFERENCES ref.tr_objecttype_oty (oty_code) ON DELETE CASCADE
+  CONSTRAINT fk_met_odi_code FOREIGN KEY (met_odi_code) 
+  REFERENCES ref.tr_objectdimension_odi (odi_code) ON DELETE CASCADE
   ON UPDATE CASCADE;
 
 ALTER TABLE datnas.t_metadata_met ADD
-  CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
+  CONSTRAINT fk_met_bty_code FOREIGN KEY (met_bty_code) 
   REFERENCES ref.tr_bayestype_bty (nim_code) ON DELETE CASCADE
   ON UPDATE CASCADE;
 
 ALTER TABLE datnas.t_metadata_met ADD  
-  CONSTRAINT fk_met_mtr_code FOREIGN KEY (met_mtr_code)
-  REFERENCES ref.tr_metric_mtr(mtr_code)
+  CONSTRAINT fk_met_sta_code FOREIGN KEY (met_sta_code)
+  REFERENCES ref.tr_statistic_sta(sta_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
@@ -83,9 +83,9 @@ COMMENT ON COLUMN refnas.t_metadata_met.met_spe_code
 IS 'Species, 127186 primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_ver_code 
 IS 'Code on the version of the model, see table tr_version_ver.';
-COMMENT ON COLUMN refnas.t_metadata_met.met_oty_code 
-IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty.';
-COMMENT ON COLUMN refnas.t_metadata_met.met_nim_code 
+COMMENT ON COLUMN refnas.t_metadata_met.met_odi_code 
+IS 'Object type, single_value, vector, matrix see table tr_objectdimension_odi.';
+COMMENT ON COLUMN refnas.t_metadata_met.met_bty_code 
 IS 'Nimble type, one of data, constant, output, other.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_dim 
 IS 'Dimension of the Nimble variable, use {10, 100, 100} 
@@ -110,8 +110,8 @@ IS 'Unit, refnaserences table tr_unit_uni.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_cat_code 
 IS 'Broad category of data or parameter, 
 catch, effort, biomass, mortality, count ...refnaserences table tr_category_cat.';
-COMMENT ON COLUMN refnas.t_metadata_met.met_mtr_code 
-IS 'Code of the metric, refnaserences tr_metric_mtr, Estimate, Bound, SD, CV ....';
+COMMENT ON COLUMN refnas.t_metadata_met.met_sta_code 
+IS 'Code of the metric, refnaserences tr_statistic_sta, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN refnas.t_metadata_met.met_definition 
 IS 'Definition of the metric.';
 COMMENT ON COLUMN refnas.t_metadata_met.met_deprecated

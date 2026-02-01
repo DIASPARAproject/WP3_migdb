@@ -120,12 +120,12 @@ label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
 "ref".tr_icworkinggroup_wkg <br align="left"/>
 "ref".tr_lifestage_lfs <br align="left"/>
 "ref".tr_maturity_mat <br align="left"/>
-"ref".tr_metric_mtr <br align="left"/>
+"ref".tr_statistic_sta <br align="left"/>
 "ref".tr_missvalueqal_mis <br align="left"/>
 "ref".tr_monitoring_mon <br align="left"/>
 "ref".tr_bayestype_bty <br align="left"/>
 <font color="pink">
-"ref".tr_objecttype_oty <br align="left"/>
+"ref".tr_objectdimension_odi <br align="left"/>
 </font>
 "ref".tr_outcome_oco <br align="left"/>
 "ref".tr_quality_qal <br align="left"/>
@@ -453,12 +453,12 @@ label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
 <tr> <td align="left">
 "ref".tr_lifestage_lfs <br align="left"/>
 "ref".tr_maturity_mat <br align="left"/>
-"ref".tr_metric_mtr <br align="left"/>
+"ref".tr_statistic_sta <br align="left"/>
 "ref".tr_missvalueqal_mis <br align="left"/>
 "ref".tr_monitoring_mon <br align="left"/>
 "ref".tr_bayestype_bty <br align="left"/>
 <font color="pink">
-"ref".tr_objecttype_oty <br align="left"/>
+"ref".tr_objectdimension_odi <br align="left"/>
 </font>
 "ref".tr_outcome_oco <br align="left"/>
 "ref".tr_quality_qal <br align="left"/>

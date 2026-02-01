@@ -1012,7 +1012,7 @@ This table (@tbl-objectype) is used in metadata
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_ref_tr_objecttype_oty.sql"}
+``` {.sql include="../SQL/2_ref_tr_objectdimension_odi.sql"}
 ```
 
 </details>
@@ -1026,7 +1026,7 @@ This table (@tbl-objectype) is used in metadata
 #| tbl-cap: Object type
 #| code-fold: TRUE
 #| code-summary: Code to show table
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objecttype_oty;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_objectdimension_odi;")|> knitr::kable() |> kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 
 ```
@@ -1208,13 +1208,13 @@ or stocks but not data calls.
 :::
 ::::::
 
-## Metric (tr_metric_mtr)
+## Metric (tr_statistic_sta)
 
 <details>
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/2_ref_tr_metric_mtr.sql"}
+``` {.sql include="../SQL/2_ref_tr_statistic_sta.sql"}
 ```
 
 </details>
@@ -1227,7 +1227,7 @@ or stocks but not data calls.
 #| tbl-cap : Metric, type of parm used in the model
 #| code-fold: TRUE
 #| code-summary: Code to show table
-dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr;")|> 
+dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_statistic_sta;")|> 
 knitr::kable() |>
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
@@ -3218,7 +3218,7 @@ res <- dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_metadata_met;")
 #clipr::write_clip(colnames(res))
 
 # unique(metadata$metric)
-# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
+# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_statistic_sta")
 
 t_metadata_met <-
   data.frame(
@@ -3226,8 +3226,8 @@ t_metadata_met <-
     met_spe_code = "127186",
     met_wkg_code = "WGNAS",
     met_ver_code = "SAL-2024-1", # no data on version in metadata
-    met_oty_code = metadata$type_object,
-    met_nim_code =  case_when(
+    met_odi_code = metadata$type_object,
+    met_bty_code =  case_when(
       "Data_nimble"== metadata$nimble ~ "Data",
       "Const_nimble" == metadata$nimble ~ "Parameter constant",
       "Output" == metadata$nimble ~ "Output",
@@ -3247,7 +3247,7 @@ t_metadata_met <-
     met_type = metadata$type,
     met_location = metadata$locations,
     met_fishery = metadata$fishery,
-    met_mtr_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
+    met_sta_code = case_when(metadata$metric == "Standard deviation" ~ "SD",
                              metadata$metric == "Coefficient of variation" ~ "CV",
                              .default = metadata$metric
     ),
@@ -3288,16 +3288,16 @@ SELECT
  met_spe_code,
  met_wkg_code,
  met_ver_code,
- upper(substring(met_oty_code from 1 for 1)) ||
-          substring(met_oty_code from 2 for length(met_oty_code)), 
- met_nim_code,
+ upper(substring(met_odi_code from 1 for 1)) ||
+          substring(met_odi_code from 2 for length(met_odi_code)), 
+ met_bty_code,
  met_dim::INTEGER[], 
  met_dimname::TEXT[], 
  met_modelstage, 
  met_type,
  met_location, 
  met_fishery, 
- met_mtr_code, 
+ met_sta_code, 
  met_des_code, 
  met_uni_code,
  met_cat_code, 
@@ -3562,7 +3562,7 @@ typ <- typ[!typ$typ_id %in% c(16),]  # potential_availabe_habitat_production_ha
 typ <- typ[!typ$typ_id %in% c(5, 7),]  # com_catch and rec_catch
 typ <- typ[!typ$typ_id %in% c(26:31),]  # silver eel equivalents (deprecated)
 # unique(metadata$metric)
-# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_metric_mtr")
+# dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_statistic_sta")
 View(typ)
 t_metadata_met <-
   data.frame(
@@ -3570,8 +3570,8 @@ t_metadata_met <-
     met_spe_code = "126281",
     met_wkg_code = "WGEEL",
     met_ver_code = "WGEEL-2025-1", 
-    met_oty_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  case_when(    
+    met_odi_code = "Single_value", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
+    met_bty_code =  case_when(    
       typ$typ_id %in% c(4:12,32,33)   ~ "Data",
       .default = "Output"), # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
@@ -3588,7 +3588,7 @@ t_metadata_met <-
     # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
     met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
     met_fishery = NA, # not a referential
-    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_sta_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = NA,
     met_uni_code = NA, # (TODO)
     met_cat_code = case_when(
@@ -3629,15 +3629,15 @@ SELECT
  met_spe_code,
  met_wkg_code,
  met_ver_code,
- met_oty_code, 
- met_nim_code,
+ met_odi_code, 
+ met_bty_code,
  met_dim::INTEGER[], 
  met_dimname::TEXT[], 
  met_modelstage, 
  met_type,
  met_location, 
  met_fishery, 
- met_mtr_code, 
+ met_sta_code, 
  met_des_code, 
  met_uni_code,
  met_cat_code, 
@@ -3970,8 +3970,8 @@ t_metadata_met_TRS  <- data.frame(
     met_spe_code = "127187",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
-    met_oty_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  "Data", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
+    met_odi_code = "Single_value", #  https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
+    met_bty_code =  "Data", # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -3987,7 +3987,7 @@ t_metadata_met_TRS  <- data.frame(
     # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
     met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
     met_fishery = NA, # not a referential
-    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_sta_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = case_when(
       met_type == "COMM" ~ "Removed",
       met_type == "ALV" ~ "Released",
@@ -4022,8 +4022,8 @@ DBI::dbWriteTable(con_diaspara_admin, "temp_wgbast_t_metadata_met", t_metadata_m
 
 
 DBI::dbExecute(con_diaspara_admin, "DELETE FROM datbast.t_metadata_met")
-DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
-SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #48
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_odi_code, met_bty_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_sta_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
+SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_odi_code, met_bty_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_sta_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #48
 
 
 ```
@@ -4047,8 +4047,8 @@ t_metadata_met_a  <- data.frame(
     met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
-    met_oty_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
-    met_nim_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
+    met_odi_code = ifelse(is.na(array$dim2), "Vector",ifelse(is.na(array$dim3),"Matrix", "Array")), # Single_value Vector Matrix Array https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#object-type-tr_objectype_oty
+    met_bty_code =  ifelse(array$type == "stockastic", "Data", "Output"), #scenarios or stockastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", array$dim1, ",",
        ifelse(is.na(array$dim2), 0,array$dim2), ",",
@@ -4064,7 +4064,7 @@ t_metadata_met_a  <- data.frame(
     # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
     met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
     met_fishery = NA, # not a referential
-    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_sta_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = NA,
       # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#destination-tr_destination_dest
     met_uni_code = NA,
@@ -4078,8 +4078,8 @@ t_metadata_met_s  <- data.frame(
     met_spe_code = "127186",
     met_wkg_code = "WGBAST",
     met_ver_code = "WGBAST-2025-1", 
-    met_oty_code =  "Single_value",  
-    met_nim_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
+    met_odi_code =  "Single_value",  
+    met_bty_code =  ifelse(scalar$type == "stochastic", "Data", "Output"), #scenarios or stochastic TODO check consistency with WGNAS https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#type-of-parm-data-tr_bayestype_bty
     met_dim = paste0(
       "{", 1, ",",
        0, ",",
@@ -4095,7 +4095,7 @@ t_metadata_met_s  <- data.frame(
     # see https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4
     met_location = NA, # something line bef. Fisheries Aft fisheries.... not a referential
     met_fishery = NA, # not a referential
-    met_mtr_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
+    met_sta_code = NA, # reference to tr_metrictype (bound, mean, SD, can be left empty)
     met_des_code = NA,
       # https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/midb.html#destination-tr_destination_dest
     met_uni_code = NA,
@@ -4108,8 +4108,8 @@ t_metadata_met<- bind_rows(t_metadata_met_s, t_metadata_met_a)
 DBI::dbWriteTable(con_diaspara_admin, "temp_wgbast_t_metadata_met", t_metadata_met, overwrite = TRUE)
 
 
-DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
-SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_oty_code, met_nim_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_mtr_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #117
+DBI::dbExecute(con_diaspara_admin, "INSERT INTO datbast.t_metadata_met(met_var, met_spe_code, met_wkg_code, met_ver_code, met_odi_code, met_bty_code, met_dim, met_dimname, met_modelstage, met_type, met_location, met_fishery, met_sta_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated)
+SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_odi_code, met_bty_code, met_dim::integer[], met_dimname::text[], met_modelstage, met_type, met_location, met_fishery, met_sta_code, met_des_code, met_uni_code, met_cat_code, met_definition, met_deprecated FROM temp_wgbast_t_metadata_met") #117
 ```
 
 

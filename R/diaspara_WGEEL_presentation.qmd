@@ -146,7 +146,7 @@ digraph schema {
         tr_country_cou <br align="left"/>
         tr_icworkinggroup_wkg <br align="left"/>
         tr_version_ver <br align="left"/>
-        tr_metric_mtr <br align="left"/>
+        tr_statistic_sta <br align="left"/>
         tr_category_cat <br align="left"/>
         tr_destination_dest <br align="left"/>
         tr_area_are <br align="left"/> </td> </tr> 

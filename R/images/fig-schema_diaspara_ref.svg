@@ -21,11 +21,11 @@
 <polygon fill="none" stroke="black" points="8,-92.22 8,-396.22 168,-396.22 168,-92.22 8,-92.22"/>
 <text xml:space="preserve" text-anchor="start" x="13" y="-378.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_lifestage_lfs </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-364.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_maturity_mat </text>
-<text xml:space="preserve" text-anchor="start" x="13" y="-350.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_metric_mtr </text>
+<text xml:space="preserve" text-anchor="start" x="13" y="-350.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_statistic_sta </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-336.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_missvalueqal_mis </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-322.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_monitoring_mon </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-308.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_bayestype_bty </text>
-<text xml:space="preserve" text-anchor="start" x="13" y="-294.92" font-family="Times New Roman,serif" font-size="14.00" fill="pink">&quot;ref&quot;.tr_objecttype_oty </text>
+<text xml:space="preserve" text-anchor="start" x="13" y="-294.92" font-family="Times New Roman,serif" font-size="14.00" fill="pink">&quot;ref&quot;.tr_objectdimension_odi </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-280.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_outcome_oco </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-266.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_quality_qal </text>
 <text xml:space="preserve" text-anchor="start" x="13" y="-252.92" font-family="Times New Roman,serif" font-size="14.00">&quot;ref&quot;.tr_rivernames_riv </text>

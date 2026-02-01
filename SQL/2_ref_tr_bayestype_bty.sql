@@ -23,3 +23,18 @@ INSERT INTO ref.tr_bayestype_bty
 VALUES ('Other', 'Applies currently to conservation limits');
 GRANT ALL ON ref.tr_bayestype_bty TO diaspara_admin;
 GRANT SELECT ON ref.tr_bayestype_bty TO diaspara_read;
+
+
+/*
+Hilaire review : remove "nimble" ...
+ALTER TABLE "ref".tr_nimble_nim RENAME COLUMN nim_code TO bty_code;
+ALTER TABLE "ref".tr_nimble_nim RENAME COLUMN nim_description TO bty_description;
+ALTER TABLE "ref".tr_nimble_nim RENAME CONSTRAINT tr_nimble_nim_pkey TO tr_bayestype_bty_pkey;
+ALTER INDEX "ref".tr_nimble_nim_pkey RENAME TO tr_bayestype_bty_pkey;
+ALTER TABLE dat.t_metadata_met RENAME COLUMN met_nim_code TO met_bty_code;
+ALTER TABLE dat.t_metadata_met RENAME CONSTRAINT fk_met_nim_code TO fk_met_bty_code;
+ALTER TABLE dateel.t_metadata_met RENAME CONSTRAINT fk_met_nim_code TO fk_met_bty_code;
+ALTER TABLE datnas.t_metadata_met RENAME CONSTRAINT fk_met_nim_code TO fk_met_bty_code;
+ALTER TABLE datbast.t_metadata_met RENAME CONSTRAINT fk_met_nim_code TO fk_met_bty_code;
+*/
+

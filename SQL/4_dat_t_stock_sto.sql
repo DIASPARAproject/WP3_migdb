@@ -7,7 +7,7 @@ UNIQUE  ("version", area, var_mod, "year", "location", age);
 
 -- For the archive db, the constraint is not working meaning that we have duplicated values
 
-SELECT DISTINCT met_nim_code FROM datnas.t_metadata_met
+SELECT DISTINCT met_bty_code FROM datnas.t_metadata_met
 JOIN refsalmoglob."database" ON var_mod = met_var
 WHERE  met_cat_code ='Other'
 

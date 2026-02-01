@@ -186,7 +186,7 @@
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="47" name="tr_metric_mtr" fq-name="&quot;ref&quot;.tr_metric_mtr" order="46" color-bg="219,229,241" x="1280" y="1694">
+			<entity id="47" name="tr_statistic_sta" fq-name="&quot;ref&quot;.tr_statistic_sta" order="46" color-bg="219,229,241" x="1280" y="1694">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
@@ -202,7 +202,7 @@
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
-			<entity id="51" name="tr_objecttype_oty" fq-name="&quot;ref&quot;.tr_objecttype_oty" order="50" color-bg="219,229,241" x="1280" y="1547">
+			<entity id="51" name="tr_objectdimension_odi" fq-name="&quot;ref&quot;.tr_objectdimension_odi" order="50" color-bg="219,229,241" x="1280" y="1547">
 				<path name="ref"/>
 				<path name="diaspara"/>
 			</entity>
@@ -531,24 +531,24 @@
 		<relation name="fk_ser_lfs_code_ser_spe_code" fq-name="dateel.t_series_ser.fk_ser_lfs_code_ser_spe_code" type="fk" pk-ref="45" fk-ref="19"/>
 		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="dateel.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="45" fk-ref="20"/>
 		<relation name="fk_sto_lfs_code_sto_spe_code" fq-name="datnas.t_stock_sto.fk_sto_lfs_code_sto_spe_code" type="fk" pk-ref="45" fk-ref="23"/>
-		<relation name="fk_met_mtr_code" fq-name="dat.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="5"/>
-		<relation name="fk_met_mtr_code" fq-name="datbast.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="10"/>
-		<relation name="fk_met_mtr_code" fq-name="dateel.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="16"/>
-		<relation name="fk_met_mtr_code" fq-name="datnas.t_metadata_met.fk_met_mtr_code" type="fk" pk-ref="47" fk-ref="22"/>
+		<relation name="fk_met_sta_code" fq-name="dat.t_metadata_met.fk_met_sta_code" type="fk" pk-ref="47" fk-ref="5"/>
+		<relation name="fk_met_sta_code" fq-name="datbast.t_metadata_met.fk_met_sta_code" type="fk" pk-ref="47" fk-ref="10"/>
+		<relation name="fk_met_sta_code" fq-name="dateel.t_metadata_met.fk_met_sta_code" type="fk" pk-ref="47" fk-ref="16"/>
+		<relation name="fk_met_sta_code" fq-name="datnas.t_metadata_met.fk_met_sta_code" type="fk" pk-ref="47" fk-ref="22"/>
 		<relation name="fk_sto_mis_code" fq-name="dat.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="8"/>
 		<relation name="fk_sto_mis_code" fq-name="datbast.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="11"/>
 		<relation name="fk_sto_mis_code" fq-name="dateel.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="20"/>
 		<relation name="fk_sto_mis_code" fq-name="datnas.t_stock_sto.fk_sto_mis_code" type="fk" pk-ref="48" fk-ref="23"/>
 		<relation name="fk_ser_mon_code" fq-name="dat.t_series_ser.fk_ser_mon_code" type="fk" pk-ref="49" fk-ref="7"/>
 		<relation name="fk_ser_mon_code" fq-name="dateel.t_series_ser.fk_ser_mon_code" type="fk" pk-ref="49" fk-ref="19"/>
-		<relation name="fk_met_nim_code" fq-name="dat.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="5"/>
-		<relation name="fk_met_nim_code" fq-name="datbast.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="10"/>
-		<relation name="fk_met_nim_code" fq-name="dateel.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="16"/>
-		<relation name="fk_met_nim_code" fq-name="datnas.t_metadata_met.fk_met_nim_code" type="fk" pk-ref="50" fk-ref="22"/>
-		<relation name="fk_met_oty_code" fq-name="dat.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="5"/>
-		<relation name="fk_met_oty_code" fq-name="datbast.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="10"/>
-		<relation name="fk_met_oty_code" fq-name="dateel.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="16"/>
-		<relation name="fk_met_oty_code" fq-name="datnas.t_metadata_met.fk_met_oty_code" type="fk" pk-ref="51" fk-ref="22"/>
+		<relation name="fk_met_bty_code" fq-name="dat.t_metadata_met.fk_met_bty_code" type="fk" pk-ref="50" fk-ref="5"/>
+		<relation name="fk_met_bty_code" fq-name="datbast.t_metadata_met.fk_met_bty_code" type="fk" pk-ref="50" fk-ref="10"/>
+		<relation name="fk_met_bty_code" fq-name="dateel.t_metadata_met.fk_met_bty_code" type="fk" pk-ref="50" fk-ref="16"/>
+		<relation name="fk_met_bty_code" fq-name="datnas.t_metadata_met.fk_met_bty_code" type="fk" pk-ref="50" fk-ref="22"/>
+		<relation name="fk_met_odi_code" fq-name="dat.t_metadata_met.fk_met_odi_code" type="fk" pk-ref="51" fk-ref="5"/>
+		<relation name="fk_met_odi_code" fq-name="datbast.t_metadata_met.fk_met_odi_code" type="fk" pk-ref="51" fk-ref="10"/>
+		<relation name="fk_met_odi_code" fq-name="dateel.t_metadata_met.fk_met_odi_code" type="fk" pk-ref="51" fk-ref="16"/>
+		<relation name="fk_met_odi_code" fq-name="datnas.t_metadata_met.fk_met_odi_code" type="fk" pk-ref="51" fk-ref="22"/>
 		<relation name="fk_grt_qal_id" fq-name="dat.t_grouptrait_grt.fk_grt_qal_id" type="fk" pk-ref="52" fk-ref="3">
 			<bend type="abs" x="497" y="467"/>
 			<bend type="abs" x="775" y="467"/>

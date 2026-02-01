@@ -528,7 +528,7 @@ knitr::kable(habitat)|>
 
 ## Fish Traits  ref.tr_trait_tra
 
-This one was formerly called metric, but metric `ref.tr_metric_met` already exist and is better
+This one was formerly called metric, but metric `ref.tr_statistic_sta` already exist and is better
 suited to statistics (mean, sd ... ). So we are using the word trait.
 Trait is refering to a species (there are different method,
 or different measurements for different species).

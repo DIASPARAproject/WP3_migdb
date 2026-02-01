@@ -14,14 +14,14 @@ CREATE TABLE dateel.t_metadata_met(
   CONSTRAINT fk_met_ver_code FOREIGN KEY (met_ver_code)
   REFERENCES refeel.tr_version_ver(ver_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT fk_met_oty_code FOREIGN KEY (met_oty_code) 
-  REFERENCES ref.tr_objecttype_oty (oty_code) 
+  CONSTRAINT fk_met_odi_code FOREIGN KEY (met_odi_code) 
+  REFERENCES ref.tr_objectdimension_odi (odi_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
+  CONSTRAINT fk_met_bty_code FOREIGN KEY (met_bty_code) 
   REFERENCES ref.tr_bayestype_bty (nim_code) 
   ON UPDATE CASCADE ON DELETE RESTRICT,  
-  CONSTRAINT fk_met_mtr_code FOREIGN KEY (met_mtr_code)
-  REFERENCES ref.tr_metric_mtr(mtr_code)
+  CONSTRAINT fk_met_sta_code FOREIGN KEY (met_sta_code)
+  REFERENCES ref.tr_statistic_sta(sta_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_met_uni_code FOREIGN KEY (met_uni_code)
   REFERENCES ref.tr_units_uni(uni_code)
@@ -47,9 +47,9 @@ COMMENT ON COLUMN dateel.t_metadata_met.met_spe_code
 IS 'Species, ''126281'' primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN dateel.t_metadata_met.met_ver_code 
 IS 'Code on the version of the model, see table refeel.tr_version_ver.';
-COMMENT ON COLUMN dateel.t_metadata_met.met_oty_code 
-IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty.';
-COMMENT ON COLUMN dateel.t_metadata_met.met_nim_code 
+COMMENT ON COLUMN dateel.t_metadata_met.met_odi_code 
+IS 'Object type, single_value, vector, matrix see table tr_objectdimension_odi.';
+COMMENT ON COLUMN dateel.t_metadata_met.met_bty_code 
 IS 'Nimble type, one of data, constant, output, other.';
 COMMENT ON COLUMN dateel.t_metadata_met.met_dim 
 IS 'Dimension of the Nimble variable, use {10, 100, 100} 
@@ -74,8 +74,8 @@ IS 'Unit, dateelerences table tr_unit_uni.';
 COMMENT ON COLUMN dateel.t_metadata_met.met_cat_code 
 IS 'Broad category of data or parameter, 
 catch, effort, biomass, mortality, count ...dateelerences table tr_category_cat.';
-COMMENT ON COLUMN dateel.t_metadata_met.met_mtr_code 
-IS 'Code of the metric, dateelerences tr_metric_mtr, Estimate, Bound, SD, CV ....';
+COMMENT ON COLUMN dateel.t_metadata_met.met_sta_code 
+IS 'Code of the metric, dateelerences tr_statistic_sta, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN dateel.t_metadata_met.met_definition 
 IS 'Definition of the metric.';
 COMMENT ON COLUMN dateel.t_metadata_met.met_deprecated

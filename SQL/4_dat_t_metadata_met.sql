@@ -5,15 +5,15 @@ CREATE TABLE dat.t_metadata_met (
   met_spe_code character varying(3) NOT  NULL,
   met_wkg_code TEXT NOT NULL,
   met_ver_code TEXT NULL,
-  met_oty_code TEXT NOT NULL,
-  met_nim_code TEXT NOT NULL,
+  met_odi_code TEXT NOT NULL,
+  met_bty_code TEXT NOT NULL,
   met_dim integer ARRAY,
   met_dimname TEXT ARRAY,
   met_modelstage TEXT NULL, 
   met_type TEXT NULL,
   met_location TEXT NULL,
   met_fishery TEXT NULL,
-  met_mtr_code TEXT NULL,
+  met_sta_code TEXT NULL,
   met_des_code TEXT NULL,
   met_uni_code TEXT NULL,
   met_cat_code TEXT NULL,
@@ -32,14 +32,14 @@ CREATE TABLE dat.t_metadata_met (
   REFERENCES ref.tr_version_ver(ver_code) 
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT fk_met_oty_code FOREIGN KEY (met_oty_code) 
-  REFERENCES ref.tr_objecttype_oty (oty_code) ON DELETE CASCADE
+  CONSTRAINT fk_met_odi_code FOREIGN KEY (met_odi_code) 
+  REFERENCES ref.tr_objectdimension_odi (odi_code) ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT fk_met_nim_code FOREIGN KEY (met_nim_code) 
+  CONSTRAINT fk_met_bty_code FOREIGN KEY (met_bty_code) 
   REFERENCES ref.tr_bayestype_bty (nim_code) ON DELETE CASCADE
   ON UPDATE CASCADE,  
-  CONSTRAINT fk_met_mtr_code FOREIGN KEY (met_mtr_code)
-  REFERENCES ref.tr_metric_mtr(mtr_code)
+  CONSTRAINT fk_met_sta_code FOREIGN KEY (met_sta_code)
+  REFERENCES ref.tr_statistic_sta(sta_code)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   CONSTRAINT fk_met_uni_code FOREIGN KEY (met_uni_code)
@@ -63,9 +63,9 @@ COMMENT ON COLUMN dat.t_metadata_met.met_spe_code
 IS 'Species, ''127186'' (Salmo salar), ''127187'' (Salmo trutta), ''126281'' (Anguilla anguilla)  ... primary key on both met_spe_code and met_var.';
 COMMENT ON COLUMN dat.t_metadata_met.met_ver_code 
 IS 'Code on the version of the model, see table tr_version_ver.';
-COMMENT ON COLUMN dat.t_metadata_met.met_oty_code 
-IS 'Object type, single_value, vector, matrix see table tr_objecttype_oty.';
-COMMENT ON COLUMN dat.t_metadata_met.met_nim_code 
+COMMENT ON COLUMN dat.t_metadata_met.met_odi_code 
+IS 'Object type, single_value, vector, matrix see table tr_objectdimension_odi.';
+COMMENT ON COLUMN dat.t_metadata_met.met_bty_code 
 IS 'Nimble type, one of data, constant, output, other.';
 COMMENT ON COLUMN dat.t_metadata_met.met_dim 
 IS 'Dimension of the Nimble variable, use {10, 100, 100} 
@@ -89,8 +89,8 @@ IS 'Unit, references table tr_unit_uni.';
 COMMENT ON COLUMN dat.t_metadata_met.met_cat_code 
 IS 'Broad category of data or parameter, 
 catch, effort, biomass, mortality, count ...references table tr_category_cat.';
-COMMENT ON COLUMN dat.t_metadata_met.met_mtr_code 
-IS 'Code of the metric, references tr_metric_mtr, Estimate, Bound, SD, CV ....';
+COMMENT ON COLUMN dat.t_metadata_met.met_sta_code 
+IS 'Code of the metric, references tr_statistic_sta, Estimate, Bound, SD, CV ....';
 COMMENT ON COLUMN dat.t_metadata_met.met_definition 
 IS 'Definition of the metric.';
 COMMENT ON COLUMN dat.t_metadata_met.met_deprecated
