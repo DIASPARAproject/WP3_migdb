@@ -88,7 +88,7 @@ pg_dump --dbname=postgresql://${env:userlocal}:${env:passlocal}@${env:hostdiaspa
 
 C:/"Program Files"/PostgreSQL/14/bin/pg_dump -U postgres --table temp_t_stock_sto_n1 -Fc -v -f test.dump diaspara
 
-C:/"Program Files"/PostgreSQL/14/bin/pg_restore -U postgres -h 185.135.126.250 -d diaspara  test.dump
+C:/"Program Files"/PostgreSQL/14/bin/pg_restore -U postgres -h db.mercure.eaux-et-vilaine.bzh -d diaspara  test.dump
 pg_restore -U postgres -h localhost -d diaspara  test.dump
 
 # dump server to local
