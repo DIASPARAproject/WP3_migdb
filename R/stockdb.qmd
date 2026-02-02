@@ -1069,22 +1069,16 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_version_ver;")|> knitr::kable() |
 
 ```
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
+
+::: {.callout-note appearance="simple"}
+<h3>TODO ICES</h3>
+
+[datacall (see link in ICES
+webpage)](https://data.ices.dk/DataCalls/listDataCalls) are not yet part
+of a vocabulary accessible to external users in ICES. 
+A demand had been made to make them public
 :::
 
-QUESTION to ICES: What is the vocabulary for datacalls ?
-::::
-
-::: questionbox-body
-We would like to access to this table : [datacall (see link in ICES
-webpage)](https://data.ices.dk/DataCalls/listDataCalls). Currently we
-see the current year, this is nice, how do we access to historical data,
-is there a way to get it using a query ? We've found a link for advice
-or stocks but not data calls.
-:::
-::::::
 
 ## Statistic (or metric) (tr_statistic_sta)
 
@@ -1100,14 +1094,14 @@ been used to avoid confusion with the "metric DB".
 
 </details>
 
-```{r tbl-metric}
+```{r tbl-statistic}
 #| echo: FALSE
 #| eval: TRUE
 #| warning: FALSE
 #| message: FALSE
-#| tbl-cap : Metric, type of parm used in the model
+#| tbl-cap : Statistic (metric) possible value of parameters
 #| code-fold: TRUE
-#| code-summary: Code to show table
+#| code-summary: Code to display table
 dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_statistic_sta;")|> 
 knitr::kable() |>
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
@@ -1118,8 +1112,8 @@ knitr::kable() |>
 <h3>NOTE</h3>
 
 This list currenly correspond to the needs of both WGNAS and WGBAST.
- But the metric can be NULL, for instance in case of a number of fish released, 
- none of the above (@tbl-metric) would apply. 
+ But the statistic can be NULL, for instance in case of a number of fish released, 
+ none of the above (@tbl-statistic) would apply. 
 :::
 
 ## Category (tr_category_cat)
@@ -1181,16 +1175,15 @@ Hilaire noted that naming the table "outcome" wasn't ideal so we've
 followed his suggestion
 :::
 
-## Area (tr_area_are)
 
-This table has been created here but see the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/stockdb.html) for the full
-habitat referential creation.
 
-### Habitat level (tr_habitatlevel_lev)
+## Habitat level (tr_habitatlevel_lev)
 
 In the habitat database created by DIASPARA, various levels of regional aggregation have been used. They are embedded within each other like russian dolls. The habitat level correspond to the level of grouping, from stock(s) to river.
 Depending on the species habitat levels and their hierarchy can differ. An example for this difference is that for Salmon the stock is at the level of a river while the eel is a single stock distributed all over its geographic range.
 The levels used in the habitat database are described in table @tbl-habitatlevellevel.
+
+This table has been created in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html).
 
 <details>
 
@@ -1336,7 +1329,8 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ### Area (tr_area_are)
 
-Again, this table has been created in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p7stock/stockdb.html).
+This table has been created here as we needed reference for various geographical grouping used thoughout the different databases. Most of the work was done in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html) for the full habitat referential creation.
+
 
 <details>
 
@@ -1367,7 +1361,7 @@ dbGetQuery(con_diaspara, "SELECT are_id,
 
 ```
 
-![First concepts of the hierarchy](images/fig-area_hierarchy.svg "A schema showing the possible hierarchy from stock level to river"){#fig-area_hierarchy}
+![First concepts of the hierarchy, see habitat report for final hierarchies in each working group](images/fig-area_hierarchy.svg "A schema showing the possible hierarchy from stock level to river"){#fig-area_hierarchy}
 
 ::: {.callout-note appearance="simple"}
 <h3>NOTE DIASPARA</h3>
@@ -1513,15 +1507,7 @@ Life stages cannot easily be shared among all species, they are species
 specific, probably similar between Sea trout and Salmon, but there is a
 large gap between a leptocephalus and a parr.
 
-::: {.callout-important appearance="simple"}
-<h3>CREATE A STEERING GROUP IN WGDIAD</h3>
-The following definitions have been checked by the working groups and a draft
-of this referential has been created in ICES : [DIASPARA : Diadromous fish life stage \#885](https://github.com/ices-eg/DIG/issues/885).
-However, as for some other new referential created in ICES, they will need to be validated. 
-It was proposed during the final DIASPARA meeting 
-that this steering group is created within WGDIAD to discuss these issues.
 
-:::
 
 ### Considerations about the database structure
 
@@ -1539,8 +1525,7 @@ and a subset of values used by the working group.
 
 ### The lifestages in working group databases
 
-The creation of life stage is discussed in the issue 16 in git [github
-link to issue](https://github.com/DIASPARAproject/WP3_migdb/issues/16)
+
 
 Stages use are described in WGNAS metadata [paragraph life stage of the
 WGNAS description
@@ -1552,6 +1537,7 @@ So they are not used as a separate column to describe the data. But in
 the eel database they are and so we will need to add this dimension to
 the table structure.
 
+<!--
 ::: {.callout-tip appearance="simple"}
 <h3>Adding a stage dimension</h3>
 
@@ -1560,32 +1546,27 @@ Indeed for WGBAST there is no column stage in landings data.
 There is an age column in the juvenile data used to describe the number released from
 hatchery at various stages ([age in the juvenile database](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#tbl-readyoungfishdbage)). 
 Spatial information, and information about the age are used to split the dataset, not the stage, but the different datasets (landings, juvenile) do correspond to different stages.
- We have chosen to add stages everywhere and populate the column using the metadata
+We have chosen to add stages everywhere and populate the column using the metadata
 even if for WGNAS there is no practical use the information is not used currently.
 :::
+-->
 
-### Use of lifestages to include other information
+### Simplifying the stage column in WGNAS
 
-The different steps in the models are identified using spatio-temporal
-units and stages (e.g; post smolt and location at sea)
-@ices_second_2024, a location and stage to descibe the different steps
-in the return migration (for instance returning adult in seawater, in
-freshwater...). Some of the elements added in the stage column are not
-stage per-se, but elements used to describe the spatio-temporal elements
-within the life-cycle, for instance the use PFA (pre-fishery-abundance)
-which correspond to the number at sea of different stages before
-fishery. Note that this parameter is no longer used, that is, it's in the metadata
-but the variable in metadata are no longer in the database (this stands for
-logN4, N4, logit_theta4, tau_theta4, theta4). 
+The work was initially done with the stage column in the salmoglob database.
+In this column,  the information relies on a combination of life stage and spatial location
+ (e.g; post smolt and location at sea,  returning adult in seawater, in
+freshwater...) @ices_second_2024. 
 To deal with these spatio-temporal elements that are not stage, 
-we will simplify the stages table, remove
-elements which are not stages, and still refer to spatio temporal
-parameters from their definition. Here we are focusing on the stock DB
+we simplified the stages table, removed
+elements which are not stages. Parameters still hold the spatio temporal
+information in metadata. 
+Here we are focusing on the stock DB
 which will group information, but the individual metric database might
 require more details that the simple adult stage. For this reason, we
 will add the maturity scale from ICES in the DB.
 
-### Adding a bit more complexity with the eel
+### Some stages are a mixture of several stages.
 
 In some cases, a mixture of stages are used. Many fyke net fisheries for
 eel will not distinguish between yellow and silver eel stage and WGEEL
@@ -1594,35 +1575,13 @@ between small yellow eels and glass eel, or the glass eel ascending are
 in a late stage. In that case the `GY`stage is used to count the
 recruits.
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
+
+::: {.callout-tip appearance="simple"}
+<h3>Stages OG and QG for WGEEL</h3>
+Ongrown eel (OG) and quarantined glass eel (QG) are used to describe the stages of glass eel
+or small yellow eels as they are released. They will be marked as deprecated for the stock, but they will probably be used in the release database that needs to be created for EDA.
 :::
 
-QUESTION TO WGEEL
-::::
-
-::: questionbox-body
-The new database will have to include a source WILD/HATCHERY/AQUACULTURE
-shouldn't we use that opportunity to get rid of `OG` (ongrown) and `QG`
-(quarantine glass eel) which are cumbersome when we try to make simple
-graphs ?
-:::
-::::::
-
-:::::: answerbox
-:::: answerbox-header
-::: answerbox-icon
-:::
-
-Answer WGEEL (Cédric)
-::::
-
-::: answerbox-body
-Stages OG and QG will be marked as deprecated for the stock, but they will
-probably be used in the release database that needs to be created for EDA.
-:::
-::::::
 
 ### Code to create the stage table
 
@@ -1668,22 +1627,6 @@ DevScale <- icesVocab::getCodeList('DevScale')
 kable(TS_MATURITY, caption = "TS_MATURITY") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 kable(TS_DevStage, caption = "Devstage scale, this seems to be about shrimp (berried seems to an egg which looks at you with eyes in shrimps....)") |> kable_styling(bootstrap_options = c("striped", "hover", "condensed")) 
 ```
-
-
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
-
-QUESTION TO ICES
-::::
-
-::: questionbox-body
-Does it make sense to use a code outside from its scope (I seems to me
-that yes). If so can we use the TS_DevStage and add values in it and
-propose definitions ?
-:::
-::::::
 
 ### Importing the lifestages for Salmon
 
@@ -1783,21 +1726,6 @@ dbExecute(con_diaspara_admin, "INSERT INTO ref.tr_lifestage_lfs
 
 
 ```
-:::{.answerbox}
-::::{.answerbox-header}
-::::{.answerbox-icon}
-::::
-WGTRUTTA Comment (Iain Malcolm)
-::::
-::::{.answerbox-body}
-In terms of stage, we would need alevin, fry (YoY, 0+), parr (>0+). In the Marine Directorate database lifestage is called “field recorded lifestage” to separate from lifestage derived from ageing by scale reading.
-
-> DIASPARA : OK this seems to fit to our current vocabulary. For scale reading we have prepared a different field
-> in the individual metric database. It will not be used in the stock database.
-
-::::
-:::
-
 
 
 ### Content of the tr_lifestage_lfs table
@@ -1819,8 +1747,8 @@ DT::datatable(rownames = FALSE,
 ```
 
 ::: {.callout-tip appearance="note"}
-## Follow up in ICES vocab
-You can follow up this issue in ICES
+<h3> Follow up in ICES vocab</h3>
+This issue has been created in ICES data gouvernance :
 [DIASPARA: Diadromous fish life stages \#885](https://github.com/ices-eg/DIG/issues/885)
 :::
 
@@ -1829,8 +1757,11 @@ tr_lifestage_lfs with other tables, arrows indicate inheritance"){#fig-schema_tr
 
 ## Maturity (ts_maturity_mat)
 
-Working on stages, and looking at the ICES vocab, we have decided to
-include information on maturity.
+In Salmoglob, information about the stage mixes information on stage and maturity.
+The use of Universal sexual maturity scale for all fish (SMSF) vocabulary has been made mandatory for all Working groups.
+For this reason a vocab on maturity was created. 
+It will probably rarely be used in eel as all the eel caught even on their way to the ocean are always immature, the maturation occuring later during the spawning migration. 
+However, this information is necessary for Salmon, for which both the location and the maturity will define the spatio temporal elements in life cycle, to be integrated as processes in the model. So for instance, some parameters will describe sexually mature individuals caught at sea, or in freshwater during their spawning migration.
 
 <details>
 
@@ -1841,8 +1772,7 @@ include information on maturity.
 
 </details>
 
-In Salmoglob, information about the stage mixes information on stage and maturity.
-The use of SMSF vocabulary has been made mandatory for all countries
+
 since 2020 and WGBIOP [@ices_wgbiop_2024] has revised the referential
 and emphasized the need of its use for a consistent stock assessment.
 
@@ -1964,23 +1894,6 @@ following codes from `FW  Fresh water`, `MC   Marine water (coast)`,
 `MO Marine water (open sea)`, `MC   Marine water (coast)` and
 `NA  Not applicable`.
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
-
-QUESTION TO ICES (Maria, Joana, Henrik)
-::::
-
-::: questionbox-body
-Why has the code `MC` been chosen instead of `C` for RDBES ? What is the
-rationale for not using the WFD ? Is it for non European countries Eel
-mostly follows the WFD (in EU countries) as the units should be based on
-river basins. What should we use there ? Our choice there would be to
-use `MC`, `MO`, `T` and `FW` and so add `T` to the list of vocabularies
-used by RDBES, would you agree ?
-:::
-::::::
 
 ```{r }
 #| echo: TRUE
@@ -2065,66 +1978,13 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") |>
 
 ## Quality (tr_quality_qal)
 
-This code is used by wgeel. Currently the WGNAS uses an archive table,
-WGEEL uses historical data with a different quality ID. Both have chosen
-never to remove any data. It does not look like these procedures, handled
-by shiny app, are compatible with ICES procedures.
+#### Quality and Archiving Procedures Across Working Groups
 
-:::::: questionbox
-:::: questionbox-header
-::: questionbox-icon
-:::
+The Working Group on Eel (WGEEL) employs a dedicated quality‑coding system to document both the reliability of submitted data and any modifications applied during processing. This system, implemented through the table tbl‑tr_quality_qalwgeel, enables the group to flag records as high quality, modified, subject to warnings, missing, or otherwise problematic. It also serves as a mechanism for retaining historical information associated with each data point.
+In contrast, the International Council for the Exploration of the Sea (ICES) does not routinely retain archived versions of submitted datasets. 
+The Working Group on North Atlantic Salmon (WGNAS) adopts a different approach: elements from each annual assessment are systematically copied into an archive table, while only the most up‑to‑date data are maintained in the active database used for current analyses. Consequently, the SalmoGlob database—constructed from WGNAS data—contains exclusively the records relevant to the current assessment year.
+A structured comparison between the active and archived datasets is conducted within the WGNAS Shiny visualisation tool. This comparison is used to identify variables that are missing or that exhibit substantial deviations from the previous year's values. The results provide an essential quality‑control checkpoint, ensuring the consistency and reliability of input data prior to executing the more complex modelling procedures.
 
-QUESTION TO ICES
-::::
-
-::: questionbox-body
-WGNAS uses an archive table for historical data. WGEEL uses a code to
-"deprecate" old values.
-
--   In practise for WGNAS it means that each time a new row replaces an
-old one, the data is saved in an archive table, with the same
-structure as the main data table, but with the name of the people
-who have handled the change and the date. The version is replaced
-with a new number in the `database` table.
-
--   For WGEEL, all the rows are kept in the same table. Historical value
-get a code like 18, ..., 25 which identifies the year that the line
-was removed. All data submitted to the database are kept, so if
-during a datacall, a new value is submitted that is a duplicate from
-an old one, then the user in the shiny has to edit an excel table
-saying which value he wants to keep. If for instance he wants to
-keep the old value, then the new row will go into the database with
-a qal_id 25 if the change is made in 2025. The table
-@tbl-tr_quality_qalwgeel is used.
-
-How do you work in ICES to keep historical data ?
-:::
-::::::
-
-:::::: answerbox
-:::: answerbox-header
-::: answerbox-icon
-:::
-
-Answer ICES (Carlos)
-::::
-
-::: answerbox-body
-Normally we don't .... 
-:::
-::::::
-
-::: {.callout-tip  appearance="simple"}
-## We need an archive
-It was further agreed during the final meeting
-and several other informal meetings that an archive format will
-be created to adapt to the needs of the Working groups (shiny using the
-archive table to check for changes ... ). Currently historical values are kept in WGEEL, 
-and we have kept the existing codes 18, 19 ... These data will be removed
-at the end and we will see how we deal with this when fully transfering to ICES database.
-Probably we will keep some table with in our records (WGEEL).
-:::
 
 
 ::: {#tbl-tr_quality_qalwgeel}
@@ -2149,35 +2009,24 @@ Table tr_quality_qal used by the wgeel
 
 :::
 
+Considering the heavy reliance of WGEEL on the quality flag, and the importance of an archive database for WGNAS processes, it was decided to keep both but to shift to the quality flag code a standard vocabulary from ICES [seadatanet](https://vocab.ices.dk/?codetypeguid=036cc995-415d-4859-8f2d-739c12d84250).
+This shift from the working group format to the new format implies breaking changes summarized below.
 
-::: {.callout-tip  appearance="simple"}
-### ICES (Maria)
-We have this quality flag code type from [seadatanet](https://vocab.ices.dk/?codetypeguid=036cc995-415d-4859-8f2d-739c12d84250).
-:::
 
-:::::: answerbox
-:::: answerbox-header
-::: answerbox-icon
-:::
+::: {.callout-caution appearance="simple"}
 
-ANSWER DIASPARA
-::::
 
-::: answerbox-body
-OK we need to adapt there 
 - 0 in wgeel becomes 9
 - 1 is OK
 - 2 becomes 5
 - 3 becomes 4
 - 4 becomes 3
 
-Values other than 0 1 2 3 4 will have to be ignored?  or considered as historical ?
-Currently I'm keeping them but we'll probably copy all those lines in another table
-kept only by WGEEL. Figure @fig-schema_tr_quality_qal shows which tables 
+Values other than 0 1 2 3 4 will have to be ignored and considered as historical.
+Note that currently those are still kept in the database, but in the future we'll copy them in another table for archive data. Figure @fig-schema_tr_quality_qal shows which tables 
 will be updated after the change.
 :::
 ::::::
-
 
 
 ### Code to create the table
@@ -2249,11 +2098,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") |>
 
 ```
 
-::: {.callout-warning  appearance="simple"}
-To WGEEL values 3 (bad quality) and 4 (Warnings) have been inverted !
-This means that all scripts will have to be adapted.
-Also 2 (modified by wgeel becomes 5)
-:::
+
 
 
 ![diagram of tr_quality_qal](images/schema_tr_quality_qal.png "A schema showing the link of
@@ -4445,6 +4290,24 @@ Sorry about that. Please bookmark the link to this paragraph in your browser to 
 |101172 |	European river lamprey | Lampetra  fluviatilis |	
 |126281 |	European eel |	Anguilla anguilla |
 |127187 |	Sea trout |	Salmo trutta |	
+
+:::
+
+
+::: {.callout-warning  appearance="simple"}
+<h3> Breaking change for WGEEL </h3>
+To WGEEL values for quality, 3 (bad quality) and 4 (Warnings) have been inverted !
+This means that all scripts will have to be adapted.
+Also 2 (modified by wgeel becomes 5).
+:::
+
+::: {.callout-important appearance="simple"}
+<h3>CREATE A STEERING GROUP IN WGDIAD</h3>
+The most important vocabularies have been checked the working groups and a draft
+of the stage referential has been created in ICES : [DIASPARA : Diadromous fish life stage \#885](https://github.com/ices-eg/DIG/issues/885).
+However, as for some other new referential created in ICES, they will need to be validated. 
+It was proposed during the final DIASPARA meeting 
+that this steering group is created within WGDIAD to discuss these issues.
 
 :::
 
