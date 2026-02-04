@@ -699,6 +699,14 @@ load(file="data/presentation_turb_type.Rdata")
 ## 
 :::::
 
+# To remember: Up- and downstream migration
+
+-   Mortality assessment during the downstream migration requires a lot of details (turbine characteristics, flows, presence of bar racks ...).
+
+-   We can use degraded models using the turbine type only.
+
+-   The most important is where the fish repartition.
+
 # Summary
 
 -   The river network exists, it will be referenced by ICES working groups
