@@ -31,7 +31,7 @@ INSERT INTO ref.tr_statistic_sta VALUES
 GRANT ALL ON ref.tr_statistic_sta TO diaspara_admin;
 GRANT SELECT ON ref.tr_statistic_sta TO diaspara_read;
 COMMENT ON TABLE ref.tr_statistic_sta IS 
-'Table metric describe the type of parm used, Index, Bound ...';
+'Table metric describe the type of statistic described by the parameter,  Index, Bound ...';
 
 /*
 ALTER TABLE "ref".tr_metric_mtr RENAME TO tr_statistic_sta;
