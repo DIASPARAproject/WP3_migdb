@@ -1,6 +1,6 @@
 ---
 title: "From local to large scale: a habitat database alongside a dam and an electrofishing database to shift from continental habitats to population or panpopulation scales"
-author: "Cédric Briand, Jules Oliviéro, Jani Helminen"
+author: "Jani Helminen, Jules Oliviéro, Cédric Briand"
 fontsize: 20pt
 filters:
   - quarto-kroki
