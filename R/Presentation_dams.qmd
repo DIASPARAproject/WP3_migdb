@@ -135,16 +135,8 @@ These use the habitat information, including dams and freshwater habitat
 -   Hydrographic network, obstacles and electrofishing information needed!
 
 ::: r-stack
-![](images/clipboard-1171006118.png){.fragment height="300"}
-
-![](images/clipboard-2093853961.png){.fragment height="400"}
+![](images/clipboard-1171006118.png){.fragment width="755"}
 :::
-
-# Regional aspects, EDA examples
-
--   To quantify mortality linked with dams (downstream migration):
-
-    ![](images/clipboard-373049954.png)
 
 ## This presentation
 
@@ -698,6 +690,30 @@ load(file="data/presentation_turb_type.Rdata")
 
 ## 
 :::::
+
+# To remember: Up- and downstream migration
+
+-   Mortality assessment during the downstream migration requires a lot of details (turbine characteristics, flows, presence of bar racks ...).
+
+-   We can use degraded models using the turbine type only.
+
+-   The most important is where the fish repartition: survivality more dependent on where the fish start than mortality of individual dams.
+
+# Regional aspects, EDA examples
+
+-   Hydrographic network, obstacles and electrofishing information needed!
+
+::: r-stack
+![](images/clipboard-2093853961.png){.fragment width="576"}
+:::
+
+# Regional aspects, EDA examples
+
+-   To quantify mortality linked with dams (downstream migration):
+
+    ![](images/clipboard-373049954.png)
+
+## 
 
 # Summary
 
