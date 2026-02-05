@@ -138,7 +138,7 @@ These use the habitat information, including dams and freshwater habitat
 ![](images/clipboard-1171006118.png){.fragment width="755"}
 :::
 
-## This presentation
+
 
 ::::: columns
 ::: {.column .incremental width="40%"}
@@ -151,6 +151,8 @@ These use the habitat information, including dams and freshwater habitat
 -   [**Migration obstacles**]{style="font-size:40px"}
 
 For habitat availability, mortality, ...
+
+Origin : FP6 Pose project, and SUDOANG interreg.
 :::
 :::::
 
@@ -579,7 +581,7 @@ flowchart TB
 ## DAM DATABASE : Turbines
 
 ::::: columns
-::: {.column width="50%"}
+:::{.column width="50%"}
 ```{r}
 #| label: tbl-turbines
 #| echo: FALSE
@@ -632,7 +634,7 @@ load(file="data/presentation_dam_turb.Rdata")
 ```
 :::
 
-::: {.column width="50%"}
+:::{.column width="50%"}
 <br> <br>
 
 ```{r}
@@ -685,42 +687,145 @@ load(file="data/presentation_turb_type.Rdata")
 
 ```
 
-## 
 :::
-
-## 
 :::::
 
-# To remember: Up- and downstream migration
+## ELECTROFISHING
 
--   Mortality assessment during the downstream migration requires a lot of details (turbine characteristics, flows, presence of bar racks ...).
+::::: columns
+:::{.column width="50%"}
 
--   We can use degraded models using the turbine type only.
-
--   The most important is where the fish repartition: survivality more dependent on where the fish start than mortality of individual dams.
-
-# Regional aspects, EDA examples
-
--   Hydrographic network, obstacles and electrofishing information needed!
-
-::: r-stack
-![](images/clipboard-2093853961.png){.fragment width="576"}
+```{mermaid}
+%%| fig-cap: Simplied structure of the electrofishing database
+flowchart TB
+    A([Electrofishing station]):::main
+    %% Short Path
+    A --> B([Operation]):::table
+    B -->|group| F([Batch ope]):::table
+    B -->|individual| C([Batch fish]):::table
+    C --> D([Biological characteristics]):::table    
+    classDef table fill:#efc9f9
+    classDef main fill:#8926b5,color:white
+```
 :::
 
-# Regional aspects, EDA examples
+:::{.column width="50%"}
+- Structure similar to Dams (Electrofishing place > Electrofishing even > ... )
+- Tested in SUDOANG
+- Adapted to ICES vocabularies and diadromous DB.
+:::
+::::: 
 
--   To quantify mortality linked with dams (downstream migration):
 
-    ![](images/clipboard-373049954.png)
+# To remember: Upstream migration
 
-## 
+::::: columns
+::: {.column width="50%"}
 
-# Summary
+![](images/cumnbdam.png)
 
--   The river network exists, it will be referenced by ICES working groups
+:::
+::: {.column width="50%"}
+- The impact for migratory fishes can be interpreted through a cumulated impact, or the
+first large barrier for Salmon and Trutta.
 
--   Need to add migration obstacles data
+- Here is one example of cumulated impacts (number of dams from EU projet SUDOANG)
+:::
+:::::
 
--   Different species need same info, but there are also differences (up- & downstream migration, etc.)
+# Wrap up: Upstream migration
+
+::::: columns
+::: {.column width="50%"}
+
+![](images/cumheightdam.png)
+
+:::
+::: {.column width="50%"}
+- The impact for migratory fishes can be interpreted through a cumulated impact, or the
+first large barrier for Salmon and Trutta.
+
+- Here is another example cumulated impacts (cumulated height from EU projet SUDOANG)
+:::
+:::::
+
+# Wrap up: Downstream migration
+::::: columns
+::: {.column width="50%"}
+![](images/clipboard-2093853961.png)
+:::
+::: {.column width="50%"}
+
+-   Turbine mortality is an important, mostly missing part, of mortality assessment for eel.
+
+:::
+:::::
+
+# Wrap up: Downstream migration
+
+::::: columns
+::: {.column width="50%"}
+![](images/shiny_sudoang_1.png)
+:::
+
+::: {.column width="50%"}
+
+-   Turbine mortality is an important, mostly missing part, of mortality assessment for eel.
+
+-  Using information on fish production and dam locations and characteristics, we can
+build regional estimates of mortalities.
+[VISUANG](https://mercure.eaux-et-vilaine.bzh/Shiny_results)
+
+:::
+:::::
+
+# Wrap up: Downstream migration
+
+::::: columns
+::: {.column width="50%"}
+![](images/shiny_sudoang_2.png)
+:::
+::: {.column width="50%"}
+
+-   Turbine mortality is an important, mostly missing part, of mortality assessment for eel.
+
+-  Using information on fish production and dam locations and characteristics, we can
+build regional estimates of mortalities.
+[VISUANG](https://mercure.eaux-et-vilaine.bzh/Shiny_results)
+
+:::
+:::::
+
+# Wrap up: Downstream migration
+::::: columns
+::: {.column width="50%"}
+![](images/shiny_sudoang_3.png)
+
+:::
+::: {.column width="50%"}
+
+-   Turbine mortality is an important, mostly missing part, of mortality assessment for eel.
+
+-  Using information on fish production and dam locations and characteristics, we can
+build regional estimates of mortalities.
+[VISUANG](https://mercure.eaux-et-vilaine.bzh/Shiny_results)
+
+-   Mortality assessment requires details on the dams (turbine characteristics, flows,
+ presence of bar racks ...).
+
+:::
+:::::
+
+# Conclusion
+
+- The database has been tested in real use.
+
+- It stores data from the sudoang area (currently). Scripts to extract data directly from three french databases on dams.
+
+- The database is designed to handle changes accross time on river continuity.
+
+- Working group on diadromous fishes (WGEEL, WGTRUTTA, WGNAS and WGBAST) can use/ validate data on dams in regional and international assessments.
+
+- Depending on the habitat referential used, the projection of dams will need to be checked.
 
 # Thank you!
