@@ -73,12 +73,14 @@ a hierarchical structure of the habitat of the migratory fishes (see [habitat re
 The script to create this report can be found in diaspara github [code of the report](https://github.com/DIASPARAproject/WP3_migdb/blob/main/R/stockdb.qmd), the SQL codes are found in the following link
  [SQL code](https://github.com/DIASPARAproject/WP3_migdb/tree/main/SQL).
 
-# Hierarchical structure of the stock DB {#sec-hierarchical}
+# Hierarchical structure of the database {#sec-hierarchical}
 
-The database starts with the simplest structure, with a basic schema
-corresponding to all data. Then three schema are created, one per
-Working group  Since SQL server does not handle inheritance, once the table built, some of
-those will have to be replaced with views or partitioned views.
+Tables are first created in a schema containing all tables, called `ref` or `dat`.
+From these tables, when necessary, working group specific tables will be created.
+They inherit from the mother table in the `dat` or `ref` schema. 
+Querying a table in the refbast, or refnas schema will only return the data from the WGBAST, or
+WGNAS working group. But querying a "mother" table in the `ref` or `dat` schema will return data from WGNAS or WGBAST.
+Inheritance is a powerfull to agreggate data, but requires caution when building tables, as the foreign keys (format links to other tables) need to be repeated accross all inherited tables. A similar output will be obtained in SQL server in the future database by replacing the tables with views or partitioned views.
 
 ::: {.callout-note appearance="simple"}
 <h3>Code for SQL Server </h3>
@@ -316,7 +318,7 @@ access to diaspara.
 
 </details>
 
-![Conceptual schema of the diadromous database](images/fig-schema_diadromous_db.svg "A schema showing the structure of the database"){#fig-schema_diadromous_db}
+![Conceptual schema of the diadromous database](images/fig-schema_diadromous_db.svg "A schema showing the structure of the database, click to enlarge"){#fig-schema_diadromous_db .lightbox}
 
 
 
@@ -515,8 +517,8 @@ knitr::kable(tr_icworkinggroup_wkg) |>
  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-![diagram of tr_icworkinggroup_wkg, click to enlarge](images/schema_tr_icworkinggroup_wkg.png "A schema showing the link of
-tr_icworkinggroup_wkg with other tables, arrows indicate inheritance"){#fig-schema_tr_icworkinggroup_wkg .lightbox}
+![diagram of tr_icworkinggroup_wkg, arrows indicate inheritance](images/schema_tr_icworkinggroup_wkg.png "A schema showing the link of
+tr_icworkinggroup_wkg with other tables, click to enlarge"){#fig-schema_tr_icworkinggroup_wkg .lightbox}
 
 ## Country (tr_country_cou)
 
@@ -687,9 +689,8 @@ dev.off()
 <summary>Creating the unit from wgeel and checking ICES code</summary>
 </details>
 
-To create the units table, we started from the existing WGEEL table, and later added
-some elements for WGBAST.
-To standarize using ICES codes, we have checked several existing vocabularies.
+To create the units table, we started from the existing WGEEL table, and we later added
+some elements for WGBAST. In addition, to standardize our table, all codes where checked againt several existing ICES vocabularies.
 We used the `p06` as the most common source. The source code in ICES table,
 its id, and the source table are presented in the table.
 
@@ -847,8 +848,8 @@ An issue is open and discussed in the ICES git Data Information Group.
 
 
 
-![diagram of tr_units_uni](images/schema_tr_units_uni.png "A schema showing the link of
-tr_units_uni with other tables, arrows indicate inheritance"){#fig-schema_tr_units_uni}
+![diagram of tr_units_uni, arrows indicate inheritance](images/schema_tr_units_uni.png "A schema showing the link of
+tr_units_uni with other tables, click to enlarge"){#fig-schema_tr_units_uni .lightbox}
 
 
 ## Parameters
@@ -867,7 +868,7 @@ for instance some arrays have nothing to do with age, and in that case there is 
 @fig-metadata
 
 ![Mind map of the metadata
-structure](images\SAM_parm_metadata.png){#fig-metadata .lightbox}
+structure](images\SAM_parm_metadata.png "metadata mind map, click to enlarge"){#fig-metadata .lightbox}
 
 We can have a look at the metadata in the analysis done on the WGNAS
 database [WGNAS
@@ -1329,7 +1330,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ### Area (tr_area_are)
 
-This table has been created here as we needed reference for various geographical grouping used thoughout the different databases. Most of the work was done in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html) for the full habitat referential creation.
+This table has been created in the diadromous database as we needed reference for various geographical grouping used thoughout the different databases. However, most of the work was done in the [habitat report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html) for the full habitat referential creation.
 
 
 <details>
@@ -1377,8 +1378,8 @@ Areas are specific to each working group (see @fig-schema_tr_area_are)
 ![WGEEL](images/fig-area_hierarchy_wgeel.svg){#fig-area_hierarchy_wgeel}
 :::
 
-![diagram of tr_area_are](images/schema_tr_area_are.png "A schema showing the link of
-tr_area_area with other tables, arrows indicate inheritance"){#fig-schema_tr_area_are}
+![diagram of tr_area_are, arrows indicate inheritance](images/schema_tr_area_are.png "A schema showing the link of
+tr_area_area with other tables, click to enlarge"){#fig-schema_tr_area_are .lightbox}
 
 ## Data access (tr_dataaccess_dta)
 
@@ -1429,8 +1430,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_dataaccess_dta ;")|>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-![diagram of tr_dataaccess_dta](images/schema_tr_dataaccess_dta.png "A schema showing the link of
-tr_dataaccess_dta with other tables, arrows indicate inheritance"){#fig-schema_tr_dataaccess_dta}
+![diagram of tr_dataaccess_dta, arrows indicate inheritance](images/schema_tr_dataaccess_dta.png "A schema showing the link of
+tr_dataaccess_dta with other tables, click to enlarge"){#fig-schema_tr_dataaccess_dta .lightbox}
 
 ## Missing data (tr_missvalueqal_mis)
 
@@ -1752,8 +1753,7 @@ This issue has been created in ICES data gouvernance :
 [DIASPARA: Diadromous fish life stages \#885](https://github.com/ices-eg/DIG/issues/885)
 :::
 
-![diagram of tr_lifestage_lfs](images/schema_tr_lifestage_lfs.png "A schema showing the link of
-tr_lifestage_lfs with other tables, arrows indicate inheritance"){#fig-schema_tr_lifestage_lfs}
+![diagram of tr_lifestage_lfs, arrows indicate inheritance](images/schema_tr_lifestage_lfs.png "A schema showing the link of tr_lifestage_lfs with other tables, click to enlarge"){#fig-schema_tr_lifestage_lfs .lightbox}
 
 ## Maturity (ts_maturity_mat)
 
@@ -2026,7 +2026,7 @@ Values other than 0 1 2 3 4 will have to be ignored and considered as historical
 Note that currently those are still kept in the database, but in the future we'll copy them in another table for archive data. Figure @fig-schema_tr_quality_qal shows which tables 
 will be updated after the change.
 :::
-::::::
+
 
 
 ### Code to create the table
@@ -2101,8 +2101,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_quality_qal;") |>
 
 
 
-![diagram of tr_quality_qal](images/schema_tr_quality_qal.png "A schema showing the link of
-tr_quality_qal with other tables, currently quality is used in stock and group metrics tabmes"){#fig-schema_tr_quality_qal}
+![diagram of tr_quality_qal, currently quality is used in stock and group metrics tables](images/schema_tr_quality_qal.png "A schema showing the link of
+tr_quality_qal with other tables, click to enlarge"){#fig-schema_tr_quality_qal .lightbox}
 
 ## Age (tr_age_age)
 
@@ -2132,26 +2132,11 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_age_age;") |>
 
 ```
 
-:::::: answerbox
-:::: answerbox-header
-::: answerbox-icon
-:::
-
-ANSWER WGTRUTTA : Iain 
-::::
-
-::: answerbox-body
-Are the ages obtained from scale reading? In our Marine Directorate database we are careful to separate scale read ages from “guessed age” derived from sizes or field derived - observed (e.g. fry = 0+).
-If these are not clearly recorded in different areas of the database, is there somewhere to store information on the protocols? In MD database we store information on projects / campaigns (describe why and how data collected) and also protocols applied at SiteVisit level.
-The general definition looks OK. Although, when you store adults, how do you record more complex patterns e.g. 3SW with a spawning mark after year 2? In MD database all this is recorded on the “Scale Record” that links to individual fish.
-> DIASPARA
-:::
-::::::
 
 
 ## Sex (tr_sex_sex)
 
-There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES (thanks Maria and Joana for pointing that out...) see Table @tbl-vocabsex.
+There is a referential about [sex](https://vocab.ices.dk/?codetypeguid=4efe3145-65ee-46c7-bca1-3ce9f10101de) in ICES see Table @tbl-vocabsex.
 
 ```{r }
 #| echo: TRUE
@@ -2294,7 +2279,7 @@ provides a dictionary of the scientific gear used in monitoring, this one can be
 
 :::{.callout-tip appearance="simple" appearance="simple"}
 ## Other source of definition (if needed)
- Method used to monitor eel in the mediterranean are referenced in detail in this 
+ Method used to monitor eel in the Mediterranean are referenced in detail in this 
  [report](https://openknowledge.fao.org/handle/20.500.14283/cc7252en).
 :::
 
@@ -2629,7 +2614,7 @@ GFCM.](images/fig-fishingareas_subdivision.png "A planisphere with ocean fishing
 ## Time period (ref.tr_timeperiod_tip)
 
 WGBAST reports data per month, quarter, or half year.
-There is a vocabulary for quarters, couldn't find a vocab for half of year.
+There is a vocabulary for quarters but not yet for half of year. 
 
 
 <details>
@@ -2693,13 +2678,14 @@ is always year), the referential is only used in WGBAST.
 ## Data source (ref.tr_datasource_dts) {#sec-datasource}
 
 
-The source of fishery data is included in WGBAST see: [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
-The vocab described here is deprecated and superseeded by datasource.
+The source of  data is included in WGBAST see: [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
+The vocab described here adapts this vocab to ICES DataSource vocab and proposes new entries from WGBAST.
 
-During exchange with Data Centre (Thanks Maria for hinting at this change), the current way of handling estimated data,
-is to separate the source of data and the type of estimation. This is how it
-works currently in RDBES. So a catch can coming from logbook, it is estimated,
+ICES data centre indicated that the current way of handling estimated data,
+is to separate the source of data and the type of estimation, for instance this structure 
+is followed currently in RDBES. So a catch can coming from logbook, it is estimated,
 and when estimated a method must be provided if estimated (estimation method).
+
 
 <details>
 
@@ -2768,10 +2754,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_datasource_dts;") |>
 
 ```
 
-::: {.callout-warning appearance="simple"}
-## Only in WGBAST
-Currently the data source are only for WGBAST
-:::
 
 ## Data basis (ref.tr_databasis_dtb)
 
@@ -2819,7 +2801,7 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_dtbr")
 
 This table will be inherited, we are proposing working group specific estimation
 methods. Typically estimation methods of WGBAST. These will only be used if
-sto_dtb_code = 'Estimated'
+sto_dtb_code = 'Estimated'. 
 
 1. Complete count of smolts.
 2. Sampling of smolts and estimate of total smolt run size.
@@ -2841,8 +2823,9 @@ sto_dtb_code = 'Estimated'
 
 
 ::: {.callout-warning appearance="simple"}
-## Only in WGBAST
-Currently the estimation method are only for WGBAST
+## This data type is currently only used in WGBAST
+
+Currently the estimation method has only been used in WGBAST. Maybe it could be extended by creating a similar table in the WGNAS in the future.
 :::
 
 ::: {.callout-note appearance="simple"}
@@ -2856,6 +2839,10 @@ and estimation methods are created in daughter tables in each working group,
 # Metadata
 
 ## Metadata (dat.t_metadata_met)
+
+Metatadata is a working group specific table describing the parameters used as entry in the stock 
+table. One parameter refers to a quantity or model variable. This quantity is generally assessed at the regional scale (Stock unit (WGNAS), Stock assessment unit WGBAST, EMU or in the future stock subunit or region (WGEEL). The metadata table aims at providing a full description of this parameter, including its dimension, the stage, maturity, age ...
+Using parameters and metadata allow to handle the complexity, and the diversity of model elements, while providing a common structure for all data between the different working groups.
 
 The code for creating metadata is listed below
 
@@ -2882,15 +2869,17 @@ dbGetQuery(con_diaspara, "SELECT * FROM dat.t_metadata_met;") |> DT::datatable(c
 
 ```
 
+# DATA IMPORT
+
+The following section demonstrates the use of the DIADROMOUS database by testing the integration of data from three diadroumous working groups.
 
 
-
-# WGNAS 
+## WGNAS 
 
 The WGNAS database is created in schemas refnas and datna (see @sec-hierarchical).
 This section contains the code to import WGNAS to the DIADROMOUS DB.
 
-## Create referential for WGNAS
+### Create referential for WGNAS
 
 <details>
 
@@ -2904,7 +2893,7 @@ This section contains the code to import WGNAS to the DIADROMOUS DB.
 
 
 
-## Import the metadata table
+### Import the metadata table
 
 <details>
 
@@ -3088,7 +3077,7 @@ possible impact in the eel db see issue #14 : [NULL values allowed for
 year](https://github.com/DIASPARAproject/WP3_migdb/issues/14)
 :::
 
-## Table of grouping for area and age : datnas.tg_additional_add {#sec-additional}
+### Table of grouping for area and age : datnas.tg_additional_add {#sec-additional}
 
 The year column does not always contain year. In fact the database that
 we have created is not suited to store transfer matrix where the
@@ -3102,11 +3091,10 @@ database description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliver
 
 Only the variables `eggs`, `p_smolt`, `p_smolt_pr` and `prop_female` need an age.
 
-::: {.callout-tip appearance="simple"}
 This was solved using the tg_additional_add column. The stucture for WGBAST
-sent by Becky indicates that they too could use this additional column to
+indicates that they too could use this additional column to
 store some of the matrix output.
-:::
+
 
 
 <details>
@@ -3135,7 +3123,7 @@ kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 
 
-## Import the t_stock_sto
+### Import the t_stock_sto
 
 
 ```{r datnas.t_stock_sto}
@@ -3212,20 +3200,19 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_stock_sto limit 10;")|>
 
 
 
-# WGEEL
+## WGEEL
 
 The main difficulty in transfering the WGEEL database to the DIADROMOUS database
 lies in the way the data are linked to areas in the marine habitat.
 Currently we have kept all historical data with the "historical" EMU as
-the reference. This will probably change once we start to build the model
-and the habitat DB proposes a structure of [eel habitat](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html#creating-a-hierarchical-structure-for-wgeel)
+the reference. This might change once we start to build the model. If the data remain stuctured by EMU, then perhaps a data flow from the EMU might be used to aggregate / transfer data from EMUs to the stockunit. See habitat DB for the structure of [eel habitat](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p8hab/habitatdb.html#creating-a-hierarchical-structure-for-wgeel)
 
-## refeel.tr_version_ver
+### refeel.tr_version_ver
 
 See [metricDB report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p11metric/metricdb.html#creating-the-version-table-refeel.tr_version_ver)
 
 
-## dateel.t_metadata_met
+### dateel.t_metadata_met
 
 <details>
 <summary>SQL code to create table `dateel.t_metadata_met` </summary>
@@ -3234,10 +3221,11 @@ See [metricDB report](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/
 ```
 </details>
 
+<!--
 ::: {.callout-note appearance="simple"}
 We currently consider that SumH, and Biom are "Output", the result of model.
 :::
-
+-->
 ::: {.callout-note appearance="simple"}
 type is not a referential, but used for legacy in WGNAS 
     see [type table](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#tbl-globaldata2-4)
@@ -3364,12 +3352,8 @@ dbExecute(con_diaspara_admin, "DROP TABLE t_metadata_met_wgeel_temp CASCADE;")
 
 ```
 
-::: {.callout-warning appearance="simple"}
-## TODO DIASPARA
-We still need to add units to the metadata table
-:::
 
-## dateel.t_stock_sto
+### dateel.t_stock_sto
 
 <details>
 <summary>SQL code to create table `dateel.t_stock_sto` </summary>
@@ -3387,10 +3371,20 @@ We still need to add units to the metadata table
 </details>
 
 
+::: {.callout-important appearance="simple"}
+
+The full WGEEL database was imported in 2025. In 2026 there will be one last
+datacall using the previous database and shiny interface before switching to the 
+new format.
+
+The remaining issues are here :
+
+[Integrate the latest version of WGEEL database #29](https://github.com/DIASPARAproject/WP3_migdb/issues/29)
+
+:::
 
 
-
-# WGBAST
+## WGBAST
 
 <details>
 
@@ -3407,23 +3401,19 @@ of the main t_stock_sto table, here is the list of changes needed.
 of the table.
 
 * **Time period**. The data are not always reported by YEAR, unlike in eel or WGNAS. Other types of time
-reporting e.g. Month, Half of year, Quarter need to be added to the t_stock_sto table, since this table
-is inherited in postgres and aready has one more column (to store some extra dimension)
-is WGNAS when compared to WGEEL, we need to do the same and allow for three additional columns,
- one for gear, one for time period type and one for time period.
+reporting e.g. Month, Half of year, Quarter need to be added to the t_stock_sto table. The table
+is inherited in postgres and will have 3 more columns that the mother table. This is already the case for the WGNAS stock table which has one more column (to store some extra dimension)
+than WGEEL. The three additional columns will be one for gear, one for time period type and one for time period.
 * The metadata will allow by a simple join to get back to F_type (stored in column met_type). It should also for a simple division according to the destination column, allowing to separate dead fish from the living ones.
 
 * **Effort, Numbers and Weights**. The database will be in long format while in the current structure, Effort, Weights and Numbers are reported in separate columns.A simple query will bring back the original format.
 
 * Effort is reported in geardays only for driftnet, longline and trapnet fisheries. 
 
-* TODO CHECK WITH maria about the unit (effort gearxdays)
+* When the data will be resubmitted in the final format (in a future data call) the following elements will require attention from WGBAST. There is an ALV ALL in gears, which is probably an error, and there are 138 rows without f_type we need to check that they can be attributed to COMM
 
-* TODO Check ALV ALL in gears
 
-* TODO Check 138 rows without f_type, can these all be attributed to COMM
-
-## Create referential for versions WGBAST
+### Create referential for versions WGBAST
 
 <details>
 
@@ -3528,25 +3518,14 @@ DBI::dbExecute(con_diaspara_admin, "DROP table temp_esmr")
 
 ```
 
-::: {.callout-important appearance="simple"}
-
-The full WGEEL database was imported in 2025. In 2026 there will be one last
-datacall using the previous database and shiny interface before switching to the 
-new format.
-
-The remaining issues are here :
-
-[Integrate the latest version of WGEEL database #29](https://github.com/DIASPARAproject/WP3_migdb/issues/29)
-
-:::
 
 
-## Create datbast.t_metadata_met
 
-Note there is a slight different here, I need to add twice the variables for salmon,
+### Create datbast.t_metadata_met
+
+Note that there is a slight difference between the metadata table between WGBAST and the two other working groups. We indeed need to integrate the same variables twice, first for salmon,
 and then for trutta. These are no duplicates as the primary key is set on both 127187 (Salmo trutta)
-and 127186 (Salmon salar). Later on, there should be variables only with 127186  (at the second step
-of the integration process.)
+and 127186 (Salmon salar). 
 
 ```{r datbast.t_metadata_met}
 #| echo: TRUE
@@ -3826,7 +3805,7 @@ SELECT met_var, met_spe_code, met_wkg_code, met_ver_code, met_odi_code, met_bty_
 ```
 
 
-## datbast.t_stock_sto
+### datbast.t_stock_sto
 
 There are three additional column in `databast.t_stock_sto` when compared to 
 `dat.t_stock_sto`, the table from which it inherits.
@@ -4200,54 +4179,32 @@ dbExecute(con_diaspara_local, "drop table temp_t_stock_sto_e")
 
 # Insert W_CI
 
+## WGBAST corrections made to the dataset 
+#3 lines with area 21 (which do not exists) =>
+#It's in sweden for TRS is it correct to assign it to 31 ?
+# To be checked during integration.
 
+#tp_type has 89 lines with COMM (it should be a time period) => Assigned to Year, please check
 
-
+## TODO WGBAST : n_type and w_type
+# Currently, we cannot easily translate all values "LOG" "EST" "EXV" "EXT"
+# values with ICES vocab. While Logbook is OK. We think that you will need
+# to create a dictionary of possible estimation methods (we could have more), and then
+# resubmit your data while screening for the correct type. For instance, we don't have
+# an equivalent for EXT (extrapolated) so has not been translated, but the f_type and
+# w_type are provided in the column comment. 
+# For "Est" when notes indicated "survey", we have assessed it as
+# SampDS. If you look at the tr_datasource_dts you will see a table of 
+# values in the ICES vocab. Among possible candidates are OthDF Other declarative forms (i.e. landing # declarations and national declarative forms),
+# or SampDC	Commercial sampling data (sampling methodologies specific to each country). This refers to # sampling in commercial vessels, not only for commercial species, or SampDS	Survey sampling data # (sampling methodologies specific to each country).
 
 
 ```
 
-
-::: {.callout-warning appearance="simple"}
-## WGBAST corrections made to the dataset 
-3 lines with area 21 (which do not exists) =>
-It's in sweden for TRS is it correct to assign it to 31 ?
-To be checked during integration.
-
-tp_type has 89 lines with COMM (it should be a time period) => Assigned to Year, please check
-:::
-
-
-::::: questionbox
-:::: questionbox-header
-QUESTION WGBAST: Would the data access be restricted ?
-::::
-::: questionbox-body
-
-> Data access can be Resticted or Public. 
-
-:::
-:::::
-
-::: {.callout-important appearance="simple"}
-## TODO WGBAST : n_type and w_type
-Currently, we cannot easily translate all values "LOG" "EST" "EXV" "EXT"
-values with ICES vocab. While Logbook is OK. We think that you will need
-to create a dictionary of possible estimation methods (we could have more), and then
-resubmit your data while screening for the correct type. For instance, we don't have
-an equivalent for EXT (extrapolated) so has not been translated, but the f_type and
-w_type are provided in the column comment. 
-For "Est" when notes indicated "survey", we have assessed it as
-SampDS. If you look at the tr_datasource_dts you will see a table of 
-values in the ICES vocab. Among possible candidates are OthDF Other declarative forms (i.e. landing declarations and national declarative forms),
-or SampDC	Commercial sampling data (sampling methodologies specific to each country). This refers to sampling in commercial vessels, not only for commercial species, or SampDS	Survey sampling data (sampling methodologies specific to each country).
-:::
-
-
 # Final diagram
 
 
-Full diagram of the diadromous DB including both stock and metric databases![click to enlarge](images\diaspara-ref.png){.lightbox #fig-ref}
+![Full diagram of the diadromous DB including both stock and metric databases](images\diaspara-ref.png "Full diagram of the diadromous DB,click to enlarge"){#fig-ref .lightbox}
 
 
 # Conclusions
@@ -4255,7 +4212,8 @@ Full diagram of the diadromous DB including both stock and metric databases![cli
 A database was created for WGNAS, WGBAST, and WGEEL. It could easily
 have a similar format for WGTRUTTA and other working groups working with diadromous fish species, such as lampreys and 
 shads. It will allow for the
-integration of data call files using DATSU. The habitat database is currently
+integration of data call files using DATSU and more generally, interoperable with 
+other ICES tools (e.g. RDBES) and processes (e.g. TAF). The habitat database is currently
 ported to RDBES and it has been proposed in RDBFIS to allow for the inclusion of data in the
 continental part of the range for migratory fishes.
 
@@ -4267,6 +4225,7 @@ In the long run, however, the use of a common database and ICES tools will:
 1) simplify
 the learning needs of experts and knowledge, when shifting between different diadromous expert and assessment groups,
 2) allow to provide a more streamlined data flow between national and international level, and 3) enhance accessibility and interoperability.
+3) allow to benefit from further support from ICES Data Center and ensure the long term maintenance of the system
 
 ::: {.callout-caution appearance="simple"}
 The shift to the new database will start in 2026 for WGEEL (metric DB) and
@@ -4277,9 +4236,10 @@ Changing from one database to another system will break the R code,
 
 
 ::: {.callout-important appearance="simple"}
+<h3> Breaking change for all working groups </h3>
 
 From now on everywhere in the db: Atlantic salmon will be 127186 and eel 126281.
-Sorry about that. Please bookmark the link to this paragraph in your browser to find it again.
+
 
 | spe_code | spe_commonname | 	spe_scientificname |
 | ------| -------------| ----------------| 
@@ -4290,7 +4250,6 @@ Sorry about that. Please bookmark the link to this paragraph in your browser to 
 |101172 |	European river lamprey | Lampetra  fluviatilis |	
 |126281 |	European eel |	Anguilla anguilla |
 |127187 |	Sea trout |	Salmo trutta |	
-
 :::
 
 
@@ -4308,7 +4267,6 @@ of the stage referential has been created in ICES : [DIASPARA : Diadromous fish 
 However, as for some other new referential created in ICES, they will need to be validated. 
 It was proposed during the final DIASPARA meeting 
 that this steering group is created within WGDIAD to discuss these issues.
-
 :::
 
 # Acknowledgements and references
