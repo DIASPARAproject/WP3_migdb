@@ -1,6 +1,6 @@
 ---
 title: "DIASPARA WP3.4 FISH STOCK DATABASE"
-subtitle: "METRIC DB final report"
+subtitle: "Trait dataset final report"
 author: "Briand Cédric, Oliviero Jules, Helminen Jani"
 date: last-modified
 date-format: "DD-MM-YYYY"
@@ -93,7 +93,7 @@ con_wgeel_distant <- dbConnect(Postgres(),
 
 ```
 
-Aside the main database report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. 
+Aside the main database report, which describes all the vocabularies used in this document, we have to build a separate database for trait data (called metric previously in the wgeel database). 
 
 <!--HILAIRE should we say they are separate or should we say it is a subpart of the diadromous database, alongside the stock database--> 
 
@@ -155,7 +155,7 @@ The database development highlighted in the current report has several objective
 ## Station
 
 
-The metric data need to be related to  sampling stations. These rely on a set of vocabularies (EDMO, PRGOV ...) liseted hereafter.
+The trait data need to be related to  sampling stations. These rely on a set of vocabularies (EDMO, PRGOV ...) liseted hereafter.
 To include the stations, we need two referential tables : the first one is the Station dictionary and the second is the relation Dictionary (which relates stations together). Both are maintained at ICES.  
 
 
@@ -413,7 +413,7 @@ Exchanges with ICES on the development of a format for the trait dataset have sh
 
 <summary>SQL code to create table `tr_fishway_fiw` </summary>
 
-``` {.sql include="../SQL/metric_04_ref_tr_fishway_fiw.sql"}
+``` {.sql include="../SQL/trait_04_ref_tr_fishway_fiw.sql"}
 ```
 
 </details>
@@ -441,7 +441,7 @@ A monitoring device can be a trap or a camera in a fishway, or any tools used to
 
 <summary>SQL code to create table `tr_monitoring_mon`</summary>
 
-``` {.sql include="../SQL/metric_05_ref_tr_monitoring_mon.sql"}
+``` {.sql include="../SQL/trait_05_ref_tr_monitoring_mon.sql"}
 ```
 
 </details>
@@ -484,7 +484,7 @@ and the method used.
 
 <summary>SQL code to create tables `ref.tr_trait_tra` and refeel.tg_trait_tra</summary>
 
-``` {.sql include="../SQL/metric_06_ref_tr_trait_tra.sql"}
+``` {.sql include="../SQL/trait_06_ref_tr_trait_tra.sql"}
 ```
 
 </details>
@@ -516,7 +516,7 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 
 <summary>SQL code to create tables `ref.tr_traitnumeric_trn` and `refeel.tr_traitnumeric_trn` </summary>
 
-``` {.sql include="../SQL/metric_06_ref_tr_traitnumeric_trn.sql"}
+``` {.sql include="../SQL/trait_06_ref_tr_traitnumeric_trn.sql"}
 ```
 
 
@@ -530,8 +530,8 @@ Trait can be either qualitative or quantitative (numeric). Both tables are inher
 #| code-fold: TRUE
 #| code-summary: Code to import numeric trait.
 
-tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
-# we will include group metric names later
+tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_traittype_mty ;")
+# we will include group trait names later
 tra <- tra[(!grepl("mean", tra$mty_name) | 
               tra$mty_name =='eye_diam_meanmm' |
               tra$mty_name == 'teq'),]
@@ -649,7 +649,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;") |>
 
 <summary>SQL code to create table `ref.tr_traitqualitative_trq` and `refeel.tr_traitqualitative_trq` </summary>
 
-``` {.sql include="../SQL/metric_06_ref_tr_traitqualitative_trq.sql"}
+``` {.sql include="../SQL/trait_06_ref_tr_traitqualitative_trq.sql"}
 ```
 </details>
 
@@ -661,8 +661,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitnumeric_trn;") |>
 #| code-fold: TRUE
 #| code-summary: Code to import qualitative table.
 
-tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_metrictype_mty ;")
-# we will include group metric names later
+tra <- dbGetQuery(con_wgeel_local, "SELECT * FROM ref.tr_traittype_mty ;")
+# we will include group trait names later
 tra <- tra[grepl("is_", tra$mty_individual_name) |
              grepl("presence", tra$mty_individual_name),]
 # we will also include method later
@@ -674,7 +674,8 @@ traqal <- data.frame(
   "tra_description" = tra$mty_description,
   "tra_wkg_code" = 'WGEEL',
   "Tra_spe_code" = 'ANG',
-  "tra_uni_code" = tra$mty_uni_cotra_indivorgroup"='Individual',
+  "tra_uni_code" = tra$mty_uni_code,
+  "tra_typemetric"='Individual',
   "tra_qualitativeornumeric"='Qualitative'
 )
 
@@ -713,14 +714,16 @@ tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_descritra_indivorgroup,
+tra_description,
+tra_indivorgroup,
 tra_qualitativeornumeric)
 SELECT 
 tra_id,
 tra_code,
 'WGEEL',
 'ANG',
-tra_descritra_indivorgroup,
+tra_description,
+tra_indivorgroup,
 tra_qualitativeornumeric
  FROM tr_traitqualitative_trq_temp") #5
 # TODO add group name
@@ -731,7 +734,8 @@ tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_descritra_indivorgroup,
+tra_description,
+tra_indivorgroup,
 tra_qualitativeornumeric)
 SELECT 
 29,
@@ -787,7 +791,7 @@ this table contains the discrete values.
 
 <summary>SQL code to create tables `ref.tr_traitqualvalue_trv` and `refeel.tr_traitqualvalue_trv`</summary>
 
-``` {.sql include="../SQL/metric_08_ref_tr_traitvaluequal_trv.sql"}
+``` {.sql include="../SQL/trait_08_ref_tr_traitvaluequal_trv.sql"}
 ```
 </details>
 
@@ -877,7 +881,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;") |>
 
 ## Fish trait measurement method
 
-Currently in the wgeel database, the metrics table value contains one column for value which can store numeric or integer. When it is integer, then, the metric id (mty_id) refers either to a category (e.g sex, or is differenciated), or a method (sexed using size, sexed after gonadal inspection). 
+Currently in the wgeel database, the traits table value contains one column for value which can store numeric or integer. When it is integer, then, the trait id (mty_id) refers either to a category (e.g sex, or is differenciated), or a method (sexed using size, sexed after gonadal inspection). 
 In the new database, the method will be stored in a different column in the group or individual traits. This table references the methods proposed.
 Again these methods will be working group specific so we create an inherited table.
 
@@ -885,7 +889,7 @@ Again these methods will be working group specific so we create an inherited tab
 
 <summary>SQL code to create tables `ref.tr_traitmethod_trm` and `refeel.tr_traitmethod_trm`</summary>
 
-``` {.sql include="../SQL/metric_07_ref_tr_traitmethod_trm.sql"}
+``` {.sql include="../SQL/trait_07_ref_tr_traitmethod_trm.sql"}
 ```
 
 </details>
@@ -977,7 +981,7 @@ exactly like ICES's, and will later be replaced by ICES stations.
 
 <summary>SQL code to create tables</summary>
 
-``` {.sql include="../SQL/metric_01_StationDictionary.sql"}
+``` {.sql include="../SQL/trait_01_StationDictionary.sql"}
 ```
 
 </details>
@@ -1132,13 +1136,13 @@ To insert data into stations, the data providers will have to check that they ha
 
 <summary>SQL code to create table `refeel.tr_version_ver`</summary>
 
-``` {.sql include="../SQL/metric_02_refeel_tr_version_ver.sql"}
+``` {.sql include="../SQL/trait_02_refeel_tr_version_ver.sql"}
 ```
 
 </details>
 
 
-This table is the same as in wgnas, it is inherited from ref. Currently working with inherited table will allow for more flexibility along the working groups. 
+This table is the same as in wgnas, it is inherited from ref. Currently working with inherited table will allow for more flexibility along the working groups, as foreign keys are refering to different tables - for instance stages for Salmon will be different from stages for eel. 
 
 
 
@@ -1213,18 +1217,19 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_version_ver;")|>
 
 <summary>SQL code to create table `dat.t_series_ser` </summary>
 
-``` {.sql include="../SQL/metric_10_dat_t_series_ser.sql"}
+``` {.sql include="../SQL/trait_10_dat_t_series_ser.sql"}
 ```
 
 </details>
 
 This table is inherited so the table created in dat will be empty, and will
 only receive data by inheritance. It can be considered as a view for ICES (no 
-inheritance in SQL server).
+inheritance in SQL server). The table will be replicated in each working group, and
+there have specific foreign keys to tables that can be working group specific.
 
 Since this table is inherited from dat.t_series_ser the wkg needs to be included. One table will be created per working group. These tables will be collated together.
 Most details information about metadata will be in the metadata tables, either
-to describe annual sampling or to describe individual metric collection.
+to describe annual sampling or to describe individual trait collection.
 
 <!-- HILAIRE : if this is a purely inherited table, with no specific data at all, then, why making it as a table and not a view? I don't get the benefit? -->
 <!-- CEDRIC : In each schema, foreign keys refer to working group specific referential tables. This was handy for me, I don't know if ICES will choose to use the same code. -->
@@ -1291,7 +1296,7 @@ If so we need to decide what fields could change over time (if any)
 
 <summary>SQL code to create table `dateel.t_series_ser`</summary>
 
-``` {.sql include="../SQL/metric_11_dateel_t_series_ser.sql"}
+``` {.sql include="../SQL/trait_11_dateel_t_series_ser.sql"}
 ```
 
 </details>
@@ -1489,7 +1494,7 @@ This table holds annual data from the series.
 
 <summary>SQL code to create table `dat.t_serannual_san`</summary>
 
-``` {.sql include="../SQL/metric_20_dat_t_serannual_san.sql"}
+``` {.sql include="../SQL/trait_20_dat_t_serannual_san.sql"}
 ```
 
 </details>
@@ -1502,7 +1507,7 @@ This table holds annual data from the series.
 
 <summary>SQL code to create tables `dateel.t_serannual_san`</summary>
 
-``` {.sql include="../SQL/metric_21_dateel_t_serannual_san.sql"}
+``` {.sql include="../SQL/trait_21_dateel_t_serannual_san.sql"}
 ```
 
 </details>
@@ -1607,7 +1612,7 @@ The table is created but empty. We need the stations in ICES first.
 
 <summary>SQL code to create table `dat.tj_seriesstation_ses`</summary>
 
-``` {.sql include="../SQL/metric_12_dat.tj_seriesstation_ses.sql"}
+``` {.sql include="../SQL/trait_12_dat.tj_seriesstation_ses.sql"}
 ```
 
 </details>
@@ -1620,7 +1625,7 @@ The table is created but empty. We need the stations in ICES first.
 
 <summary>SQL code to create table `dateel.tj_seriesstation_ses`</summary>
 
-``` {.sql include="../SQL/metric_13_dateel.tj_seriesstation_ses.sql"}
+``` {.sql include="../SQL/trait_13_dateel.tj_seriesstation_ses.sql"}
 ```
 
 </details>
@@ -1641,7 +1646,7 @@ are currently not transfered.
 
 <summary>SQL code to create table `dateel.t_recruitmentmetadata_met`</summary>
 
-``` {.sql include="../SQL/metric_14_dateel_t_recruitmentmetadata_met.sql"}
+``` {.sql include="../SQL/trait_14_dateel_t_recruitmentmetadata_met.sql"}
 ```
 
 </details>
@@ -1664,15 +1669,15 @@ dbGetQuery(con_diaspara,
 
 -->
 
-# Creating group metrics
+# Creating group traits
 
-Fish traits table aim to store information collected on individual fish. However, for various reasons, similar data are often collected and averaged on batches of individuals. We created a group metric to store those data
+Fish traits table aim to store information collected on individual fish. However, for various reasons, similar data are often collected and averaged on batches of individuals. We created a group trait to store those data
 
 ## Create group table
 
 <!--
 :::{.callout-note appearance="simple"}
-## Note for group metrics
+## Note for group traits
 Need a foreign key on both species and lfs code.
 :::
 
@@ -1681,7 +1686,7 @@ Need a foreign key on both species and lfs code.
 
 <summary>SQL code to create table `dat.t_group_gr`</summary>
 
-``` {.sql include="../SQL/metric_22_dat_t_group_gr.sql"}
+``` {.sql include="../SQL/trait_22_dat_t_group_gr.sql"}
 ```
 
 </details>
@@ -1692,14 +1697,14 @@ Need a foreign key on both species and lfs code.
 
 <summary>SQL code to create table `dateel.t_group_gr`</summary>
 
-``` {.sql include="../SQL/metric_23_dateel_t_group_gr.sql"}
+``` {.sql include="../SQL/trait_23_dateel_t_group_gr.sql"}
 ```
 
 </details>
 
 ## Import data for group
 
-The following scripts are used to import group metric from the two existing data formats, sampling and series. 
+The following scripts are used to import group trait from the two existing data formats, sampling and series. 
 
 
 
@@ -1707,7 +1712,7 @@ The following scripts are used to import group metric from the two existing data
 
 <summary>SQL code to Import data </summary>
 
-``` {.sql include="../SQL/metric_24_dateel_t_group_gr_insert.sql"}
+``` {.sql include="../SQL/trait_24_dateel_t_group_gr_insert.sql"}
 ```
 
 </details>
@@ -1737,7 +1742,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_group_gr limit 20;")|>
 
 <summary>SQL code to create tables `dat.t_grouptrait_grt` and `dateel.t_grouptrait_grt` </summary>
 
-``` {.sql include="../SQL/metric_26_dat_t_grouptrait_grt.sql"}
+``` {.sql include="../SQL/trait_26_dat_t_grouptrait_grt.sql"}
 ```
 
 </details>
@@ -1745,7 +1750,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_group_gr limit 20;")|>
 ## Import data 
 
 ![Mapping previous database for groups :This is how the mapping was done for groups, on the left the new db
-with in red the fields for individual metric (not in group metrics),
+with in red the fields for individual trait (not in group traits),
 on the right, the old db, with in oranges fields that need to be mapped to
 method. In yellow the groups that now refer to subgroup by sex recreated at previous step](images/mapping_trait_and_mty.png)
 
@@ -1753,7 +1758,7 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 
 <summary>SQL code to import data</summary>
 
-``` {.sql include="../SQL/metric_27_dat_t_grouptrait_grt_import.sql"}
+``` {.sql include="../SQL/trait_27_dat_t_grouptrait_grt_import.sql"}
 ```
 
 </details>
@@ -1766,13 +1771,13 @@ method. In yellow the groups that now refer to subgroup by sex recreated at prev
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to show t_grouptrait_grt table.
-#| tbl-cap: Table t_grouptrait_grt, group metrics (t_grouptrait_grt)
+#| tbl-cap: Table t_grouptrait_grt, group traits (t_grouptrait_grt)
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")|> 
   knitr::kable() |>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-# Creating ind metrics 
+# Creating ind traits 
 
 ## Fish table
 
@@ -1780,7 +1785,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")|>
 
 <summary>SQL code to create tables `dat.t_fish_fi` and `dateel.t_fish_fi`</summary>
 
-``` {.sql include="../SQL/metric_28_dat_t_fish_fi.sql"}
+``` {.sql include="../SQL/trait_28_dat_t_fish_fi.sql"}
 ```
 
 </details>
@@ -1789,7 +1794,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_grouptrait_grt limit 20;")|>
 
 <summary>SQL code to import data tables</summary>
 
-``` {.sql include="../SQL/metric_29_dat_t_fish_fi_insert.sql"}
+``` {.sql include="../SQL/trait_29_dat_t_fish_fi_insert.sql"}
 ```
 
 </details>
@@ -1815,16 +1820,16 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_fish_fi limit 20;")|>
 
 <summary>SQL code to create tables `dat.t_indivtrait_int` and `dateel.t_indivtrait_int` </summary>
 
-``` {.sql include="../SQL/metric_30_dat_t_indivtrait_int.sql"}
+``` {.sql include="../SQL/trait_30_dat_t_indivtrait_int.sql"}
 ```
 
 </details>
 
 <details>
 
-<summary>SQL code to import individual metric tables</summary>
+<summary>SQL code to import individual trait tables</summary>
 
-``` {.sql include="../SQL/metric_31_dat_t_indivtrait_int_insert.sql"}
+``` {.sql include="../SQL/trait_31_dat_t_indivtrait_int_insert.sql"}
 ```
 
 </details>
@@ -1838,22 +1843,14 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_fish_fi limit 20;")|>
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to show fish table.
-#| tbl-cap: Table t_indivtrait_int, fish metric table
+#| tbl-cap: Table t_indivtrait_int, fish trait table
 dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_indivtrait_int limit 20;")|>
   knitr::kable()|>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-[TODO] Link the ccm wso_id to the hydroshed db identifiers of the basins to get the best fit from tr_area_are.
-git issue #25 Import data from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
 
-The release date for that one is :
 
-[Milestone release alpha](https://github.com/DIASPARAproject/WP3_migdb/milestone/5)
-
-So the metric release will be after wgeel, the work will be finished and this can be presented during wgeel.
-
-# Import data from WP2 (TODO)
 
 
 # WGBAST
@@ -1869,7 +1866,7 @@ So the metric release will be after wgeel, the work will be finished and this ca
 
 <summary>SQL code to create table `dateel.t_series_ser`</summary>
 
-``` {.sql include="../SQL/metric_40_datbast_t_series_ser.sql"}
+``` {.sql include="../SQL/trait_40_datbast_t_series_ser.sql"}
 ```
 
 </details>
@@ -1996,7 +1993,7 @@ The table is created but empty. We need the stations in ICES first.
 
 <summary>SQL code to create table `datbast.tj_seriesstation_ses`</summary>
 
-``` {.sql include="../SQL/metric_41_datbast.tj_seriesstation_ses.sql"}
+``` {.sql include="../SQL/trait_41_datbast.tj_seriesstation_ses.sql"}
 ```
 
 </details>
@@ -2009,7 +2006,7 @@ The table is created but empty. We need the stations in ICES first.
 
 <summary>SQL code to create tables `datbast.t_serannual_san`</summary>
 
-``` {.sql include="../SQL/metric_43_datbast_t_serannual_san.sql"}
+``` {.sql include="../SQL/trait_43_datbast_t_serannual_san.sql"}
 ```
 
 </details>
@@ -2095,9 +2092,10 @@ dbGetQuery(con_diaspara, "SELECT * FROM datbast.t_serannual_san limit 20;")|>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-# WGNAS
 
-Here we import files from WP2
+# Annex : Import data from WP2 
+
+Here we import files from WP2, this section is meant to test the inclusion of salmon data in the database.
 
 
 ## series table t_series_ser
@@ -2110,7 +2108,7 @@ Here we import files from WP2
 
 <summary>SQL code to create table `datnas.t_series_ser`</summary>
 
-``` {.sql include="../SQL/metric_50_datnas_t_series_ser.sql"}
+``` {.sql include="../SQL/trait_50_datnas_t_series_ser.sql"}
 ```
 
 </details>
@@ -2242,6 +2240,7 @@ FROM t_series_ser_temp") # 2
 
 ```
 
+<!--
 ::: {.callout-note appearance="simple"}
 
 ## Notes to Viktor (WP2) :
@@ -2266,6 +2265,7 @@ The code of the area is the river.
 Create Geom for x and Y
 
 :::
+-->
 
 
 ```{r}
@@ -2289,7 +2289,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_series_ser limit 20;")|>
 <summary> SQL code to create table `datnas.tj_seriesstation_ses`
 </summary>
 
-``` {.sql include="../SQL/metric_51_datnas.tj_seriesstation_ses.sql"}
+``` {.sql include="../SQL/trait_51_datnas.tj_seriesstation_ses.sql"}
 ```
 
 </details>
@@ -2302,7 +2302,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_series_ser limit 20;")|>
 
 <summary>SQL code to create tables `datnas.t_serannual_san`</summary>
 
-``` {.sql include="../SQL/metric_52_datnas_t_serannual_san.sql"}
+``` {.sql include="../SQL/trait_52_datnas_t_serannual_san.sql"}
 ```
 
 </details>
@@ -2311,19 +2311,19 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_series_ser limit 20;")|>
 
 ## Notes 
 
-Currently there is no annual series in WP2 only group and individual metrics,
+Currently there is no annual series in WP2 only group and individual traits,
  the the table is created but no import is done.
 
 :::
 
 
 
-# Creating group metrics
+# Creating group traits
 
 ## Create group table
 
 :::{.callout-caution appearance="simple"}
-## Note for group metrics
+## Note for group traits
 Need a foreign key on both species and lfs code.
 :::
 
@@ -2334,7 +2334,7 @@ Need a foreign key on both species and lfs code.
 
 <summary>SQL code to create table `datnas.t_group_gr`</summary>
 
-``` {.sql include="../SQL/metric_53_datnas_t_group_gr.sql"}
+``` {.sql include="../SQL/trait_53_datnas_t_group_gr.sql"}
 ```
 
 </details>
@@ -2343,8 +2343,8 @@ Need a foreign key on both species and lfs code.
 
 
 :::{.callout-caution appearance="simple"}
-## Group metrics
-There are no group metrics currently
+## Group traits
+There are no group traits currently
 :::
 
 
@@ -2352,13 +2352,13 @@ There are no group metrics currently
 
 <summary>SQL code to create table `datnas.t_group_gr`</summary>
 
-``` {.sql include="../SQL/metric_54_datnas_t_grouptrait_grt.sql"}
+``` {.sql include="../SQL/trait_54_datnas_t_grouptrait_grt.sql"}
 ```
 
 </details>
 
 
-# Creating ind metrics 
+# Creating ind traits 
 
 
 
@@ -2366,7 +2366,7 @@ There are no group metrics currently
 
 <summary>SQL code to import data tables</summary>
 
-``` {.sql include="../SQL/metric_55_datnas_t_fish_fi.sql"}
+``` {.sql include="../SQL/trait_55_datnas_t_fish_fi.sql"}
 ```
 
 </details>
@@ -2393,7 +2393,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_fish_fi limit 20;")|>
 
 <summary>SQL code to create table  `refnas.tr_traitnumeric_trn` </summary>
 
-``` {.sql include="../SQL/metric_56_refnas_tr_traitnumeric_trn.sql"}
+``` {.sql include="../SQL/trait_56_refnas_tr_traitnumeric_trn.sql"}
 ```
 
 </details>
@@ -2410,7 +2410,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_fish_fi limit 20;")|>
 #| code-summary: Code to import numeric trait.
 
 #tra <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_traitnumeric_trn;")
-# we will include group metric names later
+# we will include group trait names later
 # tra <- tra[tra$tra_id %in% c(1,2),]
 # tra$tra_wkg_code <- "WGNAS"
 # tra$tra_spe_code = "127186"
@@ -2450,13 +2450,16 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_fish_fi limit 20;")|>
 #   })
   
 #   body <- paste(row_lines, collapse = "\n")
-#   paste0(header, body, "\n)")tra_indivorgroupxample
+#   paste0(header, body, "\n)")
+# }
+
+# # Example
 # library(tibble)
 # df_to_tribble_code(tra)
 
 tranum <- tibble::tribble(
   ~tra_id, ~tra_code, ~tra_description, ~tra_wkg_code, 
-  ~tra_spe_code,  ~tra_typemetric, ~tra_qualitativeornumeric,
+  ~tra_spe_code,  ~tra_indivorgroup, ~tra_qualitativeornumeric,
   ~trn_uni_code, ~trn_minvalue, ~trn_maxvalue,
   1, "Length_mm", 
   "Total body length in millimeters (mm) or mean total body length for group", 
@@ -2498,13 +2501,14 @@ tranum <- tibble::tribble(
 tranum$trn_minvalue <- as.numeric(tranum$trn_minvalue)
 tranum$trn_maxvalue <- as.numeric(tranum$trn_maxvalue)
 dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "DELETE Ftra_indivorgrouptraitnumeric_trn")
+dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitnumeric_trn")
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitnumeric_trn(
 tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_descritra_indivorgroup,
+tra_description,
+tra_indivorgroup,
 trn_uni_code,
 tra_qualitativeornumeric,
 trn_minvalue,
@@ -2515,7 +2519,7 @@ tra_code,
 tra_wkg_code,
 tra_spe_code,
 tra_description,
-tra_typemetric,
+tra_indivorgroup,
 trn_uni_code,
 tra_qualitativeornumeric,
 trn_minvalue::numeric,
@@ -2541,6 +2545,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitnumeric_trn;") |>
 
 ```
 
+<!--
 :::{.callout-caution}
 ## Question for Viktor (WP2) ?
 There is a method for winter measurement reading but no column to put the corresponding
@@ -2557,13 +2562,13 @@ Can you provide bounds for numeric values in the code above ?
 :::{.callout-note}
 ## Note Viktor (WP2) 
 Currently you have two columns one juvenile_age which can be Smolt or juvenile age.
-And then in group metrics you have smolt age. 
+And then in group traits you have smolt age. 
 I find it confusing. I'm proposing to call it a freshwater age.
 Currently in the database the stage should never be null, so if it's a parr 
 or a smolt the meaning would be different. Freshwater age for a smolt or and
 adult is the smolt age.
 :::
-
+-->
 
 
 ## Referential for qualitative traits (refnas.tr_traitqualitative_trq)
@@ -2572,7 +2577,7 @@ adult is the smolt age.
 
 <summary>SQL code to create table  `refnas.tr_traitqualitative_trq` </summary>
 
-``` {.sql include="../SQL/metric_57_refnas_tr_traitqualitative_trq.sql"}
+``` {.sql include="../SQL/trait_57_refnas_tr_traitqualitative_trq.sql"}
 ```
 
 </details>
@@ -2584,12 +2589,12 @@ adult is the smolt age.
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
-#| ctra_indivorgroup
+#| code-fold: TRUE
 #| code-summary: Code to import qualitative trait.
 
 traqal <- tibble::tribble(
   ~tra_id, ~tra_code, ~tra_description, ~tra_wkg_code, 
-  ~tra_spe_code,  ~tra_typemetric, ~tra_qualitativeornumeric,
+  ~tra_spe_code,  ~tra_indivorgroup, ~tra_qualitativeornumeric,
   1, "Sex", 
   "Sex (F Female,H Hermaphordite, I Immature attempt made, M Male, T Transitional, U Undetermined no attempt made, X Mixed)", 
   "WGNAS", "127186", "Individual", "Qualitative",
@@ -2600,13 +2605,14 @@ traqal <- tibble::tribble(
 
 
 dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp", traqal, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "DELETE FROM refntra_indivorgrouplitative_trq")
+dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitqualitative_trq")
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitqualitative_trq(
 tra_id,
-tra_codetra_indivorgroupe,
+tra_code,
+tra_wkg_code,
 tra_spe_code,
 tra_description,
-tra_typemetric,
+tra_indivorgroup,
 tra_qualitativeornumeric
 )
 SELECT 
@@ -2615,7 +2621,7 @@ tra_code,
 tra_wkg_code,
 tra_spe_code,
 tra_description,
-tra_typemetric,
+tra_indivorgroup,
 tra_qualitativeornumeric
  FROM tr_traitqualitative_trq_temp") #2
 
@@ -2645,7 +2651,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitqualitative_trq;") |>
 
 <summary>SQL code to create tables `ref.tr_traitqualvalue_trv` and `refeel.tr_traitqualvalue_trv`</summary>
 
-``` {.sql include="../SQL/metric_57_ref_tr_traitvaluequal_trv.sql"}
+``` {.sql include="../SQL/trait_57_ref_tr_traitvaluequal_trv.sql"}
 ```
 </details>
 
@@ -2733,7 +2739,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refnas.tr_traitvaluequal_trv;") |>
 
 <summary>SQL code to create table  `refnas.tr_traitmethod_trm` </summary>
 
-``` {.sql include="../SQL/metric_59_refnas_tr_traitmethod_trm.sql"}
+``` {.sql include="../SQL/trait_59_refnas_tr_traitmethod_trm.sql"}
 ```
 
 </details>
@@ -2774,12 +2780,12 @@ trm <- tibble::tribble(
 
 <summary>SQL code to create table  `datnas.t_indivtrait_int` </summary>
 
-``` {.sql include="../SQL/metric_60_datnas_t_indivtrait_int.sql"}
+``` {.sql include="../SQL/trait_60_datnas_t_indivtrait_int.sql"}
 ```
 
 </details>
 
-```{r refnas.t_indmetrics_ind}
+```{r refnas.t_indivtrait_int}
 #| echo: TRUE
 #| eval: FALSE
 #| warning: FALSE
@@ -2937,7 +2943,7 @@ Or should it be handled at the national level ?
 #| message: FALSE
 #| code-fold: TRUE
 #| code-summary: Code to show fish table.
-#| tbl-cap: Table t_indivtrait_int, fish metric table
+#| tbl-cap: Table t_indivtrait_int, fish trait table
 dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_indivtrait_int limit 20;")|>
   knitr::kable()|>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
