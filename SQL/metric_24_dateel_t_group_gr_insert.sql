@@ -3,6 +3,13 @@ SELECT DISTINCT gr_dts_datasource
 FROM datwgeel.t_groupseries_grser
 */
 
+/*
+ * Scripts differ a bit for series and sampling. Check for some series with comment
+so see if need removing.
+
+>  all related metrics have qal_id=22 following data call 2022
+ */
+
 DELETE FROM dateel.t_group_gr;
 INSERT INTO dateel.t_group_gr
 (gr_id, gr_ser_id, gr_gr_id, gr_wkg_code, gr_spe_code, gr_lfs_code, gr_year, gr_number, gr_comment, gr_lastupdate, gr_ver_code)
@@ -229,4 +236,6 @@ JOIN datwgeel.t_groupsamp_grsa  grsa ON meg_gr_id = gr_id
 JOIN datwgeel.t_samplinginfo_sai AS tss ON grsa_sai_id = sai_id
 JOIN dateel.t_series_ser AS tss2 ON ser_code=  sai_id::text
 WHERE meg_mty_id IN (21,22,23); --1183
+
+
 

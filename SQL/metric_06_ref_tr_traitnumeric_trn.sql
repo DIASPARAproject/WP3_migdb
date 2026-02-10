@@ -20,7 +20,7 @@ COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_code IS
  'Name of the trait';
 COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_description IS
  'Description of the fish trait';
-COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_typemetric IS
+COMMENT ON COLUMN ref.tr_traitnumeric_trn.tra_indivorgroup IS
  'Is the metric a Group metric (group), or Individual metric (individual) or can be used in both tables (both) ?';
 COMMENT ON COLUMN ref.tr_traitnumeric_trn.trn_uni_code IS
  'Unit used, references tr_unit_uni';
@@ -56,7 +56,7 @@ COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_code IS
 'Name of the trait';
 COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_description IS
  'Description of the fish trait';
-COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_typemetric IS
+COMMENT ON COLUMN refeel.tr_traitnumeric_trn.tra_indivorgroup IS
  'Is the metric a Group metric (group), or Individual metric (individual) or can be used in both tables (both) ?';
 COMMENT ON COLUMN refeel.tr_traitnumeric_trn.trn_uni_code IS
  'Unit used, references tr_unit_uni';

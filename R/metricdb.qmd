@@ -93,25 +93,54 @@ con_wgeel_distant <- dbConnect(Postgres(),
 
 ```
 
-Aside the main database report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. In the project these correspond to Life History Traits (LHT), but additionally, the data should also correspond to the time series and the sampling db developed by WGEEL. The two latter data structures (series and sampling) are very similar, and they both hold very similar group metrics and individual metrics.
+Aside the main database report, which describes all the vocabularies used in this document, we have to build a separate database for metrics. 
+
+<!--HILAIRE should we say they are separate or should we say it is a subpart of the diadromous database, alongside the stock database--> 
+
+In the project, these correspond to Life History Traits (LHT), but additionally, the data should also correspond to the time series, the sampling db developed by WGEEL, counting at traps, electrofishing data for Sea Trouts or Salmon juvenile.
+
+The two latter data structures (series and sampling) are very similar, and they both hold very similar group traits and individual traits 
+
+<!--HILAIRE yes, but abundance indices are rather different and used in stock assessment, either directly or after preprocessing. I don't have any solutoins, but mixing metrics and abundance indices seems a bit weird to me--> 
+
+<!--HILAIRE yes, but abundance indices are rather different and used in stock assessment, either directly or after preprocessing. I don't have any solutoins, but mixing metrics and abundance indices seems a bit weird to me--> .
+
+
 
 The first was developed initially to store data about the series used in recruitment data. In practice, it consists of three tables, the `t_series_ser` (Figure @fig-series_diagram_wgeel - top in blue) table contains series id and description, with columns describing the sampling details, the stage used, the method... This is the main identifier of the series which will be used as a reference in all dependent tables. The second `t_dataseries_das` table  (Figure @fig-series_diagram_wgeel - on the right) holds data about annual values in series. These are typically annual counts for recruitment, along with additional effort data. Linked to these are group metric series used to describe the series, mean age of eel, mean size, proportion of glass eel among the yellow eels, proportion of females ... (Figure @fig-series_diagram_wgeel - in orange)
 Finally, we can link individual metrics. The individual metrics are all detailed for one fish. And they concern metrics like size, weight, sex, but also can hold data about quality, contamination. So these are in essence the Life History traits analysed by WP2 in DIASPARA  (Figure @fig-series_diagram_wgeel - in pink).
 
-![Diagram for series](images/series_diagram_wgeel.png "A sql diagram of the relations of tables for series"){#fig-series_diagram_wgeel}
+![Diagram for series](images/series_diagram_wgeel.png "A sql diagram of the relations of tables for series"){#fig-series_diagram_wgeel .lightbox}
 
-The second type of data was developed to hold the data collected for DCF. These can be metrics collected from sampling by the fishermen, data coming from the analysis of electrofishing data, or other experimental sampling that are not reported as series. Currently the two structures for series and sampling are very close, the only difference is that there is no annual number linked to the sampling data, and that they are not linked to a stage in the first table, so the stage is added in the fish table.
-The difference in table structure is illustrated below in tables highlighted in yellow (Figure @fig-sampling_diagram_wgeel).
+The second type of data was developed to hold the data collected for DCF. These can be metrics collected from sampling by the fishermen {>>you mean sampling on landings<<}, data coming from the analysis of electrofishing data, or other experimental sampling that are not reported as series. 
+
+<!--HILAIRE I think here, you are making things confusing: the idea was to store biometry data, i.e. data on characteristics of the fish. When you refer to electrofishing, they can also provide abundance indices, but they do not aim be stored in the othersampling table. Same for landings: othersampling aim to collect biometry data on fish collected for example among landings, but not to store the landings themselves. So, if I should make a distinction, I would rather say we collect fish characteristics data (lht, quality etc.) and time series of population dynamics (landings, time series of abundance, releases...), then in both types, the data can come from specific monitoring sites, from some electrofishing monitoring network, from DCF, we don't care.--> 
+
+<!--Cédric The idea was to explain the two rather close structures that we have in WGEEL, and explain why we wanted to merge them. This was relevant at the beginning when trying to explain what we were developping, I'm not sure it is now. So I keep Hilaire's comment for rephrasing the use and content of the two databases. -->
+
+
+
+Currently the two structures for series and sampling are very close, the only difference is that there is no annual number linked to the sampling data, and that they are not linked to a stage in the first table, so the stage is added in the fish table 
+<!--HILAIRE, let's just put annual number elsewhere, in the stock db, they are more aimed at informing on the stock trend anyway-->.
+
+<!--CEDRIC, no the group metrics refer to the series. But this is solved below, by our merging the two DB. -->.
+
+
+The difference in table structure is illustrated below in tables highlighted in yellow (Figure @fig-sampling_diagram_wgeel). 
+
+<!--HILAIRE my comments here are purely cosmetic: it doesn't change at all the structure you propose and the content of the db: just a way to rephrase it. You have a stock db for stuffs that are mostly to inform on population dynamics, and a biometry db that store fish characteristics, mainly biometry but possibly other features? Since all of them are in fact a single db and data sources are documented, no problem -->.
+
+
 
 ![Diagram for sampling](images/sampling_diagram_wgeel.png "A sql diagram of the relations of tables for sampling"){#fig-sampling_diagram_wgeel}
 
 The database development highlighted in the current report has several objectives :
 
-* The first objective is to join the two database to simplify the database development and handling of data.
+* The first objective is to join the two databases to simplify the database development and handling of data.
 
 * The second objective is to use the new referentials created for the migdb database.
 
-* The third objective is to import data from Diaspara WP2, the excel sheets have been created in february 2025 and will already (in March) require some adaptation as the database evolves, for instance the referential of stages is no longer in line with the templates.
+* The third objective is to import data from Diaspara WP2, excel sheets have been created in february 2025 to store data for Salmon and will require some adaptation as the database changed during the project.
 
 * The fourth objective is to hand over this database, along with the migdb, to ICES, for integration in ICES database ecosystem, and use of DATSU in datacall.
 
@@ -120,22 +149,14 @@ The database development highlighted in the current report has several objective
 # Building database structure from WGEEL 
 
 
-[git issue #23 Write simplified structure from WGEEL](https://github.com/DIASPARAproject/WP3_migdb/issues/23)
 
-The main issue will require to merge the two table structures (sampling and series) and adapt to migdb vocabulary.
-
-Once done a beta version probably not completely adapted will be released.
-
-[milestone metric DB beta version](https://github.com/DIASPARAproject/WP3_migdb/milestone/6)
-
-
+<!--CEDRIC COPY THIS PART INTO THE DICTIONARIES -->
 
 ## Station
 
-To include the station, we need two tables: the first one is the Station dictionary
-and the second is the relation Dictionary (which relates two stations together).
-Now these tables in turn rely on some vocabs from ICES which we are loading
-straight as they are in our template database.
+
+The metric data need to be related to  sampling stations. These rely on a set of vocabularies (EDMO, PRGOV ...) liseted hereafter.
+To include the stations, we need two referential tables : the first one is the Station dictionary and the second is the relation Dictionary (which relates stations together). Both are maintained at ICES.  
 
 
 
@@ -334,6 +355,9 @@ dbExecute(con_diaspara,
 
 ### MSTAT
 
+
+
+
 ```{r tbl-icesStation_MSTAT}
 #| echo: TRUE
 #| eval: TRUE
@@ -378,100 +402,11 @@ knitr::kable(Deprecated)|>
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-## Habitat
-
-THe habitat database is managed by [EIONET](http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/)
-Habitats directive Art. 17 reporting in year 2018.
-This is only for Natura2000 sites, a better options would be
-https://eunis.eea.europa.eu/habitats-code-browser.jsp
-
-<details>
-
-<summary>SQL code to create tables</summary>
-
-``` {.sql include="../SQL/metric_03_ref_tr_habitat_hab.sql"}
-```
-
-</details>
-
-:::{.questionbox}
-::::{.questionbox-header}
-:::::{.questionbox-icon}
-:::::
-ICES / DIASPARA is this enough ?
-::::
-::::{.questionbox-body}
-The idea was to have estuaries and lagoons, but rivers are associated with vegetation, 
-So I''m not sure if this vocab is enough ?
-::::
-:::
-
-
-```{r habitat}
-#| echo: TRUE
-#| eval: FALSE
-#| warning: FALSE
-#| message: FALSE
-#| code-fold: TRUE
-#| code-summary: Code to import habitat from eionet.
-
-
-# Load required libraries
-library(XML)
-
-# Parse the XML file downloaded from https://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/codelist
-xml_file <- "R/data/habitats.xml" # Replace with your actual file path
-#file.exists("R/data/habitats.xml")
-xml_data <- XML::xmlParse(xml_file)
-
-# Extract all <value> nodes
-values <- getNodeSet(xml_data, "//value")
-
-# Extract relevant data into a data frame
-extract_info <- function(node) {
-  id <- XML::xmlGetAttr(node, "id")
-  code <- gsub("http://dd.eionet.europa.eu/vocabulary/art17_2018/habitats/",
-               x= id,replacement = "")
-  label <- XML::xmlValue(node[["label"]])
-  #defintion <- XML::xmlValue(node[["defintion"]])
-  status_node <- XML::getNodeSet(node, ".//status/label")[[1]]
-  status <- XML::xmlValue(status_node)
-  return(data.frame(id = id, code = code, label = label,
-                    status = status, stringsAsFactors = FALSE))
-}
-
-habitat <- do.call(rbind, lapply(values, extract_info))
-habitat <- habitat[c(1:32,77:84,125:142),]
-
-# Save the data frame as an RData file
-save(habitat, file = "habitat_art_17_2018.RData")
-# load(file = "habitat_art_17_2018.RData")
-dbExecute(con_diaspara, 'DELETE FROM ref.tr_habitat_hab;')
-
-dbWriteTable(con_diaspara, "habitat_temp", habitat)
-
-dbExecute(con_diaspara, 
-          'INSERT INTO "ref".tr_habitat_hab SELECT code, label, id, NULL,
- NULL, NULL FROM habitat_temp;') #58
-dbExecute(con_diaspara, "DROP TABLE habitat_temp")#0
-
-```
-
-```{r tbl-habitat}
-#| echo: TRUE
-#| eval: TRUE
-#| warning: FALSE
-#| message: FALSE
-#| code-fold: TRUE
-#| code-summary: Code to show habitat table (to be imported in ICES vocab).
-#| tbl-cap: Habitat table ?
-
-habitat <- dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitat_hab;")
-knitr::kable(habitat)|>
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-```
-
 ## Fishway type ref.tr_fishway_fiw
+<!-- why do we need fishway here? this db is about metric. we could potentially make a link to the dam db if required but do we need more -->
+
+Exchanges with ICES on the development of a format for the trait dataset have shown the need to either standardize the content of some of the columns describing the series. This has been done either through removing some columns in the table describing the location, or protocols and replacing them with a writted document attached with a DOI (a reference to a document online on the ICES website describing each of the series). Other elements, like fishway have been standardised.
+
 
 
 <details>
@@ -500,6 +435,7 @@ knitr::kable(habitat)|>
 
 ## Fish migration monitoring  ref.tr_monitoring_mon
 
+A monitoring device can be a trap or a camera in a fishway, or any tools used to sample or monitor the migration. If the migration is monitored as part of a fishing operation (sampling on a barrier or fyke net used for commercial fishery), then it is possible to use the gear type column and ignore the monitoring column. The monitoring device are attached to scientific monitoring, mostly in fishways, but devices likes accoustic sonars make exception.
 
 <details>
 
@@ -528,9 +464,8 @@ knitr::kable(habitat)|>
 
 ## Fish Traits  ref.tr_trait_tra
 
-This one was formerly called metric, but metric `ref.tr_statistic_sta` already exist and is better
-suited to statistics (mean, sd ... ). So we are using the word trait.
-Trait is refering to a species (there are different method,
+
+Trait is referring to a characteristics of a fish (there are different method,
 or different measurements for different species).
 The trait can be, either qualitative or quantitative.
 The trait is measured by a method, the measure (either categorical
@@ -539,6 +474,11 @@ For instance a fish is measured for length as fork length or total length,
 in the individual_trait table, the fish will be related to three columns,
 the code of the length parameter in the trait table, the quantitative value,
 and the method used.
+
+
+<-- HILAIRE you say "a trait is measured by a method", but a same trend can be measures with different method, e.g. sex can be measured by visual inspection or other method, so the question in this ref table, a same trait has as many rows as method or do we have a trait table, and a method table? Depending on this choice, in the indiviudaltrait table, we should either refer to a traitxmethod id, or to both a trait id and a method id -->
+
+<-- CEDRIC Good point, it depends on the constraint you put, if you put a  constraint with a unique value for one fish on both trait and method, then you can have several trait for one fish. This is risky though when coming to data analysis. You may end up multiplying some measures for the same fish. I would rather have a unique trait and no duplicates -->
 
 <details>
 
@@ -549,8 +489,11 @@ and the method used.
 
 </details>
 
+<!--
 :::{.callout-warning appearance="simple"}
-## refeel.tg_trait_tra and ref.tr_trait_tra have different structures.
+## have different structures.
+This is a technical note to indicate that refeel.tg_trait_tra is not inherited from ref.tr_trait_tra : 
+are different. 
 The first has nothing inside, it's a shell for inheritance.
 Tables `ref.tr_traitnumeric_trn` and `ref.tr_traitqualitative_trq` are inherited from `ref.tr_trait_tra`.
 They in turn are inherited from tables `refeel.tr_traitnumeric_trn` and `refeel.tr_traitqualitative_trq`.
@@ -562,6 +505,7 @@ and I will double the lines there. Also, physically data are not there. So I sti
 use it as a reference table. So the table refeel.tg_trait_tra is not inherited, it's a grouping
 table with the values actually physically there.
 :::
+-->
 
 ## Numeric fish trait (tr_traitnumeric_trn)
 
@@ -601,8 +545,7 @@ tranum <- data.frame(
   "tra_description" = tra$mty_description,
   "tra_wkg_code" = 'WGEEL',
   "Tra_spe_code" = 'ANG',
-  "trn_uni_code" = tra$mty_uni_code,
-  "tra_typemetric"=stringi::stri_trans_totitle(tra$mty_group),
+  "trn_uni_code" = tra$mty_uni_tra_indivorgroup"=stringi::stri_trans_totitle(tra$mty_group),
   "tra_qualitativeornumeric"='Numeric',
   "trn_minvalue" = tra$mty_min,
   "trn_maxvalue" = tra$mty_max)
@@ -611,8 +554,8 @@ tranum <- data.frame(
 # the proportions will be numeric for group and qualitative for individual (
 # e.g. evex presence)
 
-tranum[tranum$tra_typemetric=="Both" & grepl("proportion",tranum$tra_code),
-       c("tra_typemetric")] <- "Group"
+tranum$tra_indivorgroup=="Both" & grepl("proportion",tranum$tra_code),
+  tra_indivorgroup")] <- "Group"
 
 
 # view(tranum)
@@ -643,8 +586,7 @@ tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_description,
-tra_typemetric,
+tra_descritra_indivorgroup,
 trn_uni_code,
 tra_qualitativeornumeric,
 trn_minvalue,
@@ -654,8 +596,7 @@ tra_id,
 tra_code,
 'WGEEL',
 'ANG',
-tra_description,
-tra_typemetric,
+tra_descritra_indivorgroup,
 trn_uni_code,
 tra_qualitativeornumeric,
 trn_minvalue,
@@ -665,12 +606,13 @@ trn_maxvalue
 
 dbExecute(con_diaspara_admin, 
           "INSERT INTO refeel.tr_traitnumeric_trn (tra_id,tra_code,tra_description,
- tra_wkg_code,tra_spe_code,tra_typemetric,tra_qualitativeornumeric,
+ tra_wkg_code,tra_stra_indivorgroup,
+ tra_qualitativeornumeric,
  trn_uni_code,trn_minvalue,trn_maxvalue)
 	VALUES (27,'Eye_diam_vert_mm','Eye diameter (vertical) in mm','WGEEL',
   'ANG','Individual','Numeric','mm',1,15);
 INSERT INTO refeel.tr_traitnumeric_trn (tra_id,tra_code,tra_description,
-tra_wkg_code,tra_spe_code,tra_typemetric,tra_qualitativeornumeric,
+tra_wkg_code,tra_stra_indivorgroup,tra_qualitativeornumeric,
 trn_uni_code,trn_minvalue,trn_maxvalue)
 	VALUES (28,'Eye_diam_horiz_mm','Eye diameter (horizontal) in mm',
   'WGEEL','ANG','Individual','Numeric','mm',1,15);
@@ -732,8 +674,7 @@ traqal <- data.frame(
   "tra_description" = tra$mty_description,
   "tra_wkg_code" = 'WGEEL',
   "Tra_spe_code" = 'ANG',
-  "tra_uni_code" = tra$mty_uni_code,
-  "tra_typemetric"='Individual',
+  "tra_uni_code" = tra$mty_uni_cotra_indivorgroup"='Individual',
   "tra_qualitativeornumeric"='Qualitative'
 )
 
@@ -772,16 +713,14 @@ tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_description,
-tra_typemetric,
+tra_descritra_indivorgroup,
 tra_qualitativeornumeric)
 SELECT 
 tra_id,
 tra_code,
 'WGEEL',
 'ANG',
-tra_description,
-tra_typemetric,
+tra_descritra_indivorgroup,
 tra_qualitativeornumeric
  FROM tr_traitqualitative_trq_temp") #5
 # TODO add group name
@@ -792,8 +731,7 @@ tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_description,
-tra_typemetric,
+tra_descritra_indivorgroup,
 tra_qualitativeornumeric)
 SELECT 
 29,
@@ -940,7 +878,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM refeel.tr_traitvaluequal_trv;") |>
 ## Fish trait measurement method
 
 Currently in the wgeel database, the metrics table value contains one column for value which can store numeric or integer. When it is integer, then, the metric id (mty_id) refers either to a category (e.g sex, or is differenciated), or a method (sexed using size, sexed after gonadal inspection). 
-In the new database, the method will be stored in a different column in the group or individual metrics. This table references the methods proposed.
+In the new database, the method will be stored in a different column in the group or individual traits. This table references the methods proposed.
 Again these methods will be working group specific so we create an inherited table.
 
 <details>
@@ -1031,9 +969,8 @@ knitr::kable(trm)|>
 
 Series will be linked to one or several stations.
 
-The station are loaded into a table that will not be
-exactly like ICES's since I cannot load the full tables, and don't want to replicate the full complexity of stations. For instance currently station 1000 has several parents for "Station_DTYPE" which I agregate like EW~EU~NU~CW,
-in my table. But the vocab is here.
+The station are loaded into a temporary table that will not be
+exactly like ICES's, and will later be replaced by ICES stations. 
 
 
 <details>
@@ -1046,7 +983,7 @@ in my table. But the vocab is here.
 </details>
 
 
-We have to do some fixes see (issue 27)[https://github.com/ices-tools-prod/icesVocab/issues/27] and remove nearly all the constraints, including the length of 50 for stationNames.
+Some of the constraints were adapted to enable the current loading of stations (issue 27)[https://github.com/ices-tools-prod/icesVocab/issues/27].
 The following chunk creates a vocab with 14086 stations.
 
 
@@ -1201,7 +1138,9 @@ To insert data into stations, the data providers will have to check that they ha
 </details>
 
 
-This table is the same as in wgnas, it is inherited from ref.
+This table is the same as in wgnas, it is inherited from ref. Currently working with inherited table will allow for more flexibility along the working groups. 
+
+
 
 ```{r }
 #| label: refeel_tr_version_ver_insert
@@ -1283,16 +1222,18 @@ This table is inherited so the table created in dat will be empty, and will
 only receive data by inheritance. It can be considered as a view for ICES (no 
 inheritance in SQL server).
 
-Since this table is inherited the wkg needs to be included. One table will be created
-per working group. These tables will be collated together.
+Since this table is inherited from dat.t_series_ser the wkg needs to be included. One table will be created per working group. These tables will be collated together.
 Most details information about metadata will be in the metadata tables, either
 to describe annual sampling or to describe individual metric collection.
+
+<!-- HILAIRE : if this is a purely inherited table, with no specific data at all, then, why making it as a table and not a view? I don't get the benefit? -->
+<!-- CEDRIC : In each schema, foreign keys refer to working group specific referential tables. This was handy for me, I don't know if ICES will choose to use the same code. -->
 
 Monitoring stations (including fixed stations) that are used for recurring sampling or data collection are managed via the Station Code Request Application in ICES [@ices_vocab_2024].
 This table will reference monitoring station but it might be NULL, as some sampling 
 designs or data collection, for instance for the DCF, are not related to a station.
 
-
+<!--
 :::::: questionbox
 :::: questionbox-header
 ::: questionbox-icon
@@ -1326,6 +1267,7 @@ There is a procedure to integrate stations, but for this we will probably do a b
 :::
 ::::::
 
+
 :::{.callout-note appearance="simple"}
 ## QUESTION to DIASPARA
 I this that many of our series, and many of BAST or NAS would be related to fishways.
@@ -1340,7 +1282,7 @@ A description would then spans a limited amount of year from
 date_begin to date_end. If the series description still hold the date_end is null.
 If so we need to decide what fields could change over time (if any)
 :::
-
+-->
 
 ### Creating inherited series
 
@@ -1657,6 +1599,8 @@ dbGetQuery(con_diaspara, "SELECT * FROM dateel.t_serannual_san limit 20;")|>
 
 ## Creating table joining series and station
 
+<!-- HILAIRE the benefit of using ICES stations is for easier integration with DATSU? might it be an option to ask them to release some contraints for continental stations? -->
+
 The table is created but empty. We need the stations in ICES first.
 
 <details>
@@ -1681,6 +1625,7 @@ The table is created but empty. We need the stations in ICES first.
 
 </details>
 
+<!--
 # Creating additional table for stock annex
 
 ## Creating table t_recruitmentmetadata
@@ -1717,18 +1662,22 @@ dbGetQuery(con_diaspara,
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
-
+-->
 
 # Creating group metrics
 
+Fish traits table aim to store information collected on individual fish. However, for various reasons, similar data are often collected and averaged on batches of individuals. We created a group metric to store those data
+
 ## Create group table
 
+<!--
 :::{.callout-note appearance="simple"}
 ## Note for group metrics
 Need a foreign key on both species and lfs code.
 :::
 
 <details>
+-->
 
 <summary>SQL code to create table `dat.t_group_gr`</summary>
 
@@ -1750,10 +1699,8 @@ Need a foreign key on both species and lfs code.
 
 ## Import data for group
 
-Scripts differ a bit for series and sampling. Check for some series with comment
-so see if need removing.
+The following scripts are used to import group metric from the two existing data formats, sampling and series. 
 
->  all related metrics have qal_id=22 following data call 2022
 
 
 <details>
@@ -2503,10 +2450,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_fish_fi limit 20;")|>
 #   })
   
 #   body <- paste(row_lines, collapse = "\n")
-#   paste0(header, body, "\n)")
-# }
-
-# # Example
+#   paste0(header, body, "\n)")tra_indivorgroupxample
 # library(tibble)
 # df_to_tribble_code(tra)
 
@@ -2554,14 +2498,13 @@ tranum <- tibble::tribble(
 tranum$trn_minvalue <- as.numeric(tranum$trn_minvalue)
 tranum$trn_maxvalue <- as.numeric(tranum$trn_maxvalue)
 dbWriteTable(con_diaspara_admin, "tr_traitnumeric_trn_temp", tranum, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitnumeric_trn")
+dbExecute(con_diaspara_admin, "DELETE Ftra_indivorgrouptraitnumeric_trn")
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitnumeric_trn(
 tra_id,
 tra_code,
 tra_wkg_code,
 tra_spe_code,
-tra_description,
-tra_typemetric,
+tra_descritra_indivorgroup,
 trn_uni_code,
 tra_qualitativeornumeric,
 trn_minvalue,
@@ -2641,7 +2584,7 @@ adult is the smolt age.
 #| eval: FALSE
 #| warning: FALSE
 #| message: FALSE
-#| code-fold: TRUE
+#| ctra_indivorgroup
 #| code-summary: Code to import qualitative trait.
 
 traqal <- tibble::tribble(
@@ -2657,11 +2600,10 @@ traqal <- tibble::tribble(
 
 
 dbWriteTable(con_diaspara_admin, "tr_traitqualitative_trq_temp", traqal, overwrite =TRUE)
-dbExecute(con_diaspara_admin, "DELETE FROM refnas.tr_traitqualitative_trq")
+dbExecute(con_diaspara_admin, "DELETE FROM refntra_indivorgrouplitative_trq")
 dbExecute(con_diaspara_admin, "INSERT INTO refnas.tr_traitqualitative_trq(
 tra_id,
-tra_code,
-tra_wkg_code,
+tra_codetra_indivorgroupe,
 tra_spe_code,
 tra_description,
 tra_typemetric,

@@ -12,10 +12,10 @@ CREATE TABLE ref.tr_trait_tra (
   CONSTRAINT fk_tra_spe_code  FOREIGN KEY (tra_spe_code)
   REFERENCES ref.tr_species_spe(spe_code)
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  tra_typemetric text NULL,
-  CONSTRAINT ck_tra_typemetric CHECK (((tra_typemetric = 'Individual'::text) 
-  OR (tra_typemetric = 'Group'::text) 
-  OR (tra_typemetric = 'Both'::text))),
+  tra_indivorgroup text NULL,
+  CONSTRAINT ck_tra_indivorgroup CHECK (((tra_indivorgroup = 'Individual'::text) 
+  OR (tra_indivorgroup = 'Group'::text) 
+  OR (tra_indivorgroup = 'Both'::text))),
   tra_qualitativeornumeric TEXT,
   CONSTRAINT ck_tra_qualitativeornumeric CHECK ((tra_qualitativeornumeric = 'Qualitative'::text) 
   OR (tra_qualitativeornumeric = 'Numeric'::text)),
@@ -29,7 +29,7 @@ COMMENT ON COLUMN ref.tr_trait_tra.tra_code IS
  'Name of the trait';
 COMMENT ON COLUMN ref.tr_trait_tra.tra_description IS
  'Description of the fish trait';
-COMMENT ON COLUMN ref.tr_trait_tra.tra_typemetric IS 
+COMMENT ON COLUMN ref.tr_trait_tra.tra_indivorgroup IS 
 'Is the metric a group metric (group), or individual metric (individual) or can be used in both tables (both) ?';
 COMMENT ON COLUMN ref.tr_trait_tra.tra_qualitativeornumeric IS
  'Indicate variable type, either Qualitative or Numeric';
@@ -54,7 +54,7 @@ SELECT
   tra_description, 
   tra_wkg_code,  
   tra_spe_code , 
-  tra_typemetric,
+  tra_indivorgroup,
   tra_qualitativeornumeric FROM 
   refeel.tr_traitnumeric_trn
 UNION
@@ -64,7 +64,7 @@ SELECT
   tra_description, 
   tra_wkg_code,  
   tra_spe_code , 
-  tra_typemetric,
+  tra_indivorgroup,
   tra_qualitativeornumeric FROM 
   refeel.tr_traitqualitative_trq);
 ALTER TABLE refeel.tg_trait_tra 

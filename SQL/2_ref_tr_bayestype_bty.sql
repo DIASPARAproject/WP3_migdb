@@ -27,6 +27,7 @@ GRANT SELECT ON ref.tr_bayestype_bty TO diaspara_read;
 
 /*
 Hilaire review : remove "nimble" ...
+ALTER TABLE "ref".tr_nimble_nim RENAME TO tr_bayestype_bty
 ALTER TABLE "ref".tr_nimble_nim RENAME COLUMN nim_code TO bty_code;
 ALTER TABLE "ref".tr_nimble_nim RENAME COLUMN nim_description TO bty_description;
 ALTER TABLE "ref".tr_nimble_nim RENAME CONSTRAINT tr_nimble_nim_pkey TO tr_bayestype_bty_pkey;
