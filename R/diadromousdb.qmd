@@ -1521,7 +1521,7 @@ mandatory in the format).
 ## Life stages (tr_lifestage_lfs)
 
 Life stages cannot easily be shared among all species, they are species
-specific, probably similar between Sea trout and Salmon, but there is a
+specific. Often similar between Sea trout and Salmon, but there is a
 large gap between a leptocephalus and a parr.
 
 
@@ -1529,7 +1529,7 @@ large gap between a leptocephalus and a parr.
 ### Considerations about the database structure
 
 For life stage, unlike in other referentials, using working-group-specific life stages would lead to confusion. WGBAST and WGNAS would
-share the same stages for salmon. So unlike in many other table, the
+share the same stages for salmon. So unlike in many other tables, the
 referentials will not use inheritance (see paragraph @sec-hierarchical
 for more details on inheritance). This means that we will create a table
 grouping all life stages and then we will only select the relevant ones
@@ -1547,7 +1547,7 @@ and a subset of values used by the working group.
 Stages use are described in WGNAS metadata [paragraph life stage of the
 WGNAS description
 report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgnas_salmoglob_description.html#developmental-stage)
-and WGBAST reports (though for the "young fish" -data this concept is mixed with
+and WGBAST reports (though for the WGBAST's "young fish" -data this concept is mixed with
 age) [paragraph life stage of the WGBAST description
 report](file:///C:/workspace/DIASPARA_WP3_migdb/R/wgbast_database_description.html#age).
 So they are not used as a separate column to describe the data. But in
@@ -1570,11 +1570,11 @@ even if for WGNAS there is no practical use the information is not used currentl
 
 ### Simplifying the stage column in WGNAS
 
-The work was initially done with the stage column in the salmoglob database.
+The work was initially done with the stage column in the WGNAS salmoglob database.
 In this column,  the information relies on a combination of life stage and spatial location
  (e.g; post smolt and location at sea,  returning adult in seawater, in
 freshwater...) @ices_second_2024. 
-To deal with these spatio-temporal elements that are not stage, 
+To deal with these spatio-temporal elements that are not stages, 
 we simplified the stages table, removed
 elements which are not stages. Parameters still hold the spatio temporal
 information in metadata. 
@@ -1765,7 +1765,7 @@ DT::datatable(rownames = FALSE,
 
 ::: {.callout-tip appearance="note"}
 <h3> Follow up in ICES vocab</h3>
-This issue has been created in ICES data gouvernance :
+This issue has been created in ICES data governance :
 [DIASPARA: Diadromous fish life stages \#885](https://github.com/ices-eg/DIG/issues/885)
 :::
 
