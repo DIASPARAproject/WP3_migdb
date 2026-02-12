@@ -58,18 +58,18 @@ DIASPARA meeting : [database structure](https://projets_eabx.pages.mia.inra.fr/d
 For ease of use, the report is structured with four main parts.
 
   * The first describes some principle about the database and it's structure.
-  * The second create all the vocabularies (standard set of code alongside with their description used as reference for stage, species). Think of them as "dictionaries" of possible words and that the database would only be able to use those words as standard and not invent new ones....
+  * The second creates all the vocabularies (standard set of code alongside with their description used as reference for stage, species). Think of them as "dictionaries" of possible words and that the database would only be able to use those words as standard and not invent new ones.
   * The third refers to the ***Stock*** and holds values aggregated at the
 scale of the assessment unit, or stock unit. 
   * The fourth is the ***Series and Trait*** and allows to have time series of data, group and individual life history trait data. This was previously coded in a separate report which has been merged into this main DIADROMOUS DATABASE report at the end of the project for ease of reading.
 
-Here we need to mention that to support both structures, an habitat database has been created using a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
+Additionally, to accommodate both structures, a habitat database was created using a hierarchical structure of the habitat of the migratory fishes (see [habitat report]()).
 The script to create this report can be found in diaspara github [code of the report](https://github.com/DIASPARAproject/WP3_migdb/blob/main/R/stockdb.qmd), the SQL codes are found in the following link
  [SQL code](https://github.com/DIASPARAproject/WP3_migdb/tree/main/SQL).
 
 
 ::: {.callout-important appearance="simple"}
-All the code (R, SQL), reports (Quarto) and presentation where produced in [DIASPARA migDB github repository](https://github.com/DIASPARAproject/WP3_migdb)
+All the code (R, SQL), reports (Quarto), and presentations (Quarto) were produced in [DIASPARA migDB github repository](https://github.com/DIASPARAproject/WP3_migdb)
 
 The code to this report is available [here](https://github.com/DIASPARAproject/WP3_migdb/blob/main/R/diadromousdb.qmd)
 
@@ -108,8 +108,6 @@ The structure might be either a full vocabulary, common to all working groups, o
 
 ## Unicity constraints
 
-The different 
-
 Another important aspect to consider is the implementation of unique constraints, especially since some fields may contain null values. To preserve data integrity, several levels of unique constraints—supported by indexes—should be defined. These may include combinations such as:
 
 * (year, age, area, parameter)
@@ -121,7 +119,7 @@ Another important aspect to consider is the implementation of unique constraints
 * (year, parameter)
 
 This flexibility is necessary because age is used in WGNAS and WGBAST but not in WGEEL, and because WGBAST includes two additional fields not present in other databases: period (e.g., month, half‑year) along with the associated value and the estimation method. Using different structures in the inherited tables allows each working group to manage its specific requirements while still maintaining a largely shared and consistent core schema.
-Within WGNAS, the presence of area × area matrices means that the area field may appear twice. This situation can be handled by introducing an additional column—needed for both WGNAS and WGBAST. In such cases, it may also be necessary to implement a trigger to enforce uniqueness on combinations such as (year, area, area, parameter) whenever duplicated area fields occur.
+Within WGNAS, the presence of area × area matrices means that the area field may appear twice. This situation can be handled by introducing an additional column, needed for both WGNAS and WGBAST. In such cases, it may also be necessary to implement a trigger to enforce uniqueness on combinations such as (year, area, area, parameter) whenever duplicated area fields occur.
 
 ## Convention for creating the diaspara database
 
@@ -458,7 +456,7 @@ tr_species_spe with other tables, arrows indicate inheritance, click to enlarge"
 ## Working group (tr_icworkinggroup_wkg)
 
 Species is necessary to separate data within the same working group (WGBAST works
-on both Trutta and Salmon). Furthermore, two working groups might be working on the
+on both Trout and Salmon). Furthermore, two working groups might be working on the
  same species. For this reason we need to have a "working group" entry in most of the tables.
  There is already a table for working group. The proposed table is @tbl-icworkinggroup.
 
