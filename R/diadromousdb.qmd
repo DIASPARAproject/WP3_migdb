@@ -539,7 +539,7 @@ tr_icworkinggroup_wkg with other tables, click to enlarge"){#fig-schema_tr_icwor
 
 ## Country (tr_country_cou)
 
-Countries are taken from the wgeel database and
+Countries are taken from the WGEEL database, and
 streamlined with ICES to further integrate North American countries.
  The shapefiles have been downloaded from
 https://gisco-services.ec.europa.eu/distribution/v2/countries/download/#countries
@@ -888,7 +888,7 @@ for instance some arrays have nothing to do with age, and in that case there is 
 structure](images\SAM_parm_metadata.png "metadata mind map, click to enlarge"){#fig-metadata .lightbox}
 
 We can have a look at the metadata in the analysis done on the WGNAS
-database [WGNAS
+database "Salmoglob" [WGNAS
 description](https://projets_eabx.pages.mia.inra.fr/diaspara/fr/deliverables/wp3/p4/wgnas_salmoglob_description.html#metadata).
 
 In Salmoglob, we had a problem with some columns holding data corresponding to different data types . For instance a column could hold either year, or age. 
@@ -896,7 +896,7 @@ Another issue was that some arrays integrated in the database have twice the sam
 additional column where data can be of several types (see tg_additional_add in @sec-additional).
 The description could be used within a type
 [array](https://www.postgresql.org/docs/current/arrays.html). But as SQL server
-does not work with array, and the SQL database will be stored in ICES, we chose not to use those arrays.
+does not work with arrays, and the SQL database will be stored in ICES, we chose not to use those arrays.
 
 <details>
 
@@ -1189,8 +1189,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") |>
 ::: {.callout-note appearance="simple"}
 <h3>NOTE DIASPARA</h3>
 
-Hilaire noted that naming the table "outcome" wasn't ideal so we've
-followed his suggestion
+It was noted that naming the table as "outcome" wasn't ideal as it can be confused to others, so we've followed this suggestion
 :::
 
 
