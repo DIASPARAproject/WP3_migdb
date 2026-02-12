@@ -42,7 +42,7 @@ editor:
 The current poor status of several diadromous fish species, most notably the Atlantic salmon and the European eel, highlights the urgent need for effective management and scientifically robust assessment procedures. Achieving this requires high‑quality, coherent and accessible data, as conservation and management decisions can only be as reliable as the information on which they rely. Yet, despite the ecological and socio‑economic importance of these species, the data required to monitor their populations and pressures remain highly fragmented, scattered across institutions, stored in heterogeneous formats, and often maintained in locally developed systems. Such dispersion poses major limitations for transparency, reproducibility, long‑term maintenance, and ultimately for the provision of sound scientific advice.
 Atlantic salmon and European eel share life cycles that span both continental and marine ecosystems, inside and outside Europe. Although populations behave as relatively independent units in freshwater, they are biologically mixed during their marine phases, which requires coordination at regional and international scales for data collection, assessment, and management. Moreover, these species face multiple anthropogenic impacts, including fisheries, habitat degradation, and fragmentation caused by dams and hydropower plants, further emphasizing the need for robust and harmonized data systems. 
 
-In this context, ICES plays a central role in providing independent, high‑quality scientific advice for fisheries management, coordinating international expert groups that evaluate stock status and develop methodologies to support evidence‑based decision making. However, current ICES working groups (WGEEL, WGNAS and WGBAST) rely on locally maintained, heterogeneous databases and spreadsheets, an approach that hampers operability, transparency and long‑term sustainability, and is incompatible with the future Transparent Assessment Framework (TAF) aspirations (an ICES methodology and platform developed by to ensure that scientific assessments of fishery resources are fully transparent, reproducible, and auditable). To address these challenges, DIASPARA has developed the DIASPARA Fish Stock Database (StockDB), a new standardized and centralized database designed to support the assessment of diadromous fish species. StockDB consolidates biological data, fisheries information, habitat descriptors, and impact metrics (including dam‑related pressures), integrating datasets from legacy ICES databases. 
+In this context, the International Council for the Exploration of the Sea (ICES) plays a central role in providing independent, high‑quality scientific advice for fisheries management, coordinating international expert groups that evaluate stock status and develop methodologies to support evidence‑based decision making. However, current ICES working groups (WGEEL, WGNAS and WGBAST) rely on locally maintained, heterogeneous databases and spreadsheets, an approach that hampers operability, transparency and long‑term sustainability, and is incompatible with the future Transparent Assessment Framework (TAF) aspirations (an ICES methodology and platform developed by to ensure that scientific assessments of fishery resources are fully transparent, reproducible, and auditable). To address these challenges, DIASPARA has developed the DIASPARA Fish Stock Database (StockDB), a new standardized and centralized database designed to support the assessment of diadromous fish species. StockDB consolidates biological data, fisheries information, habitat descriptors, and impact metrics (including dam‑related pressures), integrating datasets from legacy ICES databases. 
 
 To do so, our work was carried out in different steps.
 
@@ -1774,7 +1774,7 @@ This issue has been created in ICES data governance :
 ## Maturity (ts_maturity_mat)
 
 In Salmoglob, information about the stage mixes information on stage and maturity.
-The use of Universal sexual maturity scale for all fish (SMSF) vocabulary has been made mandatory for all Working groups.
+The use of Universal sexual maturity scale for all fish (SMSF) vocabulary has been made mandatory for all working groups.
 For this reason a vocab on maturity was created. 
 It will probably rarely be used in eel as all the eel caught even on their way to the ocean are always immature, the maturation occuring later during the spawning migration. 
 However, this information is necessary for Salmon, for which both the location and the maturity will define the spatio temporal elements in life cycle, to be integrated as processes in the model. So for instance, some parameters will describe sexually mature individuals caught at sea, or in freshwater during their spawning migration.
@@ -1817,17 +1817,17 @@ immature (virgin developing for the first time) fish which is not
 going to contribute to the current upcoming spawning season. Either
 it is uncertain if the fish will make it for the upcoming spawning
 season as it is a long time to the current upcoming spawning season
-(i.e. if maturity is assessed 8 months prior to the spawning season
+(i.e., if maturity is assessed 8 months prior to the spawning season
 it is unsure if the first time developer will be ready to spawn in 8
 months time), or the time between assessing the maturity stage and
 the current upcoming spawning season is too short to fully develop
-the oocytes (i.e. if it takes 6 months to fully develop oocytes from
-previtellogenic to eggs and a Ba fish is found 3 months prior to the
+the oocytes (i.e., if it takes 6 months to fully develop oocytes from
+previtellogenic to eggs and a Ba (see table below) fish is found 3 months prior to the
 current upcoming spawning season, it will not have enough time to
 develop the oocytes).
 
 -   the substage Bb identifies a developing and functionally mature
-(first or repeat spawner!!) fish which, in most of the cases is
+(first or repeat spawner!) fish which, in most of the cases is
 going to contribute to the current spawning season. This stage has
 visible oocytes and grainy appearance of the gonads on the
 macroscopic scale, and vitellogenic oocytes on the histological key.
@@ -1997,7 +1997,7 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_habitattype_hty;") |>
 #### Quality and Archiving Procedures Across Working Groups
 
 The Working Group on Eel (WGEEL) employs a dedicated quality‑coding system to document both the reliability of submitted data and any modifications applied during processing. This system, implemented through the table tbl‑tr_quality_qalwgeel, enables the group to flag records as high quality, modified, subject to warnings, missing, or otherwise problematic. It also serves as a mechanism for retaining historical information associated with each data point.
-In contrast, the International Council for the Exploration of the Sea (ICES) does not routinely retain archived versions of submitted datasets. 
+In contrast, ICES does not routinely retain archived versions of submitted datasets. 
 The Working Group on North Atlantic Salmon (WGNAS) adopts a different approach: elements from each annual assessment are systematically copied into an archive table, while only the most up‑to‑date data are maintained in the active database used for current analyses. Consequently, the SalmoGlob database—constructed from WGNAS data—contains exclusively the records relevant to the current assessment year.
 A structured comparison between the active and archived datasets is conducted within the WGNAS Shiny visualisation tool. This comparison is used to identify variables that are missing or that exhibit substantial deviations from the previous year's values. The results provide an essential quality‑control checkpoint, ensuring the consistency and reliability of input data prior to executing the more complex modelling procedures.
 
@@ -2326,8 +2326,8 @@ https://gis.ices.dk/shapefiles/ICES_areas.zip
 https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c784a0a3-752f-4b50-b02f-f225f6c815eb
 
 The rest of the world was found on a computer. Cannot trace the
-source, it's exaclty the same for NAFO but changed in the Med and ICES.
-For some reasons was not complete in table from wgeel so have to
+source: it's exactly the same for NAFO but changed in the Med and ICES.
+For some reason, it was not complete in the table from wgeel, so have to
 download it again to postgres.
 
 Values for geom have been updated from ICES areas, the new boundaries
@@ -2697,10 +2697,10 @@ is always year), the referential is only used in WGBAST.
 The source of  data is included in WGBAST see: [WBAST description](https://diaspara.bordeaux-aquitaine.inrae.fr/deliverables/wp3/p5/wgbast_database_description.html#source-of-fishery-data).
 The vocab described here adapts this vocab to ICES DataSource vocab and proposes new entries from WGBAST.
 
-ICES data centre indicated that the current way of handling estimated data,
-is to separate the source of data and the type of estimation, for instance this structure 
-is followed currently in RDBES. So a catch can coming from logbook, it is estimated,
-and when estimated a method must be provided if estimated (estimation method).
+ICES data centre indicated that the current way of handling estimated data
+is to separate the source of data and the type of estimation. For instance, this structure 
+is followed currently in RDBES. So a catch can come from logbook: it is estimated,
+and when estimated, a method must be provided (estimation method).
 
 
 <details>
@@ -2856,8 +2856,8 @@ and estimation methods are created in daughter tables in each working group,
 ## Station (and ICES related vocabs) {#sec-station}
 
 
-The trait data need to be related to  sampling stations. These rely on a set of vocabularies (EDMO, PRGOV ...) liseted hereafter.
-To include the stations, we need two referential tables : the first one is the Station dictionary and the second is the relation Dictionary (which relates stations together). Both are maintained at ICES.  The following vocabs existing
+The trait data need to be related to  sampling stations. These rely on a set of vocabularies (EDMO, PRGOV, ...) liseted hereafter.
+To include the stations, we need two referential tables: the first one is the Station dictionary and the second is the relation Dictionary (which relates stations together). Both are maintained at ICES.  The following vocabs existing
 in ICES have been integrated in the diadromous DB to ensure standardisation with ICES 
 vocabs.
 
@@ -2944,7 +2944,7 @@ EDMO <- getCodeList("EDMO")|>slice_head(n=10)  |>
 
 :::{.callout-tip appearance="simple"}
 ## Addings institutions to the EDMO
-To request a new EDMO an organisation needs to send an email to info@maris.nl
+To request a new EDMO, an organisation needs to send an email to info@maris.nl
 :::
 
 
@@ -3693,7 +3693,7 @@ This section contains the code to import WGNAS to the DIADROMOUS DB.
 ### Metadata (dat.t_metadata_met) (all groups)
 
 Metatadata is a working group specific table describing the parameters used as entry in the stock 
-table. One parameter refers to a quantity or model variable. This quantity is generally assessed at the regional scale (Stock unit (WGNAS), Stock assessment unit WGBAST, EMU or in the future stock subunit or region (WGEEL). The metadata table aims at providing a full description of this parameter, including its dimension, the stage, maturity, age ...
+table. One parameter refers to a quantity or model variable. This quantity is generally assessed at the regional scale (Stock unit (WGNAS), Stock assessment unit WGBAST, EMU or in the future stock subunit or region (WGEEL). The metadata table aims at providing a full description of this parameter, including its dimension, the stage, maturity, age, etc.
 Using parameters and metadata allow to handle the complexity, and the diversity of model elements, while providing a common structure for all data between the different working groups (@fig-diad1.3).
 
 ![Conceptual illustration of the variables contained in metadata](images/DIAD1.3.png "Medatadata"){#fig-diad1.3}
@@ -4256,7 +4256,7 @@ is inherited in postgres and will have 3 more columns that the mother table. Thi
 than WGEEL. The three additional columns will be one for gear, one for time period type and one for time period.
 * The metadata will allow by a simple join to get back to F_type (stored in column met_type). It should also for a simple division according to the destination column, allowing to separate dead fish from the living ones.
 
-* **Effort, Numbers and Weights**. The database will be in long format while in the current structure, Effort, Weights and Numbers are reported in separate columns.A simple query will bring back the original format.
+* **Effort, Numbers and Weights**. The database will be in long format while in the current structure, Effort, Weights and Numbers are reported in separate columns. A simple query will bring back the original format.
 
 * Effort is reported in geardays only for driftnet, longline and trapnet fisheries. 
 
@@ -5067,7 +5067,7 @@ Finally, individual metrics were all details for one fish. And they concerned me
 
 ![Diagram for series](images/series_diagram_wgeel.png "A sql diagram of the relations of tables for series"){#fig-series_diagram_wgeel .lightbox}
 
-The second type of data was developed to hold the data collected from the DCF. These were metrics collected from landings, data coming from the analysis of electrofishing data, or other experimental sampling that are not reported as series. Currenlty, sampling of commercial fisheries should be held in the RDBES, and any commercial sampling data in the WGEEL will be removed and replaced by a data
+The second type of data was developed to hold the data collected from the DCF. These were metrics collected from landings, data coming from the analysis of electrofishing data, or other experimental sampling that are not reported as series. Currently, sampling of commercial fisheries should be held in the RDBES, and any commercial sampling data in the WGEEL will be removed and replaced by a data
 streaming from RDBES. The way to collect these data from the RDBES, and merge them with the actual trait data needs to be worked out in the future. 
 
 
@@ -7069,30 +7069,28 @@ dbGetQuery(con_diaspara, "SELECT * FROM datnas.t_indivtrait_int limit 20;")|>
 
 # Conclusions
 
-A database was created for WGNAS, WGBAST, and WGEEL. It could easily
-have a similar format for WGTRUTTA and other working groups working with diadromous fish species, such as lampreys and shads. It will allow for the integration of data call files using DATSU and more generally, interoperable with 
-other ICES tools (e.g. RDBES) and processes (e.g. TAF). The habitat database is currently
+A database was created for ICES working groups WGNAS, WGBAST, and WGEEL. It could easily
+have a similar format for WGTRUTTA and other working groups working with diadromous fish species, such as lampreys and shads. It will allow for the integration of data call files using ICES DATSU and more generally, interoperable with 
+other ICES processes (e.g. TAF), tools and databases (e.g. RDBES). The habitat database is currently
 ported to RDBES and it has been proposed in RDBFIS to allow for the inclusion of data in the
 continental part of the range for migratory fishes.
 
 Starting with the creation of formats for metrics in the summer 2025, this database will progressively 
 be handed over to ICES.
-Since it was programmed in Postgres, this will require some
-work. 
+Since it was programmed in Postgres, some work will be required to match it with ICES SQL. 
 In the long run, however, the use of a common database and ICES tools will:
 
 1) simplify
 the learning needs of experts and knowledge, when shifting between different diadromous expert and assessment groups,
 
-2) allow to provide a more streamlined data flow between national and international level, and  enhance accessibility and interoperability.
+2) allow to provide a more streamlined data flow between national and international level (e.g., data calls), and  enhance accessibility and interoperability, and
 
 3) allow to benefit from further support from ICES Data Center and ensure the long term maintenance of the system
 
 ::: {.callout-caution appearance="simple"}
 The shift to the new database will start in 2026 for WGEEL (metric DB) and
 probably 2028 for WGNAS and WGBAST depending on ressources to make the change.
-Changing from one database to another system will break the R code,
- which will need to be reviewed  
+Changing from one database to another system will break links in the R codes used in the assessment groups, and the codes will will need to be reviewed. 
 :::
 
 
