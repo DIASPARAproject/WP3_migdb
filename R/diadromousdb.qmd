@@ -1188,12 +1188,6 @@ dbGetQuery(con_diaspara, "SELECT * FROM ref.tr_destination_des;") |>
 
 ```
 
-::: {.callout-note appearance="simple"}
-<h3>NOTE DIASPARA</h3>
-
-Hilaire noted that naming the table "outcome" wasn't ideal so we've
-followed his suggestion
-:::
 
 
 
@@ -4677,8 +4671,7 @@ be 1 or 2 , and month between 1 and 12).
 * sto_datasourcecode. This column is not used in scripts, but discussion with
 Henni have shown that this remains important. It will be adapted to ICES vocab
 `DataSource` with additions for elements on the calculation of smolts in the Young fish database (see
-@sec-datasource)
-.
+@sec-datasource).
 
 
 <details>
