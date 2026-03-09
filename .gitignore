@@ -130,3 +130,8 @@ R/data/sample_eel_format_4.xlsx
 R/data/sample_eel_format.xlsx
 Scripts/Script.sql
 R/data/ser_burishoole.Rdata
+R/Diadromousdb.zip
+SQL/diadroumousdb_dumpv14.sql
+.gitignore
+.gitignore
+SQL/diadroumousdb.sql
