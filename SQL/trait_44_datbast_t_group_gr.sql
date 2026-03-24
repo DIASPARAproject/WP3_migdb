@@ -1,8 +1,14 @@
 
 -- DROP TABLE IF EXISTS datbast.t_group_gr;
+-- 19/03/2026 adding agegroup to group metric (just like in t_annualseries_san)
+-- quick fix though not sure about age or agegroup
+
 
 CREATE TABLE datbast.t_group_gr (
- CONSTRAINT fk_gr_ser_id FOREIGN KEY (gr_ser_id)
+  gr_agegroup TEXT,
+  CONSTRAINT ck_gr_agegroup 
+  CHECK (gr_agegroup IS NULL OR gr_agegroup='0+' OR gt_agegroup = '>0+' OR gr_agegroup ='all'),
+  CONSTRAINT fk_gr_ser_id FOREIGN KEY (gr_ser_id)
   REFERENCES datbast.t_series_ser (ser_id) 
   ON UPDATE CASCADE ON DELETE CASCADE, 
   CONSTRAINT fk_gr_gr_id  FOREIGN KEY (gr_gr_id, gr_wkg_code)
@@ -55,3 +61,6 @@ COMMENT ON COLUMN dat.t_group_gr.gr_sex_code IS
  'Sex code only for subgroups male or female';
 GRANT ALL ON datbast.t_group_gr TO diaspara_admin;
 GRANT SELECT ON datbast.t_group_gr TO diaspara_read; 
+
+
+
