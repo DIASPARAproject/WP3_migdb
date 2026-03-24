@@ -14,3 +14,12 @@ CREATE TABLE ref.tr_units_uni (
 GRANT ALL ON ref.tr_units_uni TO diaspara_admin;
 GRANT SELECT ON ref.tr_units_uni TO diaspara_read; 
 -- I don't add definitions this is an ICES vocab
+
+
+-- 24/03/2026 this is the same as gd (gear day) and is not used
+SELECT * FROM "ref".tr_units_uni WHERE uni_code = 'nr fyke.day';
+SELECT * FROM datbast.t_series_ser WHERE ser_uni_code = 'nr fyke.day';
+SELECT * FROM datnas.t_series_ser WHERE ser_uni_code = 'nr fyke.day';
+SELECT * FROM dateel.t_series_ser WHERE ser_uni_code = 'nr fyke.day';
+SELECT * FROM refeel.tr_traitnumeric_trn  WHERE trn_uni_code = 'nr fyke.day';
+DELETE FROM "ref".tr_units_uni WHERE uni_code = 'nr fyke.day';
