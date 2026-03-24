@@ -63,6 +63,10 @@ rsconnect/
 credentials.yml
 credentials_sav.yml
 
+# temporary excel files
+*~$*.*
+
+
 # Quarto presentations and docs
 
 R/*.html
@@ -136,3 +140,4 @@ SQL/diadroumousdb_dumpv14.sql
 .gitignore
 SQL/diadroumousdb.sql
 R/export_format/combined_raw.csv
+
