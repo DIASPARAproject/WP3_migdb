@@ -1,0 +1,432 @@
+---
+title: "Export to DATSU"
+author: "Cedric"
+format: 
+  html :
+    self-contained: true
+editor: visual
+params:
+  samplingscheme: 
+  - "GiTCG"
+  - "VacG"
+  - "BresGY"  
+  - "BreS"  
+  schema: "dateel"
+---
+
+```{r }
+#| label: qmdhelper 
+#| echo: FALSE
+#| eval: FALSE
+
+# this is only necessary in eclipse, Rstudio or vscodium should down
+params <- list(schema = "dateel",
+samplingscheme=c("GiTCG", "VacG", "BresGY", "BreS")
+
+)
+```
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("RPostgres")
+load_library("yaml")
+load_library("uuid")
+load_library("glue")
+cred <- read_yaml("../credentials.yml")
+# check if internal
+
+test_internal <- function(host) {
+  status <- system2("ping", args = c(" 10.1.128.16"), stdout = FALSE, stderr = FALSE)
+  return(status == 0)
+}
+
+
+if (test_internal()){
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostinternal,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+} else {
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$host,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+}
+folder <- tempdir()
+```
+
+TODO check with Maria : DatarightsHolder  doi Station code
+
+
+
+```{r}
+#| label: build_dataset_FI
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+# File info
+# re
+
+query <- 
+glue_sql('SELECT \'FI\' AS "RecordType",ser_cou_code AS "Country", 2025 AS "Year",
+ser_spe_code AS "Species",
+ser_wkg_code AS "WorkingGroup",
+ser_ver_code AS "Version",
+1001 AS "DatarightsHolder" 
+FROM {`params$schema`}.t_series_ser
+WHERE ser_code IN ({ss*}) LIMIT 1',
+  ss = params$samplingscheme, .con = con_diaspara)
+
+FI <- dbGetQuery(con_diaspara, query)
+
+write.csv2(FI,
+          file.path(folder, "FI.csv"),
+          row.names = FALSE)
+```
+
+
+```{r}
+#| label: build_dataset_sampling_scheme_SS
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+query <- 
+glue_sql('SELECT 
+\'SS\' AS "RecordType",
+ser_code AS "SamplingSchemeID",
+10777 AS "StationCode", 
+ser_fiw_code AS "Fishway",
+ser_mon_code AS "MonitoringDevice",
+ser_spe_code AS "Species",
+ser_lfs_code AS "LifeStage",
+ser_are_code AS "Area",
+ser_gea_code AS "Gear",
+ser_stocking AS "RestockingFlag",
+\'https://doi.org/10.17895/ices.pub.30488120\' AS DOI  
+FROM {`params$schema`}.t_series_ser
+WHERE ser_code IN ({ss*})',
+ss = params$samplingscheme, .con = con_diaspara)
+
+SS <- dbGetQuery(con_diaspara, query)
+
+write.csv2(SS,
+          file.path(folder, "SS.csv"),
+          row.names = FALSE)
+
+```
+
+
+TODO check the definition of proportion G in GY Y in YS becomes lifestageProportion.
+
+TODO comments attached to all group metrics ? Or comment attached to each metric.
+
+
+
+
+
+```{r}
+#| label: build_dataset_group_metrics_GM
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+
+
+# GM GROUP METRICS 
+# note sex is in subsamples not samples
+
+query <- 
+glue_sql('
+SELECT 
+\'GM\' AS "RecordType",
+gr_id AS "GroupID",
+ser_code AS "SamplingSchemeID",
+gr_year AS "Year",
+NULL AS "AgeClass",
+gr_lfs_code AS "LifeStage",
+gr_number AS "NumberofIndividuals",
+gr_comment AS "Comments",            
+-- gr_sex_code AS "Sex",
+grt_tra_code,
+grt_value,
+grt_trm_code,
+grt_trv_code
+FROM {`params$schema`}.t_series_ser 
+JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
+JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
+AND gr_gr_id IS NULL',
+ss = params$samplingscheme, .con = con_diaspara)
+GM0 <- dbGetQuery(con_diaspara, query)
+
+# GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
+
+GMnumeric <-
+  GM0 |> 
+  filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
+  select(-grt_trv_code) 
+
+GMqualitative <-   GM0 |> 
+  filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
+  select(-grt_value) |>
+    pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from ="grt_trv_code") 
+
+# no qualitative values for Group metrics
+
+GM_without_method <- GMnumeric |> filter(is.na(grt_trm_code)) |>
+  select(-grt_trm_code) |>
+  pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from = all_of(c("grt_value")))
+  
+GM_with_method <- GMnumeric |> filter(!is.na(grt_trm_code)) |>
+  pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from = all_of(c("grt_value", "grt_trm_code"))) |>
+  rename("Muscle_lipid" = "grt_value_Muscle_lipid",
+         "Anguillicola_proportion" = "grt_value_Anguillicola_proportion",
+         "Anguillicola_intensity" = "grt_value_Anguillicola_intensity",
+         "Female_proportion"="grt_value_Female_proportion",
+         "MuscleLipidMeasurementMethod"="grt_trm_code_Muscle_lipid",
+         "SexDeterminationMethod"="grt_trm_code_Female_proportion",
+         "AnguillicolaMethod"="grt_trm_code_Anguillicola_intensity") |>
+  select (-grt_trm_code_Anguillicola_proportion) 
+# last one grt_trm_code_Anguillicola_proportion is twice there, the same for
+# proportion and intensity
+
+
+# need to merge proportions
+# No data currently in group metrics for PCB or or TEQ
+GM <- bind_rows(
+  GM_without_method,
+  GM_with_method
+) |> mutate(LifeStageProportion = 
+              ifelse(is.na(S_in_ys_proportion),
+                     G_in_gy_proportion, S_in_ys_proportion),
+            TEQ = NA,
+            PCB = NA) |>
+  select(-G_in_gy_proportion,-S_in_ys_proportion)|>
+  rename("MeanLength" = "Lengthmm",
+         "MeanWeight" = "Weightg",
+         "MeanAge" = "Ageyear",
+         "FemaleProportion"="Female_proportion",
+         "AnguillicolaProportion" = "Anguillicola_proportion",
+         "DifferentiatedProportion" = "Differentiated_proportion",
+         "AnguillicolaIntensity"="Anguillicola_intensity",
+         "MuscleLipidPercentage"= "Muscle_lipid",
+         "EVEXProportion" = "Evex_proportion",
+         "HVAProportion"="Hva_proportion"
+        )  |>
+    select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
+          LifeStageProportion, NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod,  FemaleProportion,  DifferentiatedProportion,  AnguillicolaProportion,  AnguillicolaIntensity, AnguillicolaMethod,  MuscleLipidPercentage, MuscleLipidMeasurementMethod,
+          PCB, TEQ, EVEXProportion, HVAProportion,Pb,Cd,Hg, Comments                       
+)
+# " PCB" = "Sum_6_pcb",
+
+
+GM <- GM |> 
+  filter(SamplingSchemeID %in% params$samplingscheme) 
+
+```
+
+```{r}
+#| label: build_dataset_group_subsample_GS
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+# GS note sex is in subsamples not samples
+query <- 
+glue_sql('
+SELECT 
+\'GM\' AS "RecordType",
+gr_id AS "GroupID",
+ser_code AS "SamplingSchemeID",
+gr_year AS "Year",
+NULL AS "AgeClass",
+gr_lfs_code AS "LifeStage",
+gr_number AS "NumberofIndividuals",
+gr_comment AS "Comments",            
+gr_sex_code AS "Sex",
+grt_tra_code,
+grt_value,
+grt_trm_code,
+grt_trv_code
+FROM {`params$schema`}.t_series_ser 
+JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
+JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
+AND gr_gr_id IS NOT NULL',
+ss = params$samplingscheme, .con = con_diaspara)
+GS0 <- dbGetQuery(con_diaspara, query)
+
+# GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
+
+GSnumeric <-
+  GS0 |> 
+  filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
+  select(-grt_trv_code) 
+
+GSqualitative <-   GS0 |> 
+  filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
+  select(-grt_value) |>
+    pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from ="grt_trv_code") 
+
+# no qualitative values for Group metrics
+
+GS_without_method <- GSnumeric |> filter(is.na(grt_trm_code)) |>
+  select(-grt_trm_code) |>
+  pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from = all_of(c("grt_value")))
+
+# method is always about sex there   
+GS_with_method <- GSnumeric |> filter(!is.na(grt_trm_code)) |>
+  pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from = all_of(c("grt_value"))) |>
+  rename("SexDeterminationMethod" = "grt_trm_code") 
+
+# last one grt_trm_code_Anguillicola_proportion is twice there, the same for
+# proportion and intensity
+
+ 
+GS <- bind_rows(
+  GS_without_method,
+  GS_with_method) |>
+  rename("MeanLength" = "Lengthmm",
+         "MeanWeight" = "Weightg",
+         "MeanAge" = "Ageyear")  |>
+    select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
+           NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod)
+
+GS <- GS |> 
+  filter(SamplingSchemeID %in% params$samplingscheme) 
+```
+
+CHECK check subgroup can be based on stage or sex, there should be a method to distinguish between stages.
+
+```{r}
+#| label: build_dataset_Individual_metrics
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+# GS note sex is in subsamples not samples
+query <- 
+glue_sql('
+SELECT 
+\'GM\' AS "RecordType",
+gr_id AS "GroupID",
+ser_code AS "SamplingSchemeID",
+gr_year AS "Year",
+NULL AS "AgeClass",
+gr_lfs_code AS "LifeStage",
+gr_number AS "NumberofIndividuals",
+gr_comment AS "Comments",            
+gr_sex_code AS "Sex",
+grt_tra_code,
+grt_value,
+grt_trm_code,
+grt_trv_code
+FROM {`params$schema`}.t_series_ser 
+JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
+JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
+AND gr_gr_id IS NOT NULL',
+ss = params$samplingscheme, .con = con_diaspara)
+GS0 <- dbGetQuery(con_diaspara, query)
+
+# GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
+
+GSnumeric <-
+  GS0 |> 
+  filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
+  select(-grt_trv_code) 
+
+GSqualitative <-   GS0 |> 
+  filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
+  select(-grt_value) |>
+    pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from ="grt_trv_code") 
+
+# no qualitative values for Group metrics
+
+GS_without_method <- GSnumeric |> filter(is.na(grt_trm_code)) |>
+  select(-grt_trm_code) |>
+  pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from = all_of(c("grt_value")))
+
+# method is always about sex there   
+GS_with_method <- GSnumeric |> filter(!is.na(grt_trm_code)) |>
+  pivot_wider(
+  names_from = all_of(c("grt_tra_code")), 
+  values_from = all_of(c("grt_value"))) |>
+  rename("SexDeterminationMethod" = "grt_trm_code") 
+
+# last one grt_trm_code_Anguillicola_proportion is twice there, the same for
+# proportion and intensity
+
+ 
+GS <- bind_rows(
+  GS_without_method,
+  GS_with_method) |>
+  rename("MeanLength" = "Lengthmm",
+         "MeanWeight" = "Weightg",
+         "MeanAge" = "Ageyear")  |>
+    select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
+           NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod)
+
+GS <- GS |> 
+  filter(SamplingSchemeID %in% params$samplingscheme) 
+```
+
+
+```{r}
+#| label:Build_format
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+
+write.csv2(GS,
+          file.path(folder, "GS.csv"),
+          row.names = FALSE)
+
+
+
+files <- list.files(folder, pattern = "\\.csv$", full.names = TRUE)
+all_lines <- unlist(lapply(files, readLines))
+
+# Write to a new single file
+writeLines(all_lines, "export_format/test_format.csv")
+
+```
