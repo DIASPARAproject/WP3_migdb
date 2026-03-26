@@ -139,5 +139,5 @@ SQL/diadroumousdb_dumpv14.sql
 .gitignore
 .gitignore
 SQL/diadroumousdb.sql
-R/export_format/combined_raw.csv
+R/export_format/*.*
 

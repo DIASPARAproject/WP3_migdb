@@ -82,7 +82,7 @@ TODO check with Maria : DatarightsHolder  doi Station code
 #| label: build_dataset_FI
 #| echo: FALSE
 #| warning: FALSE
-#| message: FALSE
+#| message: FA
 #| results: 'hide'
 
 # File info
@@ -211,25 +211,53 @@ GM_with_method <- GMnumeric |> filter(!is.na(grt_trm_code)) |>
          "Anguillicola_proportion" = "grt_value_Anguillicola_proportion",
          "Anguillicola_intensity" = "grt_value_Anguillicola_intensity",
          "Female_proportion"="grt_value_Female_proportion",
-         "MuscleLipidMeasurementMethod"="grt_trm_code_Muscle_lipid",
+         "MuscleLipidMethod"="grt_trm_code_Muscle_lipid",
          "SexDeterminationMethod"="grt_trm_code_Female_proportion",
          "AnguillicolaMethod"="grt_trm_code_Anguillicola_intensity") |>
   select (-grt_trm_code_Anguillicola_proportion) 
 # last one grt_trm_code_Anguillicola_proportion is twice there, the same for
 # proportion and intensity
 
+# GM_structure used to get all columns for the format
+GM_structure <- data.frame(
+  RecordType = character(),
+  GroupID = character(),
+  SamplingSchemeID = character(),
+  Year = integer(),
+  AgeClass = character(),
+  LifeStage = character(),
+  LifeStageProportion = numeric(),
+  NumberofIndividuals = integer(),
+  Age = numeric(),
+  Length = numeric(),
+  Weight = numeric(),
+  SexDeterminationMethod = character(),
+  FemaleProportion = numeric(),
+  DifferentiatedProportion = numeric(),
+  AnguillicolaProportion = numeric(),
+  AnguillicolaIntensity = numeric(),
+  AnguillicolaMethod = character(),
+  MuscleLipidPercent = numeric(),
+  MuscleLipidMethod = character(),
+  PCB = numeric(),
+  TEQ = numeric(),
+  EVEXProportion = numeric(),
+  HVAProportion = numeric(),
+  Pb = numeric(),
+  Cd = numeric(),
+  Hg = numeric(),
+  Comments = character(),
+  stringsAsFactors = FALSE
+)
 
 # need to merge proportions
 # No data currently in group metrics for PCB or or TEQ
-GM <- bind_rows(
-  GM_without_method,
-  GM_with_method
+
+GM1 <- bind_rows(
+  GM_without_method |> mutate(GroupID = as.character(GroupID)),
+  GM_with_method |> mutate(GroupID = as.character(GroupID))
 ) |> mutate(LifeStageProportion = 
-              ifelse(is.na(S_in_ys_proportion),
-                     G_in_gy_proportion, S_in_ys_proportion),
-            TEQ = NA,
-            PCB = NA) |>
-  select(-G_in_gy_proportion,-S_in_ys_proportion)|>
+              ifelse(is.na(S_in_ys_proportion), G_in_gy_proportion, S_in_ys_proportion)) |>
   rename("MeanLength" = "Lengthmm",
          "MeanWeight" = "Weightg",
          "MeanAge" = "Ageyear",
@@ -240,18 +268,29 @@ GM <- bind_rows(
          "MuscleLipidPercentage"= "Muscle_lipid",
          "EVEXProportion" = "Evex_proportion",
          "HVAProportion"="Hva_proportion"
-        )  |>
+        )  
+
+
+ GM <-  bind_rows(GM_structure , GM1) |>
     select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
-          LifeStageProportion, NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod,  FemaleProportion,  DifferentiatedProportion,  AnguillicolaProportion,  AnguillicolaIntensity, AnguillicolaMethod,  MuscleLipidPercentage, MuscleLipidMeasurementMethod,
-          PCB, TEQ, EVEXProportion, HVAProportion,Pb,Cd,Hg, Comments                       
-)
-# " PCB" = "Sum_6_pcb",
+          LifeStageProportion, NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod,  FemaleProportion,  DifferentiatedProportion,  AnguillicolaProportion,  AnguillicolaIntensity, AnguillicolaMethod,  MuscleLipidPercentage, MuscleLipidMethod,
+          PCB, TEQ, EVEXProportion, HVAProportion,Pb,Cd,Hg, Comments)
+ 
+ # " PCB" = "Sum_6_pcb",
 
 
 GM <- GM |> 
   filter(SamplingSchemeID %in% params$samplingscheme) 
 
+write.csv2(GM,
+          file.path(folder, "GM.csv"),
+          row.names = FALSE)
+
+
 ```
+
+CHECK check subgroup can be based on stage or sex, there should be a method to distinguish between stages.
+There is no comment with GS... But should there be one ? Probably if you follow the same format it would not add much ?
 
 ```{r}
 #| label: build_dataset_group_subsample_GS
@@ -280,8 +319,7 @@ grt_trv_code
 FROM {`params$schema`}.t_series_ser 
 JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
 JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
-AND gr_gr_id IS NOT NULL',
-ss = params$samplingscheme, .con = con_diaspara)
+AND gr_gr_id IS NOT NULL', .con = con_diaspara)
 GS0 <- dbGetQuery(con_diaspara, query)
 
 # GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
@@ -315,25 +353,54 @@ GS_with_method <- GSnumeric |> filter(!is.na(grt_trm_code)) |>
 
 # last one grt_trm_code_Anguillicola_proportion is twice there, the same for
 # proportion and intensity
-
+# 
+GS_structure <- data.frame(
+  RecordType = character(),            # char(2)
+  SubSampleID = character(),           # char(10)
+  GroupID = character(),               # char(20)
+  Sex = character(),                   # char(2), code list SEXCO
+  LifeStage = character(),             # char(10), code list STAGE
+  Age = integer(),                     # int(2)
+  Length = numeric(),                  # float(10)
+  Weight = numeric(),                  # float(10)
+  AnguillicolaProportion = numeric(),  # float(5)
+  AnguillicolaIntensity = numeric(),   # float(5)
+  AnguillicolaMethod = character(),    # char(20), code list METOA
+  MuscleLipidPercent = numeric(),      # float(10)
+  MuscleLipidMethod = character(),     # char(20), code list METOA
+  Comments = character(),              # char(200)
+  stringsAsFactors = FALSE
+)
  
 GS <- bind_rows(
   GS_without_method,
   GS_with_method) |>
-  rename("MeanLength" = "Lengthmm",
-         "MeanWeight" = "Weightg",
-         "MeanAge" = "Ageyear")  |>
+  rename(Length = Lengthmm,
+         Weight = Weightg,
+         Age = Ageyear)  |>
     select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
-           NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod)
+           NumberofIndividuals, Age,  Weight, Length,  SexDeterminationMethod)
+
+GS <- bind_rows(GS_structure , GS|> mutate(GroupID = as.character(GroupID)))
 
 GS <- GS |> 
   filter(SamplingSchemeID %in% params$samplingscheme) 
+
+write.csv2(GS,
+          file.path(folder, "GS.csv"),
+          row.names = FALSE)
+
 ```
 
-CHECK check subgroup can be based on stage or sex, there should be a method to distinguish between stages.
+Fish_ID => this is the identifier coming from country level ?
+Note : in our dataset, the method of sex is never used.
+Note : in our dataset there is no sex in individual metrics ...
+Note : anguillicola_presence not reported
+Note : I don't have TEQ
+Note : I don't have EVEX or HVA (check...)
 
 ```{r}
-#| label: build_dataset_Individual_metrics
+#| label: build_dataset_Individual_metrics_IM
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE
@@ -343,70 +410,138 @@ CHECK check subgroup can be based on stage or sex, there should be a method to d
 query <- 
 glue_sql('
 SELECT 
-\'GM\' AS "RecordType",
-gr_id AS "GroupID",
+\'IM\' AS "RecordType",
+fi_id,
+CASE WHEN fi_date IS NULL THEN fi_year 
+     ELSE fi_year END AS "Year",
 ser_code AS "SamplingSchemeID",
-gr_year AS "Year",
-NULL AS "AgeClass",
-gr_lfs_code AS "LifeStage",
-gr_number AS "NumberofIndividuals",
-gr_comment AS "Comments",            
-gr_sex_code AS "Sex",
-grt_tra_code,
-grt_value,
-grt_trm_code,
-grt_trv_code
+fi_idsource AS "FishID",
+fi_lfs_code AS "LifeStage",
+CASE WHEN fi_date IS NULL THEN NULL 
+ELSE extract(\'MONTH\' FROM fi_date)
+END AS "Month",
+CASE WHEN fi_date IS NULL THEN NULL 
+ELSE extract(\'DAY\' FROM fi_date)
+END AS "Day",
+fi_x_4326 AS "DecimalLongitude",
+fi_y_4326 AS "DecimalLatitude",
+int_tra_code,
+int_value,
+int_trv_code,
+int_trm_code,
+fi_comment AS "Comments"
 FROM {`params$schema`}.t_series_ser 
-JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
-JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
-AND gr_gr_id IS NOT NULL',
-ss = params$samplingscheme, .con = con_diaspara)
-GS0 <- dbGetQuery(con_diaspara, query)
+JOIN {`params$schema`}.t_fish_fi ON fi_ser_id = ser_id 
+JOIN {`params$schema`}.t_indivtrait_int ON int_fi_id=fi_id',
+.con = con_diaspara)
+IM0 <- dbGetQuery(con_diaspara, query) # 1796871
 
 # GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
 
-GSnumeric <-
-  GS0 |> 
-  filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
-  select(-grt_trv_code) 
+IMnumeric <-
+  IM0 |> 
+  filter(is.na(int_trv_code) & !is.na(int_value))  |>
+  select(-int_trv_code) 
 
-GSqualitative <-   GS0 |> 
-  filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
-  select(-grt_value) |>
+IMqualitative <-   IM0 |> 
+  filter(!is.na(int_trv_code) & is.na(int_value))  |>
+  select(-int_value) |>
     pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from ="grt_trv_code") 
+  names_from = all_of(c("int_tra_code")), 
+  values_from ="int_trv_code") 
 
 # no qualitative values for Group metrics
 
-GS_without_method <- GSnumeric |> filter(is.na(grt_trm_code)) |>
-  select(-grt_trm_code) |>
+IM_without_method <- IMnumeric |> filter(is.na(int_trm_code)) |>
+  select(-int_trm_code) |>
   pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from = all_of(c("grt_value")))
+  names_from = all_of(c("int_tra_code")), 
+  values_from = all_of(c("int_value")))
 
 # method is always about sex there   
-GS_with_method <- GSnumeric |> filter(!is.na(grt_trm_code)) |>
+IM_with_method <- IMnumeric |> filter(!is.na(int_trm_code)) |>
   pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from = all_of(c("grt_value"))) |>
-  rename("SexDeterminationMethod" = "grt_trm_code") 
+  names_from = all_of(c("int_tra_code")), 
+  values_from = all_of(c("int_value", "int_trm_code"))) |>
+  rename("MuscleLipidPercent"= "int_value_Muscle_lipid",
+         "Anguillicola_intensity" = "int_value_Anguillicola_intensity",
+         "MuscleLipidMethod"="int_trm_code_Muscle_lipid",
+         "AnguillicolaMethod"="int_trm_code_Anguillicola_intensity") 
 
-# last one grt_trm_code_Anguillicola_proportion is twice there, the same for
+# last one int_trm_code_Anguillicola_proportion is twice there, the same for
 # proportion and intensity
 
- 
-GS <- bind_rows(
-  GS_without_method,
-  GS_with_method) |>
-  rename("MeanLength" = "Lengthmm",
-         "MeanWeight" = "Weightg",
-         "MeanAge" = "Ageyear")  |>
-    select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
-           NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod)
 
-GS <- GS |> 
+IMstructure <- data.frame(
+  RecordType = character(),
+  Year = integer(),
+  SamplingSchemeID = character(),
+  FishID = character(),
+  LifeStage = character(),
+  Month = integer(),
+  Day = integer(),
+  DecimalLongitude = numeric(),
+  DecimalLatitude = numeric(),
+  Sex = character(),
+  SexDeterminationMethod = character(),
+  Differentiated = character(),
+  Age = integer(),
+  SeaAge = integer(),
+  JuvenileAge = integer(),
+  AgingMethod = character(),
+  AgingMatrix = character(),
+  AgingPrepMethod = character(),
+  Length = numeric(),
+  LengthMethod = character(),
+  Weight = numeric(),
+  MeanEyeDiam = numeric(),
+  PectoralFinLength = numeric(),
+  AnguillicolaMethod = character(),
+  AnguillicolaPresence = character(),
+  AnguillicolaIntensity = numeric(),
+  MuscleLipidPercent = numeric(),
+  MuscleLipidMethod = character(),
+  PCB = numeric(),
+  TEQ = numeric(),
+  EVEXpresence = character(),
+  HVAPresence = character(),
+  PigmentationStage = character(),
+  Pb = numeric(),
+  Cd = numeric(),
+  Hg = numeric(),
+  Comments = character(),
+  stringsAsFactors = FALSE
+)
+
+# clipr::write_clip(colnames(IM))
+
+
+
+ 
+IM <- bind_rows(
+  IM_without_method,
+  IM_with_method)  |>
+mutate(FishID = ifelse(is.na(FishID), as.character(fi_id),FishID)) |>
+  rename(
+PectoralFinLength =Pectoral_lengthmm,
+MeanEyeDiam=Eye_diam_meanmm,
+Weight=Weightg,
+Length=Lengthmm,
+AnguillicolaIntensity = Anguillicola_intensity,
+Age = Ageyear,
+PCB = Sum_6_pcb
+) |> select(-fi_id)
+
+
+IM <- bind_rows(IMstructure , IM)
+
+IM <- IM |> 
   filter(SamplingSchemeID %in% params$samplingscheme) 
+
+write.csv2(IM,
+          file.path(folder, "IM.csv"),
+          row.names = FALSE)
+
 ```
 
 
@@ -417,16 +552,12 @@ GS <- GS |>
 #| message: FALSE
 #| results: 'hide'
 
-write.csv2(GS,
-          file.path(folder, "GS.csv"),
-          row.names = FALSE)
-
-
+params$samplingscheme
 
 files <- list.files(folder, pattern = "\\.csv$", full.names = TRUE)
 all_lines <- unlist(lapply(files, readLines))
 
 # Write to a new single file
-writeLines(all_lines, "export_format/test_format.csv")
+writeLines(all_lines, paste0("export_format/test_format_",params$samplingscheme,".csv"))
 
 ```
