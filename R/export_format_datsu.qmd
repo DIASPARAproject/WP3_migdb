@@ -11,7 +11,7 @@ params:
   - "VacG"
   - "BresGY"  
   - "BreS"  
-  schema: "dateel"
+  species: "eel"
 ---
 
 ```{r }
@@ -20,7 +20,7 @@ params:
 #| eval: FALSE
 
 # this is only necessary in eclipse, Rstudio or vscodium should down
-params <- list(schema = "dateel",
+params <- list(species = "eel",
 samplingscheme=c("GiTCG", "VacG", "BresGY", "BreS")
 
 )
@@ -72,39 +72,42 @@ con_diaspara <- dbConnect(Postgres(),
                           password = cred$passworddiaspara)
 }
 folder <- tempdir()
+schema <- paste0("dat",params$species)
+refschema <- paste0("ref",params$species)
 ```
 
-TODO check with Maria : DatarightsHolder  doi Station code
-
-
+TODO check with Maria : DatarightsHolder doi Station code
 
 ```{r}
 #| label: build_dataset_FI
 #| echo: FALSE
 #| warning: FALSE
-#| message: FA
+#| message: FALSE
 #| results: 'hide'
 
 # File info
 # re
 
 query <- 
-glue_sql('SELECT \'FI\' AS "RecordType",ser_cou_code AS "Country", 2025 AS "Year",
+glue_sql('SELECT \'FI\' AS "RecordType",ser_cou_code AS "Country", 
+ver_year AS "Year",
 ser_spe_code AS "Species",
 ser_wkg_code AS "WorkingGroup",
-ser_ver_code AS "Version",
+ver_version AS "Version",
 1001 AS "DatarightsHolder" 
-FROM {`params$schema`}.t_series_ser
+FROM {`schema`}.t_series_ser
+JOIN {`refschema`}.tr_version_ver on ver_code = ser_ver_code
 WHERE ser_code IN ({ss*}) LIMIT 1',
   ss = params$samplingscheme, .con = con_diaspara)
 
 FI <- dbGetQuery(con_diaspara, query)
 
-write.csv2(FI,
+write.csv(FI,
           file.path(folder, "FI.csv"),
-          row.names = FALSE)
+                    quote =FALSE,           na = "",           row.names = FALSE)
 ```
 
+FI : `r nrow(FI)`
 
 ```{r}
 #| label: build_dataset_sampling_scheme_SS
@@ -122,29 +125,42 @@ ser_mon_code AS "MonitoringDevice",
 ser_spe_code AS "Species",
 ser_lfs_code AS "LifeStage",
 ser_are_code AS "Area",
-ser_gea_code AS "Gear",
-ser_stocking AS "RestockingFlag",
-\'https://doi.org/10.17895/ices.pub.30488120\' AS DOI  
-FROM {`params$schema`}.t_series_ser
+gea_icesvalue AS "Gear",
+case WHEN ser_stocking THEN \'Y\'
+     WHEN NOT ser_stocking THEN \'N\' 
+     ELSE NULL
+     END AS "RestockingFlag",
+\'https://doi.org/10.17895/ices.pub.30488120\' AS DOI,
+ser_gea_code,
+gea_description
+FROM {`schema`}.t_series_ser
+JOIN ref.tr_gear_gea on gea_code = ser_gea_code
 WHERE ser_code IN ({ss*})',
 ss = params$samplingscheme, .con = con_diaspara)
 
+
 SS <- dbGetQuery(con_diaspara, query)
 
-write.csv2(SS,
-          file.path(folder, "SS.csv"),
-          row.names = FALSE)
+# TODO REMOVE LATER: Fix because some gears don't yet have a correspondence
 
+missing_gears <- paste(SS$SamplingSchemeID[is.na(SS$Gear)],
+                       SS$ser_gea_code[is.na(SS$Gear)],
+                       SS$gea_description[is.na(SS$Gear)]) |>  purrr::discard(is.na) 
+SS <- SS |> select(-ser_gea_code, -gea_description)
+
+
+write.csv(SS,
+          file.path(folder, "SS.csv"),
+                    quote =FALSE,        
+                    na = "",
+                    row.names = FALSE)
 ```
 
-
-TODO check the definition of proportion G in GY Y in YS becomes lifestageProportion.
+Missing gears : `r missing_gears` TODO check the definition of proportion G in GY Y in YS becomes lifestageProportion.
 
 TODO comments attached to all group metrics ? Or comment attached to each metric.
 
-
-
-
+SS : `r nrow(SS)`
 
 ```{r}
 #| label: build_dataset_group_metrics_GM
@@ -174,9 +190,9 @@ grt_tra_code,
 grt_value,
 grt_trm_code,
 grt_trv_code
-FROM {`params$schema`}.t_series_ser 
-JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
-JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
+FROM {`schema`}.t_series_ser 
+JOIN {`schema`}.t_group_gr ON gr_ser_id = ser_id 
+JOIN {`schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
 AND gr_gr_id IS NULL',
 ss = params$samplingscheme, .con = con_diaspara)
 GM0 <- dbGetQuery(con_diaspara, query)
@@ -282,15 +298,17 @@ GM1 <- bind_rows(
 GM <- GM |> 
   filter(SamplingSchemeID %in% params$samplingscheme) 
 
-write.csv2(GM,
+write.csv(GM,
           file.path(folder, "GM.csv"),
-          row.names = FALSE)
-
+                    quote =FALSE,        
+                    na = "",
+                    row.names = FALSE)
 
 ```
 
-CHECK check subgroup can be based on stage or sex, there should be a method to distinguish between stages.
-There is no comment with GS... But should there be one ? Probably if you follow the same format it would not add much ?
+CHECK check subgroup can be based on stage or sex, there should be a method to distinguish between stages. There is no comment with GS... But should there be one ? Probably if you follow the same format it would not add much ?
+
+GM : `r nrow(GM)`
 
 ```{r}
 #| label: build_dataset_group_subsample_GS
@@ -316,9 +334,9 @@ grt_tra_code,
 grt_value,
 grt_trm_code,
 grt_trv_code
-FROM {`params$schema`}.t_series_ser 
-JOIN {`params$schema`}.t_group_gr ON gr_ser_id = ser_id 
-JOIN {`params$schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
+FROM {`schema`}.t_series_ser 
+JOIN {`schema`}.t_group_gr ON gr_ser_id = ser_id 
+JOIN {`schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
 AND gr_gr_id IS NOT NULL', .con = con_diaspara)
 GS0 <- dbGetQuery(con_diaspara, query)
 
@@ -386,18 +404,17 @@ GS <- bind_rows(GS_structure , GS|> mutate(GroupID = as.character(GroupID)))
 GS <- GS |> 
   filter(SamplingSchemeID %in% params$samplingscheme) 
 
-write.csv2(GS,
+write.csv(GS,
           file.path(folder, "GS.csv"),
-          row.names = FALSE)
+                    quote =FALSE,        
+                    na = "",
+                    row.names = FALSE)
 
 ```
 
-Fish_ID => this is the identifier coming from country level ?
-Note : in our dataset, the method of sex is never used.
-Note : in our dataset there is no sex in individual metrics ...
-Note : anguillicola_presence not reported
-Note : I don't have TEQ
-Note : I don't have EVEX or HVA (check...)
+Fish_ID =\> this is the identifier coming from country level ? Note : in our dataset, the method of sex is never used. Note : in our dataset there is no sex in individual metrics ... Note : anguillicola_presence not reported Note : I don't have TEQ Note : I don't have EVEX or HVA (check...)
+
+GS : `r nrow(GS)`
 
 ```{r}
 #| label: build_dataset_Individual_metrics_IM
@@ -430,9 +447,9 @@ int_value,
 int_trv_code,
 int_trm_code,
 fi_comment AS "Comments"
-FROM {`params$schema`}.t_series_ser 
-JOIN {`params$schema`}.t_fish_fi ON fi_ser_id = ser_id 
-JOIN {`params$schema`}.t_indivtrait_int ON int_fi_id=fi_id',
+FROM {`schema`}.t_series_ser 
+JOIN {`schema`}.t_fish_fi ON fi_ser_id = ser_id 
+JOIN {`schema`}.t_indivtrait_int ON int_fi_id=fi_id',
 .con = con_diaspara)
 IM0 <- dbGetQuery(con_diaspara, query) # 1796871
 
@@ -538,26 +555,45 @@ IM <- bind_rows(IMstructure , IM)
 IM <- IM |> 
   filter(SamplingSchemeID %in% params$samplingscheme) 
 
-write.csv2(IM,
+write.csv(IM,
           file.path(folder, "IM.csv"),
+          quote =FALSE,
+          na = "",
           row.names = FALSE)
 
 ```
 
+IM : `r nrow(IM)`
 
 ```{r}
-#| label:Build_format
+#| label: Build_format
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
 
-params$samplingscheme
+
 
 files <- list.files(folder, pattern = "\\.csv$", full.names = TRUE)
+order = unlist(mapply(grep, c("FI","SS","GM","GS", "IM"), MoreArgs = list(x=files)))
+files <- files[order]
 all_lines <- unlist(lapply(files, readLines))
+con0 <- paste0("export_format/test_format_",
+               paste(params$samplingscheme,collapse="_"),
+               "0.csv")# Write to a new single file
+# replace with new version if exists
+num0 = 0
+while (file.exists(con0)) {
+  num = num0+1
+  con0 <- paste0("export_format/test_format_",
+               paste(params$samplingscheme,collapse="_"),num,
+               ".csv")
+}
 
-# Write to a new single file
-writeLines(all_lines, paste0("export_format/test_format_",params$samplingscheme,".csv"))
+# write the result as a single file in DATSU format
+
+writeLines(all_lines, con=con0)
 
 ```
+
+File exported : `r con0`

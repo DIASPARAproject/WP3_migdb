@@ -112,7 +112,7 @@ R/modifying_database_object_names_and_dimension.R
 R/manage_database.R
 R/manage_database2.R
 R/manage_database2.R
-
+R/sum_time_diaspara.*
 
 R/data/country_sf.Rdata
 R/data/tr_species_spe_temp.Rdata
