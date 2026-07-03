@@ -1,0 +1,114 @@
+---
+title: "create_EDMO"
+params:
+  species: "eel"
+format: html
+---
+
+```{r init}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+#if (!grepl("montepomi", getwd())) {
+if(Sys.info()[["user"]] == 'joliviero'){
+  setwd("D:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "D:/DIASPARA/wgbast"
+} else if (Sys.info()[["user"]] == 'cedric.briand'){
+  setwd("C:/workspace/DIASPARA_WP3_migdb/R")
+  datawd <- "C:/Users/cedric.briand/OneDrive - EPTB Eaux&Vilaine/Projets/DIASPARA/wgbast"
+}
+source("utilities/load_library.R")
+load_library("tidyverse")
+load_library("knitr")
+load_library("kableExtra")
+load_library("RPostgres")
+load_library("yaml")
+load_library("uuid")
+load_library("glue")
+load_library("readr")
+load_library("readxl")
+load_library("writexl")
+cred <- read_yaml("../credentials.yml")
+# check if internal
+
+test_internal <- function(host) {
+  status <- system2("ping", args = c(" 10.1.128.16"), stdout = FALSE, stderr = FALSE)
+  return(status == 0)
+}
+
+
+if (test_internal()){
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$hostinternal,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+} else {
+con_diaspara <- dbConnect(Postgres(), 
+                          dbname = cred$dbnamediaspara,
+                          host = cred$host,
+                          port = cred$port,
+                          user = cred$userdiaspara,
+                          password = cred$passworddiaspara)
+}
+folder <- tempdir()
+schema <- paste0("dat",params$species)
+refschema <- paste0("ref",params$species)
+```
+
+
+```{r}
+edmo <- read_excel("data/edmo_template.xlsx")
+country_edmo <- read_excel("data/country_edmo.xlsx")
+query <- glue_sql('SELECT cou_code, cou_country as text   FROM "ref".tr_country_cou', .con = con_diaspara)
+country_ref <- dbGetQuery(con_diaspara, query) 
+country_join <- country_ref |> left_join(country_edmo, by = join_by(text))
+# some manual edition 
+country_join[country_join$cou_code == "AX", "n_code"] <- 221
+country_join[country_join$cou_code == "BA", "n_code"] <- 232
+country_join[country_join$cou_code == "LY", "n_code"] <- 113
+country_join[country_join$cou_code == "SY", "n_code"] <- 160
+country_join[country_join$cou_code == "GB", "n_code"] <- 11 
+country_join[country_join$cou_code == "RU", "n_code"] <- 29
+country_join[country_join$cou_code == "VA", "n_code"] <- 248
+country_join[country_join$cou_code == "CZ", "n_code"] <- 217
+# note below I don't translate cou_code to new format, need for join
+# will do later in script in teh for loop
+query <- 
+  glue_sql('SELECT ser_code as "SamplingSchemeID", ser_name as "Station_name", ser_lfs_code as "LifeStage", ser_cou_code AS cou_code 
+FROM {`schema`}.t_series_ser order by ser_cou_code, ser_code',.con = con_diaspara)
+ser <- dbGetQuery(con_diaspara, query)
+cou <- unique(ser$cou_code)
+cou <- cou[!is.na(cou)]
+for (the_cou in cou){
+  ser_cou <- ser |> 
+    filter(cou_code == the_cou)|>  
+    mutate(edmo = NA) |>  
+    left_join(country_join, join_by(cou_code))
+  # edmo has zero rows
+  # here's the trick to 'append' to data frame
+  for (nm in names(edmo)) {
+    ser_cou[[nm]] <- NA
+      }
+
+  ser_cou <- ser_cou |>
+     mutate(country = n_code) |>
+    rename(Country = cou_code) |>
+    select(-any_of(c("text", "n_code")))
+  
+  nat_provider <- ser_cou[1,] |> 
+    select(-any_of(c("SamplingSchemeID", "Station_name", "LifeStage", "Country"))) 
+    
+  write_xlsx(
+  list(
+    national_edmo = nat_provider,
+    station_edmo = ser_cou
+  ),
+  paste0("data/template/edmo_", the_cou, ".xlsx")
+)
+   
+}
+
+```

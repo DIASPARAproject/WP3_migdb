@@ -89,7 +89,8 @@ TODO check with Maria : DatarightsHolder doi Station code
 # re
 
 query <- 
-glue_sql('SELECT \'FI\' AS "RecordType",ser_cou_code AS "Country", 
+glue_sql('SELECT \'FI\' AS "RecordType",
+ser_cou_code AS "Country", 
 ver_year AS "Year",
 ser_spe_code AS "Species",
 ser_wkg_code AS "WorkingGroup",
@@ -108,6 +109,40 @@ write.csv(FI,
 ```
 
 FI : `r nrow(FI)`
+
+```{r}
+#| label: build_dataset_Annual_series_AS
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+query <- 
+glue_sql('SELECT 
+\'AS\' AS "RecordType",
+ser_code AS "SamplingSchemeID",
+san_year AS Year,
+NULL AS Age,
+san_value AS Value,
+ser_uni_code AS Unit,
+san_effort AS Effort,
+ser_effort_uni_code AS UnitEffort,
+san_qal_id AS QualityCode,
+san_comment AS Comments
+FROM {`schema`}.t_series_ser 
+JOIN {`schema`}.t_serannual_san ON san_ser_id = ser_id
+WHERE ser_code IN ({ss*})',
+ss = params$samplingscheme, .con = con_diaspara)
+
+
+AS <- dbGetQuery(con_diaspara, query)
+
+
+write.csv(AS,
+          file.path(folder, "AS.csv"),
+                    quote =FALSE,        
+                    na = "",
+                    row.names = FALSE)
+```
 
 ```{r}
 #| label: build_dataset_sampling_scheme_SS
@@ -147,7 +182,7 @@ missing_gears <- paste(SS$SamplingSchemeID[is.na(SS$Gear)],
                        SS$ser_gea_code[is.na(SS$Gear)],
                        SS$gea_description[is.na(SS$Gear)]) |>  purrr::discard(is.na) 
 SS <- SS |> select(-ser_gea_code, -gea_description)
-
+ss[is.na(ss$Gear) & is.na(ss$Fishway), "Gear"] <- "MIS"
 
 write.csv(SS,
           file.path(folder, "SS.csv"),
@@ -575,20 +610,12 @@ IM : `r nrow(IM)`
 
 
 files <- list.files(folder, pattern = "\\.csv$", full.names = TRUE)
-order = unlist(mapply(grep, c("FI","SS","GM","GS", "IM"), MoreArgs = list(x=files)))
+order = unlist(mapply(grep, c("FI","SS","AS","GM","GS", "IM"), MoreArgs = list(x=files)))
 files <- files[order]
 all_lines <- unlist(lapply(files, readLines))
 con0 <- paste0("export_format/test_format_",
                paste(params$samplingscheme,collapse="_"),
-               "0.csv")# Write to a new single file
-# replace with new version if exists
-num0 = 0
-while (file.exists(con0)) {
-  num = num0+1
-  con0 <- paste0("export_format/test_format_",
-               paste(params$samplingscheme,collapse="_"),num,
-               ".csv")
-}
+               ".csv")# Write to a new single file
 
 # write the result as a single file in DATSU format
 
