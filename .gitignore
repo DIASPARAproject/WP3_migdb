@@ -142,3 +142,7 @@ SQL/diadroumousdb.sql
 R/export_format/*.*
 
 .positai
+Scripts/Script-2.sql
+Scripts/Script-1.sql
+R/data/edmo_all (version 1).xlsx
+R/data/edmo_all.xlsx

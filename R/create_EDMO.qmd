@@ -112,3 +112,36 @@ for (the_cou in cou){
 }
 
 ```
+
+
+```{r}
+
+library(httr2); library(purrr); library(dplyr)
+
+addr <- tribble(
+  ~q,                                  ~pc,
+  "65 rue de Saint-Brieuc",            "35042",
+  "7-9 Chemin des Croix",              "59530",
+  "74 Route de la Chapelle de Rousse", "64290",
+  "1 Rue des Alpes",                   "62510",
+  "40 rue Robert Hooke",               "76800",
+  "18 rue de la Plaine",               "35890",
+  "18ter rue de la Garonne",           "47520",
+  "Rue André Chamson",                 "13200",
+  "2 Rue de l'Église",                 "79510",
+  "Maison éclusière de la Pêchetière",   "35630"
+)
+
+geocode <- function(q, pc) {
+  f <- request("https://data.geopf.fr/geocodage/search/") |>
+    req_url_query(q = q, postcode = pc, limit = 1) |>
+    req_perform() |>
+    resp_body_json() |>
+    pluck("features", 1)
+  tibble(matched = f$properties$label, score = f$properties$score,
+         longitude = f$geometry$coordinates[[1]], latitude = f$geometry$coordinates[[2]])
+}
+
+fulladdr <- addr |> mutate(res = map2(q, pc, geocode)) |> tidyr::unnest(res)
+clipr::write_clip(fulladdr)
+```
