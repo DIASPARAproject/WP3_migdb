@@ -6,11 +6,19 @@ format:
     self-contained: true
 editor: visual
 params:
+  country:
+  - "ES"
   samplingscheme: 
-  - "GiTCG"
-  - "VacG"
-  - "BresGY"  
-  - "BreS"  
+  - "EbroG" 
+  - "OriaG"
+  - "NalS"
+  format: 
+  - "FI"
+  - "SS"
+  - "TS"
+  - "GM"
+  - "GS"
+  - "IM"
   species: "eel"
 ---
 
@@ -74,9 +82,10 @@ con_diaspara <- dbConnect(Postgres(),
 folder <- tempdir()
 schema <- paste0("dat",params$species)
 refschema <- paste0("ref",params$species)
+
 ```
 
-TODO check with Maria : DatarightsHolder doi Station code
+*TODO check with Maria : DatarightsHolder doi Station code*
 
 ```{r}
 #| label: build_dataset_FI
@@ -92,12 +101,13 @@ query <-
 glue_sql('SELECT \'FI\' AS "RecordType",
 ser_cou_code AS "Country", 
 ver_year AS "Year",
-ser_spe_code AS "Species",
+spe_scientificname AS "Species",
 ser_wkg_code AS "WorkingGroup",
 ver_version AS "Version",
 1001 AS "DatarightsHolder" 
 FROM {`schema`}.t_series_ser
 JOIN {`refschema`}.tr_version_ver on ver_code = ser_ver_code
+JOIN ref.tr_species_spe on ser_spe_code = spe_code
 WHERE ser_code IN ({ss*}) LIMIT 1',
   ss = params$samplingscheme, .con = con_diaspara)
 
@@ -108,41 +118,7 @@ write.csv(FI,
                     quote =FALSE,           na = "",           row.names = FALSE)
 ```
 
-FI : `r nrow(FI)`
-
-```{r}
-#| label: build_dataset_Annual_series_AS
-#| echo: FALSE
-#| warning: FALSE
-#| message: FALSE
-#| results: 'hide'
-query <- 
-glue_sql('SELECT 
-\'AS\' AS "RecordType",
-ser_code AS "SamplingSchemeID",
-san_year AS Year,
-NULL AS Age,
-san_value AS Value,
-ser_uni_code AS Unit,
-san_effort AS Effort,
-ser_effort_uni_code AS UnitEffort,
-san_qal_id AS QualityCode,
-san_comment AS Comments
-FROM {`schema`}.t_series_ser 
-JOIN {`schema`}.t_serannual_san ON san_ser_id = ser_id
-WHERE ser_code IN ({ss*})',
-ss = params$samplingscheme, .con = con_diaspara)
-
-
-AS <- dbGetQuery(con_diaspara, query)
-
-
-write.csv(AS,
-          file.path(folder, "AS.csv"),
-                    quote =FALSE,        
-                    na = "",
-                    row.names = FALSE)
-```
+*FI : `r nrow(FI)`*
 
 ```{r}
 #| label: build_dataset_sampling_scheme_SS
@@ -157,7 +133,7 @@ ser_code AS "SamplingSchemeID",
 10777 AS "StationCode", 
 ser_fiw_code AS "Fishway",
 ser_mon_code AS "MonitoringDevice",
-ser_spe_code AS "Species",
+spe_scientificname AS "Species",
 ser_lfs_code AS "LifeStage",
 ser_are_code AS "Area",
 gea_icesvalue AS "Gear",
@@ -165,11 +141,12 @@ case WHEN ser_stocking THEN \'Y\'
      WHEN NOT ser_stocking THEN \'N\' 
      ELSE NULL
      END AS "RestockingFlag",
-\'https://doi.org/10.17895/ices.pub.30488120\' AS DOI,
+\'"https://doi.org/10.17895/ices.pub.30488120"\' AS DOI,
 ser_gea_code,
 gea_description
 FROM {`schema`}.t_series_ser
 JOIN ref.tr_gear_gea on gea_code = ser_gea_code
+JOIN ref.tr_species_spe on ser_spe_code = spe_code
 WHERE ser_code IN ({ss*})',
 ss = params$samplingscheme, .con = con_diaspara)
 
@@ -182,7 +159,7 @@ missing_gears <- paste(SS$SamplingSchemeID[is.na(SS$Gear)],
                        SS$ser_gea_code[is.na(SS$Gear)],
                        SS$gea_description[is.na(SS$Gear)]) |>  purrr::discard(is.na) 
 SS <- SS |> select(-ser_gea_code, -gea_description)
-ss[is.na(ss$Gear) & is.na(ss$Fishway), "Gear"] <- "MIS"
+SS[is.na(SS$Gear) & is.na(SS$Fishway), "Gear"] <- "MIS"
 
 write.csv(SS,
           file.path(folder, "SS.csv"),
@@ -191,11 +168,49 @@ write.csv(SS,
                     row.names = FALSE)
 ```
 
-Missing gears : `r missing_gears` TODO check the definition of proportion G in GY Y in YS becomes lifestageProportion.
+*Missing gears : `r missing_gears` TODO check the definition of proportion G in GY Y in YS becomes lifestageProportion.*
 
-TODO comments attached to all group metrics ? Or comment attached to each metric.
+*TODO comments attached to all group metrics ? Or comment attached to each metric.*
 
-SS : `r nrow(SS)`
+*SS : `r nrow(SS)`*
+
+```{r}
+#| label: build_dataset_Annual_series_TS
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| results: 'hide'
+query <- 
+glue_sql('SELECT 
+\'TS\' AS "RecordType",
+ser_code AS "SamplingSchemeID",
+san_year AS "Year",
+NULL AS "Age",
+san_value AS "Value",
+uni_icesvalue AS "Unit",
+san_effort AS "Effort",
+uni_icesvalue_effort AS "UnitEffort",
+san_qal_id AS "QualityCode",
+san_comment AS "Comments"
+FROM {`schema`}.t_series_ser 
+JOIN {`schema`}.t_serannual_san ON san_ser_id = ser_id
+JOIN ref.tr_units_uni on uni_code = ser_uni_code
+JOIN (SELECT uni_code, uni_icesvalue as uni_icesvalue_effort FROM ref.tr_units_uni ) as uni2 on uni2.uni_code = ser_effort_uni_code
+WHERE ser_code IN ({ss*})',
+ss = params$samplingscheme, .con = con_diaspara)
+
+
+TS <- dbGetQuery(con_diaspara, query)
+TS$Comments <- gsub(",", ";",TS$Comments)
+
+write.csv(TS,
+          file.path(folder, "TS.csv"),
+                    quote =FALSE,        
+                    na = "",
+                    row.names = FALSE)
+```
+
+*TS : `r nrow(TS)`*
 
 ```{r}
 #| label: build_dataset_group_metrics_GM
@@ -210,7 +225,7 @@ SS : `r nrow(SS)`
 # note sex is in subsamples not samples
 
 query <- 
-glue_sql('
+  glue_sql('
 SELECT 
 \'GM\' AS "RecordType",
 gr_id AS "GroupID",
@@ -228,122 +243,175 @@ grt_trv_code
 FROM {`schema`}.t_series_ser 
 JOIN {`schema`}.t_group_gr ON gr_ser_id = ser_id 
 JOIN {`schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
-AND gr_gr_id IS NULL',
+AND gr_gr_id IS NULL
+WHERE ser_code IN ({ss*})',
 ss = params$samplingscheme, .con = con_diaspara)
 GM0 <- dbGetQuery(con_diaspara, query)
 
-# GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
-
-GMnumeric <-
-  GM0 |> 
-  filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
-  select(-grt_trv_code) 
-
-GMqualitative <-   GM0 |> 
-  filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
-  select(-grt_value) |>
-    pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from ="grt_trv_code") 
-
-# no qualitative values for Group metrics
-
-GM_without_method <- GMnumeric |> filter(is.na(grt_trm_code)) |>
-  select(-grt_trm_code) |>
-  pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from = all_of(c("grt_value")))
+if (nrow(GM0)>0){
+  # GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
   
-GM_with_method <- GMnumeric |> filter(!is.na(grt_trm_code)) |>
-  pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from = all_of(c("grt_value", "grt_trm_code"))) |>
-  rename("Muscle_lipid" = "grt_value_Muscle_lipid",
-         "Anguillicola_proportion" = "grt_value_Anguillicola_proportion",
-         "Anguillicola_intensity" = "grt_value_Anguillicola_intensity",
-         "Female_proportion"="grt_value_Female_proportion",
-         "MuscleLipidMethod"="grt_trm_code_Muscle_lipid",
-         "SexDeterminationMethod"="grt_trm_code_Female_proportion",
-         "AnguillicolaMethod"="grt_trm_code_Anguillicola_intensity") |>
-  select (-grt_trm_code_Anguillicola_proportion) 
-# last one grt_trm_code_Anguillicola_proportion is twice there, the same for
-# proportion and intensity
-
-# GM_structure used to get all columns for the format
-GM_structure <- data.frame(
-  RecordType = character(),
-  GroupID = character(),
-  SamplingSchemeID = character(),
-  Year = integer(),
-  AgeClass = character(),
-  LifeStage = character(),
-  LifeStageProportion = numeric(),
-  NumberofIndividuals = integer(),
-  Age = numeric(),
-  Length = numeric(),
-  Weight = numeric(),
-  SexDeterminationMethod = character(),
-  FemaleProportion = numeric(),
-  DifferentiatedProportion = numeric(),
-  AnguillicolaProportion = numeric(),
-  AnguillicolaIntensity = numeric(),
-  AnguillicolaMethod = character(),
-  MuscleLipidPercent = numeric(),
-  MuscleLipidMethod = character(),
-  PCB = numeric(),
-  TEQ = numeric(),
-  EVEXProportion = numeric(),
-  HVAProportion = numeric(),
-  Pb = numeric(),
-  Cd = numeric(),
-  Hg = numeric(),
-  Comments = character(),
-  stringsAsFactors = FALSE
-)
-
-# need to merge proportions
-# No data currently in group metrics for PCB or or TEQ
-
-GM1 <- bind_rows(
-  GM_without_method |> mutate(GroupID = as.character(GroupID)),
-  GM_with_method |> mutate(GroupID = as.character(GroupID))
-) |> mutate(LifeStageProportion = 
-              ifelse(is.na(S_in_ys_proportion), G_in_gy_proportion, S_in_ys_proportion)) |>
-  rename("MeanLength" = "Lengthmm",
-         "MeanWeight" = "Weightg",
-         "MeanAge" = "Ageyear",
-         "FemaleProportion"="Female_proportion",
-         "AnguillicolaProportion" = "Anguillicola_proportion",
-         "DifferentiatedProportion" = "Differentiated_proportion",
-         "AnguillicolaIntensity"="Anguillicola_intensity",
-         "MuscleLipidPercentage"= "Muscle_lipid",
-         "EVEXProportion" = "Evex_proportion",
-         "HVAProportion"="Hva_proportion"
-        )  
-
-
- GM <-  bind_rows(GM_structure , GM1) |>
-    select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
-          LifeStageProportion, NumberofIndividuals, MeanAge,  MeanWeight,  SexDeterminationMethod,  FemaleProportion,  DifferentiatedProportion,  AnguillicolaProportion,  AnguillicolaIntensity, AnguillicolaMethod,  MuscleLipidPercentage, MuscleLipidMethod,
-          PCB, TEQ, EVEXProportion, HVAProportion,Pb,Cd,Hg, Comments)
- 
- # " PCB" = "Sum_6_pcb",
-
-
-GM <- GM |> 
-  filter(SamplingSchemeID %in% params$samplingscheme) 
-
-write.csv(GM,
-          file.path(folder, "GM.csv"),
-                    quote =FALSE,        
-                    na = "",
-                    row.names = FALSE)
-
+  GMnumeric <-
+    GM0 |> 
+    filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
+    select(-grt_trv_code) 
+  
+  GMqualitative <-   GM0 |> 
+    filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
+    select(-grt_value) |>
+    pivot_wider(
+      names_from = all_of(c("grt_tra_code")), 
+      values_from ="grt_trv_code") 
+  
+  # no qualitative values for Group metrics
+  
+  GM_without_method <- GMnumeric |> filter(is.na(grt_trm_code)) |>
+    select(-grt_trm_code) |>
+    pivot_wider(
+      names_from = all_of(c("grt_tra_code")), 
+      values_from = all_of(c("grt_value")))
+  
+  map_method <- c(Muscle_lipid = "grt_value_Muscle_lipid",
+                  Anguillicola_proportion = "grt_value_Anguillicola_proportion",
+                  Anguillicola_intensity = "grt_value_Anguillicola_intensity",
+                  Female_proportion="grt_value_Female_proportion",
+                  MuscleLipidMethod="grt_trm_code_Muscle_lipid",
+                  SexDeterminationMethod="grt_trm_code_Female_proportion",
+                  AnguillicolaMethod="grt_trm_code_Anguillicola_intensity")
+  
+  
+  
+  GM_with_method <- GMnumeric |> filter(!is.na(grt_trm_code)) |>
+    pivot_wider(
+      names_from = all_of(c("grt_tra_code")), 
+      values_from = all_of(c("grt_value", "grt_trm_code"))) |>
+    rename(any_of(map_method))
+  if ("grt_trm_code_Anguillicola_proportion" %in% colnames(GM_with_method))
+    GM_with_method <- GM_with_method |>  select (-grt_trm_code_Anguillicola_proportion) 
+  # last one grt_trm_code_Anguillicola_proportion is twice there, the same for
+  # proportion and intensity
+  
+  # GM_structure used to get all columns for the format
+  GM_structure <- data.frame(
+    RecordType = character(),
+    GroupID = character(),
+    SamplingSchemeID = character(),
+    Year = integer(),
+    LifeStage = character(),
+    Age = numeric(),
+    LifeStageProportion = numeric(),
+    NumberofIndividuals = integer(),
+    Length = numeric(),
+    Weight = numeric(),
+    SexDeterminationMethod = character(),
+    SexPrepMethod  = character(),
+    SexMethodOfAnalysis = character(),
+    FemaleProportion = numeric(),
+    DifferentiatedProportion = numeric(),
+    AnguillicolaProportion = numeric(),
+    AnguillicolaIntensity = numeric(),
+    AnguillicolaMethod = character(),
+    AnguillicolaPrepMethod = character(),
+    MuscleLipidPercent = numeric(),
+    MuscleLipidMethod = character(),
+    PCB = numeric(),
+    TEQ = numeric(),
+    EVEXProportion = numeric(),
+    HVAProportion = numeric(),
+    Pb = numeric(),
+    Cd = numeric(),
+    Hg = numeric(),
+    Comments = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # need to merge proportions
+  # No data currently in group metrics for PCB or or TEQ
+  # 
+  # select only added columns
+  col_to_remove <- colnames(GM_with_method) %in% colnames(GM_without_method) & 
+    colnames(GM_with_method) !="GroupID" 
+  GM_with_method <- GM_with_method[,!col_to_remove]
+  
+  GM1 <- full_join(
+    GM_without_method |> mutate(GroupID = as.character(GroupID)),
+    GM_with_method |> mutate(GroupID = as.character(GroupID)), by = join_by(GroupID)) 
+  
+  if ("LifeStageProportion" %in% colnames(GM_with_method)){
+    GM1 <- GM1 |> mutate(LifeStageProportion = 
+                           ifelse(is.na(S_in_ys_proportion), G_in_gy_proportion, S_in_ys_proportion)) 
+  }
+  
+  GM1 <- GM1  |>
+    rename(any_of(c("Length" = "Lengthmm",
+                    "Weight" = "Weightg",
+                    "Age" = "Ageyear",
+                    "FemaleProportion"="Female_proportion",
+                    "AnguillicolaProportion" = "Anguillicola_proportion",
+                    "DifferentiatedProportion" = "Differentiated_proportion",
+                    "AnguillicolaIntensity"="Anguillicola_intensity",
+                    "MuscleLipidPercent"= "Muscle_lipid",
+                    "EVEXProportion" = "Evex_proportion",
+                    "HVAProportion"="Hva_proportion"
+    ))) 
+  
+  
+  GM <-  bind_rows(GM_structure , GM1) |>
+    select(RecordType,
+           GroupID,
+           SamplingSchemeID,
+           Year,
+           LifeStage,
+           Age,  
+           LifeStageProportion,
+           NumberofIndividuals,
+           Length,
+           Weight,  
+           SexDeterminationMethod,
+           SexPrepMethod,
+           SexMethodOfAnalysis,
+           FemaleProportion, 
+           DifferentiatedProportion,  
+           AnguillicolaProportion, 
+           AnguillicolaIntensity,
+           AnguillicolaMethod,  
+           AnguillicolaPrepMethod,
+           MuscleLipidPercent, 
+           MuscleLipidMethod,
+           PCB, 
+           TEQ, 
+           EVEXProportion,
+           HVAProportion,
+           Pb,
+           Cd,
+           Hg,
+           Comments)
+  
+  # " PCB" = "Sum_6_pcb",
+  
+  
+  GM <- GM |> 
+    filter(SamplingSchemeID %in% params$samplingscheme) 
+  GM$Comments <- gsub(",", ";",GM$Comments)
+  GM$Comments <- paste0('"',GM$Comments,'"')
+  
+  GM <- GM |> 
+    mutate(Comments =  gsub(",", ";",Comments),
+           Comments = if_else(
+             condition = nchar(Comments) > 187,
+             true = paste0(substr(Comments, 1, 187),"... truncated"),
+             false = Comments,
+             missing = NA
+           ),
+           SexDeterminationMethod = if_else(is.na(SexDeterminationMethod) & !is.na(FemaleProportion), 	"Length_based_sex",NA))
+  write.csv(GM,
+            file.path(folder, "GM.csv"),
+            quote =FALSE,        
+            na = "",
+            row.names = FALSE)
+}
 ```
 
-CHECK check subgroup can be based on stage or sex, there should be a method to distinguish between stages. There is no comment with GS... But should there be one ? Probably if you follow the same format it would not add much ?
-
-GM : `r nrow(GM)`
 
 ```{r}
 #| label: build_dataset_group_subsample_GS
@@ -356,15 +424,16 @@ GM : `r nrow(GM)`
 query <- 
 glue_sql('
 SELECT 
-\'GM\' AS "RecordType",
-gr_id AS "GroupID",
-ser_code AS "SamplingSchemeID",
+\'GS\' AS "RecordType",
+ser_code AS "SamplingSchemeID", 
+gr_id::TEXT AS "SubSampleID",
+gr_gr_id::TEXT AS "GroupID",
 gr_year AS "Year",
-NULL AS "AgeClass",
 gr_lfs_code AS "LifeStage",
+NULL AS "AgeClass",
+gr_sex_code AS "Sex",
 gr_number AS "NumberofIndividuals",
 gr_comment AS "Comments",            
-gr_sex_code AS "Sex",
 grt_tra_code,
 grt_value,
 grt_trm_code,
@@ -372,84 +441,166 @@ grt_trv_code
 FROM {`schema`}.t_series_ser 
 JOIN {`schema`}.t_group_gr ON gr_ser_id = ser_id 
 JOIN {`schema`}.t_grouptrait_grt ON grt_gr_id = gr_id 
-AND gr_gr_id IS NOT NULL', .con = con_diaspara)
+WHERE ser_code IN ({ss*})
+AND gr_gr_id IS NOT NULL',
+ss = params$samplingscheme,
+.con = con_diaspara)
 GS0 <- dbGetQuery(con_diaspara, query)
 
-# GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
-
-GSnumeric <-
-  GS0 |> 
-  filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
-  select(-grt_trv_code) 
-
-GSqualitative <-   GS0 |> 
-  filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
-  select(-grt_value) |>
+if (nrow(GS0)>0){
+  # GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
+  
+  GSnumeric <-
+    GS0 |> 
+    filter(is.na(grt_trv_code) & !is.na(grt_value))  |>
+    select(-grt_trv_code) 
+  
+  GSqualitative <-   GS0 |> 
+    filter(!is.na(grt_trv_code) & is.na(grt_value))  |>
+    select(-grt_value) |>
     pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from ="grt_trv_code") 
-
-# no qualitative values for Group metrics
-
-GS_without_method <- GSnumeric |> filter(is.na(grt_trm_code)) |>
-  select(-grt_trm_code) |>
-  pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from = all_of(c("grt_value")))
-
-# method is always about sex there   
-GS_with_method <- GSnumeric |> filter(!is.na(grt_trm_code)) |>
-  pivot_wider(
-  names_from = all_of(c("grt_tra_code")), 
-  values_from = all_of(c("grt_value"))) |>
-  rename("SexDeterminationMethod" = "grt_trm_code") 
-
-# last one grt_trm_code_Anguillicola_proportion is twice there, the same for
-# proportion and intensity
-# 
-GS_structure <- data.frame(
-  RecordType = character(),            # char(2)
-  SubSampleID = character(),           # char(10)
-  GroupID = character(),               # char(20)
-  Sex = character(),                   # char(2), code list SEXCO
-  LifeStage = character(),             # char(10), code list STAGE
-  Age = integer(),                     # int(2)
-  Length = numeric(),                  # float(10)
-  Weight = numeric(),                  # float(10)
-  AnguillicolaProportion = numeric(),  # float(5)
-  AnguillicolaIntensity = numeric(),   # float(5)
-  AnguillicolaMethod = character(),    # char(20), code list METOA
-  MuscleLipidPercent = numeric(),      # float(10)
-  MuscleLipidMethod = character(),     # char(20), code list METOA
-  Comments = character(),              # char(200)
-  stringsAsFactors = FALSE
-)
- 
-GS <- bind_rows(
-  GS_without_method,
-  GS_with_method) |>
-  rename(Length = Lengthmm,
-         Weight = Weightg,
-         Age = Ageyear)  |>
-    select(RecordType,GroupID,SamplingSchemeID,Year,AgeClass,LifeStage, 
-           NumberofIndividuals, Age,  Weight, Length,  SexDeterminationMethod)
-
-GS <- bind_rows(GS_structure , GS|> mutate(GroupID = as.character(GroupID)))
-
-GS <- GS |> 
-  filter(SamplingSchemeID %in% params$samplingscheme) 
-
-write.csv(GS,
-          file.path(folder, "GS.csv"),
-                    quote =FALSE,        
-                    na = "",
-                    row.names = FALSE)
-
+      names_from = all_of(c("grt_tra_code")), 
+      values_from ="grt_trv_code") 
+  
+  # no qualitative values for Group metrics
+  # below found duplicates in subSampleID in the DB.
+  # Two different subSampleID, one with weight, the other with length.
+  # so it's no longer in the id_cols
+  GS_without_method <- GSnumeric |> filter(is.na(grt_trm_code)) |>
+    select(-grt_trm_code) |>
+    pivot_wider(
+      id_cols = any_of(c("RecordType", 
+                         "SamplingSchemeID",
+                         "GroupID", 
+                         "Year", 
+                         "LifeStage",
+                         "AgeClass", 
+                         "Sex",
+                         "NumberofIndividuals",
+                         "Comments")),
+      names_from = all_of(c("grt_tra_code")), 
+      values_from = all_of(c("grt_value")))
+  
+  GS_without_method <- GS_without_method |> 
+    inner_join(GSnumeric |> select(any_of(c("RecordType", 
+                                            "SamplingSchemeID",
+                                            "SubSampleID",
+                                            "GroupID", 
+                                            "Year", 
+                                            "LifeStage",
+                                            "AgeClass", 
+                                            "Sex"))) |> 
+                 distinct(RecordType, 
+                          SamplingSchemeID,
+                          GroupID, 
+                          Year, 
+                          LifeStage,
+                          AgeClass, 
+                          Sex,.keep_all = TRUE),
+               by=join_by(RecordType, 
+                          SamplingSchemeID,
+                          GroupID, 
+                          Year, 
+                          LifeStage,
+                          AgeClass, 
+                          Sex))
+  
+  # method is always about sex there   
+  GS_with_method <- GSnumeric |> filter(!is.na(grt_trm_code)) |>
+    pivot_wider(
+      names_from = all_of(c("grt_tra_code")), 
+      values_from = all_of(c("grt_value"))) |>
+    rename("SexDeterminationMethod" = "grt_trm_code") 
+  
+  # last one grt_trm_code_Anguillicola_proportion is twice there, the same for
+  # proportion and intensity
+  
+  
+  
+  GS_structure <- data.frame(
+    RecordType = character(),            # char(2)
+    SubSampleID = character(),           # char(10)
+    GroupID = character(),               # char(20)
+    LifeStage = character(),             # char(10), code list STAGE
+    AgeClass = character(),
+    Sex = character(),                   # char(2), code list SEXCO
+    Age = integer(),                     # int(2)
+    NumberofIndividuals = numeric(),
+    Length = numeric(),                  # float(10)
+    Weight = numeric(),                  # float(10)
+    SexDeterminationMethod = character(), # char(20), code list METOA
+    SexPrepMethod = character(),
+    SexMethodOfAnalysis = character(), # char(200)
+    FemaleProportion =  numeric(),
+    DifferentiatedProportion = numeric(),
+    AnguillicolaProportion = numeric(),  # float(5)
+    AnguillicolaIntensity = numeric(),   # float(5)
+    AnguillicolaMethod = character(),    # char(20), code list METOA
+    AnguillicolaPrepMethod = character(), 
+    MuscleLipidPercent = numeric(),      # float(10)
+    MuscleLipidMethod = character(),     # char(20), code list METOA
+    PCB = numeric(),
+    TEQ  = numeric(),
+    EVEXProportion = numeric(),
+    HVAProportion = numeric(),
+    Pb = numeric(),
+    Cd = numeric(),
+    Hg = numeric(),
+    Comments = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  col_to_remove <- colnames(GS_with_method) %in% colnames(GS_without_method) & 
+    colnames(GS_with_method) !="GroupID" 
+  GS_with_method <- GS_with_method[,!col_to_remove]
+  
+  GS <- full_join(
+    GS_without_method |> mutate(GroupID = as.character(GroupID)),
+    GS_with_method |> mutate(GroupID = as.character(GroupID)), by = join_by(GroupID)) |>
+    rename(any_of(c(Length = "Lengthmm",
+           Weight = "Weightg",
+           Age = "Ageyear")))  |>
+    select(any_of(c("RecordType",
+           "GroupID",
+           "SubSampleID",
+           "SamplingSchemeID",
+           "Year",
+           "Sex",
+           "AgeClass",
+           "LifeStage", 
+           "NumberofIndividuals",
+           "Age",  
+           "Weight",
+           "Length",
+           "SexDeterminationMethod")))
+  
+  GS <- bind_rows(GS_structure , 
+                  GS |> mutate(GroupID = as.character(GroupID)))
+  
+  GS <- GS |> 
+    filter(SamplingSchemeID %in% params$samplingscheme) |>
+    select(- SamplingSchemeID, -Year)
+  GS <- GS |> 
+    mutate(Comments =  gsub(",", ";",Comments),
+           Comments = if_else(
+             condition = nchar(Comments) > 187,
+             true = paste0(substr(Comments, 1, 187),"... truncated"),
+             false = Comments,
+             missing = NA
+           ),
+           SexDeterminationMethod = if_else(is.na(SexDeterminationMethod) & !is.na(FemaleProportion), 	"Length_based_sex",NA))
+  write.csv(GS,
+            file.path(folder, "GS.csv"),
+            quote =FALSE,        
+            na = "",
+            row.names = FALSE)
+}
 ```
 
-Fish_ID =\> this is the identifier coming from country level ? Note : in our dataset, the method of sex is never used. Note : in our dataset there is no sex in individual metrics ... Note : anguillicola_presence not reported Note : I don't have TEQ Note : I don't have EVEX or HVA (check...)
+*Note : in our dataset, the method of sex is never used. Note : in our dataset there is no sex in individual metrics ... Note : anguillicola_presence not reported Note : I don't have TEQ Note : I don't have EVEX or HVA (check...)*
 
-GS : `r nrow(GS)`
+
+*Fish_ID =\> this is the identifier coming from country level ?*
 
 ```{r}
 #| label: build_dataset_Individual_metrics_IM
@@ -458,7 +609,7 @@ GS : `r nrow(GS)`
 #| message: FALSE
 #| results: 'hide'
 
-# GS note sex is in subsamples not samples
+
 query <- 
 glue_sql('
 SELECT 
@@ -484,137 +635,157 @@ int_trm_code,
 fi_comment AS "Comments"
 FROM {`schema`}.t_series_ser 
 JOIN {`schema`}.t_fish_fi ON fi_ser_id = ser_id 
-JOIN {`schema`}.t_indivtrait_int ON int_fi_id=fi_id',
+JOIN {`schema`}.t_indivtrait_int ON int_fi_id=fi_id
+WHERE ser_code IN ({ss*})',
+ss = params$samplingscheme,
 .con = con_diaspara)
 IM0 <- dbGetQuery(con_diaspara, query) # 1796871
 
 # GM grt_tra_code, grt_value, grt_trv_code, grt_trm_code
-
-IMnumeric <-
-  IM0 |> 
-  filter(is.na(int_trv_code) & !is.na(int_value))  |>
-  select(-int_trv_code) 
-
-IMqualitative <-   IM0 |> 
-  filter(!is.na(int_trv_code) & is.na(int_value))  |>
-  select(-int_value) |>
+if (nrow(IM0)>0){
+  IMnumeric <-
+    IM0 |> 
+    filter(is.na(int_trv_code) & !is.na(int_value))  |>
+    select(-int_trv_code) 
+  
+  IMqualitative <-   IM0 |> 
+    filter(!is.na(int_trv_code) & is.na(int_value))  |>
+    select(-int_value) |>
     pivot_wider(
-  names_from = all_of(c("int_tra_code")), 
-  values_from ="int_trv_code") 
-
-# no qualitative values for Group metrics
-
-IM_without_method <- IMnumeric |> filter(is.na(int_trm_code)) |>
-  select(-int_trm_code) |>
-  pivot_wider(
-  names_from = all_of(c("int_tra_code")), 
-  values_from = all_of(c("int_value")))
-
-# method is always about sex there   
-IM_with_method <- IMnumeric |> filter(!is.na(int_trm_code)) |>
-  pivot_wider(
-  names_from = all_of(c("int_tra_code")), 
-  values_from = all_of(c("int_value", "int_trm_code"))) |>
-  rename("MuscleLipidPercent"= "int_value_Muscle_lipid",
-         "Anguillicola_intensity" = "int_value_Anguillicola_intensity",
-         "MuscleLipidMethod"="int_trm_code_Muscle_lipid",
-         "AnguillicolaMethod"="int_trm_code_Anguillicola_intensity") 
-
-# last one int_trm_code_Anguillicola_proportion is twice there, the same for
-# proportion and intensity
-
-
-IMstructure <- data.frame(
-  RecordType = character(),
-  Year = integer(),
-  SamplingSchemeID = character(),
-  FishID = character(),
-  LifeStage = character(),
-  Month = integer(),
-  Day = integer(),
-  DecimalLongitude = numeric(),
-  DecimalLatitude = numeric(),
-  Sex = character(),
-  SexDeterminationMethod = character(),
-  Differentiated = character(),
-  Age = integer(),
-  SeaAge = integer(),
-  JuvenileAge = integer(),
-  AgingMethod = character(),
-  AgingMatrix = character(),
-  AgingPrepMethod = character(),
-  Length = numeric(),
-  LengthMethod = character(),
-  Weight = numeric(),
-  MeanEyeDiam = numeric(),
-  PectoralFinLength = numeric(),
-  AnguillicolaMethod = character(),
-  AnguillicolaPresence = character(),
-  AnguillicolaIntensity = numeric(),
-  MuscleLipidPercent = numeric(),
-  MuscleLipidMethod = character(),
-  PCB = numeric(),
-  TEQ = numeric(),
-  EVEXpresence = character(),
-  HVAPresence = character(),
-  PigmentationStage = character(),
-  Pb = numeric(),
-  Cd = numeric(),
-  Hg = numeric(),
-  Comments = character(),
-  stringsAsFactors = FALSE
-)
-
-# clipr::write_clip(colnames(IM))
-
-
-
- 
-IM <- bind_rows(
-  IM_without_method,
-  IM_with_method)  |>
-mutate(FishID = ifelse(is.na(FishID), as.character(fi_id),FishID)) |>
-  rename(
-PectoralFinLength =Pectoral_lengthmm,
-MeanEyeDiam=Eye_diam_meanmm,
-Weight=Weightg,
-Length=Lengthmm,
-AnguillicolaIntensity = Anguillicola_intensity,
-Age = Ageyear,
-PCB = Sum_6_pcb
-) |> select(-fi_id)
-
-
-IM <- bind_rows(IMstructure , IM)
-
-IM <- IM |> 
-  filter(SamplingSchemeID %in% params$samplingscheme) 
-
-write.csv(IM,
-          file.path(folder, "IM.csv"),
-          quote =FALSE,
-          na = "",
-          row.names = FALSE)
+      names_from = all_of(c("int_tra_code")), 
+      values_from ="int_trv_code") 
+  
+  # no qualitative values for Group metrics
+  
+  IM_without_method <- IMnumeric |> filter(is.na(int_trm_code)) |>
+    select(-int_trm_code) |>
+    pivot_wider(
+      names_from = all_of(c("int_tra_code")), 
+      values_from = all_of(c("int_value")))
+  
+  # method is always about sex there   
+  IM_with_method <- IMnumeric |> filter(!is.na(int_trm_code)) |>
+    pivot_wider(
+      names_from = all_of(c("int_tra_code")), 
+      values_from = all_of(c("int_value", "int_trm_code"))) |>
+    rename(any_of(c("MuscleLipidPercent"= "int_value_Muscle_lipid",
+           "Anguillicola_intensity" = "int_value_Anguillicola_intensity",
+           "MuscleLipidMethod"="int_trm_code_Muscle_lipid",
+           "AnguillicolaMethod"="int_trm_code_Anguillicola_intensity"))) 
+  
+  # last one int_trm_code_Anguillicola_proportion is twice there, the same for
+  # proportion and intensity
+  
+  
+  IMstructure <- data.frame(
+    RecordType = character(),
+    Year = integer(),
+    SamplingSchemeID = character(),
+    FishID = character(),
+    LifeStage = character(),
+    Month = integer(),
+    Day = integer(),
+    DecimalLongitude = numeric(),
+    DecimalLatitude = numeric(),
+    Sex = character(),
+    Age = integer(),
+    PigmentationStage = character(),
+    SexDeterminationMethod = character(),
+    SexPrepMethod = character(),
+    SexMethodOfAnalysis = character(),
+    Differentiated = character(),
+    SeaAge = integer(),
+    JuvenileAge = integer(),
+    AgingMethod = character(),
+    AgingMatrix = character(),
+    AgingPrepMethod = character(),
+    Length = numeric(),
+    LengthMethod = character(),
+    Weight = numeric(),
+    MeanEyeDiam = numeric(),
+    PectoralFinLength = numeric(),
+    AnguillicolaMethod = character(),
+    AnguillicolaPrepMethod = character(),
+    AnguillicolaPresence = character(),
+    AnguillicolaIntensity = numeric(),
+    MuscleLipidPercent = numeric(),
+    MuscleLipidMethod = character(),
+    PCB = numeric(),
+    TEQ = numeric(),
+    EVEXpresence = character(),
+    HVAPresence = character(),
+    Pb = numeric(),
+    Cd = numeric(),
+    Hg = numeric(),
+    Comments = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # clipr::write_clip(colnames(IM))
+  
+  col_to_remove <- colnames(IM_with_method) %in% colnames(IM_without_method) & 
+    colnames(IM_with_method) !="FishID" 
+  IM_with_method <- IM_with_method[,!col_to_remove]
+  
+  IM <- full_join(
+    IM_without_method |> mutate(FishID = as.character(FishID)),
+    IM_with_method |> mutate(FishID = as.character(FishID)), by = join_by(FishID)) |>  
+    rename(
+      any_of(c(
+      PectoralFinLength = "Pectoral_lengthmm",
+      MeanEyeDiam = "Eye_diam_meanmm",
+      Weight = "Weightg",
+      Length = "Lengthmm",
+      AnguillicolaIntensity = "Anguillicola_intensity",
+      Age = "Ageyear",
+      PCB = "Sum_6_pcb"))) |> 
+    select(-fi_id) 
+  
+  
+  
+  IM <- bind_rows(IMstructure , IM)
+  
+  IM <- IM |> 
+    filter(SamplingSchemeID %in% params$samplingscheme) |>
+    slice_head(n = 200) |>
+    mutate(AgingMatrix = if_else(is.na(Age), "-9" ,"otolith"))
+  IM <- IM |> 
+    mutate(Comments =  gsub(",", ";",Comments),
+           Comments = if_else(
+             condition = nchar(Comments) > 187,
+             true = paste0(substr(Comments, 1, 187),"... truncated"),
+             false = Comments,
+             missing = NA
+           ))
+  write.csv(IM,
+            file.path(folder, "IM.csv"),
+            quote =FALSE,
+            na = "",
+            row.names = FALSE)
+}
 
 ```
-
-IM : `r nrow(IM)`
-
+  
+ 
+  
 ```{r}
 #| label: Build_format
 #| echo: FALSE
 #| warning: FALSE
 #| message: FALSE
 #| results: 'hide'
-
-
-
+  
+  
+  
 files <- list.files(folder, pattern = "\\.csv$", full.names = TRUE)
-order = unlist(mapply(grep, c("FI","SS","AS","GM","GS", "IM"), MoreArgs = list(x=files)))
+order = unlist(mapply(grep, c("FI","SS","TS","GM","GS", "IM"), MoreArgs = list(x=files)))
+order <- order[names(order) %in% params$format]
 files <- files[order]
 all_lines <- unlist(lapply(files, readLines))
-con0 <- paste0("export_format/test_format_",
+con0 <- paste0("export_format/",
+               params$country, "_",
                paste(params$samplingscheme,collapse="_"),
+               paste(names(order),collapse="_"),
                ".csv")# Write to a new single file
 
 # write the result as a single file in DATSU format
@@ -623,4 +794,4 @@ writeLines(all_lines, con=con0)
 
 ```
 
-File exported : `r con0`
+*File exported : `r con0`*
